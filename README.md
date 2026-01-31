@@ -1,78 +1,76 @@
-# [Nombre de la Aplicación]
+# TicketHub
 
 ## 👥 Miembros del Equipo
 | Nombre y Apellidos | Correo URJC | Usuario GitHub |
 |:--- |:--- |:--- |
-| [Nombre 1] | [email1]@alumnos.urjc.es | [User1] |
-| [Nombre 2] | [email2]@alumnos.urjc.es | [User2] |
-| [Nombre 3] | [email3]@alumnos.urjc.es | [User3] |
-| [Nombre 4] | [email4]@alumnos.urjc.es | [User4] |
+| Rubén Alcojor Patilla | r.alcojor.2022@alumnos.urjc.es | rualpa2004 |
+| Daniel Bonachela Martínez | d.bonachela.2022@alumnos.urjc.es | fuihfuefuiewn |
+| Shania Manso García | s.manso.2022@alumnos.urjc.es | shaniaconx |
+| Alejandro Valor González | a.valor.2022@alumnos.urjc.es | AtilaVG |
 
 ---
 
 ## 🎭 **Preparación 1: Definición del Proyecto**
 
 ### **Descripción del Tema**
-[Escribe aquí una descripción breve y concisa de qué trata tu aplicación, el sector al que pertenece y qué valor aporta al usuario].
+TicketHub es una plataforma web de gestión y venta de entradas para eventos, perteneciente al sector del ocio y los espectáculos. Permite a los usuarios consultar y filtrar eventos, comprar entradas y gestionar su histórico de compras, mientras que los administradores pueden crear y gestionar eventos, artistas y recintos. La aplicación aporta valor al usuario ofreciendo una experiencia centralizada, sencilla y segura para descubrir eventos y adquirir entradas digitales.
 
 ### **Entidades**
-Indicar las entidades principales que gestionará la aplicación y las relaciones entre ellas:
+Entidades principales que gestionará la aplicación y las relaciones entre ellas:
 
-1. **[Entidad 1]**: [Ej: Usuario]
-2. **[Entidad 2]**: [Ej: Producto]
-3. **[Entidad 3]**: [Ej: Pedido]
-4. **[Entidad 4]**: [Ej: Categoría]
+1. **User**: Usuario registrado en la plataforma.
+2. **Event**: Evento disponible para la venta de entradas.
+3. **Artist**: Artista o grupo que realiza uno o varios eventos.
+4. **Ticket**: Entrada asociada a un evento y comprada por un usuario.
 
 **Relaciones entre entidades:**
-- [Ej: Usuario - Pedido: Un usuario puede tener múltiples pedidos (1:N)]
-- [Ej: Pedido - Producto: Un pedido puede contener múltiples productos y un producto puede estar en múltiples pedidos (N:M)]
-- [Ej: Producto - Categoría: Un producto pertenece a una categoría (N:1)]
-- [Descripción de otras relaciones relevantes]
+- User - Ticket: Un usuario puede comprar múltiples entradas y cada entrada pertenece a un único usuario (1:N)
+- Event - Ticket: Un evento puede tener múltiples entradas asociadas y cada entrada corresponde a un único evento (1:N)
+- Artist - Event: Un artista puede realizar múltiples eventos y cada evento tiene un único artista principal (1:N)
+- User - Event: Un usuario puede asistir a múltiples eventos a través de las entradas compradas (N:M, implícita mediante Ticket)
 
 ### **Permisos de los Usuarios**
-Describir los permisos de cada tipo de usuario e indicar de qué entidades es dueño:
+Permisos de cada tipo de usuario y entidades de las que es dueño:
 
 * **Usuario Anónimo**: 
-  - Permisos: [Ej: Visualización de catálogo, búsqueda de productos, registro]
+  - Permisos: Consulta y filtrado de eventos, visualización de información de eventos y artistas
   - No es dueño de ninguna entidad
 
 * **Usuario Registrado**: 
-  - Permisos: [Ej: Gestión de perfil, realizar pedidos, crear valoraciones]
-  - Es dueño de: [Ej: Sus propios Pedidos, su Perfil de Usuario, sus Valoraciones]
+  - Permisos: Compra de entradas, gestión de su perfil, visualización de su histórico de compras
+  - Es dueño de: Sus propios Tickets y su Perfil de Usuario
 
 * **Administrador**: 
-  - Permisos: [Ej: Gestión completa de productos (CRUD), visualización de estadísticas, moderación de contenido]
-  - Es dueño de: [Ej: Productos, Categorías, puede gestionar todos los Pedidos y Usuarios]
+  - Permisos: Creación, edición y eliminación de eventos y artistas, gestión de recintos, control de aforo y visualización de estadísticas
+  - Es dueño de: Events, Artists y puede gestionar todos los Tickets y Users
 
 ### **Imágenes**
-Indicar qué entidades tendrán asociadas una o varias imágenes:
+Entidades que tienen asociadas una o varias imágenes:
 
-- **[Entidad con imágenes 1]**: [Ej: Usuario - Una imagen de avatar por usuario]
-- **[Entidad con imágenes 2]**: [Ej: Producto - Múltiples imágenes por producto (galería)]
-- **[Entidad con imágenes 3]**: [Ej: Categoría - Una imagen representativa por categoría]
+- **User**: Una imagen de perfil por usuario
+- **Event**: Una imagen principal o cabecera representativa del evento
+- **Artist**: Una imagen para la página pública del artista
 
 ### **Gráficos**
-Indicar qué información se mostrará usando gráficos y de qué tipo serán:
+Información mostrada usando gráficos y tipo de gráficos:
 
-- **Gráfico 1**: [Ej: Ventas mensuales - Gráfico de barras]
-- **Gráfico 2**: [Ej: Productos más vendidos - Gráfico de tarta/circular]
-- **Gráfico 3**: [Ej: Evolución de usuarios registrados - Gráfico de líneas]
-- **Gráfico 4**: [Ej: Distribución de pedidos por categoría - Gráfico de barras horizontales]
+- **Gráfico 1**: Entradas vendidas por evento – Gráfico de barras
+- **Gráfico 2**: Ranking de eventos más vendidos – Gráfico de barras horizontales
+- **Gráfico 3**: Evolución de entradas vendidas en la plataforma a lo largo del tiempo – Gráfico de líneas
 
 ### **Tecnología Complementaria**
-Indicar qué tecnología complementaria se empleará:
+Tecnología complementaria empleada:
 
-- [Ej: Envío de correos electrónicos automáticos mediante JavaMailSender]
-- [Ej: Generación de PDFs de facturas usando iText o similar]
-- [Ej: Sistema de autenticación OAuth2 o JWT]
-- [Otras tecnologías externas que se integrarán]
+- Envío de correos electrónicos automáticos de confirmación de compra mediante JavaMailSender
+- Generación de entradas en formato PDF tras la compra usando iText
+- Sistema de autenticación y autorización basado en Spring Security con JWT para usuarios registrados y administradores
 
 ### **Algoritmo o Consulta Avanzada**
-Indicar cuál será el algoritmo o consulta avanzada que se implementará:
+Algoritmo o consulta avanzada que implementada:
 
-- **Algoritmo/Consulta**: [Ej: Sistema de recomendaciones basado en el historial de compras del usuario]
-- **Descripción**: [Ej: Analiza los productos comprados previamente y sugiere productos similares o complementarios utilizando filtrado colaborativo]
-- **Alternativa**: [Ej: Consulta compleja que agrupe ventas por categoría, mes y región, con cálculo de tendencias]
+- **Algoritmo/Consulta**: Control automático de aforo y ranking de eventos más vendidos
+- **Descripción**: El sistema controlará automáticamente el número de entradas vendidas por evento, impidiendo la compra cuando se alcance el aforo máximo. Además, se calculará un ranking de eventos basado en el número total de entradas vendidas, ordenándolos de mayor a menor para mostrar estadísticas y destacados.
+- **Alternativa**: Consulta avanzada que agrupe el número de entradas vendidas por evento y por periodo de tiempo para analizar tendencias de ventas
 
 ---
 
