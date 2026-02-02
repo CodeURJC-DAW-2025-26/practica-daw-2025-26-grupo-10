@@ -41,7 +41,7 @@ Permisos de cada tipo de usuario y entidades de las que es dueño:
   - Es dueño de: Sus propios Tickets y su Perfil de Usuario
 
 * **Administrador**: 
-  - Permisos: Creación, edición y eliminación de eventos y artistas, gestión de recintos, control de aforo y visualización de estadísticas
+  - Permisos: Creación, edición y eliminación de eventos y artistas, control de aforo y visualización de estadísticas
   - Es dueño de: Events, Artists y puede gestionar todos los Tickets y Users
 
 ### **Imágenes**
@@ -54,7 +54,7 @@ Entidades que tienen asociadas una o varias imágenes:
 ### **Gráficos**
 Información mostrada usando gráficos y tipo de gráficos:
 
-- **Gráfico 1**: Entradas vendidas por evento – Gráfico de barras
+- **Gráfico 1**: Entradas vendidas en cada mes por los diferentes eventos – Gráfico de barras
 - **Gráfico 2**: Ranking de eventos más vendidos – Gráfico de barras horizontales
 - **Gráfico 3**: Evolución de entradas vendidas en la plataforma a lo largo del tiempo – Gráfico de líneas
 
@@ -63,14 +63,15 @@ Tecnología complementaria empleada:
 
 - Envío de correos electrónicos automáticos de confirmación de compra mediante JavaMailSender
 - Generación de entradas en formato PDF tras la compra usando iText
-- Sistema de autenticación y autorización basado en Spring Security con JWT para usuarios registrados y administradores
 
 ### **Algoritmo o Consulta Avanzada**
 Algoritmo o consulta avanzada que implementada:
 
-- **Algoritmo/Consulta**: Control automático de aforo y ranking de eventos más vendidos
-- **Descripción**: El sistema controlará automáticamente el número de entradas vendidas por evento, impidiendo la compra cuando se alcance el aforo máximo. Además, se calculará un ranking de eventos basado en el número total de entradas vendidas, ordenándolos de mayor a menor para mostrar estadísticas y destacados.
-- **Alternativa**: Consulta avanzada que agrupe el número de entradas vendidas por evento y por periodo de tiempo para analizar tendencias de ventas
+- **Algoritmo/Consulta**: Control automático de aforo, ranking de eventos más vendidos y recomendaciones personalizadas de eventos según usuarios similares.
+- **Descripción**: El sistema gestionará de forma automática el aforo de cada evento, controlando el número de entradas vendidas y bloqueando nuevas compras cuando se alcance la capacidad máxima permitida.
+Además, se generará un ranking de eventos en función del total de entradas vendidas, ordenados de mayor a menor, con el objetivo de mostrar estadísticas, tendencias y eventos destacados.
+Por último, el sistema ofrecerá recomendaciones personalizadas a cada usuario mediante el análisis de perfiles con gustos similares, sugiriendo eventos a los que estos usuarios hayan asistido previamente.
+- **Alternativa**: Consulta avanzada que agrupe las entradas vendidas por evento y por periodo de tiempo, permitiendo analizar la evolución y las tendencias de ventas.
 
 ---
 
