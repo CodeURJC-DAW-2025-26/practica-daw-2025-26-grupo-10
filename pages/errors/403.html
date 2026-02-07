@@ -1,7 +1,15 @@
 <!doctype html>
 <html lang="es">
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>403</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/main.css">
+</head>
 
+<body class="d-flex flex-column min-vh-100">
+  
 <!--LOCATION OF THE HEADER OF THE WEB
 
 {{>header}}
@@ -9,44 +17,53 @@
 -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar scroll</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand" href="index.html">TicketHub</a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarMain"
+      aria-controls="navbarMain"
+      aria-expanded="false"
+      aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarScroll">
-      <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+
+    <div class="collapse navbar-collapse" id="navbarMain">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link active" href="index.html">Inicio</a>
         </li>
+
         <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
+          <a class="nav-link" href="event.html">Eventos</a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Link
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
+
         <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Link</a>
+          <a class="nav-link" href="artist.html">Artistas</a>
         </li>
       </ul>
-      <button class="btn btn-outline-success btn-light" type="submit">Perfil</button>
+
+      <div class="d-flex align-items-center gap-3">
+        <a href="login.html" class="btn btn-outline-light btn-sm">
+          Iniciar sesión
+        </a>
+        <a href="signup.html" class="btn btn-light btn-sm">
+          Registrarse
+        </a>
+
+        <img
+          src="assets/images/default-avatar.png"
+          alt="Perfil"
+          class="rounded-circle"
+          width="40"
+          height="40"
+        >
+      </div>
     </div>
   </div>
 </nav>
-
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>403</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="d-flex flex-column min-vh-100">
 <main class="flex-fill d-flex align-items-center justify-content-center">
 <div class="text-center">
 <h1 class="display-1">403</h1>
@@ -61,35 +78,71 @@
 
 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 <footer class="mt-auto bg-dark">
-  <div class="container text-white">
+  <div class="container text-white py-4">
     <div class="row">
+
+      <!-- Sobre nosotros -->
       <div class="col-md-4 mb-3">
-        <h5>About Us</h5>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac ante mollis quam tristique convallis.</p>
+        <h5>Sobre nosotros</h5>
+        <p>
+          TicketHub conecta a los usuarios con eventos, artistas y recintos, ofreciendo una experiencia de compra de entradas simple y segura.
+        </p>
       </div>
+
+      <!-- Enlaces rápidos -->
       <div class="col-md-4 mb-3">
-        <h5>Quick Links</h5>
+        <h5>Enlaces rápidos</h5>
         <ul class="list-unstyled">
-          <li><a href="#" class="text-decoration-none text-white">Home</a></li>
-          <li><a href="#" class="text-decoration-none text-white">Services</a></li>
-          <li><a href="#" class="text-decoration-none text-white">Contact</a></li>
+          <li>
+            <a href="index.html" class="text-decoration-none text-white">
+              Inicio
+            </a>
+          </li>
+          <li>
+            <a href="event.html" class="text-decoration-none text-white">
+              Eventos
+            </a>
+          </li>
+          <li>
+            <a href="login.html" class="text-decoration-none text-white">
+              Iniciar sesión
+            </a>
+          </li>
         </ul>
       </div>
+
+      <!-- Redes sociales -->
       <div class="col-md-4 mb-3">
-        <h5>Follow Us</h5>
-        <ul class="list-inline social-icons">
-          <li class="list-inline-item"><a href="#" class="text-white"><i class="bi bi-facebook"></i></a></li>
-          <li class="list-inline-item"><a href="#" class="text-white"><i class="bi bi-twitter"></i></a></li>
-          <li class="list-inline-item"><a href="#" class="text-white"><i class="bi bi-instagram"></i></a></li>
+        <h5>Síguenos</h5>
+        <ul class="list-inline">
+          <li class="list-inline-item">
+            <a href="#" class="text-white">
+              <i class="bi bi-facebook"></i>
+            </a>
+          </li>
+          <li class="list-inline-item">
+            <a href="#" class="text-white">
+              <i class="bi bi-twitter"></i>
+            </a>
+          </li>
+          <li class="list-inline-item">
+            <a href="#" class="text-white">
+              <i class="bi bi-instagram"></i>
+            </a>
+          </li>
         </ul>
       </div>
+
     </div>
-    <hr class="mb-4">
-    <div class="row">
-      <div class="col-md-12 text-center">
-        <p>&copy; 2026 TicketHub. All rights reserved.</p>
-      </div>
+
+    <hr class="border-secondary">
+
+    <div class="text-center">
+      <p class="mb-0">
+        &copy; 2026 TicketHub. Todos los derechos reservados.
+      </p>
     </div>
   </div>
 </footer>
