@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compra</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/main.css">
+</head>
+<body>
+
+<!--LOCATION OF THE HEADER OF THE WEB
+
+{{>header}}
+
+-->
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="index.html">TicketHub</a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarMain"
+      aria-controls="navbarMain"
+      aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMain">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" href="index.html">Inicio</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="event.html">Eventos</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="artist.html">Artistas</a>
+        </li>
+      </ul>
+
+      <div class="d-flex align-items-center gap-3">
+        <a href="login.html" class="btn btn-outline-primary btn-sm">
+          Iniciar sesión
+        </a>
+        <a href="signup.html" class="btn btn-light btn-sm">
+          Registrarse
+        </a>
+
+        <!--why is here a profile image if there are buttons of login and sign-up??-->
+        <img
+          src="../../assets/images/default-avatar.png"
+          alt="Perfil"
+          class="rounded-circle"
+          width="40"
+          height="40"
+        >
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+<div class="container my-5">
+  <h2>Compra de entradas</h2>
+  <form>
+    <div class="mb-3">
+      <label class="form-label">Tipo de entrada</label>
+      <select class="form-control"><option>General - 30€</option></select>
+    </div>
+    <div class="mb-3">
+      <label>Cantidad</label>
+      <input type="number" class="form-control" value="1">
+    </div>
+    <hr>
+    <h4>Total: 30€</h4>
+    <hr>
+    <h5>Datos de pago</h5>
+    <input class="form-control mb-2" placeholder="Número tarjeta">
+    <input class="form-control mb-2" placeholder="Nombre titular">
+    <button class="btn btn-primary mt-3" type="button" onclick="location.href='confirmation.html'">Confirmar compra</button>
+  </form>
+</div>
+
+<!--LOCATION OF THE FOOTER OF THE WEB
+
+{{>footer}}
+
+-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<footer class="mt-auto">
+  <div class="container py-4">
+    <div class="row">
+
+      <!-- Sobre nosotros -->
+      <div class="col-md-4 mb-3">
+        <h5>Sobre nosotros</h5>
+        <p>
+          TicketHub conecta a los usuarios con eventos, artistas y recintos, ofreciendo una experiencia de compra de entradas simple y segura.
+        </p>
+      </div>
+
+      <!-- Enlaces rápidos -->
+      <div class="col-md-4 mb-3">
+        <h5>Enlaces rápidos</h5>
+        <ul class="list-unstyled">
+          <li>
+            <a href="index.html">
+              Inicio
+            </a>
+          </li>
+          <li>
+            <a href="event.html">
+              Eventos
+            </a>
+          </li>
+          <li>
+            <a href="login.html">
+              Iniciar sesión
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Redes sociales -->
+      <div class="col-md-4 mb-3">
+        <h5>Síguenos</h5>
+        <ul class="list-inline">
+          <li class="list-inline-item">
+            <a href="#">
+              <i class="bi bi-facebook"></i>
+            </a>
+          </li>
+          <li class="list-inline-item">
+            <a href="#">
+              <i class="bi bi-twitter"></i>
+            </a>
+          </li>
+          <li class="list-inline-item">
+            <a href="#">
+              <i class="bi bi-instagram"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <hr class="border-secondary">
+
+    <div class="text-center">
+      <p class="mb-0">
+        &copy; 2026 TicketHub. Todos los derechos reservados.
+      </p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
+

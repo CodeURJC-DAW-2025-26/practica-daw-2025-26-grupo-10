@@ -1,0 +1,500 @@
+/* Base colors */
+:root {
+    --pitch-black: #231C07;
+    --vivid-tangerine: #F77F00;
+    --beige: #EBEBD3;
+}
+
+/* Body */
+body {
+    background-color: var(--beige);
+    color: var(--pitch-black);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--pitch-black) !important;
+}
+
+.navbar-brand {
+    color: var(--vivid-tangerine) !important;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.navbar-nav .nav-link {
+    color: var(--beige) !important;
+    transition: color 0.3s;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: var(--vivid-tangerine) !important;
+}
+
+.btn-light {
+    background-color: var(--vivid-tangerine);
+    border: none;
+    color: var(--pitch-black);
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.btn-light:hover {
+    background-color: #ff9500;
+    color: white;
+}
+
+/* Event cards */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card h5 {
+    color: var(--pitch-black);
+}
+
+.card p {
+    color: #4a3b1c; 
+}
+
+.card .btn-primary {
+    background-color: var(--vivid-tangerine);
+    border: none;
+}
+
+.card .btn-primary:hover {
+    background-color: #ff9500;
+}
+
+/* Inputs & selects */
+input.form-control,
+select.form-control {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+input.form-control:focus,
+select.form-control:focus {
+    border-color: var(--vivid-tangerine);
+    box-shadow: 0 0 0 0.2rem rgba(247,127,0,0.25);
+}
+
+/* Footer */
+footer {
+    background-color: var(--pitch-black);
+    color: var(--beige);
+    padding: 2rem 0;
+}
+
+footer a {
+    color: var(--beige);
+    transition: color 0.3s;
+}
+
+footer a:hover {
+    color: var(--vivid-tangerine);
+}
+
+/* Social icons */
+.social-icons i {
+    font-size: 1.2rem;
+}
+
+.social-icons a:hover i {
+    color: var(--vivid-tangerine);
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    .navbar-nav {
+        text-align: center;
+    }
+
+    .row.g-4 .col-md-4 {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Artist Card */
+.card.text-center {
+    background-color: var(--beige);
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    max-width: 500px;
+    margin: auto;
+}
+
+.card.text-center h3 {
+    color: var(--pitch-black);
+    margin-bottom: 0.5rem;
+}
+
+.card.text-center p {
+    color: #4a3b1c;
+}
+
+/* Socials Buttons */
+.btn-outline-primary {
+    border-color: var(--vivid-tangerine);
+    color: var(--pitch-black);
+    background-color: var(--beige);
+    font-weight: bold;
+    margin: 0.2rem;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--vivid-tangerine);
+    color: var(--pitch-black);
+    border-color: var(--vivid-tangerine);
+}
+
+.btn-outline-info {
+    border-color: var(--vivid-tangerine);
+    color: var(--pitch-black);
+    background-color: var(--beige);
+    font-weight: bold;
+    margin: 0.2rem;
+}
+
+.btn-outline-info:hover {
+    background-color: var(--vivid-tangerine);
+    color: var(--pitch-black);
+    border-color: var(--vivid-tangerine);
+}
+
+/* Image */
+.card img.rounded-circle {
+    border: 3px solid var(--vivid-tangerine);
+    padding: 2px;
+}
+
+/* Alerts */
+.alert-success {
+    background-color: var(--vivid-tangerine);
+    color: var(--pitch-black);
+    border: none;
+    font-weight: bold;
+}
+
+/* Details list */
+.list-group-item {
+    background-color: var(--beige);
+    border: 1px solid #ccc;
+    color: var(--pitch-black);
+}
+
+/* Buttons */
+.btn-outline-primary {
+    border-color: var(--vivid-tangerine);
+    color: var(--pitch-black);
+    background-color: var(--beige);
+    font-weight: bold;
+    margin: 0.2rem;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--vivid-tangerine);
+    color: var(--pitch-black);
+    border-color: var(--vivid-tangerine);
+}
+
+.btn-primary {
+    background-color: var(--vivid-tangerine);
+    border: none;
+    color: var(--pitch-black);
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: #ff9500;
+    color: var(--pitch-black);
+}
+/* Event Card */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background-color: var(--beige);
+}
+
+.card h2, .card h4 {
+    color: var(--pitch-black);
+}
+
+.card p {
+    color: #4a3b1c; 
+}
+
+/* Buttons */
+.btn-outline-secondary {
+    border-color: var(--vivid-tangerine);
+    color: var(--pitch-black);
+    background-color: var(--beige);
+    font-weight: bold;
+    margin: 0.2rem;
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--vivid-tangerine);
+    color: var(--pitch-black);
+    border-color: var(--vivid-tangerine);
+}
+
+.btn-success {
+    background-color: var(--vivid-tangerine);
+    border: none;
+    color: var(--pitch-black);
+    font-weight: bold;
+}
+
+.btn-success:hover {
+    background-color: #ff9500;
+    color: var(--pitch-black);
+}
+
+/* Upper Image */
+.card-img-top {
+    border-radius: 12px 12px 0 0;
+}
+
+/* login container */
+main .container {
+    background-color: var(--beige);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* title */
+main h3 {
+    color: var(--pitch-black);
+}
+
+/* Inputs */
+main input.form-control {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+main input.form-control:focus {
+    border-color: var(--vivid-tangerine);
+    box-shadow: 0 0 0 0.2rem rgba(247,127,0,0.25);
+}
+
+/* button */
+main button.btn-primary {
+    background-color: var(--vivid-tangerine);
+    border: none;
+    color: var(--pitch-black);
+    font-weight: bold;
+}
+
+main button.btn-primary:hover {
+    background-color: #ff9500;
+    color: var(--pitch-black);
+}
+/* purchase form */
+.container form {
+    background-color: var(--beige);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    max-width: 500px;
+    margin: auto;
+}
+
+/* Inputs & selects */
+.container form input.form-control,
+.container form select.form-control {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 0.5rem;
+}
+
+.container form input.form-control:focus,
+.container form select.form-control:focus {
+    border-color: var(--vivid-tangerine);
+    box-shadow: 0 0 0 0.2rem rgba(247,127,0,0.25);
+}
+
+/* buttons */
+.container form button.btn-primary {
+    background-color: var(--vivid-tangerine);
+    border: none;
+    color: var(--pitch-black);
+    font-weight: bold;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.container form button.btn-primary:hover {
+    background-color: #ff9500;
+    color: var(--pitch-black);
+}
+
+/* form inside titles*/
+.container form h2, .container form h4, .container form h5 {
+    color: var(--pitch-black);
+}
+
+/* sign up container */
+main .container {
+    background-color: var(--beige);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin: auto;
+}
+
+/* title */
+main h3 {
+    color: var(--pitch-black);
+}
+
+/* Inputs */
+main input.form-control {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 0.5rem;
+}
+
+main input.form-control:focus {
+    border-color: var(--vivid-tangerine);
+    box-shadow: 0 0 0 0.2rem rgba(247,127,0,0.25);
+}
+
+/* button */
+main button.btn-success {
+    background-color: var(--vivid-tangerine);
+    border: none;
+    color: var(--pitch-black);
+    font-weight: bold;
+}
+
+main button.btn-success:hover {
+    background-color: #ff9500;
+    color: var(--pitch-black);
+}
+/* profile card */
+.card.text-center {
+    background-color: var(--beige);
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 2rem;
+}
+
+.card.text-center h4 {
+    color: var(--pitch-black);
+    margin-bottom: 0.3rem;
+}
+
+.card.text-center p.text-muted {
+    color: #4a3b1c;
+}
+
+/* profile image */
+.card img.rounded-circle {
+    border: 3px solid var(--vivid-tangerine);
+    padding: 2px;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+/* buttons */
+.btn-outline-primary {
+    border-color: var(--vivid-tangerine);
+    color: var(--pitch-black);
+    background-color: var(--beige);
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--vivid-tangerine);
+    color: var(--pitch-black);
+    border-color: var(--vivid-tangerine);
+}
+
+.btn-primary {
+    background-color: var(--vivid-tangerine);
+    border: none;
+    color: var(--pitch-black);
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: #ff9500;
+    color: var(--pitch-black);
+}
+
+.btn-outline-secondary {
+    border-color: #ccc;
+    color: var(--pitch-black);
+    background-color: var(--beige);
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--vivid-tangerine);
+    color: var(--pitch-black);
+    border-color: var(--vivid-tangerine);
+}
+/* entry table */
+table {
+    background-color: var(--beige);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+table th, table td {
+    vertical-align: middle;
+    color: var(--pitch-black);
+    border: none;
+}
+
+table thead {
+    background-color: var(--pitch-black);
+    color: var(--beige);
+}
+
+table tbody tr {
+    background-color: #f7f5e8; /* un beige más claro para filas */
+}
+
+table tbody tr.table-success {
+    background-color: #fdf4e3;
+}
+
+table tbody tr.table-danger {
+    background-color: #ffe5d1;
+}
+
+/* table inside buttons */
+table .btn-primary {
+    background-color: var(--vivid-tangerine);
+    border: none;
+    color: var(--pitch-black);
+    font-weight: bold;
+}
+
+table .btn-primary:hover {
+    background-color: #ff9500;
+}
+
+table .btn-secondary {
+    background-color: #ccc;
+    border: none;
+    color: var(--pitch-black);
+}
+
+table .btn-secondary:hover {
+    background-color: var(--vivid-tangerine);
+    color: var(--pitch-black);
+}

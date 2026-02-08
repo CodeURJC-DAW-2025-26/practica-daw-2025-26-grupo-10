@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gestionar Eventos</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../../../assets/css/main.css">
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="../admin.html">TicketHub Admin</a>
+
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="../admin.html">Dashboard</a>
+        </li>
+        <li class="nav-item">   <!--This could be disabled cause we are in the manage-events page-->
+          <a class="nav-link" href="manage_events.html">Eventos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../artists/manage_artists.html">Artistas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../statistics.html">Estadísticas</a>
+        </li>
+      </ul>
+
+      <div class="d-flex gap-2">
+        <a href="../../public/index.html" class="btn btn-outline-primary btn-sm">
+          Ver sitio
+        </a>
+        <!-- when JS is active, we will use onclick="logout()" for the admin to log out-->
+        <button class="btn btn-outline-secondary btn-sm">
+            Cerrar sesión
+        </button>
+
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+  <div class="container my-5">
+    <h2>Gestión de Eventos</h2>
+    <table class="table">
+      <thead>
+        <tr><th>Nombre</th><th>Fecha</th><th>Acciones</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Evento X</td>
+          <td>01/06/2026</td>
+          <td>
+            <a href="edit_event.html" class="btn btn-sm btn-primary">Editar</a>
+            <button class="btn btn-sm btn-secondary">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-dark text-white text-center py-3 mt-5">
+    <small>TicketHub Admin · © 2026</small>
+  </footer>
+
+
+</body>
+</html>
