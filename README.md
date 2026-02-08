@@ -78,7 +78,7 @@ Por último, el sistema ofrecerá recomendaciones personalizadas a cada usuario 
 ## 🛠 **Preparación 2: Maquetación de páginas con HTML y CSS**
 
 ### **Vídeo de Demostración**
-📹 **[Enlace al vídeo en YouTube](https://www.youtube.com/watch?v=x91MPoITQ3I)**
+📹 **[Enlace al vídeo en YouTube](https://youtu.be/Pj7w63RsNdY)**
 > Vídeo mostrando las principales funcionalidades de la aplicación web.
 
 ### **Diagrama de Navegación**
