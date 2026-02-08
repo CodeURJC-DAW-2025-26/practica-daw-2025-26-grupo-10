@@ -80,6 +80,7 @@ Por último, el sistema ofrecerá recomendaciones personalizadas a cada usuario 
 
 ### **Vídeo de Demostración**
 📹 **[Enlace al vídeo en YouTube](https://youtu.be/Pj7w63RsNdY)**
+
 > Vídeo mostrando las principales funcionalidades de la aplicación web.
 
 ### **Diagrama de Navegación**
@@ -90,59 +91,76 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 > [Descripción opcional del flujo de navegación: Ej: "El usuario puede acceder desde la página principal a todas las secciones mediante el menú de navegación. Los usuarios anónimos solo tienen acceso a las páginas públicas, mientras que los registrados pueden acceder a su perfil y panel de usuario."]
 
 ### **Capturas de Pantalla y Descripción de Páginas**
+**Nota general (páginas públicas)**  
+Todas las páginas públicas comparten el mismo header (marca TicketHub, navegación Inicio/Eventos/Artistas, botones Iniciar sesión y Registrarse) y el mismo footer (texto, Sobre nosotros, enlaces rápidos y redes sociales).
 
 #### **1. Página Principal / Home**
 ![Main Page](assets/images/pages/public/index.png)
-*main page*
-> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+La página de inicio muestra el título ‘Próximos eventos’, tres filtros (fecha, categoría y artista) y una cuadrícula de tarjetas de evento con imagen, nombre, fecha y hora, artista y un botón para ver el detalle
+
+#### **2. Página Eventos**
 ![Event Page](assets/images/pages/public/event.png)
-*event page*
-> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+Ficha de evento con fecha, hora y lugar destacados, texto descriptivo, enlace para ver al artista y bloque de compra con precio y botón “Comprar entrada”
+
+#### **3. Página de Confirmación**
 ![Confirmation Page](assets/images/pages/public/confirmation.png)
-*confirmation page*
-> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+Mensaje de compra exitosa con alerta de confirmación, lista de resumen (evento, tipo de entrada, total) y botones para descargar PDF o volver al inicio
+
+#### **4. Página Artista**
 ![Artist Page](assets/images/pages/public/artist.png)
-*artist page*
-> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+Perfil del artista con foto circular, biografía corta, lista de próximos eventos y botones hacia redes sociales (Instagram/Twitter).
+
+#### **5. Página de Inicio de Sesión**
 ![Login Page](assets/images/pages/public/login.png)
-*login page*
-> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+Formulario centrado de inicio de sesión con campos de correo y contraseña y botón “Entrar”.
+
+#### **6. Página de Compra**
 ![Purchase Page](assets/images/pages/public/purchase.png)
-*purchase page*
-> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+Formulario de compra con selector de tipo de entrada, cantidad, cálculo de total y sección de pago (número de tarjeta, titular) más botón “Confirmar compra”.
+
+#### **7. Página Registro**
 ![SignUp Page](assets/images/pages/public/sign-up.png)
-*signup page*
-> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+Formulario de registro con campos de nombre, correo, contraseña y confirmación, botón “Registrarse”.
+
+#### **8. Página Error 403**
 ![Error403 Page](assets/images/pages/errors/403.png)
-*403 page*
-> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+Pantalla de acceso no autorizado con código 403, mensaje “Acceso no autorizado” y botón para volver al inicio.
+
+#### **9. Página Error 404**
 ![Error404 Page](assets/images/pages/errors/404.png)
-*404 page*
-> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+Pantalla de página no encontrada con código 404, mensaje “Página no encontrada” y botón para volver al inicio.
+
+#### **10. Página Administrador**
 ![Admin Page](assets/images/pages/admin/admin.png)
-*admin page*
-> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+Panel con KPIs en tarjetas (entradas vendidas, eventos activos, usuarios, próximos eventos) y botones para crear/gestionar eventos y artistas o ver estadísticas.
+
+#### **11. Página Crear Artista**
 ![Create_artist Page](assets/images/pages/admin/create_artist.png)
-*create_artist page*
-> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+Formulario para crear artista con campos de nombre, biografía, Instagram y Twitter, y botón “Crear Artista”.
+
+#### **12. Página Crear Evento**
 ![Create_event Page](assets/images/pages/admin/create_event.png)
-*create_event page*
-> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+Formulario de alta de evento con campos de nombre, descripción, fecha, hora, lugar y precio, botón “Crear Evento”
+
+#### **13. Página Editar Artista**
 ![Edit_Artist Page](assets/images/pages/admin/edit_artist.png)
-*edit_artist page*
-> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+Formulario de edición de artista con campos precargados de nombre, biografía e identificadores de redes, botón “Guardar cambios”.
+
+#### **14. Página Editar Evento**
 ![Edit_Event Page](assets/images/pages/admin/edit_event.png)
-*edit_event page*
-> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+Formulario de edición de evento con datos cargados (nombre, descripción, fecha, hora, lugar, precio) y botón “Guardar Cambios”.
+
+#### **15. Página Administrar Artistas**
 ![Manage_artists Page](assets/images/pages/admin/manage_artists.png)
-*manage_artists page*
-> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+Tabla de artistas con acciones de editar y eliminar, dentro del panel admin.
+
+#### **16. Página Administrar Eventos**
 ![Manage_Events Page](assets/images/pages/admin/manage_events.png)
-*manage_events page*
-> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+Tabla de eventos con acciones de editar y eliminar, dentro del panel admin.mocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."
+
+#### **17. Página de Estadísticas Administrador**
 ![Statistics Page](assets/images/pages/admin/statistics.png)
-*statistics page*
-> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+Vista de estadísticas con dos gráficos (placeholders) para ventas y usuarios, accesible desde el panel admin.
 ---
 
 ## 🛠 **Práctica 1: Web con HTML generado en servidor y AJAX**
@@ -499,4 +517,10 @@ Diagrama mostrando los componentes React, hooks personalizados, servicios y sus 
 |3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
 |4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
 |5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+
+
+
+
+
+
 
