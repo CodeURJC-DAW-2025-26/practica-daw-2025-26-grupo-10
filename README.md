@@ -91,12 +91,57 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 ### **Capturas de Pantalla y Descripción de Páginas**
 
 #### **1. Página Principal / Home**
-![Página Principal](images/home-page.png)
-
+![Main Page](assets/images/pages/public/index.png)
+*main page*
 > [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
-
-#### **AQUÍ AÑADIR EL RESTO DE PÁGINAS**
-
+![Event Page](assets/images/pages/public/event.png)
+*event page*
+> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+![Confirmation Page](assets/images/pages/public/confirmation.png)
+*confirmation page*
+> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+![Artist Page](assets/images/pages/public/artist.png)
+*artist page*
+> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+![Login Page](assets/images/pages/public/login.png)
+*login page*
+> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+![Purchase Page](assets/images/pages/public/purchase.png)
+*purchase page*
+> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+![SignUp Page](assets/images/pages/public/sign-up.png)
+*signup page*
+> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+![Error403 Page](assets/images/pages/errors/403.png)
+*403 page*
+> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+![Error404 Page](assets/images/pages/errors/404.png)
+*404 page*
+> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+![Admin Page](assets/images/pages/admin/admin.png)
+*admin page*
+> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+![Create_artist Page](assets/images/pages/admin/create_artist.png)
+*create_artist page*
+> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+![Create_event Page](assets/images/pages/admin/create_event.png)
+*create_event page*
+> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+![Edit_Artist Page](assets/images/pages/admin/edit_artist.png)
+*edit_artist page*
+> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+![Edit_Event Page](assets/images/pages/admin/edit_event.png)
+*edit_event page*
+> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+![Manage_artists Page](assets/images/pages/admin/manage_artists.png)
+*manage_artists page*
+> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+![Manage_Events Page](assets/images/pages/admin/manage_events.png)
+*manage_events page*
+> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
+![Statistics Page](assets/images/pages/admin/statistics.png)
+*statistics page*
+> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
 ---
 
 ## 🛠 **Práctica 1: Web con HTML generado en servidor y AJAX**
