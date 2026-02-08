@@ -15,7 +15,7 @@
 {{>header}}
 
 -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
       <a class="navbar-brand" href="admin.html">TicketHub Admin</a>
 
@@ -36,11 +36,11 @@
         </ul>
 
         <div class="d-flex gap-2">
-          <a href="../public/index.html" class="btn btn-outline-light btn-sm">
+          <a href="../public/index.html" class="btn btn-outline-primary btn-sm">
             Ver sitio
           </a>
           <!-- when JS is active, we will use onclick="logout()" for the admin to log out-->
-          <button class="btn btn-danger btn-sm">
+          <button class="btn btn-outline-secondary btn-sm">
               Cerrar sesión
           </button>
 
@@ -52,14 +52,14 @@
 
   <div class="container my-5">
     <h2>Gestión de Artistas</h2>
-    <table class="table table-striped">
+    <table class="table">
       <thead><tr><th>Nombre</th><th>Acciones</th></tr></thead>
       <tbody>
         <tr>
           <td>Artista Y</td>
           <td>
             <a href="edit_artist.html" class="btn btn-sm btn-primary">Editar</a>
-            <button class="btn btn-sm btn-danger">Eliminar</button>
+            <button class="btn btn-sm btn-secondary">Eliminar</button>
           </td>
         </tr>
       </tbody>
