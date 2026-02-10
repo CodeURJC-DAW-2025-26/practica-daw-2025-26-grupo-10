@@ -23,6 +23,7 @@ public class Image {
         /* The constructor for the database*/
     }
 
+    // Constructor of the class
     public Image(String imageName, Blob imageCode) {
         this.imageName = imageName;
         this.imageCode = imageCode;

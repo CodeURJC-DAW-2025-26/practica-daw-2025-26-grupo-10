@@ -10,9 +10,10 @@ import lombok.Setter;
 public class Admin extends User {
 
     public Admin(){
-        // constructor JPA
+        // Constructor for the Database
     }
 
+    // Constructor of the class
     public Admin(String email, String username, String password) {
         super(email, username, password, true); // admin = true
     }

@@ -1,11 +1,10 @@
 package es.tickethub.tickethub.entities;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -24,11 +23,11 @@ public class User {
     @Column(nullable = false)
     private Boolean admin;
 
-    // Constructor vacío (JPA)
+    /* Constructor for the Database*/
     public User() {
     }
 
-    // Constructor completo
+    // Constructor of the class
     public User(String email, String username, String password, Boolean admin) {
         this.email = email;
         this.username = username;

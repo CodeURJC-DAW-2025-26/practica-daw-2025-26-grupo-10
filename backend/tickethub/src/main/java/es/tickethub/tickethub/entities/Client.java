@@ -4,10 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
@@ -37,10 +35,11 @@ public class Client extends User {
     @OneToOne
     private Image profileImage;
 
-    // Constructor vacío obligatorio para JPA
+    // Constructor for the Database
     public Client() {
     }
 
+    // Constructor of the class
     public Client(
             String email,
             String username,

@@ -28,8 +28,9 @@ public class Zone {
     @Column(nullable = false, precision = 8, scale = 2)
     private BigDecimal price;
 
-    public Zone() {} // Constructor vacío para JPA
+    public Zone() {} /* Constructor for the Database*/
 
+    // Constructor of the class
     public Zone(String name, Integer capacity, BigDecimal price) {
         this.name = name;
         this.capacity = capacity;

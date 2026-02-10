@@ -25,8 +25,9 @@ public class Discount {
     @Column(nullable = false, precision = 5, scale = 2)
     private BigDecimal percentage;
 
-    public Discount() {}
+    public Discount() {}    //Constructor for the Database
 
+    // Constructor of the class
     public Discount(String code, BigDecimal percentage) {
         this.code = code;
         this.percentage = percentage;

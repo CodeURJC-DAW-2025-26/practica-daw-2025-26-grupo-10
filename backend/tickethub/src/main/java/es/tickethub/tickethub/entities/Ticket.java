@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +22,8 @@ public class Ticket {
     @Column(unique = true, nullable = false)
     private String code;
 
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "session_id", nullable = false)
     private Session session;
 
     @Column(nullable = false)
@@ -29,11 +32,11 @@ public class Ticket {
     @Column(nullable = false)
     private Boolean isActive;
 
-    // Constructor vacío (JPA)
+    /* Constructor for the Database*/
     public Ticket() {
     }
 
-    // Constructor Completo
+    // Constructor of the class
     public Ticket(int ticketID, String code, Session session, BigDecimal price, Boolean isActive) {
         this.ticketID = ticketID;
         this.code = code;

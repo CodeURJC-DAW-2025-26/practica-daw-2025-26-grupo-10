@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,12 +34,14 @@ public class Artist {
     @OneToMany
     private List<Event> lastEvents;
 
+    @OneToOne
     private Image artistImage;
 
     public Artist() {
         /* The constructor for the database*/
     }
 
+    // Constructor of the class
     public Artist(Long artistID, String artistName) {
         this.artistID = artistID;
         this.artistName = artistName;
