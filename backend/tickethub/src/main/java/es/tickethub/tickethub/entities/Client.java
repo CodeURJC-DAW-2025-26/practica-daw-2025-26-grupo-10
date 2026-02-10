@@ -61,13 +61,9 @@ public class Client extends User {
         this.coins = coins;
         if (subjects != null) {
             this.subjects = subjects;
-        } else {
-            this.subjects = new ArrayList<>();
         }
         if (purchases != null) {
             this.purchases = purchases;
-        } else {
-            this.purchases = new ArrayList<>();
         }
         this.profileImage = profileImage;
     }
