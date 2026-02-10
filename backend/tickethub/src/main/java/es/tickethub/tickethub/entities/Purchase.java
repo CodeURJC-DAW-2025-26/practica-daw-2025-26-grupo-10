@@ -39,8 +39,9 @@ public class Purchase {
         this.purchaseID = purchaseID;
         this.tickets = tickets;
         this.session = session;
+        this.totalPrice = BigDecimal.ZERO;
         for (Ticket ticket : tickets) {
-            this.totalPrice += ticket.price;
+            this.totalPrice.add(ticket.getPrice());
         }
     }
 }
