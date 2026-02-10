@@ -29,6 +29,17 @@ public class Ticket {
     @Column(nullable = false)
     private Boolean isActive;
 
+    // Constructor vacío (JPA)
+    public Ticket() {
+    }
 
+    // Constructor Completo
+    public Ticket(int ticketID, String code, Session session, BigDecimal price, Boolean isActive) {
+        this.ticketID = ticketID;
+        this.code = code;
+        this.session = session;
+        this.price = price;
+        this.isActive = isActive;
+    }
     
 }
