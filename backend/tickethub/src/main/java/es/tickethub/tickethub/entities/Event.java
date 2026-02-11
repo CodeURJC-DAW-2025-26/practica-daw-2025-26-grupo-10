@@ -1,5 +1,6 @@
 package es.tickethub.tickethub.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -21,8 +22,9 @@ public class Event {
 
     /* All the columns of the entity Event cannot be nullable except discounts*/
     
+    /* For autogenerate the id we have to use GenerationType.IDENTITY instead GenerationType.AUTO*/
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long eventID;
 
     @Column(nullable = false)
@@ -38,15 +40,17 @@ public class Event {
 
     /* This represents that the entity Session is related with Event in a way that one Event can have many Sessions associated*/
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "event", orphanRemoval = true)
-    private List<Session> sessions;
+    @Column(nullable = false)
+    private List<Session> sessions = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "event_id")
-    private List<Zone> zones;
+    @JoinColumn(name = "event_id", nullable = false)
+    private List<Zone> zones = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    /* Here we don't have to put orphanRemoval because the discounts can be associated to more events*/
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "event_id")
-    private List<Discount> discounts;
+    private List<Discount> discounts = new ArrayList<>();
 
     @Column(nullable = false)
     private String place;
@@ -56,25 +60,29 @@ public class Event {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "event_id", nullable = false)
-    private List<Image> eventImages;
+    private List<Image> eventImages = new ArrayList<>();
 
     public Event() {
         /* The constructor for the database*/
     }
 
-    // Constructor of the class
-    public Event(Long eventID, String name, Integer capacity, Artist artist,
-        List<Session> sessions, List<Zone> zones, List<Discount> discounts, String place, String category, List<Image> eventImages) {
+    // Constructor of the class (we have to put all the parameters that can not be null in the database)
+    public Event(String name, Integer capacity, Artist artist,
+        List<Session> sessions, List<Zone> zones, String place, String category, List<Image> eventImages) {
 
-        this.eventID = eventID;
         this.name = name;
         this.capacity = capacity;
         this.artist = artist;
-        this.sessions = sessions;
-        this.zones = zones;
-        this.discounts = discounts;
+        if (sessions != null) {
+            this.sessions = sessions;
+        }
+        if (zones != null) {
+            this.zones = zones;
+        }
         this.place = place;
         this.category = category;
-        this.eventImages = eventImages;
+        if (eventImages != null) {
+            this.eventImages = eventImages;
+        }
     }
 }

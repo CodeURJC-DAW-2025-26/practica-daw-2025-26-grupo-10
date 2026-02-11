@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -17,8 +19,10 @@ import lombok.Setter;
 public class Ticket {
 
     @Id
-    private int ticketID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long ticketID;
 
+    /* This code will be to generate an unique QR code for the ticket to be scanned*/
     @Column(unique = true, nullable = false)
     private String code;
 
@@ -26,7 +30,7 @@ public class Ticket {
     @JoinColumn(name = "session_id", nullable = false)
     private Session session;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 8, scale = 2)
     private BigDecimal price;
 
     @Column(nullable = false)
@@ -37,8 +41,7 @@ public class Ticket {
     }
 
     // Constructor of the class
-    public Ticket(int ticketID, String code, Session session, BigDecimal price, Boolean isActive) {
-        this.ticketID = ticketID;
+    public Ticket(String code, Session session, BigDecimal price, Boolean isActive) {
         this.code = code;
         this.session = session;
         this.price = price;

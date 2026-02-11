@@ -14,10 +14,11 @@ public class User {
     @Id
     private String email;
 
-    @Column(unique = true, nullable = false)
+    /* The username and password can be null because when a User is created for a purchase he only has the email*/
+    @Column(unique = true)
     private String username;
 
-    @Column(nullable = false)
+    @Column
     private String password;
 
     @Column(nullable = false)

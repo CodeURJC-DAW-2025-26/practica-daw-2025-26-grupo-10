@@ -20,7 +20,7 @@ public class Session {
     /* All the columns can't be null*/
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sessionID;
 
     @ManyToOne
@@ -35,8 +35,7 @@ public class Session {
     }
 
     // Constructor of the class
-    public Session(Long sessionID, Event event, Timestamp date) {
-        this.sessionID = sessionID;
+    public Session(Event event, Timestamp date) {
         this.event = event;
         this.date = date;
     }

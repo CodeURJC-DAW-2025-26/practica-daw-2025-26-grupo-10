@@ -1,5 +1,6 @@
 package es.tickethub.tickethub.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -20,7 +21,7 @@ public class Artist {
     /* The artist columns can be nullable except the ID and the artistName*/
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long artistID;
 
     @Column(nullable = false)
@@ -29,10 +30,10 @@ public class Artist {
     private String info;
 
     @OneToMany
-    private List<Event> eventsIncoming;
+    private List<Event> eventsIncoming = new ArrayList<>();
     
     @OneToMany
-    private List<Event> lastEvents;
+    private List<Event> lastEvents = new ArrayList<>();
 
     @OneToOne
     private Image artistImage;
@@ -42,8 +43,7 @@ public class Artist {
     }
 
     // Constructor of the class
-    public Artist(Long artistID, String artistName) {
-        this.artistID = artistID;
+    public Artist(String artistName) {
         this.artistName = artistName;
     }
 

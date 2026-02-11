@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,13 +22,15 @@ import lombok.Setter;
 public class Purchase {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long purchaseID;
 
     /* References the ticket entity to make the effect that if the purchase is deleted the tickets too
-        The join column is to represent a OneToMany relation. You have to put the name of the ID of the other Entity*/
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "purchase_id")
+        The join column is to represent a OneToMany relation. You have to put the name of the ID of the other Entity
+        The orphanRemoval makes that if an object of the entity is deleted the objects associated to it will be deleted too*/
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "purchase_id", nullable = false)
     private List<Ticket> tickets = new ArrayList<>();
 
     /* Needed to associate many purchases to one session*/
@@ -37,10 +40,11 @@ public class Purchase {
 
     /* Needed to associate the mapping at the client entity to the purchases*/
     @ManyToOne
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
     /* To initialize the purchase total price to 0*/
+    @Column(nullable = false, precision = 8, scale = 2)
     private BigDecimal totalPrice = BigDecimal.ZERO;
 
     public Purchase() {
@@ -48,14 +52,14 @@ public class Purchase {
     }
 
     // Constructor of the class
-    public Purchase(Long purchaseID, List<Ticket> tickets, Session session) {
-        this.purchaseID = purchaseID;
-        this.tickets = tickets;
-        this.session = session;
-        if (tickets != null) {  /* If there are tickets for each ticket the price is added to the purchase total price*/
+    public Purchase(List<Ticket> tickets, Session session, Client client) {
+        if (tickets != null) {      /* If there are tickets we associate them to the attribute and for each ticket the price is added to the purchase total price*/
+            this.tickets = tickets;
             for (Ticket ticket : tickets) {
                 this.totalPrice = this.totalPrice.add(ticket.getPrice());
             }
         }
+        this.session = session;
+        this.client = client;
     }
 }
