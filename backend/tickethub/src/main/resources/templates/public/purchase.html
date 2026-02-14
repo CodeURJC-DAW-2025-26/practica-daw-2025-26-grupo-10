@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Registro</title>
+<title>Compra</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="stylesheet" href="../../static/css/main.css">
 </head>
-<body class="d-flex flex-column min-vh-100">
+<body>
 
 <!--LOCATION OF THE HEADER OF THE WEB
 
@@ -66,18 +66,26 @@
 </nav>
 
 
-<main class="flex-fill">
-  <div class="container my-5" style="max-width:450px">
-    <h3 class="mb-4 text-center">Crear cuenta</h3>
-    <form>
-      <input class="form-control mb-3" placeholder="Nombre completo">
-      <input class="form-control mb-3" placeholder="Correo electrónico">
-      <input type="password" class="form-control mb-3" placeholder="Contraseña">
-      <input type="password" class="form-control mb-3" placeholder="Repetir contraseña">
-      <button class="btn btn-success w-100">Registrarse</button>
-    </form>
-  </div>
-</main>
+<div class="container my-5">
+  <h2>Compra de entradas</h2>
+  <form>
+    <div class="mb-3">
+      <label class="form-label">Tipo de entrada</label>
+      <select class="form-control"><option>General - 30€</option></select>
+    </div>
+    <div class="mb-3">
+      <label>Cantidad</label>
+      <input type="number" class="form-control" value="1">
+    </div>
+    <hr>
+    <h4>Total: 30€</h4>
+    <hr>
+    <h5>Datos de pago</h5>
+    <input class="form-control mb-2" placeholder="Número tarjeta">
+    <input class="form-control mb-2" placeholder="Nombre titular">
+    <button class="btn btn-primary mt-3" type="button" onclick="location.href='confirmation.html'">Confirmar compra</button>
+  </form>
+</div>
 
 <!--LOCATION OF THE FOOTER OF THE WEB
 
@@ -156,3 +164,4 @@
 
 </body>
 </html>
+

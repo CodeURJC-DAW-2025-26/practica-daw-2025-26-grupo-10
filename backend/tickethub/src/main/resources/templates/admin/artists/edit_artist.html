@@ -3,20 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Crear Evento</title>
-
-  <!-- Bootstrap CSS -->
+  <title>Editar Artista</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Bootstrap Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-  <!-- TU CSS PERSONALIZADO -->
-  <link rel="stylesheet" href="../../../assets/css/main.css">
+  <link rel="stylesheet" href="../../../static/css/main.css">
 </head>
+
 <body class="d-flex flex-column min-vh-100">
 
-  <!-- NAVBAR -->
+<!--LOCATION OF THE HEADER OF THE WEB
+
+{{>header}}
+
+-->
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
       <a class="navbar-brand" href="../admin.html">TicketHub Admin</a>
@@ -27,10 +25,10 @@
             <a class="nav-link" href="../admin.html">Dashboard</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="manage_events.html">Eventos</a>
+            <a class="nav-link" href="../events/manage_events.html">Eventos</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../artists/manage_artists.html">Artistas</a>
+            <a class="nav-link" href="manage_artists.html">Artistas</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../statistics.html">Estadísticas</a>
@@ -51,27 +49,45 @@
     </div>
   </nav>
 
+
+<main class="flex-fill">
   <div class="container my-5">
-    <h2>Crear Evento</h2>
+    <h2>Editar Artista</h2>
     <form>
-      <input class="form-control mb-3" placeholder="Nombre del evento">
-      <textarea class="form-control mb-3" placeholder="Descripción"></textarea>
-      <input type="date" class="form-control mb-3">
-      <input type="time" class="form-control mb-3">
-      <input class="form-control mb-3" placeholder="Lugar">
-      <input class="form-control mb-3" placeholder="Precio">
-      <button class="btn btn-success">
-        <a href="manage_events.html" class="nav-link">
-          Crear Evento
+      <div class="mb-3">
+        <label class="form-label">Nombre</label>
+        <input class="form-control" value="Artista Y">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Biografía</label>
+        <textarea class="form-control" rows="4">Biografía actual</textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Instagram</label>
+        <input class="form-control" value="@instagram">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Twitter</label>
+        <input class="form-control" value="@twitter">
+      </div>
+      <button class="btn btn-primary">
+        <a href="manage_artists.html" class="nav-link">
+          Guardar Cambios
         </a>
       </button>
     </form>
   </div>
+</main>
 
-  <!-- FOOTER -->
-   <footer class="bg-dark text-white text-center py-3 mt-5">
+<!--LOCATION OF THE FOOTER OF THE WEB
+
+{{>footer}}
+
+-->
+  <footer class="bg-dark text-white text-center py-3 mt-5">
     <small>TicketHub Admin · © 2026</small>
   </footer>
-  
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

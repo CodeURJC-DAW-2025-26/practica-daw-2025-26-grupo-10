@@ -1,22 +1,18 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Login</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="../../assets/css/main.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Editar perfil</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../static/css/main.css">
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-<!--LOCATION OF THE HEADER OF THE WEB
-
-{{>header}}
-
--->
+<!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="index.html">TicketHub</a>
+    <a class="navbar-brand" href="../public/index.html">TicketHub</a>
 
     <button
       class="navbar-toggler"
@@ -32,27 +28,26 @@
     <div class="collapse navbar-collapse" id="navbarMain">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" href="index.html">Inicio</a>
+          <a class="nav-link active" href="../public/index.html">Inicio</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="event.html">Eventos</a>
+          <a class="nav-link" href="../public/event.html">Eventos</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="artist.html">Artistas</a>
+          <a class="nav-link" href="../public/artist.html">Artistas</a>
         </li>
       </ul>
 
       <div class="d-flex align-items-center gap-3">
-        <a href="login.html" class="btn btn-outline-primary btn-sm">
+        <a href="../public/login.html" class="btn btn-outline-primary btn-sm">
           Iniciar sesión
         </a>
-        <a href="signup.html" class="btn btn-light btn-sm">
+        <a href="../public/signup.html" class="btn btn-light btn-sm">
           Registrarse
         </a>
 
-        <!--why is here a profile image if there are buttons of login and sign-up??-->
         <img
           src="../../assets/images/default-avatar.png"
           alt="Perfil"
@@ -65,14 +60,28 @@
   </div>
 </nav>
 
-
+<!-- CONTENIDO -->
 <main class="flex-fill">
-  <div class="container my-5" style="max-width:400px">
-    <h3 class="mb-4 text-center">Iniciar sesión</h3>
+  <div class="container my-5" style="max-width:600px">
+    <h2 class="mb-4">Editar perfil</h2>
     <form>
-      <input class="form-control mb-3" placeholder="Correo electrónico">
-      <input type="password" class="form-control mb-3" placeholder="Contraseña">
-      <button class="btn btn-primary w-100">Entrar</button>
+      <div class="mb-3">
+        <label class="form-label">Nombre</label>
+        <input type="text" class="form-control" value="Nombre Usuario">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Correo electrónico</label>
+        <input type="email" class="form-control" value="usuario@email.com">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Foto de perfil</label>
+        <input type="file" class="form-control">
+      </div>
+      <div class="d-flex gap-2">
+        <a href="profile.html" class="btn btn-primary equal-btn">Guardar</a>
+        <a href="profile.html" class="btn btn-primary equal-btn">Cancelar</a>
+      </div>
+
     </form>
   </div>
 </main>
@@ -84,8 +93,8 @@
 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-<footer class="mt-auto">
-  <div class="container py-4">
+<footer class="mt-auto bg-dark">
+  <div class="container text-white py-4">
     <div class="row">
 
       <!-- Sobre nosotros -->
@@ -101,17 +110,17 @@
         <h5>Enlaces rápidos</h5>
         <ul class="list-unstyled">
           <li>
-            <a href="index.html">
+            <a href="index.html" class="text-decoration-none text-white">
               Inicio
             </a>
           </li>
           <li>
-            <a href="event.html">
+            <a href="event.html" class="text-decoration-none text-white">
               Eventos
             </a>
           </li>
           <li>
-            <a href="login.html">
+            <a href="login.html" class="text-decoration-none text-white">
               Iniciar sesión
             </a>
           </li>
@@ -123,17 +132,17 @@
         <h5>Síguenos</h5>
         <ul class="list-inline">
           <li class="list-inline-item">
-            <a href="#">
+            <a href="#" class="text-white">
               <i class="bi bi-facebook"></i>
             </a>
           </li>
           <li class="list-inline-item">
-            <a href="#">
+            <a href="#" class="text-white">
               <i class="bi bi-twitter"></i>
             </a>
           </li>
           <li class="list-inline-item">
-            <a href="#">
+            <a href="#" class="text-white">
               <i class="bi bi-instagram"></i>
             </a>
           </li>
@@ -154,3 +163,8 @@
 
 </body>
 </html>
+
+
+
+
+
