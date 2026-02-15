@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-TickethubApplication<tickethub>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "es.tickethub.tickethub.TickethubApplication",
+            "projectName": "tickethub",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
