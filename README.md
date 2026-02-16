@@ -86,7 +86,7 @@ Por último, el sistema ofrecerá recomendaciones personalizadas a cada usuario 
 ### **Diagrama de Navegación**
 Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicación:
 
-![Diagrama de Navegación](assets/images/navigation-diagram.png)
+![Diagrama de Navegación](backend/tickethub/src/main/resources/static/images/navigation-diagram.png)
 
 > [Descripción opcional del flujo de navegación: Ej: "El usuario puede acceder desde la página principal a todas las secciones mediante el menú de navegación. Los usuarios anónimos solo tienen acceso a las páginas públicas, mientras que los registrados pueden acceder a su perfil y panel de usuario."]
 
@@ -95,71 +95,71 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 Todas las páginas públicas comparten el mismo header (marca TicketHub, navegación Inicio/Eventos/Artistas, botones Iniciar sesión y Registrarse) y el mismo footer (texto, Sobre nosotros, enlaces rápidos y redes sociales).
 
 #### **1. Página Principal / Home**
-![Main Page](assets/images/pages/public/index.png)
+![Main Page](backend/tickethub/src/main/resources/static/images/pages/public/index.png)
 La página de inicio muestra el título ‘Próximos eventos’, tres filtros (fecha, categoría y artista) y una cuadrícula de tarjetas de evento con imagen, nombre, fecha y hora, artista y un botón para ver el detalle
 
 #### **2. Página Eventos**
-![Event Page](assets/images/pages/public/event.png)
+![Event Page](backend/tickethub/src/main/resources/static/images/pages/public/event.png)
 Ficha de evento con fecha, hora y lugar destacados, texto descriptivo, enlace para ver al artista y bloque de compra con precio y botón “Comprar entrada”
 
 #### **3. Página de Confirmación**
-![Confirmation Page](assets/images/pages/public/confirmation.png)
+![Confirmation Page](backend/tickethub/src/main/resources/static/images/pages/public/confirmation.png)
 Mensaje de compra exitosa con alerta de confirmación, lista de resumen (evento, tipo de entrada, total) y botones para descargar PDF o volver al inicio
 
 #### **4. Página Artista**
-![Artist Page](assets/images/pages/public/artist.png)
+![Artist Page](backend/tickethub/src/main/resources/static/images/pages/public/artist.png)
 Perfil del artista con foto circular, biografía corta, lista de próximos eventos y botones hacia redes sociales (Instagram/Twitter).
 
 #### **5. Página de Inicio de Sesión**
-![Login Page](assets/images/pages/public/login.png)
+![Login Page](backend/tickethub/src/main/resources/static/images/pages/public/login.png)
 Formulario centrado de inicio de sesión con campos de correo y contraseña y botón “Entrar”.
 
 #### **6. Página de Compra**
-![Purchase Page](assets/images/pages/public/purchase.png)
+![Purchase Page](backend/tickethub/src/main/resources/static/images/pages/public/purchase.png)
 Formulario de compra con selector de tipo de entrada, cantidad, cálculo de total y sección de pago (número de tarjeta, titular) más botón “Confirmar compra”.
 
 #### **7. Página Registro**
-![SignUp Page](assets/images/pages/public/sign-up.png)
+![SignUp Page](backend/tickethub/src/main/resources/static/images/pages/public/sign-up.png)
 Formulario de registro con campos de nombre, correo, contraseña y confirmación, botón “Registrarse”.
 
 #### **8. Página Error 403**
-![Error403 Page](assets/images/pages/errors/403.png)
+![Error403 Page](backend/tickethub/src/main/resources/static/images/pages/errors/403.png)
 Pantalla de acceso no autorizado con código 403, mensaje “Acceso no autorizado” y botón para volver al inicio.
 
 #### **9. Página Error 404**
-![Error404 Page](assets/images/pages/errors/404.png)
+![Error404 Page](backend/tickethub/src/main/resources/static/images/pages/errors/404.png)
 Pantalla de página no encontrada con código 404, mensaje “Página no encontrada” y botón para volver al inicio.
 
 #### **10. Página Administrador**
-![Admin Page](assets/images/pages/admin/admin.png)
+![Admin Page](backend/tickethub/src/main/resources/static/images/pages/admin/admin.png)
 Panel con KPIs en tarjetas (entradas vendidas, eventos activos, usuarios, próximos eventos) y botones para crear/gestionar eventos y artistas o ver estadísticas.
 
 #### **11. Página Crear Artista**
-![Create_artist Page](assets/images/pages/admin/create_artist.png)
+![Create_artist Page](backend/tickethub/src/main/resources/static/images/pages/admin/create_artist.png)
 Formulario para crear artista con campos de nombre, biografía, Instagram y Twitter, y botón “Crear Artista”.
 
 #### **12. Página Crear Evento**
-![Create_event Page](assets/images/pages/admin/create_event.png)
+![Create_event Page](backend/tickethub/src/main/resources/static/images/pages/admin/create_event.png)
 Formulario de alta de evento con campos de nombre, descripción, fecha, hora, lugar y precio, botón “Crear Evento”
 
 #### **13. Página Editar Artista**
-![Edit_Artist Page](assets/images/pages/admin/edit_artist.png)
+![Edit_Artist Page](backend/tickethub/src/main/resources/static/images/pages/admin/edit_artist.png)
 Formulario de edición de artista con campos precargados de nombre, biografía e identificadores de redes, botón “Guardar cambios”.
 
 #### **14. Página Editar Evento**
-![Edit_Event Page](assets/images/pages/admin/edit_event.png)
+![Edit_Event Page](backend/tickethub/src/main/resources/static/images/pages/admin/edit_event.png)
 Formulario de edición de evento con datos cargados (nombre, descripción, fecha, hora, lugar, precio) y botón “Guardar Cambios”.
 
 #### **15. Página Administrar Artistas**
-![Manage_artists Page](assets/images/pages/admin/manage_artists.png)
+![Manage_artists Page](backend/tickethub/src/main/resources/static/images/pages/admin/manage_artists.png)
 Tabla de artistas con acciones de editar y eliminar, dentro del panel admin.
 
 #### **16. Página Administrar Eventos**
-![Manage_Events Page](assets/images/pages/admin/manage_events.png)
+![Manage_Events Page](backend/tickethub/src/main/resources/static/images/pages/admin/manage_events.png)
 Tabla de eventos con acciones de editar y eliminar, dentro del panel admin.mocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."
 
 #### **17. Página de Estadísticas Administrador**
-![Statistics Page](assets/images/pages/admin/statistics.png)
+![Statistics Page](backend/tickethub/src/main/resources/static/images/pages/admin/statistics.png)
 Vista de estadísticas con dos gráficos (placeholders) para ventas y usuarios, accesible desde el panel admin.
 ---
 
@@ -205,7 +205,7 @@ Solo si han cambiado.
 
 Diagrama mostrando las entidades, sus campos y relaciones:
 
-![Diagrama Entidad-Relación](images/database-diagram.png)
+![Diagrama Entidad-Relación](backend/tickethub/src/main/resources/static/images/database-diagram.png)
 
 > [Descripción opcional: Ej: "El diagrama muestra las 4 entidades principales: Usuario, Producto, Pedido y Categoría, con sus respectivos atributos y relaciones 1:N y N:M."]
 
@@ -213,7 +213,7 @@ Diagrama mostrando las entidades, sus campos y relaciones:
 
 Diagrama de clases de la aplicación con diferenciación por colores o secciones:
 
-![Diagrama de Clases](images/classes-diagram.png)
+![Diagrama de Clases](backend/tickethub/src/main/resources/static/images/classes-diagram.png)
 
 > [Descripción opcional del diagrama y relaciones principales]
 
@@ -295,7 +295,7 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 
 Diagrama actualizado incluyendo los @RestController y su relación con los @Service compartidos:
 
-![Diagrama de Clases Actualizado](images/complete-classes-diagram.png)
+![Diagrama de Clases Actualizado](backend/tickethub/src/main/resources/static/images/complete-classes-diagram.png)
 
 ### **Instrucciones de Ejecución con Docker**
 
@@ -460,7 +460,7 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 
 Diagrama mostrando los componentes React, hooks personalizados, servicios y sus relaciones:
 
-![Diagrama de Componentes React](images/spa-classes-diagram.png)
+![Diagrama de Componentes React](backend/tickethub/src/main/resources/static/images/spa-classes-diagram.png)
 
 ### **Participación de Miembros en la Práctica 3**
 
