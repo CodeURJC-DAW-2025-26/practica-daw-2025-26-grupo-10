@@ -465,7 +465,7 @@ table thead {
 }
 
 table tbody tr {
-    background-color: #f7f5e8; /* un beige más claro para filas */
+    background-color: #f7f5e8; /* beige for rows */
 }
 
 table tbody tr.table-success {

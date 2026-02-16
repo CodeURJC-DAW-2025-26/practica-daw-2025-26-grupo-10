@@ -36,11 +36,11 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="./event.html">Eventos</a>
+          <a class="nav-link" href="events.html">Eventos</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="artist.html">Artistas</a>
+          <a class="nav-link" href="artists.html">Artistas</a>
         </li>
       </ul>
 
@@ -51,46 +51,159 @@
         <a href="signup.html" class="btn btn-light btn-sm">
           Registrarse
         </a>
-
-        <!--why is here a profile image if there are buttons of login and sign-up??-->
-        <a href="../user/profile.html">  
-          <img
-            src="../../assets/images/default-avatar.png"
-            alt="Perfil"
-            class="rounded-circle"
-            width="40"
-            height="40"
-          >
-        </a>
       </div>
     </div>
   </div>
 </nav>
 
 <main class="flex-fill">
-<div class="container my-5">
-  <h2 class="mb-4">Próximos eventos</h2>
 
-  <div class="row mb-4">
-  <div class="col-md-4"><input type="date" class="form-control" placeholder="Fecha"></div>
-  <div class="col-md-4"><select class="form-control"><option>Categoría</option></select></div>
-  <div class="col-md-4"><input type="text" class="form-control" placeholder="Artista"></div>
-</div>
-
-<div class="row g-4">
-  <div class="col-md-4">
-    <div class="card">
-      <img src="https://via.placeholder.com/400x200" class="card-img-top">
-      <div class="card-body">
-        <h5 class="card-title">Nombre Evento</h5>
-        <p>01/06/2026 - 21:00</p>
-        <p>Artista X</p>
-        <a href="event.html" class="btn btn-primary">Ver evento</a>
-      </div>
+  <!-- PRESENTATION OF THE WEBSITE -->
+  <section class="bg-light py-5">
+    <div class="container text-center">
+      <h1 class="display-5 fw-bold">Descubre y compra entradas para los mejores eventos</h1>
+      <p class="lead">Conciertos, festivales, teatro y mucho más en un solo lugar.</p>
+      <a href="events.html" class="btn btn-primary btn-lg mt-3">Explorar eventos</a>
     </div>
+  </section>
+
+  <div class="container my-5">
+
+    <!-- MOST SOLD EVENTS -->
+    <section class="mb-5">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Eventos más vendidos</h2>
+        <a href="events.html" class="btn btn-outline-primary btn-sm">Ver todos</a>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card h-100">
+            <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Evento 1">
+            <div class="card-body">
+              <h5 class="card-title">Exposición de arte renacentista</h5>
+              <p class="mb-1">15/07/2026</p>
+              <p class="text-muted">Madrid</p>
+              <a href="event.html" class="btn btn-primary btn-sm">Ver evento</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card h-100">
+            <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Evento 2">
+            <div class="card-body">
+              <h5 class="card-title">La casa de Bernarda Alba</h5>
+              <p class="mb-1">22/06/2026</p>
+              <p class="text-muted">Barcelona</p>
+              <a href="event.html" class="btn btn-primary btn-sm">Ver evento</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card h-100">
+            <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Evento 3">
+            <div class="card-body">
+              <h5 class="card-title">Concierto de Aitana</h5>
+              <p class="mb-1">05/06/2026</p>
+              <p class="text-muted">Valencia</p>
+              <a href="event.html" class="btn btn-primary btn-sm">Ver evento</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARTISTS WITH MORE EVENTS IN THE SITE -->
+    <section class="mb-5">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Artistas destacados</h2>
+        <a href="artist.html" class="btn btn-outline-primary btn-sm">Ver todos</a>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-3">
+          <div class="card text-center h-100">
+            <img src="https://via.placeholder.com/200x200" class="card-img-top" alt="Artista 1">
+            <div class="card-body">
+              <h6 class="card-title">Aitana</h6>
+              <p class="text-muted">6 eventos disponibles</p>
+              <a href="artist.html" class="btn btn-primary btn-sm">Ver artista</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card text-center h-100">
+            <img src="https://via.placeholder.com/200x200" class="card-img-top" alt="Artista 2">
+            <div class="card-body">
+              <h6 class="card-title">Juan Dávila</h6>
+              <p class="text-muted">5 eventos disponibles</p>
+              <a href="artist.html" class="btn btn-primary btn-sm">Ver artista</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card text-center h-100">
+            <img src="https://via.placeholder.com/200x200" class="card-img-top" alt="Artista 3">
+            <div class="card-body">
+              <h6 class="card-title">David Bisbal</h6>
+              <p class="text-muted">5 eventos disponibles</p>
+              <a href="artist.html" class="btn btn-primary btn-sm">Ver artista</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card text-center h-100">
+            <img src="https://via.placeholder.com/200x200" class="card-img-top" alt="Artista 4">
+            <div class="card-body">
+              <h6 class="card-title">Galder Varas</h6>
+              <p class="text-muted">4 eventos disponibles</p>
+              <a href="artist.html" class="btn btn-primary btn-sm">Ver artista</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EVENTS INCOMING -->
+    <section>
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Disponibles próximamente</h2>
+        <a href="event.html" class="btn btn-outline-primary btn-sm">Ver todos</a>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Film Symphony Orchestra</h5>
+              <p class="mb-1">Fecha: 01/04/2026</p>
+              <p class="text-muted">Sevilla</p>
+              <a href="event.html" class="btn btn-primary btn-sm">Más información</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Duki: Ameri Tour</h5>
+              <p class="mb-1">Fecha: 10/04/2026</p>
+              <p class="text-muted">Coruña</p>
+              <a href="event.html" class="btn btn-primary btn-sm">Más información</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </div>
-</div>
 </main>
+
 <!--LOCATION OF THE FOOTER OF THE WEB
 
 {{>footer}}
@@ -102,7 +215,6 @@
   <div class="container py-4">
     <div class="row">
 
-      <!-- Sobre nosotros -->
       <div class="col-md-4 mb-3">
         <h5>Sobre nosotros</h5>
         <p>
@@ -110,46 +222,26 @@
         </p>
       </div>
 
-      <!-- Enlaces rápidos -->
       <div class="col-md-4 mb-3">
         <h5>Enlaces rápidos</h5>
         <ul class="list-unstyled">
-          <li>
-            <a href="index.html">
-              Inicio
-            </a>
-          </li>
-          <li>
-            <a href="event.html">
-              Eventos
-            </a>
-          </li>
-          <li>
-            <a href="login.html">
-              Iniciar sesión
-            </a>
-          </li>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="event.html">Eventos</a></li>
+          <li><a href="login.html">Iniciar sesión</a></li>
         </ul>
       </div>
 
-      <!-- Redes sociales -->
       <div class="col-md-4 mb-3">
         <h5>Síguenos</h5>
         <ul class="list-inline">
           <li class="list-inline-item">
-            <a href="#">
-              <i class="bi bi-facebook"></i>
-            </a>
+            <a href="#"><i class="bi bi-facebook"></i></a>
           </li>
           <li class="list-inline-item">
-            <a href="#">
-              <i class="bi bi-twitter"></i>
-            </a>
+            <a href="#"><i class="bi bi-twitter"></i></a>
           </li>
           <li class="list-inline-item">
-            <a href="#">
-              <i class="bi bi-instagram"></i>
-            </a>
+            <a href="#"><i class="bi bi-instagram"></i></a>
           </li>
         </ul>
       </div>

@@ -25,6 +25,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
+    <!--There must be an alert to warn if he can't save the changes FOR ALL THE BUTTONS OF THE NAV-BAR INCLUDING THE PROFILE PHOTO-->
     <div class="collapse navbar-collapse" id="navbarMain">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
@@ -32,29 +33,31 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="../public/event.html">Eventos</a>
+          <a class="nav-link" href="../public/events.html">Eventos</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="../public/artist.html">Artistas</a>
+          <a class="nav-link" href="../public/artists.html">Artistas</a>
         </li>
       </ul>
 
       <div class="d-flex align-items-center gap-3">
-        <a href="../public/login.html" class="btn btn-outline-primary btn-sm">
+        <!--<a href="../public/login.html" class="btn btn-outline-primary btn-sm">
           Iniciar sesión
         </a>
         <a href="../public/signup.html" class="btn btn-light btn-sm">
           Registrarse
-        </a>
+        </a>-->
 
+        <a href="profile.html">
         <img
-          src="../../assets/images/default-avatar.png"
+          src="../../static/images/default-avatar.png"
           alt="Perfil"
           class="rounded-circle"
           width="40"
           height="40"
         >
+        </a>
       </div>
     </div>
   </div>
@@ -67,6 +70,14 @@
     <form>
       <div class="mb-3">
         <label class="form-label">Nombre</label>
+        <input type="text" class="form-control" value="Nombre">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Apellidos</label>
+        <input type="text" class="form-control" value="Apellidos">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Nombre de usuario</label>
         <input type="text" class="form-control" value="Nombre Usuario">
       </div>
       <div class="mb-3">
@@ -74,8 +85,19 @@
         <input type="email" class="form-control" value="usuario@email.com">
       </div>
       <div class="mb-3">
+        <label class="form-label">Teléfono</label>
+        <input type="text" class="form-control" value="Teléfono">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Edad</label>
+        <input type="text" class="form-control" value="Edad">
+      </div>
+      <div class="mb-3">
         <label class="form-label">Foto de perfil</label>
         <input type="file" class="form-control">
+      </div>
+      <div class="mb-3" style="text-align: right">
+        <a href="change_password.html" class="btn btn-outline-primary">Cambiar contraseña</a>
       </div>
       <div class="d-flex gap-2">
         <a href="profile.html" class="btn btn-primary equal-btn">Guardar</a>

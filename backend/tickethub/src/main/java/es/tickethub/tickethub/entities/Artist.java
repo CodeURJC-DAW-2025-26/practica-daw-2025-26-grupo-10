@@ -27,7 +27,7 @@ public class Artist {
     @Column(nullable = false)
     private String artistName;
 
-    private String info;
+    private String info = "";
 
     @OneToMany
     private List<Event> eventsIncoming = new ArrayList<>();
@@ -38,13 +38,20 @@ public class Artist {
     @OneToOne
     private Image artistImage;
 
+    private String instagram = "";
+
+    private String twitter = "";
+
     public Artist() {
         /* The constructor for the database*/
     }
 
     // Constructor of the class
-    public Artist(String artistName) {
+    public Artist(String artistName, String info, String instagram, String twitter) {
         this.artistName = artistName;
+        this.info = info;
+        this.instagram = instagram;
+        this.twitter = twitter;
     }
 
 

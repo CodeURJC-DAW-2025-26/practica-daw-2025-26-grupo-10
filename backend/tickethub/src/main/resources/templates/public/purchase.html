@@ -36,11 +36,11 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="event.html">Eventos</a>
+          <a class="nav-link" href="events.html">Eventos</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="artist.html">Artistas</a>
+          <a class="nav-link" href="artists.html">Artistas</a>
         </li>
       </ul>
 
@@ -52,40 +52,160 @@
           Registrarse
         </a>
 
-        <!--why is here a profile image if there are buttons of login and sign-up??-->
+        <!--The image must be here when the user is logged, if he is not logged then the login and signup buttons
         <img
-          src="../../assets/images/default-avatar.png"
+          src="../../static/images/default-avatar.png"
           alt="Perfil"
           class="rounded-circle"
           width="40"
           height="40"
-        >
+        >-->
       </div>
     </div>
   </div>
 </nav>
 
+<main class="flex-fill">
+  <div class="container my-5">
+    <h2 class="mb-4">Compra de entradas</h2>
 
-<div class="container my-5">
-  <h2>Compra de entradas</h2>
-  <form>
-    <div class="mb-3">
-      <label class="form-label">Tipo de entrada</label>
-      <select class="form-control"><option>General - 30€</option></select>
+    <div class="d-flex align-items-center gap-3 mb-4">
+      <h4 class="mb-0">Selecciona el número de entradas que quieres comprar:</h4>
+      <select class="form-control form-control-sm w-auto">
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+      </select>
     </div>
-    <div class="mb-3">
-      <label>Cantidad</label>
-      <input type="number" class="form-control" value="1">
+
+    <hr>
+
+    <div class="card mb-3 p-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <strong>Entrada 1</strong>
+        <div class="d-flex gap-2 align-items-center">
+          <span>Zona:</span>
+          <select class="form-control form-control-sm w-auto">
+            <option>VIP</option>
+            <option>General</option>
+            <option>Grada</option>
+          </select>
+        </div>
+        <span>Precio: 25€</span>
+        <span class="text-danger">Eliminar</span>
+      </div>
     </div>
+
+    <div class="card mb-3 p-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <strong>Entrada 2</strong>
+        <div class="d-flex gap-2 align-items-center">
+          <span>Zona:</span>
+          <select class="form-control form-control-sm w-auto">
+            <option>VIP</option>
+            <option>General</option>
+            <option>Grada</option>
+          </select>
+        </div>
+        <span>Precio: 25€</span>
+        <span class="text-danger">Eliminar</span>
+      </div>
+    </div>
+
+    <div class="card mb-4 p-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <strong>Entrada 3</strong>
+        <div class="d-flex gap-2 align-items-center">
+          <span>Zona:</span>
+          <select class="form-control form-control-sm w-auto">
+            <option>VIP</option>
+            <option>General</option>
+            <option>Grada</option>
+          </select>
+        </div>
+        <span>Precio: 25€</span>
+        <span class="text-danger">Eliminar</span>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center gap-2 mb-3">
+      <strong class="mb-0">Aplicar descuento:</strong>
+      <select class="form-control form-control-sm w-auto">
+        <option>Ninguno</option>
+        <option>Carné joven (-2,00€)</option>
+        <option>Jubilado (-10%)</option>
+        <option>Grupo (-5%)</option>
+      </select>
+      <button class="btn btn-outline-secondary btn-sm">+ Nuevo descuento</button>
+    </div>
+
     <hr>
-    <h4>Total: 30€</h4>
+    <div class="col-md-3">
+      <div class="mb-3">
+        <strong><label class="form-label">Correo electrónico</label></strong>
+        <input type="email" class="form-control">
+      </div>
+      <div class="mb-3">
+        <strong><label class="form-label">Confirmación de correo electrónico</label></strong>
+        <input type="email" class="form-control">
+      </div>
+    </div>
+
+    <h4 class="mb-4">Total: 30€</h4>
+
     <hr>
-    <h5>Datos de pago</h5>
-    <input class="form-control mb-2" placeholder="Número tarjeta">
-    <input class="form-control mb-2" placeholder="Nombre titular">
-    <button class="btn btn-primary mt-3" type="button" onclick="location.href='confirmation.html'">Confirmar compra</button>
-  </form>
-</div>
+    
+    <h4 class="mb-3">Datos de pago</h4>
+
+    <div class="row mb-3">
+      <div class="col-md-5">
+        <label class="form-label">Número de tarjeta</label>
+        <input class="form-control" placeholder="1234 5678 9012 3456">
+      </div>
+    </div>
+
+    <div class="d-flex gap-4 mb-4">
+      <div>
+        <label class="form-label">Mes</label>
+        <select class="form-control form-control-sm w-auto">
+          <option>01</option><option>02</option><option>03</option>
+          <option>04</option><option>05</option><option>06</option>
+          <option>07</option><option>08</option><option>09</option>
+          <option>10</option><option>11</option><option>12</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="form-label">Año</label>
+        <select class="form-control form-control-sm w-auto">
+          <option>2026</option>
+          <option>2027</option>
+          <option>2028</option>
+          <option>2029</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="form-label">CVV</label>
+        <input class="form-control form-control-sm" style="width:80px;" placeholder="123">
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-outline-primary" type="button" onclick="location.href='event.html'">
+        Volver
+      </button>
+      <button class="btn btn-outline-primary" type="button" onclick="location.href='confirmation.html'">
+        Confirmar compra
+      </button>
+    </div>
+
+  </div>
+</main>
+
+
 
 <!--LOCATION OF THE FOOTER OF THE WEB
 
