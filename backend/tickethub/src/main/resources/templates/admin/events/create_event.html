@@ -52,20 +52,102 @@
   </nav>
 
   <div class="container my-5">
-    <h2>Crear Evento</h2>
-    <form>
-      <input class="form-control mb-3" placeholder="Nombre del evento">
-      <textarea class="form-control mb-3" placeholder="Descripción"></textarea>
-      <input type="date" class="form-control mb-3">
-      <input type="time" class="form-control mb-3">
-      <input class="form-control mb-3" placeholder="Lugar">
-      <input class="form-control mb-3" placeholder="Precio">
-      <button class="btn btn-success">
-        <a href="manage_events.html" class="nav-link">
-          Crear Evento
-        </a>
-      </button>
-    </form>
+  <h2>Crear Evento</h2>
+    <form action="#" method="post" enctype="multipart/form-data">
+
+  <p class="fw-bold mb-1">Nombre del evento</p>
+  <input name="name" class="form-control mb-3" placeholder="Ej: Festival Indie Madrid" required>
+
+  <p class="fw-bold mb-1">Descripción</p>
+  <textarea name="description" class="form-control mb-3" placeholder="Detalles del evento"></textarea>
+
+  <p class="fw-bold mb-1">Capacidad total del recinto</p>
+  <input name="capacity" type="number" class="form-control mb-3" placeholder="Ej: 5000" min="1">
+
+  <p class="fw-bold mb-1">Categoría</p>
+  <select name="category" class="form-select mb-3">
+    <option selected disabled>Selecciona una categoría</option>
+    <option value="concert">Concierto</option>
+    <option value="festival">Festival</option>
+    <option value="theatre">Teatro</option>
+    <option value="sports">Deporte</option>
+  </select>
+
+  <p class="fw-bold mb-1">Artista principal</p>
+  <select name="artistId" class="form-select mb-3">
+    <option selected disabled>Seleccionar artista</option>
+    <option value="1">Bad Bunny</option>
+    <option value="2">Quevedo</option>
+    <option value="3">Rosalía</option>
+  </select>
+
+  <p class="fw-bold mb-1">Descuentos aceptados</p>
+  <div class="mb-3">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" name="discounts" value="young">
+      <label class="form-check-label">Carné Joven</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" name="discounts" value="disability">
+      <label class="form-check-label">Discapacidad</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" name="discounts" value="family">
+      <label class="form-check-label">Familia numerosa</label>
+    </div>
+  </div>
+
+  <p class="fw-bold mb-1">Sesiones del evento</p>
+  <input type="datetime-local" name="sessions" class="form-control mb-2">
+  <input type="datetime-local" name="sessions" class="form-control mb-2">
+  <input type="datetime-local" name="sessions" class="form-control mb-3">
+
+  <p class="fw-bold mb-1">Zonas y precios</p>
+
+  <div class="row g-2 mb-2">
+    <div class="col">
+      <input name="zoneName" class="form-control" placeholder="Zona (VIP, General…)">
+    </div>
+    <div class="col">
+      <input name="zonePrice" type="number" class="form-control" placeholder="Precio (€)">
+    </div>
+    <div class="col">
+      <input name="zoneCapacity" type="number" class="form-control" placeholder="Entradas disponibles">
+    </div>
+  </div>
+
+  <div class="row g-2 mb-2">
+    <div class="col">
+      <input name="zoneName" class="form-control" placeholder="Zona">
+    </div>
+    <div class="col">
+      <input name="zonePrice" type="number" class="form-control" placeholder="Precio (€)">
+    </div>
+    <div class="col">
+      <input name="zoneCapacity" type="number" class="form-control" placeholder="Entradas disponibles">
+    </div>
+  </div>
+
+  <div class="row g-2 mb-3">
+    <div class="col">
+      <input name="zoneName" class="form-control" placeholder="Zona">
+    </div>
+    <div class="col">
+      <input name="zonePrice" type="number" class="form-control" placeholder="Precio (€)">
+    </div>
+    <div class="col">
+      <input name="zoneCapacity" type="number" class="form-control" placeholder="Entradas disponibles">
+    </div>
+  </div>
+
+  <p class="fw-bold mb-1">Imágenes del evento</p>
+  <input type="file" name="images" class="form-control mb-3" multiple accept="image/*">
+
+  <button type="submit" class="btn btn-success">
+    Crear Evento
+  </button>
+
+</form>
   </div>
 
   <!-- FOOTER -->
