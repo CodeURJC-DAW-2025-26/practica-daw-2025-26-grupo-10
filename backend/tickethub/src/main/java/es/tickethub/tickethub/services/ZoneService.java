@@ -1,6 +1,8 @@
 package es.tickethub.tickethub.services;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import es.tickethub.tickethub.entities.Zone;
 import es.tickethub.tickethub.repositories.ZoneRepository;
@@ -16,15 +18,24 @@ public class ZoneService {
     }
 
     public List<Zone> findAll() {
-        return zoneRepository.findAll();
+        List <Zone> zone = zoneRepository.findAll();
+        if (!(zone.isEmpty())){
+            return zone;
+        }
+        return null;
     }
 
     public Zone findById(Long id) {
-        return zoneRepository.findById(id).orElse(null);
+        Optional <Zone> zoneOptional = zoneRepository.findById(id);
+        if (zoneOptional.isPresent()){
+            return zoneOptional.get();
+        }
+        return null;
     }
 
     public Zone save(Zone zone) {
         return zoneRepository.save(zone);
+
     }
 
     public void deleteById(Long id) {
