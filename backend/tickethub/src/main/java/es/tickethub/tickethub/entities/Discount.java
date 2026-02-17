@@ -22,17 +22,18 @@ public class Discount {
     @Column(unique = true)
     private String discountName;
 
+    /* To indicate the if ammount to be discounted is a percentage or a specific money ammount */
     @Column(nullable = false)
-    private BigDecimal ammount; /* To indicate the ammount to be discounted to the original price*/
+    private Boolean percentage; 
 
     /* precision is for the total of the numbers, scale for the number of decimals*/
     @Column(nullable = false, precision = 5, scale = 2)
-    private BigDecimal percentage;
+    private BigDecimal ammount;
 
     public Discount() {}    //Constructor for the Database
 
     // Constructor of the class
-    public Discount(String discountName, BigDecimal ammount, BigDecimal percentage) {
+    public Discount(String discountName, BigDecimal ammount, Boolean percentage) {
         this.discountName = discountName;
         this.ammount = ammount;
         this.percentage = percentage;
