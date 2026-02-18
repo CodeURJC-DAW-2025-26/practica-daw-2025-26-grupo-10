@@ -29,7 +29,7 @@ public class DiscountController {
         return discountService.getAllDiscounts();
     }
     
-    @GetMapping
+    @GetMapping("/{discountName}")
     public Discount getDiscount(@RequestParam String discountName) {
         Discount discount = discountService.getDiscountByName(discountName);
         return discount;
@@ -40,9 +40,9 @@ public class DiscountController {
         return discountService.createDiscount(discount);
     }
 
-    @DeleteMapping("/{name}")
-    public void delete(@PathVariable String name){
-        discountService.deleteDiscount(name);
+    @DeleteMapping("/{discountName}")
+    public void delete(@PathVariable String discountName){
+        discountService.deleteDiscount(discountName);
     }
     
 }

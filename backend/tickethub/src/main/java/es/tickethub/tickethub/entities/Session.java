@@ -17,7 +17,7 @@ import lombok.Setter;
 @Setter
 public class Session {
     
-    /* All the columns can't be null*/
+    /* None of the columns can be null*/
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ public class Session {
     private Timestamp date;
 
     public Session() {
-        /* The constructor for the database*/
+        /* Constructor for the database*/
     }
 
     // Constructor of the class
