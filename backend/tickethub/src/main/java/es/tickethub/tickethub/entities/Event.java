@@ -12,6 +12,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,9 +31,13 @@ public class Event {
     private Long eventID;
 
     @Column(nullable = false)
+    @NotBlank(message = "El nombre del evento es necesario")
+    //if you want to change the size... I do not mind
+    @Size(max = 100, message = "El nombre del evento no puede tener más de 100 caracteres")
     private String name;
 
     @Column(nullable = false)
+    @Min(value = 1, message = "No se puede hacer un evento sin asistentes")
     private Integer capacity;
 
     /* This represents that the entity Artist is related with Event in a way that one Artist can have many Events associated to him*/
@@ -40,7 +47,7 @@ public class Event {
 
     /* This represents that the entity Session is related with Event in a way that one Event can have many Sessions associated*/
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "event", orphanRemoval = true)
-    @Column(nullable = false)
+    @Column(nullable = false) //I think this make no sense
     private List<Session> sessions = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -53,9 +60,11 @@ public class Event {
     private List<Discount> discounts = new ArrayList<>();
 
     @Column(nullable = false)
+    @NotBlank(message = "El lugar del evento es obligatorio")
     private String place;
 
     @Column(nullable = false)
+    @NotBlank(message = "La categoría del evento es obligatoria")
     private String category;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
