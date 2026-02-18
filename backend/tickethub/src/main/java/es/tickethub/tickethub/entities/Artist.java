@@ -21,7 +21,7 @@ import lombok.Setter;
 @Setter
 public class Artist {
 
-    /* The artist columns can be nullable except the ID and the artistName*/
+    /* The artist columns can be nullable except the ID and the artistName */
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +35,8 @@ public class Artist {
     @Column(nullable = true)
     private String info;
     
-    //Orphan removal --> cualquier hijo borrado de la colección del padre es eliminado automáticamente de la BD
+    //Orphan removal -->   every child deleted in the collection of the father is deleted auto. in the DB
+  
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Event> eventsIncoming = new ArrayList<>();
     

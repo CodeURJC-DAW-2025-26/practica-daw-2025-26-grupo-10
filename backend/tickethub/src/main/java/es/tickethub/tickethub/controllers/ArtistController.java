@@ -30,7 +30,7 @@ public class ArtistController {
         model.addAttribute("artist", new Artist());
         return "create-artist";
     }
-
+    //BindingResult --> where spring keep validation errors
     @PostMapping
     public String createArtist(@Valid Artist artist, BindingResult result, Model model) {
         if (result.hasErrors()) {
