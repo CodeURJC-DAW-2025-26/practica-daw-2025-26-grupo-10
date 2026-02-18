@@ -22,7 +22,7 @@ public class DiscountService {
     public Discount getDiscountByName(String discountName){
         Optional <Discount> discountOptional = discountRepository.getByDiscountName(discountName);
         if (!discountOptional.isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Descuento no encontrado")
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Descuento no encontrado");
         }
         return discountOptional.get();
     }

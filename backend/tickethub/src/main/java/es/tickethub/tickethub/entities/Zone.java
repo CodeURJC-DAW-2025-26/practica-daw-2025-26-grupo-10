@@ -7,6 +7,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,12 +23,15 @@ public class Zone {
     private Long id;
 
     @Column(nullable = false)
+    @NotBlank
     private String name;
 
     @Column(nullable = false)
+    @Min(1) //you cannot buy 0 tickets
     private Integer capacity;
 
     @Column(nullable = false, precision = 8, scale = 2)
+    @DecimalMin("0.0") //not 0,1 due to discounts (possible -20 $ discount)
     private BigDecimal price;
 
     public Zone() {} /* Constructor for the Database*/
