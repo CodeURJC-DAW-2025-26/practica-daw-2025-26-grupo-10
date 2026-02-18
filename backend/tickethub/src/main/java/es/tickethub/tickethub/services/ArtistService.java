@@ -1,5 +1,57 @@
 package es.tickethub.tickethub.services;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import es.tickethub.tickethub.entities.Artist;
+import es.tickethub.tickethub.repositories.ArtistRepository;
+
+@Service
 public class ArtistService {
-    
+
+    private final ArtistRepository artistRepository;
+
+    public ArtistService (ArtistRepository artistRepository){
+        this.artistRepository = artistRepository;
+    }
+
+    public List<Artist> findAll(){
+        List<Artist> artists = artistRepository.findAll();
+        if (artists.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No hay artistas");
+        }
+        return artists;
+    }
+
+    public Artist findById(Long id){
+        Optional <Artist> optionalArtist = artistRepository.findById(id);
+        if (optionalArtist.isPresent()){
+            return optionalArtist.get();
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artista no encontrado");
+    }
+    public Artist findByName (String name){
+        Optional <Artist> optionalArtist = artistRepository.findByArtistName(name);
+        if (optionalArtist.isPresent()){
+            return optionalArtist.get();
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artista no encontrado");
+    }
+    public Artist save(Artist artist) {
+        // Duplicate validation
+        if (artist.getArtistID() == null && artistRepository.findByArtistName(artist.getArtistName()).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ya existe un artista con ese nombre");
+        }
+        return artistRepository.save(artist);
+    }
+    public void deleteById(Long id) {
+            if (!artistRepository.existsById(id)) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artista no encontrado");
+            }
+            artistRepository.deleteById(id);
+        }
 }

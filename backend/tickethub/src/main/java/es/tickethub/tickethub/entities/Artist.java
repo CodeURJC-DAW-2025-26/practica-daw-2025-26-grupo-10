@@ -3,6 +3,7 @@ package es.tickethub.tickethub.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,11 +28,15 @@ public class Artist {
     private Long artistID;
 
     @Column(nullable = false)
+    @NotBlank(message="El nombre del artista es necesario")
+    @Size(max = 100, message = "El nombre del artista no puede tener más de 100 caracteres")
     private String artistName;
 
-    private String info = "";
-
-    @OneToMany
+    @Column(nullable = true)
+    private String info;
+    
+    //Orphan removal --> cualquier hijo borrado de la colección del padre es eliminado automáticamente de la BD
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Event> eventsIncoming = new ArrayList<>();
     
     @OneToMany
