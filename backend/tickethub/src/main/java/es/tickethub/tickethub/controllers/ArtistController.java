@@ -54,4 +54,20 @@ public class ArtistController {
         artistService.deleteById(id);
         return "redirect:/artists";
     }
+
+    @GetMapping("/manage/{id}")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        Artist artist = artistService.findById(id);
+        model.addAttribute("artist", artist);
+        return "manage-artist";
+    }
+
+    @PostMapping("/manage")
+    public String updateArtist(@Valid Artist artist, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "manage-artist";
+        }
+        artistService.save(artist);
+        return "redirect:/artists";
+    }
 }
