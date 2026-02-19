@@ -2,8 +2,8 @@ package es.tickethub.tickethub.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import es.tickethub.tickethub.entities.User;
+import es.tickethub.tickethub.entities.Image;
 
-public interface UserRepository extends JpaRepository<User, String>{
+public interface ImageRepository extends JpaRepository<Image, Long> {
     
 }
