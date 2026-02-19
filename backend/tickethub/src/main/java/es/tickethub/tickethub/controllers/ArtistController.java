@@ -1,5 +1,6 @@
 package es.tickethub.tickethub.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,11 +13,7 @@ import jakarta.validation.Valid;
 @RequestMapping("/artists")
 public class ArtistController {
 
-    private final ArtistService artistService;
-
-    public ArtistController(ArtistService artistService) {
-        this.artistService = artistService;
-    }
+    @Autowired ArtistService artistService;
 
     @GetMapping
     public String listArtists(Model model) {
