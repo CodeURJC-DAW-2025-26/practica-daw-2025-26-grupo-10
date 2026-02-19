@@ -15,7 +15,4 @@ public interface DiscountRepository extends JpaRepository<Discount, Long> {
     
     boolean existsByDiscountName(String discountName);
 
-    @Transactional
-    @Modifying
-    void deleteByDiscountName(String discountName);
 }

@@ -44,10 +44,12 @@ public class DiscountService {
     }
 
     public void deleteDiscount(String discountName){
-        if (!discountRepository.existsByDiscountName(discountName)){
+        Optional<Discount> optionalDiscount = discountRepository.getByDiscountName(discountName);
+        if (!optionalDiscount.isPresent()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Descuento no encontrado");
         }
-        discountRepository.deleteByDiscountName(discountName);
+        Discount discount = optionalDiscount.get();
+        discountRepository.deleteById(discount.getDiscountID()); 
     }
 
     /* Apply discount differently whether it's a percentage or not */
