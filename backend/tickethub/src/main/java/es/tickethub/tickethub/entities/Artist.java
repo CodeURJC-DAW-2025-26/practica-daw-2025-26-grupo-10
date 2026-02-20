@@ -43,8 +43,8 @@ public class Artist {
     @OneToMany
     private List<Event> lastEvents = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Image artistImage = new Image();
+    @OneToOne
+    private Image artistImage;
 
     private String instagram = "";
 
@@ -55,12 +55,9 @@ public class Artist {
     }
 
     // Constructor of the class
-    public Artist(String artistName, String info, Image image, String instagram, String twitter) {
+    public Artist(String artistName, String info, String instagram, String twitter) {
         this.artistName = artistName;
         this.info = info;
-        if (image != null) {
-            this.artistImage = image;
-        }
         this.instagram = instagram;
         this.twitter = twitter;
     }

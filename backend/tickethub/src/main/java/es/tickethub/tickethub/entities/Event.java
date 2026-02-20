@@ -10,7 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Min;
@@ -51,21 +50,13 @@ public class Event {
     @Column(nullable = false) //I think this make no sense
     private List<Session> sessions = new ArrayList<>();
 
-    @OneToMany
-    @JoinTable(
-        name = "event_zones",
-        joinColumns = @JoinColumn(name = "event_id"),
-        inverseJoinColumns = @JoinColumn(name = "id")
-    )
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "event_id", nullable = false)
     private List<Zone> zones = new ArrayList<>();
 
     /* Here we don't have to put orphanRemoval because the discounts can be associated to more events*/
-    @OneToMany
-    @JoinTable(
-        name = "event_discounts",
-        joinColumns = @JoinColumn(name = "event_id"),
-        inverseJoinColumns = @JoinColumn(name = "discountID")
-    )
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "event_id")
     private List<Discount> discounts = new ArrayList<>();
 
     @Column(nullable = false)
@@ -77,11 +68,7 @@ public class Event {
     private String category;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(
-        name = "event_images",
-        joinColumns = @JoinColumn(name = "event_id"),
-        inverseJoinColumns = @JoinColumn(name = "imageID")
-    )
+    @JoinColumn(name = "event_id", nullable = false)
     private List<Image> eventImages = new ArrayList<>();
 
     public Event() {
