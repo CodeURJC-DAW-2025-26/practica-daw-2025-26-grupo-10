@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
@@ -31,7 +32,11 @@ public class Purchase {
     The orphanRemoval attribute ensures that when an entity instance is removed, all associated child entities are automatically deleted as well.*/
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "purchase_id", nullable = false)
+    @JoinTable(
+        name = "purchase_tickets",
+        joinColumns = @JoinColumn(name = "purchase_id"),
+        inverseJoinColumns = @JoinColumn(name = "ticket_id")
+    )
     private List<Ticket> tickets = new ArrayList<>();
 
     // Needed to associate many purchases to one session

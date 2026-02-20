@@ -1,5 +1,8 @@
 package es.tickethub.tickethub.repositories;
 
-public class SessionRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import es.tickethub.tickethub.entities.Session;
+
+public interface SessionRepository extends JpaRepository<Session, Long> {
     
 }
