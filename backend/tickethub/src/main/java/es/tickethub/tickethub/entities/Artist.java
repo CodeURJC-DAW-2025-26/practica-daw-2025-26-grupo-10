@@ -43,8 +43,9 @@ public class Artist {
     @OneToMany
     private List<Event> lastEvents = new ArrayList<>();
 
-    @OneToOne
-    private Image artistImage;
+    //the cascade thing means that the object associated to this column will be saved and deleted with the artist
+    @OneToOne(cascade = CascadeType.ALL)
+    private Image artistImage = new Image();
 
     private String instagram = "";
 
@@ -55,9 +56,12 @@ public class Artist {
     }
 
     // Constructor of the class
-    public Artist(String artistName, String info, String instagram, String twitter) {
+    public Artist(String artistName, String info, Image artistImage, String instagram, String twitter) {
         this.artistName = artistName;
         this.info = info;
+        if (artistImage != null) {
+            this.artistImage = artistImage;
+        }
         this.instagram = instagram;
         this.twitter = twitter;
     }

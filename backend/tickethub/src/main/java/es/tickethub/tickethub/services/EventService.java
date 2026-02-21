@@ -1,10 +1,12 @@
 package es.tickethub.tickethub.services;
 
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.repositories.EventRepository;
 
@@ -33,7 +35,7 @@ public class EventService {
     }
 
     public Event findByName(String name){
-        Optional <Event> optionalEvent = eventRepository.findByEventName(name);
+        Optional <Event> optionalEvent = eventRepository.findByName(name);
         if (optionalEvent.isPresent()){
             return optionalEvent.get();
         }

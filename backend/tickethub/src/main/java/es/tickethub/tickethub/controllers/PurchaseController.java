@@ -6,18 +6,34 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import es.tickethub.tickethub.entities.Client;
+import es.tickethub.tickethub.entities.Discount;
 import es.tickethub.tickethub.entities.Purchase;
-import es.tickethub.tickethub.services.PurchaseService;
+import es.tickethub.tickethub.entities.Zone;
+import es.tickethub.tickethub.entities.Event;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+import es.tickethub.tickethub.services.DiscountService;
+import es.tickethub.tickethub.services.EventService;
+import es.tickethub.tickethub.services.PurchaseService;
+import es.tickethub.tickethub.services.ZoneService;
+
 @Controller
-@RequestMapping("/purchases")
+@RequestMapping("/purchase")
 public class PurchaseController {
 
     @Autowired
     private PurchaseService purchaseService;
 
+    @Autowired
+    private EventService eventService;
+
+    @Autowired
+    private ZoneService zoneService;
+    
+    @Autowired
+    private DiscountService discountService;
     /**
      * Retrieves all purchases for a given client email.
      * Stateless: the client is identified via request parameter.
@@ -50,5 +66,21 @@ public class PurchaseController {
         model.addAttribute("purchase", purchase);
         model.addAttribute("tickets", purchase.getTickets()); // tickets inside this purchase
         return "purchase-details"; // template to show purchase -> tickets
+    }
+    
+    /* needed to see all the information at the purchase html*/
+    @GetMapping("{eventId}")
+    public String showPurchaseFromEvent(@PathVariable Long eventID, Model model) {
+        Event event = eventService.findById(eventID);
+        List<Zone> zones = zoneService.findAll();
+        List<Discount> discounts = discountService.getAllDiscounts();
+
+        model.addAttribute("event", event);
+        model.addAttribute("zones", zones);
+        model.addAttribute("discounts", discounts);
+        model.addAttribute("tickets", List.of());
+        model.addAttribute("totalPrice", BigDecimal.ZERO);
+
+        return "public/purchase";
     }
 }

@@ -26,9 +26,9 @@ public class Ticket {
     @Column(unique = true, nullable = false)
     private String code;
 
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "session_id", nullable = false)
-    private Session session;
+    private Session session;*/
 
     @ManyToOne
     @JoinColumn(name = "zone_id", nullable = false)
@@ -45,9 +45,9 @@ public class Ticket {
     }
 
     // Constructor of the class
-    public Ticket(String code, Session session, Zone zone, Boolean isActive) {
+    public Ticket(String code, Zone zone, Boolean isActive) {
         this.code = code;
-        this.session = session;
+        //this.session = session;
         this.zone = zone;
         this.isActive = isActive;
         this.ticketPrice = zone.getPrice();

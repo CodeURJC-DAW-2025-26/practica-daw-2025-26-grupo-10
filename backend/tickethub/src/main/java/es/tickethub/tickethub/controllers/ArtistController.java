@@ -4,31 +4,37 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import es.tickethub.tickethub.entities.Artist;
 import es.tickethub.tickethub.services.ArtistService;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/artists")
+@RequestMapping("public")
 public class ArtistController {
 
-    @Autowired ArtistService artistService;
+    @Autowired
+    private ArtistService artistService;
 
-    @GetMapping
+    @GetMapping("/artists")
     public String listArtists(Model model) {
         model.addAttribute("artists", artistService.findAll());
-        return "artists";
+        return "public/artists";
     }
 
 
-    @GetMapping("/new")
+    @GetMapping("/artist/new")
     public String showCreateForm(Model model) {
         model.addAttribute("artist", new Artist());
         return "create-artist";
     }
     //BindingResult --> where spring keep validation errors
-    @PostMapping
+    @PostMapping("/create-artist")
     public String createArtist(@Valid Artist artist, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "create-artist";
@@ -42,27 +48,27 @@ public class ArtistController {
         return "redirect:/artists";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("artist/{id}")
     public String showArtistDetails(@PathVariable Long id, Model model) {
         Artist artist = artistService.findById(id);
         model.addAttribute("artist", artist);
-        return "artist";
+        return "public/artist";
     }
 
-    @GetMapping("/delete/{id}")
+    @GetMapping("/delete-artist/{id}")
     public String deleteArtist(@PathVariable Long id) {
         artistService.deleteById(id);
         return "redirect:/artists";
     }
 
-    @GetMapping("/manage/{id}")
+    @GetMapping("/editArtist/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         Artist artist = artistService.findById(id);
         model.addAttribute("artist", artist);
         return "manage-artist";
     }
 
-    @PostMapping("/manage")
+    @PutMapping("/manage")
     public String updateArtist(@Valid Artist artist, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "manage-artist";
@@ -70,4 +76,5 @@ public class ArtistController {
         artistService.save(artist);
         return "redirect:/artists";
     }
+
 }

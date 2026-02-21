@@ -31,8 +31,7 @@ public class Session {
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "session_id", nullable = false)
+    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Purchase> purchases = new ArrayList<>();
 
     @Column(nullable = false)
@@ -48,9 +47,19 @@ public class Session {
         this.date = date;
         if (purchases != null) {
             this.purchases = purchases;
-        } else {
-            this.purchases = new ArrayList<>();
         }
+    }
+
+    /**
+     * Returns the session date formatted for display on the UI (e.g. "dd/MM/yyyy HH:mm").
+     * Mustache templates can reference this property as {{formattedDate}}.
+     */
+    public String getFormattedDate() {
+        if (this.date == null) {
+            return "";
+        }
+        java.text.SimpleDateFormat fmt = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm");
+        return fmt.format(this.date);
     }
 
 }
