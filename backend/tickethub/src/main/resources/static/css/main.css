@@ -175,7 +175,7 @@ footer a:hover {
 
 /* Alerts */
 .alert-success {
-    background-color: var(--vivid-tangerine);
+    background-color: #d4edda;
     color: var(--pitch-black);
     border: none;
     font-weight: bold;

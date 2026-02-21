@@ -1,6 +1,7 @@
 package es.tickethub.tickethub.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.PostMapping;
 
+
 @Controller
 @RequestMapping("/clients")
 public class ClientController {
@@ -24,6 +26,19 @@ public class ClientController {
     //lo que nosotros le pongamos dentro de lo que es la creación del token
     @Autowired
     private ClientService clientService;
+
+    @PostMapping("/registration")//TODO:Conectar con la parte de security
+    public String registeClient(Model model, @RequestParam String name, @RequestParam String email,@RequestParam String surname,
+        @RequestParam String password, @RequestParam String passWordConfirmation,RedirectAttributes redirectAttributes) {
+        try {
+            clientService.registeClient(name, email,surname, password, passWordConfirmation);
+            return "/clients/main";//TODO: devolver a la pantalla de inicio
+        } catch (ResponseStatusException e) {
+            redirectAttributes.addFlashAttribute("error",e.getReason());
+            return "redirect:/clients/registration";
+        }
+    }
+    
 
     @GetMapping("/profile")
     public String getClientOverview(Model model) {
@@ -34,7 +49,6 @@ public class ClientController {
         return "profile";
     }
     
-
     @GetMapping("/profile/edit")
     public String getClientData(Model model) {
         //obtenemos el id del usuario
@@ -48,10 +62,16 @@ public class ClientController {
 
     @PostMapping("/profile/edit")
     //TODO: futuramente con react usaremos el @RequestBody, por ahora usamos @ModelAttribute
-    public String uptadeClientData(@Valid @ModelAttribute Client client) {
+    public String uptadeClientData(@Valid @ModelAttribute Client client,RedirectAttributes redirectAttributes) {
         Long idPrueba = 1L;
-        clientService.updateClient(idPrueba, client);
-        return "redirect:/clients/profile";
+        try {
+            clientService.updateClient(idPrueba, client);
+            redirectAttributes.addFlashAttribute("success","Perfil actualizado correctamente");
+            return "redirect:/clients/profile"; 
+        } catch (ObjectOptimisticLockingFailureException e) {
+            redirectAttributes.addFlashAttribute("error","Alguien ha modificado el prefirl mientras lo editaba");
+            return "redirect:/clients/profile";
+        } 
     }
     
     @GetMapping("/profile/password")
@@ -69,9 +89,10 @@ public class ClientController {
         } catch (ResponseStatusException error) {
             redirectAttributes.addFlashAttribute("error",error.getReason());
             return "redirect:/clients/profile/password";
+        }catch(ObjectOptimisticLockingFailureException e){
+            redirectAttributes.addFlashAttribute("error","Hubo un conflicto procesando su solicitud. Por favor intente de nuevo.");
+            return "redirect:/clients/profile/password";
         }
-
-        
     }
     
     

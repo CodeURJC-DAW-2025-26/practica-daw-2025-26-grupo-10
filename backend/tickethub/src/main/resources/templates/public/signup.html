@@ -70,11 +70,17 @@
 <main class="flex-fill">
   <div class="container my-5" style="max-width:450px">
     <h3 class="mb-4 text-center">Crear cuenta</h3>
-    <form>
-      <input class="form-control mb-3" placeholder="Nombre completo">
-      <input class="form-control mb-3" placeholder="Correo electrónico">
-      <input type="password" class="form-control mb-3" placeholder="Contraseña">
-      <input type="password" class="form-control mb-3" placeholder="Repetir contraseña">
+    <form method="post" action="/clients/registration">
+      <input class="form-control mb-3" placeholder="Nombre" name="name">
+      <input class="form-control mb-3" placeholder="Apellidos" name="surname">
+      <input class="form-control mb-3" placeholder="Correo electrónico" name="email">
+      <input type="password" class="form-control mb-3" placeholder="Contraseña" name="password">
+      <input type="password" class="form-control mb-3" placeholder="Repetir contraseña" name="passWordConfirmation">
+      {{#error}}
+      <div class="alert alert-danger" role="alert">
+        {{error}}
+      </div>
+      {{/error}}
       <button class="btn btn-success w-100">Registrarse</button>
     </form>
   </div>
