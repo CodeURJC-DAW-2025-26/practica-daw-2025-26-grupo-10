@@ -65,7 +65,7 @@
   <input name="capacity" type="number" class="form-control mb-3" placeholder="Ej: 5000" min="1">
 
   <p class="fw-bold mb-1">Categoría</p>
-  <select name="category" class="form-select mb-3">
+  <select name="category" class="form-select mb-3"> <!--I am going to believe this are all the possible events-->
     <option selected disabled>Selecciona una categoría</option>
     <option value="concert">Concierto</option>
     <option value="festival">Festival</option>
@@ -79,6 +79,18 @@
     <option value="1">Bad Bunny</option>
     <option value="2">Quevedo</option>
     <option value="3">Rosalía</option>
+  </select>
+
+  <p class="fw-bold mb-1">Edad objetivo</p>
+  <select name="targetAge" class="form-select mb-3" required>
+      <option selected disabled>Selecciona la franja de edad</option>
+      <option value="0">Niños pequeños</option>
+      <option value="1">Niños</option>
+      <option value="2">Adolescentes</option>
+      <option value="3">Adultos jóvenes</option>
+      <option value="4">Adultos</option>
+      <option value="5">Adultos sénior</option>
+      <option value="6">Ancianos</option>
   </select>
 
   <div class="d-flex align-items-center gap-2 mb-3">

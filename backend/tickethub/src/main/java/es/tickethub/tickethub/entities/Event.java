@@ -41,6 +41,8 @@ public class Event {
     @Min(value = 1, message = "No se puede hacer un evento sin asistentes")
     private Integer capacity;
 
+    @Column(nullable = false)
+    private Integer targetAge;
     /* This represents that the entity Artist is related with Event in a way that one Artist can have many Events associated to him*/
     @ManyToOne
     @JoinColumn(name = "artist_id", nullable = false)
@@ -90,10 +92,12 @@ public class Event {
 
     // Constructor of the class (we have to put all the parameters that can not be null in the database)
     public Event(String name, Integer capacity, Artist artist,
-        List<Session> sessions, List<Zone> zones, String place, String category, List<Image> eventImages) {
+        List<Session> sessions, List<Zone> zones, String place,
+        String category, List<Image> eventImages, Integer targetAge) {
 
         this.name = name;
         this.capacity = capacity;
+        this.targetAge = targetAge;
         this.artist = artist;
         if (sessions != null) {
             this.sessions = sessions;
