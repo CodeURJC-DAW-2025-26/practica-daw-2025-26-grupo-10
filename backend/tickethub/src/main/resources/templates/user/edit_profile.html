@@ -66,45 +66,46 @@
 <!-- CONTENIDO -->
 <main class="flex-fill">
   <div class="container my-5" style="max-width:600px">
+    {{#clientLogged}}
     <h2 class="mb-4">Editar perfil</h2>
-    <form>
+    <form method="post" action="/clients/profile/edit" enctype="multipart/form-data">
       <div class="mb-3">
         <label class="form-label">Nombre</label>
-        <input type="text" class="form-control" value="Nombre">
+        <input type="text" class="form-control" name="name"  value="{{name}}">
       </div>
       <div class="mb-3">
         <label class="form-label">Apellidos</label>
-        <input type="text" class="form-control" value="Apellidos">
+        <input type="text" class="form-control" name="surname" value="{{surname}}">
       </div>
       <div class="mb-3">
         <label class="form-label">Nombre de usuario</label>
-        <input type="text" class="form-control" value="Nombre Usuario">
+        <input type="text" class="form-control" name="username"  value="{{username}}">
       </div>
       <div class="mb-3">
         <label class="form-label">Correo electrónico</label>
-        <input type="email" class="form-control" value="usuario@email.com">
+        <input type="email" class="form-control" name="email"  value="{{email}}">
       </div>
       <div class="mb-3">
         <label class="form-label">Teléfono</label>
-        <input type="text" class="form-control" value="Teléfono">
+        <input type="text" class="form-control" name="phone"  value="{{phone}}">
       </div>
       <div class="mb-3">
         <label class="form-label">Edad</label>
-        <input type="text" class="form-control" value="Edad">
+        <input type="number" class="form-control" name="age"  value="{{age}}">
       </div>
       <div class="mb-3">
         <label class="form-label">Foto de perfil</label>
-        <input type="file" class="form-control">
+        <input type="file" class="form-control" name="profileImage">
       </div>
       <div class="mb-3" style="text-align: right">
         <a href="change_password.html" class="btn btn-outline-primary">Cambiar contraseña</a>
       </div>
       <div class="d-flex gap-2">
-        <a href="profile.html" class="btn btn-primary equal-btn">Guardar</a>
-        <a href="profile.html" class="btn btn-primary equal-btn">Cancelar</a>
+        <button class="btn btn-primary equal-btn" type="submit">Guardar</button>
+        <a href="/user/profile" class="btn btn-primary equal-btn">Cancelar</a>
       </div>
-
     </form>
+    {{/clientLogged}}
   </div>
 </main>
 
