@@ -33,7 +33,6 @@ public class ClientController {
         model.addAttribute("clientLogged",clientLogged);
         return "profile";
     }
-
     @GetMapping("/profile/edit")
     public String getClientData(Model model) {
         //obtenemos el id del usuario

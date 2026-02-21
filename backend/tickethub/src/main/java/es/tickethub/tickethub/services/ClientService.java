@@ -10,7 +10,6 @@ import es.tickethub.tickethub.repositories.ClientRepository;
 
 @Service
 public class ClientService {
-
     @Autowired
     private ClientRepository clientRepository;
 
@@ -53,4 +52,5 @@ public class ClientService {
         client.setPassword(newPassword);
         clientRepository.save(client);
     }
+
 }
