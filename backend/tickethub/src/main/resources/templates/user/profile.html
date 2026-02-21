@@ -17,16 +17,18 @@
 
 <main class="flex-fill">
   <div class="container my-5" style="max-width:600px">
+    {{#clientLogged}}
     <div class="card text-center p-4">
-      <img src="https://via.placeholder.com/150" class="rounded-circle mx-auto mb-3">
-      <h4>Nombre Usuario</h4>
-      <p class="text-muted">usuario@email.com</p>
+      <img src="/client/image" class="rounded-circle mx-auto mb-3">
+      <h4>{{username}}</h4>
+      <p class="text-muted">{{email}}</p>
       <div class="d-grid gap-2">
-        <a href="edit_profile" class="btn btn-outline-primary">Editar perfil</a>
-        <a href="tickets" class="btn btn-primary">Mis entradas</a>
-        <a href="change_password" class="btn btn-outline-secondary">Cambiar contraseña</a>
+        <a href="/clients/profile/edit" class="btn btn-outline-primary">Editar perfil</a>
+        <a href="tickets.html" class="btn btn-primary">Mis entradas</a>
+        <a href="/clients/profile/password" class="btn btn-outline-secondary">Cambiar contraseña</a>
       </div>
     </div>
+    {{/clientLogged}}
   </div>
 </main>
 

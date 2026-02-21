@@ -53,5 +53,4 @@ public class ClientService {
         client.setPassword(newPassword);
         clientRepository.save(client);
     }
-    
 }
