@@ -165,8 +165,215 @@ footer .social-icons a:hover {
     border-radius: 15px;
 }
 
-.carousel-item img {
-    height: 100%;
+/* Artist Card */
+.card.text-center {
+    background-color: var(--beige);
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    max-width: 500px;
+    margin: auto;
+}
+
+.card.text-center h3 {
+    color: var(--pitch-black);
+    margin-bottom: 0.5rem;
+}
+
+.card.text-center p {
+    color: #4a3b1c;
+}
+
+/* Socials Buttons */
+.btn-outline-primary {
+    border-color: var(--vivid-tangerine);
+    color: var(--pitch-black);
+    background-color: var(--beige);
+    font-weight: bold;
+    margin: 0.2rem;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--vivid-tangerine);
+    color: var(--pitch-black);
+    border-color: var(--vivid-tangerine);
+}
+
+.btn-outline-info {
+    border-color: var(--vivid-tangerine);
+    color: var(--pitch-black);
+    background-color: var(--beige);
+    font-weight: bold;
+    margin: 0.2rem;
+}
+
+.btn-outline-info:hover {
+    background-color: var(--vivid-tangerine);
+    color: var(--pitch-black);
+    border-color: var(--vivid-tangerine);
+}
+
+/* Image */
+.card img.rounded-circle {
+    border: 3px solid var(--vivid-tangerine);
+    padding: 2px;
+}
+
+/* Alerts */
+.alert-success {
+    background-color: #d4edda;
+    color: var(--pitch-black);
+    border: none;
+    font-weight: bold;
+}
+
+/* Details list */
+.list-group-item {
+    background-color: var(--beige);
+    border: 1px solid #ccc;
+    color: var(--pitch-black);
+}
+
+/* Buttons */
+.btn-outline-primary {
+    border-color: var(--vivid-tangerine);
+    color: var(--pitch-black);
+    background-color: var(--beige);
+    font-weight: bold;
+    margin: 0.2rem;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--vivid-tangerine);
+    color: var(--pitch-black);
+    border-color: var(--vivid-tangerine);
+}
+
+.btn-primary {
+    background-color: var(--vivid-tangerine);
+    border: none;
+    color: var(--pitch-black);
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: #ff9500;
+    color: var(--pitch-black);
+}
+/* Event Card */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background-color: var(--beige);
+}
+
+.card h2, .card h4 {
+    color: var(--pitch-black);
+}
+
+.card p {
+    color: #4a3b1c; 
+}
+
+/* Buttons */
+.btn-outline-secondary {
+    border-color: var(--vivid-tangerine);
+    color: var(--pitch-black);
+    background-color: var(--beige);
+    font-weight: bold;
+    margin: 0.2rem;
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--vivid-tangerine);
+    color: var(--pitch-black);
+    border-color: var(--vivid-tangerine);
+}
+
+.btn-success {
+    background-color: var(--vivid-tangerine);
+    border: none;
+    color: var(--pitch-black);
+    font-weight: bold;
+}
+
+.btn-success:hover {
+    background-color: #ff9500;
+    color: var(--pitch-black);
+}
+
+/* Upper Image */
+.card-img-top {
+    border-radius: 12px 12px 0 0;
+}
+
+/* login container */
+main .container {
+    background-color: var(--beige);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* title */
+main h3 {
+    color: var(--pitch-black);
+}
+
+/* Inputs */
+main input.form-control {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+main input.form-control:focus {
+    border-color: var(--vivid-tangerine);
+    box-shadow: 0 0 0 0.2rem rgba(247,127,0,0.25);
+}
+
+/* button */
+main button.btn-primary {
+    background-color: var(--vivid-tangerine);
+    border: none;
+    color: var(--pitch-black);
+    font-weight: bold;
+}
+
+main button.btn-primary:hover {
+    background-color: #ff9500;
+    color: var(--pitch-black);
+}
+/* purchase form */
+.container form {
+    background-color: var(--beige);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    max-width: 500px;
+    margin: auto;
+}
+
+/* Inputs & selects */
+.container form input.form-control,
+.container form select.form-control {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 0.5rem;
+}
+
+.container form input.form-control:focus,
+.container form select.form-control:focus {
+    border-color: var(--vivid-tangerine);
+    box-shadow: 0 0 0 0.2rem rgba(247,127,0,0.25);
+}
+
+/* buttons */
+.container form button.btn-primary {
+    background-color: var(--vivid-tangerine);
+    border: none;
+    color: var(--pitch-black);
+    font-weight: bold;
     width: 100%;
     object-fit: cover;
 }

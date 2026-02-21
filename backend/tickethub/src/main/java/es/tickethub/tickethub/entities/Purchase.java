@@ -7,6 +7,7 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,12 +31,12 @@ public class Purchase {
     The @JoinColumn annotation is used to define a One-to-Many relationship. You must specify the name of the ID field of the related entity.
     The orphanRemoval attribute ensures that when an entity instance is removed, all associated child entities are automatically deleted as well.*/
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "purchase_id")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @JoinColumn(name = "purchase_id", nullable = false)
     private List<Ticket> tickets = new ArrayList<>();
 
     // Needed to associate many purchases to one session
-    @ManyToOne
+    @ManyToOne //TODO: (fetch = FetchType.LAZY)//for not to load all the session, only its ID, this is for DTOS
     @JoinColumn(name = "session_id", nullable = false)
     private Session session;
 

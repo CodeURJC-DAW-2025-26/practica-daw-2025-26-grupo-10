@@ -5,6 +5,7 @@ import es.tickethub.tickethub.entities.Ticket;
 import es.tickethub.tickethub.repositories.TicketRepository;
 
 public class TicketService {
+    
     @Autowired TicketRepository ticketRepository;
 
     

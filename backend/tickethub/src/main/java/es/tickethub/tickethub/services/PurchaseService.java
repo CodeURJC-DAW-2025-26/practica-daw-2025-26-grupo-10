@@ -1,22 +1,23 @@
 package es.tickethub.tickethub.services;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 
-import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Purchase;
+import es.tickethub.tickethub.repositories.ClientRepository;
 import es.tickethub.tickethub.repositories.PurchaseRepository;
 
 @Service
 public class PurchaseService {
 
     @Autowired PurchaseRepository purchaseRepository;
+    @Autowired ClientRepository clientRepository;
 
     /**
      * Creates a new purchase along with all associated tickets
@@ -39,22 +40,13 @@ public class PurchaseService {
      * Retrieves all purchases belonging to a specific client
      * Useful for displaying the client's purchase history
      */
-    public List<Purchase> getPurchasesByClient(Client client) {
-        return purchaseRepository.findByClientEmail(client.getEmail());
-    }
-
-    /**
-     * Retrieves a specific purchase by its ID and ensures it belongs to the given client
-     * Throws a NOT_FOUND exception if the purchase does not exist or does not belong to the client
-     */
-    public Purchase getPurchaseByIdAndClient(Long purchaseId, Client client) {
-        Optional<Purchase> optionalPurchase = purchaseRepository.findByPurchaseIDAndClient(purchaseId, client);
-        if (!optionalPurchase.isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Compra no encontrada");
+    public Slice<Purchase> getPurchasesByClientId(Long clientId,int pageNumber) {
+        if(!clientRepository.existsById(clientId)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado");
         }
-        return optionalPurchase.get();
+        PageRequest pageRequest =  PageRequest.of(pageNumber,10);
+        return purchaseRepository.findByClient_UserID(clientId,pageRequest);
     }
-
     /**
      * Deletes a purchase by its ID
      * If the purchase does not exist, throws a NOT_FOUND exception
