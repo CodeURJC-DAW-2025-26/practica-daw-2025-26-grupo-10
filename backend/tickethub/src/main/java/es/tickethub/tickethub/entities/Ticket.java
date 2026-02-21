@@ -30,8 +30,12 @@ public class Ticket {
     @JoinColumn(name = "session_id", nullable = false)
     private Session session;
 
-    @Column(nullable = false, precision = 8, scale = 2)
-    private BigDecimal price;
+    @ManyToOne
+    @JoinColumn(name = "zone_id", nullable = false)
+    private Zone zone;
+
+    @Column(nullable = false)
+    private BigDecimal ticketPrice;
 
     @Column(nullable = false)
     private Boolean isActive;
@@ -41,11 +45,12 @@ public class Ticket {
     }
 
     // Constructor of the class
-    public Ticket(String code, Session session, BigDecimal price, Boolean isActive) {
+    public Ticket(String code, Session session, Zone zone, Boolean isActive) {
         this.code = code;
         this.session = session;
-        this.price = price;
+        this.zone = zone;
         this.isActive = isActive;
+        this.ticketPrice = zone.getPrice();
     }
     
 }
