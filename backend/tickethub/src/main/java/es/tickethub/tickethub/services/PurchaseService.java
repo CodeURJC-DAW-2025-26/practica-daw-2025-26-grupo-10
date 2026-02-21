@@ -3,7 +3,6 @@ package es.tickethub.tickethub.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -57,7 +56,7 @@ public class PurchaseService {
      * Throws a NOT_FOUND exception if the purchase does not exist or does not belong to the client
      */
     public Purchase getPurchaseByIdAndClient(Long purchaseId, Client client) {
-        Optional<Purchase> optionalPurchase = purchaseRepository.findByPurchaseIDAndClient(purchaseId, client);
+        Optional<Purchase> optionalPurchase = purchaseRepository.findByIdAndClient(purchaseId, client);
         if (!optionalPurchase.isPresent()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Compra no encontrada");
         }
