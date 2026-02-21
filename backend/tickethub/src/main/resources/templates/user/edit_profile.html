@@ -70,6 +70,7 @@
     <h2 class="mb-4">Editar perfil</h2>
     <form method="post" action="/clients/profile/edit" enctype="multipart/form-data">
       <div class="mb-3">
+        <input type="hidden" name="version" value="{{version}}">
         <label class="form-label">Nombre</label>
         <input type="text" class="form-control" name="name"  value="{{name}}">
       </div>
@@ -97,9 +98,16 @@
         <label class="form-label">Foto de perfil</label>
         <input type="file" class="form-control" name="profileImage">
       </div>
-      <div class="mb-3" style="text-align: right">
-        <a href="change_password.html" class="btn btn-outline-primary">Cambiar contraseña</a>
+      {{#error}}
+      <div class="alert alert-danger" role="alert">
+        {{error}}
       </div>
+      {{/error}}
+      {{#success}}
+      <div class="alert alert-success" role="alert">
+        {{success}}
+      </div>
+      {{/success}}
       <div class="d-flex gap-2">
         <button class="btn btn-primary equal-btn" type="submit">Guardar</button>
         <a href="/user/profile" class="btn btn-primary equal-btn">Cancelar</a>

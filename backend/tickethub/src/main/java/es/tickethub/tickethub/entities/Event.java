@@ -6,11 +6,11 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Min;
@@ -49,25 +49,19 @@ public class Event {
     private Artist artist;
 
     /* This represents that the entity Session is related with Event in a way that one Event can have many Sessions associated*/
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "event", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "event", orphanRemoval = true, fetch = FetchType.LAZY)
     @Column(nullable = false) //I think this make no sense
     private List<Session> sessions = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(
-        name = "event_zones",
-        joinColumns = @JoinColumn(name = "event_id"),
-        inverseJoinColumns = @JoinColumn(name = "zone_id")
-    )
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "event_id", nullable = false)
     private List<Zone> zones = new ArrayList<>();
 
     /* Here we don't have to put orphanRemoval because the discounts can be associated to more events*/
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-        name = "event_discounts",
-        joinColumns = @JoinColumn(name = "event_id"),
-        inverseJoinColumns = @JoinColumn(name = "discount_id")
-    )
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "event_id")
+
     private List<Discount> discounts = new ArrayList<>();
 
     @Column(nullable = false)
@@ -78,12 +72,10 @@ public class Event {
     @NotBlank(message = "La categoría del evento es obligatoria")
     private String category;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(
-        name = "event_images",
-        joinColumns = @JoinColumn(name = "event_id"),
-        inverseJoinColumns = @JoinColumn(name = "imageName")
-    )
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @JoinColumn(name = "event_id", nullable = false)
+
     private List<Image> eventImages = new ArrayList<>();
 
     public Event() {

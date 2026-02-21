@@ -62,19 +62,34 @@
 </nav>
 
 <main class="flex-fill">
+  
     <div class="container my-5">
-        <h2 class="mb-4">Mis Entradas</h2>
+        <h2 class="mb-4">
+          <div>Mis entradas</div>
+          <div style="text-align: end">
+            <a href="profile.html" class="btn btn-outline-primary">Regresar al perfil</a>
+          </div>
+        </h2>
         <table class="table">
-            <thead><tr><th>Evento</th><th>Fecha</th><th>Estado</th><th></th></tr></thead>
-            <tbody>
-                <tr class="table-success"><td>Evento Activo</td><td>01/06/2026</td><td>Activo</td><td><button class="btn btn-sm btn-primary">Descargar</button></td></tr>
-                <tr class="table-danger"><td>Evento Pasado</td><td>01/06/2024</td><td>Finalizado</td><td><button class="btn btn-sm btn-primary">Descargar</button></td></tr>
+            <thead>
+              <tr>
+                <th>Evento</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="purchase-table-body">
+              {{> purchases_items}}
             </tbody>
         </table>
-
-        <div style="text-align: end">
-            <a href="profile.html" class="btn btn-outline-primary">Regresar al perfil</a>
+        {{#hasNext}}
+        <div class="text-center mt-3">
+          <button id="btn-load-more" class="btn btn-primary" data-next-page="{{nextPage}}" onclick="cargarMasCompras(this)">
+              Cargar más
+          </button>
         </div>
+        {{/hasNext}}
     </div>
 </main>
 
