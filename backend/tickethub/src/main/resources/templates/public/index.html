@@ -5,56 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Inicio</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="../../static/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-<!--LOCATION OF THE HEADER OF THE WEB
+<!--LOCATION OF THE HEADER OF THE WEB-->
 
-{{>header}}
-
--->
-<nav class="navbar navbar-expand-lg navbar-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="index.html">TicketHub</a>
-
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarMain"
-      aria-controls="navbarMain"
-      aria-expanded="false"
-      aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarMain">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" href="index.html">Inicio</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="events.html">Eventos</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="artists.html">Artistas</a>
-        </li>
-      </ul>
-
-      <div class="d-flex align-items-center gap-3">
-        <a href="login.html" class="btn btn-outline-primary btn-sm">
-          Iniciar sesión
-        </a>
-        <a href="signup.html" class="btn btn-light btn-sm">
-          Registrarse
-        </a>
-      </div>
-    </div>
-  </div>
-</nav>
+{{>components/header}}
 
 <main class="flex-fill">
 
@@ -63,7 +20,7 @@
     <div class="container text-center">
       <h1 class="display-5 fw-bold">Descubre y compra entradas para los mejores eventos</h1>
       <p class="lead">Conciertos, festivales, teatro y mucho más en un solo lugar.</p>
-      <a href="events.html" class="btn btn-primary btn-lg mt-3">Explorar eventos</a>
+      <a href="/public/events" class="btn btn-primary btn-lg mt-3">Explorar eventos</a>
     </div>
   </section>
 
@@ -73,10 +30,12 @@
     <section class="mb-5">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Eventos más vendidos</h2>
-        <a href="events.html" class="btn btn-outline-primary btn-sm">Ver todos</a>
+        <a href="/public/events" class="btn btn-outline-primary btn-sm">Ver todos</a>
       </div>
 
+      <!--Wait until the preferences is done to put the mustache things correctly-->
       <div class="row g-4">
+
         <div class="col-md-4">
           <div class="card h-100">
             <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Evento 1">
@@ -84,34 +43,11 @@
               <h5 class="card-title">Exposición de arte renacentista</h5>
               <p class="mb-1">15/07/2026</p>
               <p class="text-muted">Madrid</p>
-              <a href="event.html" class="btn btn-primary btn-sm">Ver evento</a>
+              <a href="/public/events" class="btn btn-primary btn-sm">Ver evento</a>
             </div>
           </div>
         </div>
 
-        <div class="col-md-4">
-          <div class="card h-100">
-            <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Evento 2">
-            <div class="card-body">
-              <h5 class="card-title">La casa de Bernarda Alba</h5>
-              <p class="mb-1">22/06/2026</p>
-              <p class="text-muted">Barcelona</p>
-              <a href="event.html" class="btn btn-primary btn-sm">Ver evento</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="card h-100">
-            <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Evento 3">
-            <div class="card-body">
-              <h5 class="card-title">Concierto de Aitana</h5>
-              <p class="mb-1">05/06/2026</p>
-              <p class="text-muted">Valencia</p>
-              <a href="event.html" class="btn btn-primary btn-sm">Ver evento</a>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -119,53 +55,23 @@
     <section class="mb-5">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Artistas destacados</h2>
-        <a href="artist.html" class="btn btn-outline-primary btn-sm">Ver todos</a>
+        <a href="/public/artists" class="btn btn-outline-primary btn-sm">Ver todos</a>
       </div>
 
+      <!--Wait until the preferences is done to put the mustache things correctly-->
       <div class="row g-4">
+
         <div class="col-md-3">
           <div class="card text-center h-100">
             <img src="https://via.placeholder.com/200x200" class="card-img-top" alt="Artista 1">
             <div class="card-body">
               <h6 class="card-title">Aitana</h6>
               <p class="text-muted">6 eventos disponibles</p>
-              <a href="artist.html" class="btn btn-primary btn-sm">Ver artista</a>
+              <a href="/public/artists" class="btn btn-primary btn-sm">Ver artista</a>
             </div>
           </div>
         </div>
 
-        <div class="col-md-3">
-          <div class="card text-center h-100">
-            <img src="https://via.placeholder.com/200x200" class="card-img-top" alt="Artista 2">
-            <div class="card-body">
-              <h6 class="card-title">Juan Dávila</h6>
-              <p class="text-muted">5 eventos disponibles</p>
-              <a href="artist.html" class="btn btn-primary btn-sm">Ver artista</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-3">
-          <div class="card text-center h-100">
-            <img src="https://via.placeholder.com/200x200" class="card-img-top" alt="Artista 3">
-            <div class="card-body">
-              <h6 class="card-title">David Bisbal</h6>
-              <p class="text-muted">5 eventos disponibles</p>
-              <a href="artist.html" class="btn btn-primary btn-sm">Ver artista</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-3">
-          <div class="card text-center h-100">
-            <img src="https://via.placeholder.com/200x200" class="card-img-top" alt="Artista 4">
-            <div class="card-body">
-              <h6 class="card-title">Galder Varas</h6>
-              <p class="text-muted">4 eventos disponibles</p>
-              <a href="artist.html" class="btn btn-primary btn-sm">Ver artista</a>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -173,90 +79,32 @@
     <section>
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Disponibles próximamente</h2>
-        <a href="event.html" class="btn btn-outline-primary btn-sm">Ver todos</a>
+        <a href="/public/events" class="btn btn-outline-primary btn-sm">Ver todos</a>
       </div>
 
+      <!--Wait until the preferences is done to put the mustache things correctly-->
       <div class="row g-4">
+        
         <div class="col-md-6">
           <div class="card h-100">
             <div class="card-body">
               <h5 class="card-title">Film Symphony Orchestra</h5>
               <p class="mb-1">Fecha: 01/04/2026</p>
               <p class="text-muted">Sevilla</p>
-              <a href="event.html" class="btn btn-primary btn-sm">Más información</a>
+              <a href="/public/event/2" class="btn btn-primary btn-sm">Más información</a>
             </div>
           </div>
         </div>
 
-        <div class="col-md-6">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title">Duki: Ameri Tour</h5>
-              <p class="mb-1">Fecha: 10/04/2026</p>
-              <p class="text-muted">Coruña</p>
-              <a href="event.html" class="btn btn-primary btn-sm">Más información</a>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
   </div>
 </main>
 
-<!--LOCATION OF THE FOOTER OF THE WEB
+<!--LOCATION OF THE FOOTER OF THE WEB-->
 
-{{>footer}}
-
--->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-<footer class="mt-auto">
-  <div class="container py-4">
-    <div class="row">
-
-      <div class="col-md-4 mb-3">
-        <h5>Sobre nosotros</h5>
-        <p>
-          TicketHub conecta a los usuarios con eventos, artistas y recintos, ofreciendo una experiencia de compra de entradas simple y segura.
-        </p>
-      </div>
-
-      <div class="col-md-4 mb-3">
-        <h5>Enlaces rápidos</h5>
-        <ul class="list-unstyled">
-          <li><a href="index.html">Inicio</a></li>
-          <li><a href="event.html">Eventos</a></li>
-          <li><a href="login.html">Iniciar sesión</a></li>
-        </ul>
-      </div>
-
-      <div class="col-md-4 mb-3">
-        <h5>Síguenos</h5>
-        <ul class="list-inline">
-          <li class="list-inline-item">
-            <a href="#"><i class="bi bi-facebook"></i></a>
-          </li>
-          <li class="list-inline-item">
-            <a href="#"><i class="bi bi-twitter"></i></a>
-          </li>
-          <li class="list-inline-item">
-            <a href="#"><i class="bi bi-instagram"></i></a>
-          </li>
-        </ul>
-      </div>
-
-    </div>
-
-    <hr class="border-secondary">
-
-    <div class="text-center">
-      <p class="mb-0">
-        &copy; 2026 TicketHub. Todos los derechos reservados.
-      </p>
-    </div>
-  </div>
-</footer>
+{{>/components/footer}}
 
 </body>
 </html>

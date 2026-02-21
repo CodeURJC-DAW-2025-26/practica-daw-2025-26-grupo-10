@@ -3,75 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Compra</title>
+<title>Compra - {{event.name}}</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="../../static/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 
-<!--LOCATION OF THE HEADER OF THE WEB
+<!--LOCATION OF THE HEADER OF THE WEB-->
 
-{{>header}}
-
--->
-<nav class="navbar navbar-expand-lg navbar-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="index.html">TicketHub</a>
-
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarMain"
-      aria-controls="navbarMain"
-      aria-expanded="false"
-      aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarMain">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" href="index.html">Inicio</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="events.html">Eventos</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="artists.html">Artistas</a>
-        </li>
-      </ul>
-
-      <div class="d-flex align-items-center gap-3">
-        <a href="login.html" class="btn btn-outline-primary btn-sm">
-          Iniciar sesión
-        </a>
-        <a href="signup.html" class="btn btn-light btn-sm">
-          Registrarse
-        </a>
-
-        <!--The image must be here when the user is logged, if he is not logged then the login and signup buttons
-        <img
-          src="../../static/images/default-avatar.png"
-          alt="Perfil"
-          class="rounded-circle"
-          width="40"
-          height="40"
-        >-->
-      </div>
-    </div>
-  </div>
-</nav>
+{{>components/header}}
 
 <main class="flex-fill">
   <div class="container my-5">
-    <h2 class="mb-4">Compra de entradas</h2>
+    <h2 class="mb-4">Compra de entradas - {{event.name}}</h2>
 
     <div class="d-flex align-items-center gap-3 mb-4">
       <h4 class="mb-0">Selecciona el número de entradas que quieres comprar:</h4>
-      <select class="form-select form-control-sm w-auto">
+      <select name="ticketCount" class="form-select form-control-sm w-auto">
         <option>1</option>
         <option>2</option>
         <option>3</option>
@@ -82,84 +30,57 @@
 
     <hr>
 
+    <!-- Here there must be auto generation of the tickets catching the information from the selector of tickets above-->
+    {{#tickets}}
     <div class="card mb-3 p-3">
       <div class="d-flex justify-content-between align-items-center">
-        <strong>Entrada 1</strong>
+        <strong>Entrada {{@index}}</strong>
         <div class="d-flex gap-2 align-items-center">
           <span>Zona:</span>
-          <select class="form-select form-control-sm w-auto">
-            <option>VIP</option>
-            <option>General</option>
-            <option>Grada</option>
+          <select name="zone" class="form-select form-control-sm w-auto">
+            {{#zones}}
+              <option value="{{id}}">{{name}}</option>
+            {{/zones}}
           </select>
         </div>
-        <span>Precio: 25€</span>
+        <span>Precio: {{price}}€</span>
         <span class="text-danger">Eliminar</span>
       </div>
     </div>
-
-    <div class="card mb-3 p-3">
-      <div class="d-flex justify-content-between align-items-center">
-        <strong>Entrada 2</strong>
-        <div class="d-flex gap-2 align-items-center">
-          <span>Zona:</span>
-          <select class="form-select form-control-sm w-auto">
-            <option>VIP</option>
-            <option>General</option>
-            <option>Grada</option>
-          </select>
-        </div>
-        <span>Precio: 25€</span>
-        <span class="text-danger">Eliminar</span>
-      </div>
-    </div>
-
-    <div class="card mb-4 p-3">
-      <div class="d-flex justify-content-between align-items-center">
-        <strong>Entrada 3</strong>
-        <div class="d-flex gap-2 align-items-center">
-          <span>Zona:</span>
-          <select class="form-select form-control-sm w-auto">
-            <option>VIP</option>
-            <option>General</option>
-            <option>Grada</option>
-          </select>
-        </div>
-        <span>Precio: 25€</span>
-        <span class="text-danger">Eliminar</span>
-      </div>
-    </div>
+    {{/tickets}}
 
     <div class="d-flex align-items-center gap-2 mb-3">
       <strong class="mb-0">Aplicar descuento:</strong>
-      <select class="form-select form-control-sm w-auto">
-        <option>Ninguno</option>
-        <option>Carné joven (-2,00€)</option>
-        <option>Jubilado (-10%)</option>
-        <option>Grupo (-5%)</option>
+      <select name="discount" class="form-select form-control-sm w-auto">
+        <option value="">Ninguno</option>
+        {{#discounts}}
+          <option value="{{discountID}}">
+            {{discountName}}
+            {{#amount}}(-{{amount}}€){{/amount}}
+            {{#percent}}(-{{percent}}%){{/percent}}
+          </option>
+        {{/discounts}}
       </select>
       <button class="btn btn-outline-secondary btn-sm">+ Nuevo descuento</button>
     </div>
 
-    <!--This label will appear ONLY if the discount is "other"-->
-    <div class="d-flex align-items-center gap-2">
-        <strong><label class="form-label w-auto">Añadir código promocional:</label></strong>
-        <input type="email" class="form-control w-auto">
-    </div>
+    {{^discounts}}
+      <p>No hay descuentos disponibles para este evento.</p>
+    {{/discounts}}
 
     <hr>
     <div class="col-md-3">
       <div class="mb-3">
         <strong><label class="form-label">Correo electrónico</label></strong>
-        <input type="email" class="form-control">
+        <input type="email" name="email" class="form-control">
       </div>
       <div class="mb-3">
         <strong><label class="form-label">Confirmación de correo electrónico</label></strong>
-        <input type="email" class="form-control">
+        <input type="email" name="emailConfirm" class="form-control">
       </div>
     </div>
 
-    <h4 class="mb-4">Total: 30€</h4>
+    <h4 class="mb-4">Total: {{totalPrice}}€</h4>
 
     <hr>
     
@@ -168,7 +89,7 @@
     <div class="row mb-3">
       <div class="col-md-5">
         <label class="form-label">Número de tarjeta</label>
-        <input class="form-control" placeholder="1234 5678 9012 3456">
+        <input class="form-control" name="cardNumber" placeholder="Ejemplo: 1234 5678 9012 3456">
       </div>
     </div>
 
@@ -185,7 +106,7 @@
 
       <div>
         <label class="form-label">Año</label>
-        <select class="form-select form-control-sm w-auto">
+        <select name="cardYear" class="form-select form-control-sm w-auto">
           <option>2026</option>
           <option>2027</option>
           <option>2028</option>
@@ -195,15 +116,15 @@
 
       <div>
         <label class="form-label">CVV</label>
-        <input class="form-control form-control-sm" style="width:80px;" placeholder="123">
+        <input class="form-control form-control-sm" style="width:80px;" name="CVV" placeholder="123">
       </div>
     </div>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-outline-primary" type="button" onclick="location.href='event.html'">
+      <button class="btn btn-outline-primary" type="button" onclick="location.href='/public/event/{{event.eventID}}'">
         Volver
       </button>
-      <button class="btn btn-outline-primary" type="button" onclick="location.href='confirmation.html'">
+      <button class="btn btn-outline-primary" type="button" onclick="location.href='/public/confirmation/{{event.eventID}}'">
         Confirmar compra
       </button>
     </div>
@@ -211,82 +132,9 @@
   </div>
 </main>
 
+<!--LOCATION OF THE FOOTER OF THE WEB-->
 
-
-<!--LOCATION OF THE FOOTER OF THE WEB
-
-{{>footer}}
-
--->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-<footer class="mt-auto">
-  <div class="container py-4">
-    <div class="row">
-
-      <!-- Sobre nosotros -->
-      <div class="col-md-4 mb-3">
-        <h5>Sobre nosotros</h5>
-        <p>
-          TicketHub conecta a los usuarios con eventos, artistas y recintos, ofreciendo una experiencia de compra de entradas simple y segura.
-        </p>
-      </div>
-
-      <!-- Enlaces rápidos -->
-      <div class="col-md-4 mb-3">
-        <h5>Enlaces rápidos</h5>
-        <ul class="list-unstyled">
-          <li>
-            <a href="index.html">
-              Inicio
-            </a>
-          </li>
-          <li>
-            <a href="event.html">
-              Eventos
-            </a>
-          </li>
-          <li>
-            <a href="login.html">
-              Iniciar sesión
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Redes sociales -->
-      <div class="col-md-4 mb-3">
-        <h5>Síguenos</h5>
-        <ul class="list-inline">
-          <li class="list-inline-item">
-            <a href="#">
-              <i class="bi bi-facebook"></i>
-            </a>
-          </li>
-          <li class="list-inline-item">
-            <a href="#">
-              <i class="bi bi-twitter"></i>
-            </a>
-          </li>
-          <li class="list-inline-item">
-            <a href="#">
-              <i class="bi bi-instagram"></i>
-            </a>
-          </li>
-        </ul>
-      </div>
-
-    </div>
-
-    <hr class="border-secondary">
-
-    <div class="text-center">
-      <p class="mb-0">
-        &copy; 2026 TicketHub. Todos los derechos reservados.
-      </p>
-    </div>
-  </div>
-</footer>
+{{>/components/footer}}
 
 </body>
 </html>
