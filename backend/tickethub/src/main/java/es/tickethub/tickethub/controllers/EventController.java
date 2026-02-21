@@ -18,9 +18,10 @@ import es.tickethub.tickethub.entities.Discount;
 import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.ZoneService;
 import es.tickethub.tickethub.services.DiscountService;
-import java.math.BigDecimal;
-import jakarta.validation.Valid;
 
+import java.math.BigDecimal;
+
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/public")
@@ -35,12 +36,12 @@ public class EventController {
     @Autowired
     private DiscountService discountService;
 
+    
     @GetMapping("/events")
     public String listEvents(Model model) {
         model.addAttribute("events", eventService.findAll());
         return "public/events";
     }
-
 
     @GetMapping("/new")
     public String showCreateForm(Model model) {

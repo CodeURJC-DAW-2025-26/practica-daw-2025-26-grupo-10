@@ -35,19 +35,21 @@
 
       <!--Wait until the preferences is done to put the mustache things correctly-->
       <div class="row g-4">
-
+        {{#eventsTop}}
         <div class="col-md-4">
           <div class="card h-100">
-            <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Evento 1">
+            {{#event.eventImages}}
+            <img src="/public/image/{{imageName}}" class="card-img-top {{#first}}active{{/first}}" alt="Evento 1">
+            {{/event.eventImages}}
             <div class="card-body">
-              <h5 class="card-title">Exposición de arte renacentista</h5>
-              <p class="mb-1">15/07/2026</p>
-              <p class="text-muted">Madrid</p>
-              <a href="/public/events" class="btn btn-primary btn-sm">Ver evento</a>
+              <h5 class="card-title">{{name}}</h5>
+              <p class="mb-1">{{category}}</p>
+              <p class="text-muted">{{place}}</p>
+              <a href="/public/event/{{eventID}}" class="btn btn-primary btn-sm">Ver evento</a>
             </div>
           </div>
         </div>
-
+        {{/eventsTop}}
       </div>
     </section>
 
@@ -60,18 +62,18 @@
 
       <!--Wait until the preferences is done to put the mustache things correctly-->
       <div class="row g-4">
-
+        {{#artists}}
         <div class="col-md-3">
           <div class="card text-center h-100">
-            <img src="https://via.placeholder.com/200x200" class="card-img-top" alt="Artista 1">
+            <img src="/public/image/{{artist.artistImage.imageName}}" class="card-img-top" alt="Artista 1">
             <div class="card-body">
-              <h6 class="card-title">Aitana</h6>
-              <p class="text-muted">6 eventos disponibles</p>
-              <a href="/public/artists" class="btn btn-primary btn-sm">Ver artista</a>
+              <h6 class="card-title">{{artist.artistName}}</h6>
+              <p class="text-muted">{{eventsIncoming}} eventos disponibles</p>
+              <a href="/public/artist/{{artist.artistID}}" class="btn btn-primary btn-sm">Ver artista</a>
             </div>
           </div>
         </div>
-
+        {{/artists}}
       </div>
     </section>
 
@@ -84,18 +86,18 @@
 
       <!--Wait until the preferences is done to put the mustache things correctly-->
       <div class="row g-4">
-        
+        {{#eventsBottom}}
         <div class="col-md-6">
           <div class="card h-100">
             <div class="card-body">
-              <h5 class="card-title">Film Symphony Orchestra</h5>
-              <p class="mb-1">Fecha: 01/04/2026</p>
-              <p class="text-muted">Sevilla</p>
-              <a href="/public/event/2" class="btn btn-primary btn-sm">Más información</a>
+              <h5 class="card-title">{{name}}</h5>
+              <p class="mb-1">Categoría: {{category}}</p>
+              <p class="text-muted">{{place}}</p>
+              <a href="/public/event/{{eventID}}" class="btn btn-primary btn-sm">Más información</a>
             </div>
           </div>
         </div>
-
+        {{/eventsBottom}}
       </div>
     </section>
 
