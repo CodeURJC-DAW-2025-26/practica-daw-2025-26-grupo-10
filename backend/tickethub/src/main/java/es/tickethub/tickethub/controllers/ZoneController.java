@@ -14,23 +14,25 @@ import es.tickethub.tickethub.services.ZoneService;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/zones")
+@RequestMapping("admin/zones")
 public class ZoneController {
 
     @Autowired ZoneService zoneService;
 
-    // Show all discounts
-    @GetMapping
+    // Show all zones
+    @GetMapping("/manage_zones")
     public String listZones(Model model) {
-        model.addAttribute("discounts", zoneService.findAll());
-        return "discounts";
+
+        model.addAttribute("zones", zoneService.findAll());
+
+        return "admin/zones/manage_zones";
     }
 
     // New discount form
-    @GetMapping("/new")
+    @GetMapping("/create_zone")
     public String showCreateForm(Model model) {
         model.addAttribute("zone", new Zone());
-        return "create-zone"; 
+        return "admin/zones/create_zone"; 
     }
 
     // Creation of new discount
@@ -38,29 +40,31 @@ public class ZoneController {
     public String createZone(@Valid Zone zone, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
-            return "create-zone";
+            return "admin/zones/create_zone";
         }
 
         try {
             zoneService.save(zone);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
-            return "create-zone";
+            return "admin/zones/create_zone";
         }
 
-        return "redirect:/zones";
+        return "redirect:/admin/admin";
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("/edit_zone/{id}")
     public String showZone(@PathVariable Long id, Model model) {
+
         Zone zone = zoneService.findById(id);
         model.addAttribute("zone", zone);
-        return "zone";
+
+        return "admin/zones/create_zone";
     }
 
-    @GetMapping("/delete/{name}")
+    @GetMapping("/delete_zone/{id}")
     public String deleteZone(@PathVariable Long id) {
         zoneService.deleteById(id);
-        return "redirect:/zones";
+        return "redirect:/admin/zones/manage_zones";
     }
 }

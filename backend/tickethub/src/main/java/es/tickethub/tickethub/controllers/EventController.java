@@ -43,22 +43,22 @@ public class EventController {
         return "public/events";
     }
 
-    @GetMapping("/new")
+    @GetMapping("/newEvent")
     public String showCreateForm(Model model) {
-        model.addAttribute("event", new Event());
+        
         return "create-event";
     }
 
     @PostMapping
     public String createEvent(@Valid Event event, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "create-event";
+            return "create_event";
         }
         try {
             eventService.save(event);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
-            return "create-event";
+            return "create_event";
         }
         return "redirect:/events";
     }
@@ -106,13 +106,6 @@ public class EventController {
     public String deleteEvent(@PathVariable Long id) {
         eventService.deleteById(id);
         return "redirect:/events";
-    }
-
-    @GetMapping("/manage/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
-        Event event = eventService.findById(id);
-        model.addAttribute("event", event);
-        return "manage-event";
     }
 
     @PostMapping("/manage")

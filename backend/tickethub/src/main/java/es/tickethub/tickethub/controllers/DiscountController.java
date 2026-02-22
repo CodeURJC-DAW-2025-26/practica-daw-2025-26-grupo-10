@@ -11,23 +11,23 @@ import es.tickethub.tickethub.services.DiscountService;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/discounts")
+@RequestMapping("/admin/discounts")
 public class DiscountController {
 
     @Autowired DiscountService discountService;
 
     // Show all discounts
-    @GetMapping
+    @GetMapping("/manage_discounts")
     public String listDiscounts(Model model) {
         model.addAttribute("discounts", discountService.getAllDiscounts());
-        return "discounts";
+        return "/admin/discounts/manage_discounts";
     }
 
     // New discount form
-    @GetMapping("/new")
+    @GetMapping("/create_discount")
     public String showCreateForm(Model model) {
-        model.addAttribute("discount", new Discount());
-        return "create-discount"; 
+        
+        return "/admin/discounts/create_discount"; 
     }
 
     // Creation of new discount
@@ -35,29 +35,29 @@ public class DiscountController {
     public String createDiscount(@Valid Discount discount, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
-            return "create-discount";
+            return "/admin/create_discount";
         }
 
         try {
             discountService.createDiscount(discount);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
-            return "create-discount";
+            return "/admin/create_discount";
         }
 
-        return "redirect:/discounts";
+        return "redirect:/admin/discounts";
     }
 
-    @GetMapping("/{name}")
-    public String showDiscount(@PathVariable String name, Model model) {
-        Discount discount = discountService.getDiscountByName(name);
+    @GetMapping("/edit_discount/{discountID}")
+    public String showDiscount(@PathVariable Long discountID, Model model) {
+        Discount discount = discountService.findById(discountID);
         model.addAttribute("discount", discount);
-        return "discount";
+        return "/admin/discounts/create_discount";
     }
 
-    @GetMapping("/delete/{name}")
-    public String deleteDiscount(@PathVariable String name) {
-        discountService.deleteDiscount(name);
-        return "redirect:/discounts";
+    @GetMapping("/delete/{discountID}")
+    public String deleteDiscount(@PathVariable Long discountID) {
+        discountService.deleteDiscount(discountID);
+        return "redirect://admin/discounts/manage_discounts";
     }
 }

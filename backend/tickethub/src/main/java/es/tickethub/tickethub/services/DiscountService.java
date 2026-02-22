@@ -17,8 +17,8 @@ import es.tickethub.tickethub.repositories.DiscountRepository;
 public class DiscountService {
     @Autowired DiscountRepository discountRepository;
 
-    public Discount getDiscountByName(String discountName){
-        Optional <Discount> discountOptional = discountRepository.getByDiscountName(discountName);
+    public Discount findById(Long discountID){
+        Optional <Discount> discountOptional = discountRepository.findById(discountID);
         if (!discountOptional.isPresent()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Descuento no encontrado");
         }
@@ -37,14 +37,14 @@ public class DiscountService {
     /* Use of existsByDiscountName -> no need to bring the discount. We want to check if it already exists */
 
     public Discount createDiscount(Discount discount){
-        if (discountRepository.existsByDiscountName(discount.getDiscountName())) {
+        if (discountRepository.existsById(discount.getDiscountID())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre del descuento ya existe");
         }
         return discountRepository.save(discount);
     }
 
-    public void deleteDiscount(String discountName){
-        Optional<Discount> optionalDiscount = discountRepository.getByDiscountName(discountName);
+    public void deleteDiscount(Long discountID){
+        Optional<Discount> optionalDiscount = discountRepository.findById(discountID);
         if (!optionalDiscount.isPresent()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Descuento no encontrado");
         }
@@ -53,8 +53,8 @@ public class DiscountService {
     }
 
     /* Apply discount differently whether it's a percentage or not */
-    public BigDecimal applyDiscount(BigDecimal originalTicketPrice, String discountName){
-        Discount discount = getDiscountByName(discountName);
+    public BigDecimal applyDiscount(BigDecimal originalTicketPrice, Long discountID){
+        Discount discount = findById(discountID);
 
         if (discount.getPercentage()){
             BigDecimal discountAmmount = discount.getAmmount().divide(new BigDecimal("100"), 4, RoundingMode.HALF_UP);

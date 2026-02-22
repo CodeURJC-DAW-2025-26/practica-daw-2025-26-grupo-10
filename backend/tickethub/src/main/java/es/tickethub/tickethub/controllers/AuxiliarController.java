@@ -15,7 +15,6 @@ import es.tickethub.tickethub.entities.Artist;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.services.ArtistService;
 import es.tickethub.tickethub.services.EventService;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -72,4 +71,5 @@ public class AuxiliarController {
 
         return "public/signup";
     }
+
 }
