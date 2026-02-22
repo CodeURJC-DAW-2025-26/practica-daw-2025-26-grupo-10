@@ -55,7 +55,7 @@ public class Event {
 
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id", nullable = false)
+    @JoinColumn(name = "event_id", nullable = true)
     private List<Zone> zones = new ArrayList<>();
 
     /* Here we don't have to put orphanRemoval because the discounts can be associated to more events*/
@@ -74,7 +74,7 @@ public class Event {
 
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id", nullable = false)
+    @JoinColumn(name = "event_id", nullable = true)
 
     private List<Image> eventImages = new ArrayList<>();
 

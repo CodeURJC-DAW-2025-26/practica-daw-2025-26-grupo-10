@@ -16,6 +16,6 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
 
     Slice<Purchase> findByClient_UserID(Long clientID,Pageable pageable);
 
-    Optional<Purchase> findByIdAndClient(Long id, Client client);
+    Optional<Purchase> findByPurchaseIDAndClient(Long id, Client client);
 }
 

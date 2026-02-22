@@ -33,9 +33,7 @@ public class Session {
     private Event event;
 
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
-    @JoinColumn(name = "session_id", nullable = false)
-
+    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     private List<Purchase> purchases = new ArrayList<>();
 
     @Column(nullable = false)
@@ -64,6 +62,11 @@ public class Session {
         }
         java.text.SimpleDateFormat fmt = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm");
         return fmt.format(this.date);
+    }
+
+    public void addPurchase(Purchase purchase){
+        this.purchases.add(purchase);
+        purchase.setSession(this);
     }
 
 }

@@ -56,7 +56,7 @@ public class PurchaseService {
      * Throws a NOT_FOUND exception if the purchase does not exist or does not belong to the client
      */
     public Purchase getPurchaseByIdAndClient(Long purchaseId, Client client) {
-        Optional<Purchase> optionalPurchase = purchaseRepository.findByIdAndClient(purchaseId, client);
+        Optional<Purchase> optionalPurchase = purchaseRepository.findByPurchaseIDAndClient(purchaseId, client);
         if (!optionalPurchase.isPresent()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Compra no encontrada");
         }

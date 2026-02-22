@@ -12,12 +12,10 @@ import es.tickethub.tickethub.entities.Zone;
 @Service
 public class ClientRecommendationService {
 
-    private final Client client;
-    private final List<Event> events;
+    private Client client;
+    private List<Event> events;
 
-    public ClientRecommendationService(Client client) {
-        this.client = client;
-        this.events = extractEvents(client);
+    public ClientRecommendationService() {
     }
 
 
