@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>
+    {{#discount.discountID}}Editar Descuento{{/discount.discountID}}
+    {{^discount.discountID}}Crear Descuento{{/discount.discountID}}
+</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+  {{>components/header_admin}}
+
+  <div class="container my-5">
+    <h2>
+      {{#discount.discountID}}Editar Descuento{{/discount.discountID}}
+      {{^discount.discountID}}Crear Descuento{{/discount.discountID}}
+    </h2>
+
+    <form method="post" action="/admin/discounts/save_discount">
+
+      <input type="hidden" name="id" value="{{discountID}}">
+
+      <div class="mb-3">
+        <label class="form-label">Nombre del descuento</label>
+        <input type="text" class="form-control" name="discountName" value="{{discount.discountName}}" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Cantidad</label>
+        <input type="number" step="0.01" class="form-control" name="ammount" value="{{discount.ammount}}" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Tipo de descuento</label>
+        <select class="form-select" name="percentage">
+
+          <option value="true" 
+            {{#discount.percentage}}selected{{/discount.percentage}}>
+            Porcentaje
+          </option>
+
+          <option value="false" 
+            {{^discount.percentage}}selected{{/discount.percentage}}>
+            Cantidad fija
+          </option>
+
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        {{#discount.id}}Actualizar{{/discount.id}}
+        {{^discount.id}}Crear{{/discount.id}}
+      </button>
+
+      <a href="/admin/admin" class="btn btn-secondary">Cancelar</a>
+
+    </form>
+  </div>
+
+  {{>components/footer_admin}}
+
+</body>
+</html>

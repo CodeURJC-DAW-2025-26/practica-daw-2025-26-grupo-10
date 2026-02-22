@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gestionar Descuentos</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+  {{>components/header_admin}}
+
+  <div class="container my-5">
+    <h2>Gestión de Descuentos</h2>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Valor</th>
+          <th>Tipo</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#discounts}}
+        <tr>
+          <td>{{discountName}}</td>
+
+          <td>
+            {{#percentage}}
+              {{ammount}} %
+            {{/percentage}}
+            {{^percentage}}
+              {{ammount}} €
+            {{/percentage}}
+          </td>
+
+          <td>
+            {{#percentage}}
+              (Porcentaje)
+            {{/percentage}}
+            {{^percentage}}
+              (Cantidad fija)
+            {{/percentage}}
+          </td>
+
+          <td>
+            <a href="/admin/discounts/edit_discount/{{discountID}}" class="btn btn-sm btn-primary">Editar</a>
+            <a href="/admin/discounts/delete_discount/{{discountID}}" class="btn btn-sm btn-danger">Eliminar</a>
+          </td>
+        </tr>
+        {{/discounts}}
+      </tbody>
+    </table>
+
+  </div>
+
+  {{>components/footer_admin}}
+
+</body>
+</html>
