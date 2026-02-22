@@ -3,12 +3,9 @@ package es.tickethub.tickethub.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Zone;
 
-@Service
 public class ServerRecommendationService {
 
     private final List<Event> events;
