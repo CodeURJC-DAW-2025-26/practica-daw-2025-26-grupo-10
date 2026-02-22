@@ -20,9 +20,9 @@
         <table class="table">
             <thead><tr><th>Evento</th><th>Fecha</th><th>Estado</th><th></th></tr></thead>
             <tbody>
-              {{#tickets}}
-                <tr class="table-success"><td>{{#events}}{{event}}</td><td>{{sessionDate}}</td>{{/events}}<td>{{isActive}}</td><td><button class="btn btn-sm btn-primary">Descargar</button></td></tr>
-              {{/tickets}}
+                {{#tickets}}
+                    <tr class="table-success"><td>{{#events}}{{event}}</td><td>{{sessionDate}}</td>{{/events}}<td>{{isActive}}</td><td><button class="btn btn-sm btn-primary">Descargar</button></td></tr>
+                {{/tickets}}
             </tbody>
         </table>
 

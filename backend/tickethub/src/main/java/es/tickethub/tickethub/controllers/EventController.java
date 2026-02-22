@@ -22,6 +22,8 @@ import es.tickethub.tickethub.services.DiscountService;
 import java.math.BigDecimal;
 
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 @RequestMapping("/public")
@@ -116,5 +118,14 @@ public class EventController {
         eventService.save(event);
         return "redirect:/events";
     }
+
+    @GetMapping("/events/fragment")
+    public String getMoreEvents(@RequestParam int page, Model model) {
+        int size = 4;
+        List<Event> moreEvents = eventService.findPaginated(page, size);
+        model.addAttribute("events", moreEvents);
+        return "fragments/eventsFragments";
+    }
+    
 
 }

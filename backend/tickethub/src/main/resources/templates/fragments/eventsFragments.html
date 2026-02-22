@@ -1,0 +1,15 @@
+{{#events}}
+<div class="col-md-3">
+    <div class="card h-100">
+        {{#mainImage}}
+            <img src="/public/image/{{imageName}}" class="card-img-top">
+        {{/mainImage}}
+        <div class="card-body">
+            <h5 class="card-title">{{name}}</h5>
+            <p>{{category}}</p>
+            <p>{{artist.artistName}}</p>
+            <a href="/public/event/{{eventID}}" class="btn btn-primary">Ver evento</a>
+        </div>
+    </div>
+</div>
+{{/events}}

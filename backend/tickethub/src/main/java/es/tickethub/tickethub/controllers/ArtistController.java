@@ -1,5 +1,7 @@
 package es.tickethub.tickethub.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import es.tickethub.tickethub.entities.Artist;
 import es.tickethub.tickethub.services.ArtistService;
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class ArtistController {
@@ -77,4 +81,11 @@ public class ArtistController {
         return "redirect:/admin/artists/manage-artist";
     }
 
+    @GetMapping("public/artists/fragment")
+    public String getMoreArtists(@RequestParam int page, Model model) {
+        int size = 4;
+        List<Artist> moreArtists = artistService.findPaginated(page, size);
+        model.addAttribute("artists", moreArtists);
+        return "fragments/artistsFragments";
+    }
 }

@@ -13,42 +13,42 @@
 
 {{>components/header}}
 
-<main class="flex-fill">
-<div class="container my-5">
-  <h2 class="mb-4">Próximos eventos</h2>
-
-  <div class="row mb-4">
-  <div class="col-md-4"><input type="date" class="form-control" placeholder="Fecha"></div>
-  <div class="col-md-4"><select class="form-select"><option>Categoría</option></select></div>
-  <div class="col-md-4"><input type="text" class="form-control" placeholder="Artista"></div>
-</div>
-
-<div class="row g-4">
-  {{#events}}
-  <div class="col-md-3">
-    <div class="card">
-      {{#mainImage}}
-        <img src="/public/image/{{imageName}}" class="card-img-top">
-      {{/mainImage}}
-      <div class="card-body">
-        <h5 class="card-title">{{name}}</h5>
-        <p>{{category}}</p>
-        <p>{{artist.artistName}}</p>
-        <a href="/public/event/{{eventID}}" class="btn btn-primary">Ver evento</a>
+  <main class="flex-fill">
+    <div class="container my-5">
+      <h2 class="mb-4">Próximos eventos</h2>
+      <div class="row mb-4">
+        <div class="col-md-4"><input type="date" class="form-control" placeholder="Fecha"></div>
+        <div class="col-md-4"><select class="form-select"><option>Categoría</option></select></div>
+        <div class="col-md-4"><input type="text" class="form-control" placeholder="Artista"></div>
+      </div>
+      <div class="row g-4" id="event-container">
+        {{#events}}
+        <div class="col-md-3">
+          <div class="card">
+            {{#mainImage}}
+              <img src="/public/image/{{imageName}}" class="card-img-top">
+            {{/mainImage}}
+            <div class="card-body">
+              <h5 class="card-title">{{name}}</h5>
+              <p>{{category}}</p>
+              <p>{{artist.artistName}}</p>
+              <a href="/public/event/{{eventID}}" class="btn btn-primary">Ver evento</a>
+            </div>
+          </div>
+        </div>
+        {{/events}}
+      </div>
+      <!--For the AJAX to load more events-->
+      <div class="row mt-4">
+        <div class="col-12 text-end">
+          <a id="load-button" class="btn btn-outline-secondary" alt="AJAX-button">Cargar más</a>
+        </div>
       </div>
     </div>
-  </div>
-  {{/events}}
-</div>
 
-<!--For the AJAX to load more artists-->
-<div class="row mt-4">
-  <div class="col-12 text-end">
-    <a href="#" class="btn btn-outline-secondary" alt="AJAX-button">Cargar más</a>
-  </div>
-</div>
-</div>
-</main>
+    <script src="../../static/js/loadEvents.js"></script>
+
+  </main>
 <!--LOCATION OF THE FOOTER OF THE WEB-->
 
 {{>components/footer}}
