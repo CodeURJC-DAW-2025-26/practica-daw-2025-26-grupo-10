@@ -3,6 +3,7 @@ package es.tickethub.tickethub.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -62,4 +63,18 @@ public class ArtistService {
         return artistRepository.findAll(pageable).getContent();
     }
 
+    public Page<Artist> searchArtists(String name, int page, int size) {
+
+    Pageable pageable = PageRequest.of(page, size);
+
+    if (name == null || name.isBlank()) {
+        return artistRepository.findAll(pageable);
+    }
+
+    return artistRepository.findByArtistNameContainingIgnoreCase(name, pageable);
+} 
+
 }
+
+
+

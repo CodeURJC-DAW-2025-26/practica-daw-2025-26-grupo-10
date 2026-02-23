@@ -1,24 +1,39 @@
-const url = 'artists/fragments?page='; 
-const buttonSelector = 'load-button-artists';
-const containerSelector = 'artists-container';
-let actualPage = 1;
+const container = document.getElementById("artists-container");
+const button = document.getElementById("load-button-artists");
+const searchInput = document.getElementById("artistSearch");
 
-document.getElementById(buttonSelector).addEventListener('click', function() {
-    const container = document.getElementById(containerSelector);
-    const auxButton = this;
+let page = 0;
+let searchTerm = "";
 
-    fetch(url + actualPage)
-        .then(response => response.text()) // text() because we receive HTML not JSON
-        .then(htmlReceived => {
-            // if it's an empty HTML
-            if (htmlReceived.trim() === "") {
-                auxButton.innerText = "No hay más artistas";
-                auxButton.disabled = true;
-                return;
-            }
-            // if we receive an HTML we insert it just before the end of the artist-container
-            container.insertAdjacentHTML('beforeend', htmlReceived);
-            actualPage++;
-        })
-        .catch(error => console.error("Error al cargar el fragmento de artista:", error));
-})
+// cargar artistas
+async function loadArtists(reset = false) {
+
+  if (reset) {
+    container.innerHTML = "";
+    page = 0;
+  }
+
+  const res = await fetch(`/public/artists/fragments?page=${page}&search=${searchTerm}`);
+  const html = await res.text();
+
+  if (html.trim() === "") {
+    button.style.display = "none";
+    return;
+  }
+
+  container.insertAdjacentHTML("beforeend", html);
+  button.style.display = "block";
+  page++;
+}
+
+// escribir en el buscador
+searchInput.addEventListener("input", e => {
+  searchTerm = e.target.value;
+  loadArtists(true);
+});
+
+// botón cargar más
+button.addEventListener("click", () => loadArtists());
+
+// carga inicial
+loadArtists();
