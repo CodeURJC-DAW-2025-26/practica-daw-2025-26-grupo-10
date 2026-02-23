@@ -2,10 +2,10 @@ const container = document.getElementById("artists-container");
 const button = document.getElementById("load-button-artists");
 const searchInput = document.getElementById("artistSearch");
 
-let page = 0;
+let page = 1;
 let searchTerm = "";
 
-// cargar artistas
+// load artists
 async function loadArtists(reset = false) {
 
   if (reset) {
@@ -26,14 +26,11 @@ async function loadArtists(reset = false) {
   page++;
 }
 
-// escribir en el buscador
+// writing in search bar
 searchInput.addEventListener("input", e => {
   searchTerm = e.target.value;
   loadArtists(true);
 });
 
-// botón cargar más
+// load more button
 button.addEventListener("click", () => loadArtists());
-
-// carga inicial
-loadArtists();

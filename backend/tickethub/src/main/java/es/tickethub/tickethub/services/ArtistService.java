@@ -65,14 +65,14 @@ public class ArtistService {
 
     public Page<Artist> searchArtists(String name, int page, int size) {
 
-    Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size);
 
-    if (name == null || name.isBlank()) {
-        return artistRepository.findAll(pageable);
-    }
+        if (name == null || name.isBlank()) {
+            return artistRepository.findAll(pageable);
+        }
 
-    return artistRepository.findByArtistNameContainingIgnoreCase(name, pageable);
-} 
+        return artistRepository.findByArtistNameContainingIgnoreCase(name, pageable);
+    } 
 
 }
 

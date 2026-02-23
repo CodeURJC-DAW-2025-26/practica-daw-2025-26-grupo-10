@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -84,15 +83,23 @@ public class ArtistController {
     }
 
     @GetMapping("public/artists/fragments")
-    public String getMoreArtists(
+    public String getArtists(
         @RequestParam int page,
         @RequestParam(required = false) String search,
         Model model) {
 
-        Page<Artist> artistPage = artistService.searchArtists(search, page, 5);
+        List<Artist> artists;
+        int size = 5;
 
-        model.addAttribute("artists", artistPage.getContent());
+        if (search != null && !search.trim().isEmpty()) {
+            // search
+            artists = artistService.searchArtists(search, page, size).getContent();
+        } else {
+            // if not search we use the paginated
+            artists = artistService.findPaginated(page, size);
+        }
 
-    return "fragments/artistsFragments";
-}
+        model.addAttribute("artists", artists);
+        return "fragments/artistsFragments";
+    }
 }

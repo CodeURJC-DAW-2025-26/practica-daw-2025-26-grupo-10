@@ -31,7 +31,7 @@ async function loadEvents(reset = false) {
   page++;
 }
 
-// filtros
+// filters
 filterArtist.addEventListener("input", e => {
   artist = e.target.value;
   loadEvents(true);
@@ -42,5 +42,8 @@ filterCategory.addEventListener("change", e => {
   loadEvents(true);
 });
 
-// cargar más
+// load more
 button.addEventListener("click", () => loadEvents());
+
+// initial events
+loadEvents();

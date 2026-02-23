@@ -127,13 +127,25 @@ public class EventController {
             @RequestParam(required = false) String category,
             Model model) {
 
-        Page<Event> eventPage = eventService.searchEvents(artist, category, page, 5);
+        int size = 5;
+        List<Event> events;
+        boolean hasMore;
 
-        model.addAttribute("events", eventPage.getContent());
-        model.addAttribute("hasMore", eventPage.hasNext());
+        // filter
+        if ((artist != null && !artist.isEmpty()) || (category != null && !category.isEmpty())) {
+            Page<Event> eventPage = eventService.searchEvents(artist, category, page, size);
+            events = eventPage.getContent();
+            hasMore = eventPage.hasNext();
+        } else {
+            // paginated
+            events = eventService.findPaginated(page, size);
+            hasMore = events.size() == size; 
+        }
+
+        model.addAttribute("events", events);
+        model.addAttribute("hasMore", hasMore);
 
         return "fragments/eventsFragments";
-}
-    
+    } 
 
 }
