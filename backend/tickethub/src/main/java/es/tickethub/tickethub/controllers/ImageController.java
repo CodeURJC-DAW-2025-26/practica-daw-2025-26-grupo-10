@@ -26,13 +26,19 @@ public class ImageController {
     /* METHOD FOR RENDERING THE IMAGE TO THE HTML*/
     @GetMapping("{name}")
     @ResponseBody
-    public ResponseEntity<byte[]> getImage(@PathVariable String name) throws SQLException {
-        Image image = imageRepository.findById(name).orElseThrow();
+    public ResponseEntity<byte[]> getImage(@PathVariable String name) {
+        try {
+            Image image = imageRepository.findById(name)
+                    .orElseThrow(() -> new RuntimeException("No existe la imagen: " + name));
 
-        byte[] bytes = image.getImageCode().getBytes(1, (int) image.getImageCode().length());
-    
-        return ResponseEntity.ok()
-            .contentType(MediaType.IMAGE_PNG)
-            .body(bytes);
+            byte[] bytes = image.getImageCode().getBytes(1, (int) image.getImageCode().length());
+        
+            return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_PNG) // turn to .png
+                .body(bytes);
+        } catch (Exception e) {
+            System.err.println("Error al servir imagen: " + name + " - " + e.getMessage());
+            return ResponseEntity.notFound().build();
+        }
     }
 }
