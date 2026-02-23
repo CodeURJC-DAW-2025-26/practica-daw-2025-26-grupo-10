@@ -4,64 +4,49 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Compra - {{event.name}}</title>
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="/css/main.css">
 </head>
-<body>
 
-<!--LOCATION OF THE HEADER OF THE WEB-->
+<body>
 
 {{>components/header}}
 
 <main class="flex-fill">
   <div class="container my-5">
+
     <h2 class="mb-4">Compra de entradas - {{event.name}}</h2>
 
+    <!-- NUMERO DE ENTRADAS -->
     <div class="d-flex align-items-center gap-3 mb-4">
-      <h4 class="mb-0">Selecciona el número de entradas que quieres comprar:</h4>
-      <select name="ticketCount" class="form-select form-control-sm w-auto">
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
+      <h4 class="mb-0">Selecciona el número de entradas:</h4>
+
+      <select id="ticketCount" name="ticketCount" class="form-select form-control-sm w-auto">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
       </select>
     </div>
 
     <hr>
 
-    <!-- Here there must be auto generation of the tickets catching the information from the selector of tickets above-->
-    {{#tickets}}
-    <div class="card mb-3 p-3">
-      <div class="d-flex justify-content-between align-items-center">
-        <strong>Entrada {{@index}}</strong>
-        <div class="d-flex gap-2 align-items-center">
-          <span>Zona:</span>
-          <select name="zone" class="form-select form-control-sm w-auto">
-            {{#zones}}
-              <option value="{{id}}">{{name}}</option>
-            {{/zones}}
-          </select>
-        </div>
-        <span>Precio: {{price}}€</span>
-        <span class="text-danger">Eliminar</span>
-      </div>
-    </div>
-    {{/tickets}}
+    <!-- ENTRADAS DINÁMICAS -->
+    <div id="ticketsContainer"></div>
 
-    <div class="d-flex align-items-center gap-2 mb-3">
-      <strong class="mb-0">Aplicar descuento:</strong>
-      <select name="discount" class="form-select form-control-sm w-auto">
-        <option value="">Ninguno</option>
-        {{#discounts}}
-          <option value="{{discountID}}">
-            {{discountName}}
-            {{#amount}}(-{{amount}}€){{/amount}}
-            {{#percent}}(-{{percent}}%){{/percent}}
-          </option>
-        {{/discounts}}
-      </select>
-      <button class="btn btn-outline-secondary btn-sm">+ Nuevo descuento</button>
+    <hr>
+
+    <!-- DESCUENTOS DINÁMICOS -->
+    <div class="mb-3">
+      <strong>Aplicar descuento:</strong>
+
+      <div id="discountContainer" class="mt-2"></div>
+
+      <button type="button" id="addDiscount" class="btn btn-outline-secondary btn-sm mt-2">
+        + Nuevo descuento
+      </button>
     </div>
 
     {{^discounts}}
@@ -69,31 +54,36 @@
     {{/discounts}}
 
     <hr>
-    <div class="col-md-3">
+
+    <!-- EMAIL -->
+    <div class="col-md-4">
       <div class="mb-3">
         <strong><label class="form-label">Correo electrónico</label></strong>
         <input type="email" name="email" class="form-control">
       </div>
+
       <div class="mb-3">
         <strong><label class="form-label">Confirmación de correo electrónico</label></strong>
         <input type="email" name="emailConfirm" class="form-control">
       </div>
     </div>
 
-    <h4 class="mb-4">Total: {{totalPrice}}€</h4>
+    <h4 class="mb-4">Total: <span id="totalPrice">{{totalPrice}}</span> €</h4>
 
     <hr>
-    
+
+    <!-- DATOS DE PAGO -->
     <h4 class="mb-3">Datos de pago</h4>
 
     <div class="row mb-3">
       <div class="col-md-5">
         <label class="form-label">Número de tarjeta</label>
-        <input class="form-control" name="cardNumber" placeholder="Ejemplo: 1234 5678 9012 3456">
+        <input class="form-control" name="cardNumber" placeholder="1234 5678 9012 3456">
       </div>
     </div>
 
     <div class="d-flex gap-4 mb-4">
+
       <div>
         <label class="form-label">Mes</label>
         <select class="form-select form-control-sm w-auto">
@@ -118,24 +108,51 @@
         <label class="form-label">CVV</label>
         <input class="form-control form-control-sm" style="width:80px;" name="CVV" placeholder="123">
       </div>
+
     </div>
 
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-outline-primary" type="button" onclick="location.href='/public/event/{{event.eventID}}'">
+    <div class="d-flex justify-content-end gap-2">
+
+      <button class="btn btn-outline-primary"
+              type="button"
+              onclick="location.href='/public/event/{{event.eventID}}'">
         Volver
       </button>
-      <button class="btn btn-outline-primary" type="button" onclick="location.href='/public/confirmation/{{event.eventID}}'">
+
+      <button class="btn btn-outline-primary"
+              type="button"
+              onclick="location.href='/public/confirmation/{{event.eventID}}'">
         Confirmar compra
       </button>
+
     </div>
 
   </div>
 </main>
 
-<!--LOCATION OF THE FOOTER OF THE WEB-->
-
 {{>/components/footer}}
+
+<!-- DATOS PARA JAVASCRIPT -->
+<script>
+const zonesHTML = `
+{{#zones}}
+<option value="{{id}}" data-price="{{price}}">
+  {{name}} ({{price}}€)
+</option>
+{{/zones}}
+`;
+
+const discountsHTML = `
+<option value="">Ninguno</option>
+{{#discounts}}
+<option value="{{discountID}}" data-amount="{{ammount}}" data-percent="{{percentage}}">
+  {{discountName}}
+</option>
+{{/discounts}}
+`;
+</script>
+
+<script src="/js/purchase.js"></script>
 
 </body>
 </html>
-
