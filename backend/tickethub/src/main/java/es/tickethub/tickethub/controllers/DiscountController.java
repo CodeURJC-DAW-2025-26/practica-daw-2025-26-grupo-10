@@ -62,7 +62,7 @@ public class DiscountController {
         return "/admin/discounts/create_discount";
     }
 
-    //To save the discount edited
+    //To save the edited discount
     @PostMapping("/edit_discount/{discountID}")
     public String editDiscount(@Valid Discount discount, BindingResult result, Model model) {
         Discount editedDiscount = discount;
@@ -79,7 +79,6 @@ public class DiscountController {
     @ResponseStatus(HttpStatus.OK)
     public String deleteDiscount(@PathVariable Long discountID) {
         discountService.deleteDiscount(discountID);
-        System.out.println("DESCUENTO NÚMERO " + discountID + " BORRADO");
         return "/admin/discounts/manage_discounts";
     }
 }

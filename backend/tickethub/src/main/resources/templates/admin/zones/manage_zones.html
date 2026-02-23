@@ -33,14 +33,25 @@
           <td>{{price}} €</td>
           <td>
             <a href="/admin/zones/edit_zone/{{id}}" class="btn btn-sm btn-primary">Editar</a>
-            <a href="/admin/zones/delete_zone/{{id}}" class="btn btn-sm btn-danger">Eliminar</a>
+            <a class="btn btn-sm btn-danger"
+                data-id = "{{id}}" onclick="deleteItem('/zones/delete_zone', this)">Eliminar</a>
           </td>
         </tr>
         {{/zones}}
       </tbody>
     </table>
 
+    <div class="row mb-3">
+      <div class="col d-flex justify-content-end">
+
+        <a href="/admin/admin" class="btn btn-success">Volver a vista de admin</a>
+
+      </div>
+    </div>
   </div>
+
+  <script src="/js/deleteItems.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   {{>components/footer_admin}}
 

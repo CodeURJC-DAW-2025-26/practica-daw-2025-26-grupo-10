@@ -1,20 +1,23 @@
 package es.tickethub.tickethub.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import es.tickethub.tickethub.entities.Zone;
 import es.tickethub.tickethub.services.ZoneService;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("admin/zones")
+@RequestMapping("/admin/zones")
 public class ZoneController {
 
     @Autowired ZoneService zoneService;
@@ -31,12 +34,12 @@ public class ZoneController {
     // New discount form
     @GetMapping("/create_zone")
     public String showCreateForm(Model model) {
-        model.addAttribute("zone", new Zone());
-        return "admin/zones/create_zone"; 
+        
+        return "/admin/zones/create_zone"; 
     }
 
     // Creation of new discount
-    @PostMapping
+    @PostMapping("/create_zone")
     public String createZone(@Valid Zone zone, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
@@ -44,13 +47,13 @@ public class ZoneController {
         }
 
         try {
-            zoneService.save(zone);
+            zoneService.saveAndEditZone(zone);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "admin/zones/create_zone";
         }
 
-        return "redirect:/admin/admin";
+        return "redirect:/admin/zones/manage_zones";
     }
 
     @GetMapping("/edit_zone/{id}")
@@ -62,9 +65,23 @@ public class ZoneController {
         return "admin/zones/create_zone";
     }
 
-    @GetMapping("/delete_zone/{id}")
+    //To save the edited zone
+    @PostMapping("/edit_zone/{id}")
+    public String editZone(@Valid Zone zone, BindingResult result, Model model) {
+        Zone editedZone = zone;
+        try {
+            zoneService.saveAndEditZone(editedZone);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "/admin/zones/create_zone";
+        }
+        return "redirect:/admin/zones/manage_zones";
+    }
+
+    @DeleteMapping("/delete_zone/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public String deleteZone(@PathVariable Long id) {
         zoneService.deleteById(id);
-        return "redirect:/admin/zones/manage_zones";
+        return "/admin/zones/manage_zones";
     }
 }
