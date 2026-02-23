@@ -21,28 +21,55 @@
       {{^zone.id}}Crear Zona{{/zone.id}}
     </h2>
 
-    <form method="post" action="/admin/zones/save_zone">
+    <!--This is needed to make a difference between the form that will be to create a new zone and the form to edit one-->
+    <form method="post" action="/admin/zones/{{#zone}}edit_zone/{{id}}{{/zone}}{{^zone}}create_zone{{/zone}}">
 
-      <input type="hidden" name="id" value="{{zone.id}}">
+      {{#zone}}
+        <input type="hidden" name="id" value="{{zone.id}}">
+      {{/zone}}
 
       <div class="mb-3">
         <label class="form-label">Nombre</label>
-        <input type="text" class="form-control" name="name" value="{{zone.name}}" required>
+
+        {{#zone}}
+          <input type="text" class="form-control" name="name" value="{{zone.name}}" required>
+        {{/zone}}
+
+        {{^zone}}
+          <input type="text" class="form-control" name="name" required>
+        {{/zone}}
+
       </div>
 
       <div class="mb-3">
         <label class="form-label">Capacidad</label>
-        <input type="number" class="form-control" name="capacity" value="{{zone.capacity}}" required>
+
+        {{#zone}}
+          <input type="number" class="form-control" name="capacity" value="{{zone.capacity}}" required>
+        {{/zone}}
+
+        {{^zone}}
+          <input type="number" class="form-control" name="capacity" required>
+        {{/zone}}
+
       </div>
 
       <div class="mb-3">
         <label class="form-label">Precio</label>
-        <input type="number" step="0.01" class="form-control" name="price" value="{{zone.price}}" required>
+
+        {{#zone}}
+          <input type="number" step="0.01" class="form-control" name="price" value="{{zone.price}}" required>
+        {{/zone}}
+
+        {{^zone}}
+          <input type="number" step="0.01" class="form-control" name="price" required>
+        {{/zone}}
+
       </div>
 
       <button type="submit" class="btn btn-primary">
-        {{#zone.id}}Actualizar{{/zone.id}}
-        {{^zone.id}}Crear{{/zone.id}}
+        {{#zone}}Actualizar{{/zone}}
+        {{^zone}}Crear{{/zone}}
       </button>
 
       <a href="/admin/admin" class="btn btn-secondary">Cancelar</a>
