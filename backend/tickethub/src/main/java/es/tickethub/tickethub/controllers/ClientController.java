@@ -1,5 +1,8 @@
 package es.tickethub.tickethub.controllers;
 
+import java.io.IOException;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Controller;
@@ -7,12 +10,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import es.tickethub.tickethub.entities.Client;
+
 import es.tickethub.tickethub.services.ClientService;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,58 +45,66 @@ public class ClientController {
         }
     }
     
-
-    @GetMapping("/profile")
-    public String getClientOverview(Model model) {
-        Long idPrueba = 1L;
-        Client clientLogged = clientService.getClientById(idPrueba);
+    @GetMapping("/profile/{userId}")
+    public String getClientOverview(Model model, @PathVariable Long userId) {
+        Client clientLogged = clientService.getClientById(userId);
         
         model.addAttribute("clientLogged",clientLogged);
-        return "profile";
-    }
-    @GetMapping("/profile/edit")
-    public String getClientData(Model model) {
-        //obtenemos el id del usuario
-        //Long userID = authentication.getName();
-        Long idPrueba = 1L;
-        Client clientLogged = clientService.getClientById(idPrueba);
-        
-        model.addAttribute("clientLogged",clientLogged);
-        return "edit_profile";
+        return "/user/profile";
     }
 
-    @PostMapping("/profile/edit")
+    // EDIT CLIENT INFORMACION
+    @GetMapping("/profile/{userId}/edit")
+    public String getClientData(@PathVariable Long userId,Model model) {
+        Client clientLogged = clientService.getClientById(userId);
+        
+        model.addAttribute("clientLogged",clientLogged);
+        return "/user/edit_profile";
+    }
+
+    @PostMapping("/profile/{userId}/edit")
     //TODO: futuramente con react usaremos el @RequestBody, por ahora usamos @ModelAttribute
-    public String uptadeClientData(@Valid @ModelAttribute Client client,RedirectAttributes redirectAttributes) {
-        Long idPrueba = 1L;
+    public String uptadeClientData(@Valid @ModelAttribute Client client,
+        //BindingResult bindingResult,
+        RedirectAttributes redirectAttributes,@RequestParam MultipartFile imageFile,
+        @PathVariable Long userId){
         try {
-            clientService.updateClient(idPrueba, client);
+            clientService.updateClient(userId, client,imageFile);
             redirectAttributes.addFlashAttribute("success","Perfil actualizado correctamente");
-            return "redirect:/clients/profile"; 
+            return "redirect:/clients/profile/" + userId + "/edit";
         } catch (ObjectOptimisticLockingFailureException e) {
-            redirectAttributes.addFlashAttribute("error","Alguien ha modificado el prefirl mientras lo editaba");
-            return "redirect:/clients/profile";
-        } 
+
+            redirectAttributes.addFlashAttribute("error","Alguien ha modificado el perfil mientras lo editaba");
+            return "redirect:/clients/profile/" + userId + "/edit";
+        }catch(Exception e){
+            redirectAttributes.addFlashAttribute("error", "Error al procesar la solicitud");
+            return "redirect:/clients/profile/" + userId + "/edit";
+        }
+        
     }
     
-    @GetMapping("/profile/password")
-    public String getPasswordScreen() {
-        return "change_password";
+
+    //CHANGE PASSWORD
+    @GetMapping("/profile/{userId}/password")
+    public String getPasswordScreen(Model model,@PathVariable Long userId) {
+        model.addAttribute("userID",userId);
+        return "/user/change_password";
     }
 
-    @PostMapping("/profile/password")
+    @PostMapping("/profile/{userId}/password")
     public String changePassword(@RequestParam String oldPassword,@RequestParam String newPassword,
-        @RequestParam String newPasswordConfirmation,RedirectAttributes redirectAttributes) {
-        Long idPrueba = 1L;
+        @RequestParam String newPasswordConfirmation,RedirectAttributes redirectAttributes,
+        @PathVariable Long userId) {
         try {
-            clientService.changePassword(idPrueba, oldPassword, newPassword, newPasswordConfirmation);
-            return "redirect:/clients/profile";    
-        } catch (ResponseStatusException error) {
-            redirectAttributes.addFlashAttribute("error",error.getReason());
-            return "redirect:/clients/profile/password";
+            clientService.changePassword(userId, oldPassword, newPassword, newPasswordConfirmation);
+            redirectAttributes.addFlashAttribute("success","Contraseña actualizada correctamente");
+            return "redirect:/clients/profile/"+userId+"/password";    
         }catch(ObjectOptimisticLockingFailureException e){
             redirectAttributes.addFlashAttribute("error","Hubo un conflicto procesando su solicitud. Por favor intente de nuevo.");
-            return "redirect:/clients/profile/password";
+            return "redirect:/clients/profile/"+userId+"/password";
+        }catch(ResponseStatusException e){
+            redirectAttributes.addFlashAttribute("error",e.getReason());
+             return "redirect:/clients/profile/"+userId+"/password";
         }
     }
     

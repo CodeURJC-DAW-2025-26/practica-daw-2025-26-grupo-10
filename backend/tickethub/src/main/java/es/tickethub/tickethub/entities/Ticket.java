@@ -26,10 +26,6 @@ public class Ticket {
     @Column(unique = true, nullable = false)
     private String code;
 
-    /*@ManyToOne
-    @JoinColumn(name = "session_id", nullable = false)
-    private Session session;*/
-
     @ManyToOne
     @JoinColumn(name = "zone_id", nullable = false)
     private Zone zone;

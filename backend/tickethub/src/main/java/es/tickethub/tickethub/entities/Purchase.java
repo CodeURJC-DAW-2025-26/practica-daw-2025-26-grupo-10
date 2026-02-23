@@ -41,7 +41,7 @@ public class Purchase {
     private Session session;
 
     // Needed to associate the mapping at the client entity to the purchases
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 

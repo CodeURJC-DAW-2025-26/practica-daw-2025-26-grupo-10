@@ -11,14 +11,61 @@
 
 <!--LOCATION OF THE HEADER OF THE WEB-->
 
-{{>components/header}}
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarMain"
+      aria-controls="navbarMain"
+      aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!--There must be an alert to warn if he can't save the changes FOR ALL THE BUTTONS OF THE NAV-BAR INCLUDING THE PROFILE PHOTO-->
+    <div class="collapse navbar-collapse" id="navbarMain">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" href="../public/index.html">Inicio</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="../public/events.html">Eventos</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="../public/artists.html">Artistas</a>
+        </li>
+      </ul>
+
+      <div class="d-flex align-items-center gap-3">
+        <!--<a href="../public/login.html" class="btn btn-outline-primary btn-sm">
+          Iniciar sesión
+        </a>
+        <a href="../public/signup.html" class="btn btn-light btn-sm">
+          Registrarse
+        </a>-->
+
+        <a href="profile.html">
+        <img
+          src="/images/default-avatar.png"
+          alt="Perfil"
+          class="rounded-circle"
+          width="40"
+          height="40"
+        >
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
 
 <!-- CONTENIDO -->
 <main class="flex-fill">
   <div class="container my-5" style="max-width:600px">
     {{#clientLogged}}
     <h2 class="mb-4">Editar perfil</h2>
-    <form method="post" action="/clients/profile/edit" enctype="multipart/form-data">
+    <form method="post" action="/clients/profile/{{userID}}/edit" enctype="multipart/form-data">
       <div class="mb-3">
         <input type="hidden" name="version" value="{{version}}">
         <label class="form-label">Nombre</label>
@@ -46,7 +93,7 @@
       </div>
       <div class="mb-3">
         <label class="form-label">Foto de perfil</label>
-        <input type="file" class="form-control" name="profileImage">
+        <input type="file" class="form-control" name="imageFile" accept=".jpg, .jpeg">
       </div>
       <div class="mb-3" style="text-align: right">
         <a href="change_password" class="btn btn-outline-primary">Cambiar contraseña</a>
@@ -62,17 +109,13 @@
       {{/success}}
       <div class="d-flex gap-2">
         <button class="btn btn-primary equal-btn" type="submit">Guardar</button>
-        <a href="/user/profile" class="btn btn-primary equal-btn">Cancelar</a>
+        <a href="/clients/profile/{{userID}}" class="btn btn-primary equal-btn">Volver</a>
       </div>
     </form>
     {{/clientLogged}}
   </div>
 </main>
-
-<!--LOCATION OF THE FOOTER OF THE WEB-->
-
-{{>/components/footer}}
-
+{{>components/footer}}
 </body>
 </html>
 

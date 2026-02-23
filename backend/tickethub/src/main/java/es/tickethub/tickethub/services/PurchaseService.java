@@ -10,8 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 
+import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Purchase;
+import es.tickethub.tickethub.entities.Ticket;
 import es.tickethub.tickethub.repositories.ClientRepository;
 import es.tickethub.tickethub.repositories.PurchaseRepository;
 
@@ -19,7 +22,14 @@ import es.tickethub.tickethub.repositories.PurchaseRepository;
 public class PurchaseService {
 
     @Autowired PurchaseRepository purchaseRepository;
+
+    @Autowired
+    ClientService clientService;
+
     @Autowired ClientRepository clientRepository;
+
+    @Autowired
+    TicketService ticketService;
 
     /**
      * Creates a new purchase along with all associated tickets
@@ -42,13 +52,33 @@ public class PurchaseService {
      * Retrieves all purchases belonging to a specific client
      * Useful for displaying the client's purchase history
      */
+    @Transactional(readOnly = true)
     public Slice<Purchase> getPurchasesByClientId(Long clientId,int pageNumber) {
         if(!clientRepository.existsById(clientId)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado");
         }
-        PageRequest pageRequest =  PageRequest.of(pageNumber,10);
+        PageRequest pageRequest =  PageRequest.of(pageNumber,10,Sort.by(Sort.Direction.DESC,"session.date"));
         return purchaseRepository.findByClient_UserID(clientId,pageRequest);
     }
+
+    @Transactional(readOnly = true)
+    public List<Ticket> getTicketsByPurchase(Long purchaseID){
+        Purchase purchase = purchaseRepository.findById(purchaseID).orElseThrow(()->new  ResponseStatusException(HttpStatus.NOT_FOUND, "Compra no encontrada") );
+        return purchase.getTickets();
+    }
+
+    /**
+     * Retrieves a specific purchase by its ID and ensures it belongs to the given client
+     * Throws a NOT_FOUND exception if the purchase does not exist or does not belong to the client
+     */
+    public Purchase getPurchaseByIdAndClient(Long purchaseId, Client client) {
+        Optional<Purchase> optionalPurchase = purchaseRepository.findByPurchaseIDAndClient(purchaseId, client);
+        if (!optionalPurchase.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Compra no encontrada");
+        }
+        return optionalPurchase.get();
+    }
+
     /**
      * Deletes a purchase by its ID
      * If the purchase does not exist, throws a NOT_FOUND exception
