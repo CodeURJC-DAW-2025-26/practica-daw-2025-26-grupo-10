@@ -38,11 +38,11 @@ public class EventController {
     @Autowired
     private DiscountService discountService;
 
-    
+
     @GetMapping("/events")
-    public String listEvents(Model model) {
-        model.addAttribute("events", eventService.findAll());
-        return "public/events";
+    public String events(Model model) {
+        model.addAttribute("events", eventService.findPaginated(0, 5));
+        return "/public/events";
     }
 
     @GetMapping("/newEvent")
@@ -119,9 +119,9 @@ public class EventController {
         return "redirect:/events";
     }
 
-    @GetMapping("/events/fragment")
+    @GetMapping("/events/fragments")
     public String getMoreEvents(@RequestParam int page, Model model) {
-        int size = 4;
+        int size = 5;
         List<Event> moreEvents = eventService.findPaginated(page, size);
         model.addAttribute("events", moreEvents);
         return "fragments/eventsFragments";

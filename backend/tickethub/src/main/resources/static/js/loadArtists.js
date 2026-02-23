@@ -1,6 +1,4 @@
-import "express";
-
-const url = '/artists/fragment?page='; 
+const url = 'artists/fragments?page='; 
 const buttonSelector = 'load-button-artists';
 const containerSelector = 'artists-container';
 let actualPage = 1;
@@ -9,7 +7,7 @@ document.getElementById(buttonSelector).addEventListener('click', function() {
     const container = document.getElementById(containerSelector);
     const auxButton = this;
 
-    fetch(url + '${actualPage}')
+    fetch(url + actualPage)
         .then(response => response.text()) // text() because we receive HTML not JSON
         .then(htmlReceived => {
             // if it's an empty HTML

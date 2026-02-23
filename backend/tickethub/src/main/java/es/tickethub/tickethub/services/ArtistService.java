@@ -61,4 +61,5 @@ public class ArtistService {
         Pageable pageable = PageRequest.of(page, size);
         return artistRepository.findAll(pageable).getContent();
     }
+
 }
