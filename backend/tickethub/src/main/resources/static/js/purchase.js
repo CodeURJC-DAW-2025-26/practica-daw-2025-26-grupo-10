@@ -25,7 +25,7 @@ function generateTickets(count) {
             </select>
           </div>
 
-          <a class="btn btn-sm btn-danger">Eliminar</a>
+          <a class="btn btn-sm btn-danger remove-ticket">Eliminar</a>
 
         </div>
       </div>
