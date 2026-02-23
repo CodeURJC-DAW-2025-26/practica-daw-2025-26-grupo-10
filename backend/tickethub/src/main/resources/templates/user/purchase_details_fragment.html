@@ -1,0 +1,29 @@
+<tr class="details-row bg-light">
+    <td colspan="5"> <div class="p-3 border rounded shadow-sm bg-white">
+            <h6 class="fw-bold mb-3">Desglose de Tickets:</h6>
+            <table class="table table-sm mb-0">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Zona</th>
+                        <th>Precio</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#tickets}}
+                    <tr class="{{#isActive}}table-success{{/isActive}}{{^isActive}}table-danger{{/isActive}}">
+                        <td><code>{{code}}</code></td>
+                        <td>{{zone.name}}</td>
+                        <td>{{ticketPrice}}€</td>
+                        <td>{{#isActive}}Activo{{/isActive}}{{^isActive}}Caducado/Usado{{/isActive}}</td>
+                    </tr>
+                    {{/tickets}}
+                    {{^tickets}}
+                    <tr><td colspan="4" class="text-center">No hay tickets asociados.</td></tr>
+                    {{/tickets}}
+                </tbody>
+            </table>
+        </div>
+    </td>
+</tr>

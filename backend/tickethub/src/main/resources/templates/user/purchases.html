@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mis Entradas</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="../../static/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
+<script src="/js/funcionesAjax.js"></script>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -49,7 +50,7 @@
 
         <a href="./profile.html">
         <img
-          src="../../static/images/default-avatar.png"
+          src="/images/default-avatar.png"
           alt="Perfil"
           class="rounded-circle"
           width="40"
@@ -67,7 +68,7 @@
         <h2 class="mb-4">
           <div>Mis entradas</div>
           <div style="text-align: end">
-            <a href="profile.html" class="btn btn-outline-primary">Regresar al perfil</a>
+            <a href="/clients/profile/{{userID}}" class="btn btn-outline-primary">Regresar al perfil</a>
           </div>
         </h2>
         <table class="table">
@@ -80,93 +81,31 @@
               </tr>
             </thead>
             <tbody id="purchase-table-body">
-              {{> purchases_items}}
+              {{> /user/purchases_items}}
             </tbody>
         </table>
         {{#hasNext}}
         <div class="text-center mt-3">
-          <button id="btn-load-more" class="btn btn-primary" data-next-page="{{nextPage}}" onclick="cargarMasCompras(this)">
+          <button id="btn-load-more" class="btn btn-primary" data-next-page="{{nextPage}}" onclick="cargarMasCompras(this,{{userID}})">
               Cargar más
           </button>
         </div>
         {{/hasNext}}
+
+        <div id="no-more-msg" class="text-center mt-3" style="{{#hasNext}}display:none{{/hasNext}}">
+            <p class="text-muted">No dispone de más compras</p>
+        </div>
+
+        <tr class="table-success">
+    <td></td>
+    
+</tr>
     </div>
 </main>
 
-<!--LOCATION OF THE FOOTER OF THE WEB
+{{>/components/footer}}
 
-{{>footer}}
 
--->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-<footer class="mt-auto bg-dark">
-  <div class="container text-white py-4">
-    <div class="row">
-
-      <!-- Sobre nosotros -->
-      <div class="col-md-4 mb-3">
-        <h5>Sobre nosotros</h5>
-        <p>
-          TicketHub conecta a los usuarios con eventos, artistas y recintos, ofreciendo una experiencia de compra de entradas simple y segura.
-        </p>
-      </div>
-
-      <!-- Enlaces rápidos -->
-      <div class="col-md-4 mb-3">
-        <h5>Enlaces rápidos</h5>
-        <ul class="list-unstyled">
-          <li>
-            <a href="index.html" class="text-decoration-none text-white">
-              Inicio
-            </a>
-          </li>
-          <li>
-            <a href="event.html" class="text-decoration-none text-white">
-              Eventos
-            </a>
-          </li>
-          <li>
-            <a href="login.html" class="text-decoration-none text-white">
-              Iniciar sesión
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Redes sociales -->
-      <div class="col-md-4 mb-3">
-        <h5>Síguenos</h5>
-        <ul class="list-inline">
-          <li class="list-inline-item">
-            <a href="#" class="text-white">
-              <i class="bi bi-facebook"></i>
-            </a>
-          </li>
-          <li class="list-inline-item">
-            <a href="#" class="text-white">
-              <i class="bi bi-twitter"></i>
-            </a>
-          </li>
-          <li class="list-inline-item">
-            <a href="#" class="text-white">
-              <i class="bi bi-instagram"></i>
-            </a>
-          </li>
-        </ul>
-      </div>
-
-    </div>
-
-    <hr class="border-secondary">
-
-    <div class="text-center">
-      <p class="mb-0">
-        &copy; 2026 TicketHub. Todos los derechos reservados.
-      </p>
-    </div>
-  </div>
-</footer>
 
 </body>
 </html>

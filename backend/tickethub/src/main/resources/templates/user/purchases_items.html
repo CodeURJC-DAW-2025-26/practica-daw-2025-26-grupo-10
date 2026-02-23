@@ -1,0 +1,16 @@
+{{#purchases}}
+<tr class="table-success">
+    <td>{{session.event.name}}</td>
+    <td>{{session.date}}</td>
+    <td>Comprado</td>
+    <td>
+        <button class="btn btn-sm btn-outline-primary" 
+                onclick="toggleTickets({{purchaseID}}, this)">
+            Ver detalles
+        </button>
+        <button class="btn btn-sm btn-primary">Descargar</button>
+    </td>
+</tr>
+{{/purchases}}
+
+<input type="hidden" class="has-next-indicator" value="{{hasNext}}">

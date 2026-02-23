@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Discount;
 import es.tickethub.tickethub.entities.Purchase;
+import es.tickethub.tickethub.entities.Ticket;
 import es.tickethub.tickethub.entities.Zone;
 import es.tickethub.tickethub.entities.Event;
 
@@ -20,8 +21,9 @@ import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.PurchaseService;
 import es.tickethub.tickethub.services.ZoneService;
 
+
 @Controller
-@RequestMapping("/purchase")
+@RequestMapping("/purchases")
 public class PurchaseController {
 
     @Autowired
@@ -39,32 +41,36 @@ public class PurchaseController {
      * Retrieves 10 purchases for a given client ID.
      * Stateless: the client is identified via request parameter.
      */
-    @GetMapping("/me")
-    public String listPurchasesByClientId( Model model) {
+    @GetMapping("/me/{userId}")
+    public String listPurchasesByClientId(@PathVariable Long userId ,Model model) {
         // TODO: Cuando tengamos Spring Security, sacaremos el ID/Email del usuario logueado
         // Long clientId = authentication.getName();
-        // Create a temporary Client object with the given email
-        Long idPrueba = 1L;
-        Slice<Purchase> purchasesSlice = purchaseService.getPurchasesByClientId(idPrueba,0); //le puse cero porque no se como será con ajax
+        Slice<Purchase> purchasesSlice = purchaseService.getPurchasesByClientId(userId,0);
+        model.addAttribute("userID",userId);
         model.addAttribute("purchases", purchasesSlice.getContent());
         model.addAttribute("hasNext",purchasesSlice.hasNext());
         model.addAttribute("nextPage",1);
-        return "purchases"; // template to show purchase history
+        return "user/purchases";
     }
 
     /**
      * This is for Ajax to load the next 10 purchases
      */
-    @GetMapping("/me/more")
-    public String loadMorePurchases(@RequestParam int pageNumber,Model model) {
-        Long idPrueba = 1L;
-        Slice<Purchase> purchasesSlice = purchaseService.getPurchasesByClientId(idPrueba, pageNumber);
+    @GetMapping("/me/{userId}/more")
+    public String loadMorePurchases(@PathVariable Long userId,@RequestParam int pageNumber,Model model) {
+        Slice<Purchase> purchasesSlice = purchaseService.getPurchasesByClientId(userId, pageNumber);
         model.addAttribute("purchases",purchasesSlice.getContent());
         model.addAttribute("hasNext", purchasesSlice.hasNext());
-        model.addAttribute("nextPage", pageNumber + 1 );
-        return "purchase_items";
+        model.addAttribute("nextPage", pageNumber + 1);
+        return "user/purchase_items";
     }
-    
+
+    @GetMapping("/{purchaseId}/tickets")
+    public String getPurchaseTickets(@PathVariable Long purchaseId, Model model) {
+        List<Ticket> tickets = purchaseService.getTicketsByPurchase(purchaseId);
+        model.addAttribute("tickets", tickets);
+        return "user/purchase_details_fragment";
+    }
 
     /**
      * Shows the details of a specific purchase for a given client email.

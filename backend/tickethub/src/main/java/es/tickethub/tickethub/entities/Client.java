@@ -17,7 +17,7 @@ import lombok.Setter;
 @Setter
 public class Client extends User {
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client")//Fetchtype.LAZY by default in OneToMany
     private List<Purchase> purchases = new ArrayList<>();
 
     private String name;
