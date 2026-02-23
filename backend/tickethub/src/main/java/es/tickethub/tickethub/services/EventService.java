@@ -5,9 +5,11 @@ import java.util.Optional;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
 
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.repositories.EventRepository;
@@ -61,5 +63,22 @@ public class EventService {
         Pageable pageable = PageRequest.of(page, size);
         // repo returns a Page object -> we use getContent to extract the list of events
         return eventRepository.findAll(pageable).getContent();
+    }
+    public Page<Event> searchEvents(String artist, String category, int page, int size) {
+
+    Pageable pageable = PageRequest.of(page, size);
+
+        if ((artist == null || artist.isBlank()) &&
+            (category == null || category.isBlank())) {
+            return eventRepository.findAll(pageable);
+        }
+
+        if (artist != null && !artist.isBlank()) {
+            return eventRepository
+                    .findByArtist_ArtistNameContainingIgnoreCase(artist, pageable);
+        }
+
+        return eventRepository
+                .findByCategoryContainingIgnoreCase(category, pageable);
     }
 }

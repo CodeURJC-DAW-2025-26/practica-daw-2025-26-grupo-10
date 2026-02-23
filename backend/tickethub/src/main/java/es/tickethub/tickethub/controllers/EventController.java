@@ -3,6 +3,7 @@ package es.tickethub.tickethub.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -120,12 +121,19 @@ public class EventController {
     }
 
     @GetMapping("/events/fragments")
-    public String getMoreEvents(@RequestParam int page, Model model) {
-        int size = 5;
-        List<Event> moreEvents = eventService.findPaginated(page, size);
-        model.addAttribute("events", moreEvents);
+    public String getMoreEvents(
+            @RequestParam int page,
+            @RequestParam(required = false) String artist,
+            @RequestParam(required = false) String category,
+            Model model) {
+
+        Page<Event> eventPage = eventService.searchEvents(artist, category, page, 5);
+
+        model.addAttribute("events", eventPage.getContent());
+        model.addAttribute("hasMore", eventPage.hasNext());
+
         return "fragments/eventsFragments";
-    }
+}
     
 
 }

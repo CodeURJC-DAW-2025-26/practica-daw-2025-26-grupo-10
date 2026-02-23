@@ -1,24 +1,46 @@
-const url = 'events/fragments?page='; 
-const buttonSelector = 'load-button';
-const containerSelector = 'event-container';
-let actualPage = 1;
+const container = document.getElementById("event-container");
+const button = document.getElementById("load-button");
 
-document.getElementById(buttonSelector).addEventListener('click', function() {
-    const container = document.getElementById(containerSelector);
-    const auxButton = this;
+const filterArtist = document.getElementById("filterArtist");
+const filterCategory = document.getElementById("filterCategory");
 
-    fetch(url + actualPage)
-        .then(response => response.text()) // text() because we receive HTML not JSON
-        .then(htmlReceived => {
-            // if it's an empty HTML
-            if (htmlReceived.trim() === "") {
-                auxButton.innerText = "No hay más eventos";
-                auxButton.disabled = true;
-                return;
-            }
-            // if we receive an HTML we insert it just before the end of the event-container
-            container.insertAdjacentHTML('beforeend', htmlReceived);
-            actualPage++;
-        })
-        .catch(error => console.error("Error al cargar el fragmento de evento:", error));
-})
+let page = 0;
+let artist = "";
+let category = "";
+
+async function loadEvents(reset = false) {
+
+  if (reset) {
+    container.innerHTML = "";
+    page = 0;
+  }
+
+  const res = await fetch(
+    `/public/events/fragments?page=${page}&artist=${artist}&category=${category}`
+  );
+
+  const html = await res.text();
+
+  if (html.trim() === "") {
+    button.style.display = "none";
+    return;
+  }
+
+  container.insertAdjacentHTML("beforeend", html);
+  button.style.display = "inline-block";
+  page++;
+}
+
+// filtros
+filterArtist.addEventListener("input", e => {
+  artist = e.target.value;
+  loadEvents(true);
+});
+
+filterCategory.addEventListener("change", e => {
+  category = e.target.value;
+  loadEvents(true);
+});
+
+// cargar más
+button.addEventListener("click", () => loadEvents());
