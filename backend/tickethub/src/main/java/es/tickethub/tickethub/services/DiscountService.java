@@ -36,11 +36,18 @@ public class DiscountService {
 
     /* Use of existsByDiscountName -> no need to bring the discount. We want to check if it already exists */
 
-    public Discount createDiscount(Discount discount){
-        if (discountRepository.existsById(discount.getDiscountID())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre del descuento ya existe");
+    public Discount createAndEditDiscount(Discount discount){
+
+        if (discount.getDiscountID() == null) {
+            return discountRepository.save(discount);
+        } else {
+            Optional <Discount> existing = discountRepository.findById(discount.getDiscountID());
+
+            existing.get().setAmmount(discount.getAmmount());
+            existing.get().setDiscountName(discount.getDiscountName());
+            existing.get().setPercentage(discount.getPercentage());
+            return discountRepository.save(existing.get());
         }
-        return discountRepository.save(discount);
     }
 
     public void deleteDiscount(Long discountID){
