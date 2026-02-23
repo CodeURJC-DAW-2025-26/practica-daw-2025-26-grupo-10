@@ -21,40 +21,60 @@
       {{^discount.discountID}}Crear Descuento{{/discount.discountID}}
     </h2>
 
-    <form method="post" action="/admin/discounts/save_discount">
+    <form method="post" action="/admin/discounts/{{#discount}}edit_discount/{{discount.discountID}}{{/discount}}{{^discount}}create_discount{{/discount}}">
 
-      <input type="hidden" name="id" value="{{discountID}}">
+      {{#discount.discountID}}
+        <input type="hidden" name="id" value="{{discountID}}">
+      {{/discount.discountID}}
 
       <div class="mb-3">
         <label class="form-label">Nombre del descuento</label>
-        <input type="text" class="form-control" name="discountName" value="{{discount.discountName}}" required>
+
+        {{#discount}}
+          <input type="text" class="form-control" name="discountName" value="{{discount.discountName}}" required>
+        {{/discount}}
+
+        {{^discount}}
+          <input type="text" class="form-control" name="discountName" required>
+        {{/discount}}
       </div>
 
       <div class="mb-3">
         <label class="form-label">Cantidad</label>
-        <input type="number" step="0.01" class="form-control" name="ammount" value="{{discount.ammount}}" required>
+
+        {{#discount}}
+          <input type="number" step="0.01" class="form-control" name="ammount" value="{{discount.ammount}}" required>
+        {{/discount}}
+
+        {{^discount}}
+          <input type="number" step="0.01" class="form-control" name="ammount" required>
+        {{/discount}}
       </div>
 
       <div class="mb-3">
         <label class="form-label">Tipo de descuento</label>
         <select class="form-select" name="percentage">
 
-          <option value="true" 
-            {{#discount.percentage}}selected{{/discount.percentage}}>
-            Porcentaje
-          </option>
+          {{#discount}}
+            <option value="true" {{#discount.percentage}}selected{{/discount.percentage}}>
+              Porcentaje
+            </option>
+            <option value="false" {{^discount.percentage}}selected{{/discount.percentage}}>
+              Cantidad fija
+            </option>
+          {{/discount}}
 
-          <option value="false" 
-            {{^discount.percentage}}selected{{/discount.percentage}}>
-            Cantidad fija
-          </option>
+          {{^discount}}
+            <option value="true">Porcentaje</option>
+            <option value="false">Cantidad fija</option>
+          {{/discount}}
 
         </select>
       </div>
 
       <button type="submit" class="btn btn-primary">
-        {{#discount.id}}Actualizar{{/discount.id}}
-        {{^discount.id}}Crear{{/discount.id}}
+        {{#discount.discountID}}Actualizar{{/discount.discountID}}
+        {{^discount.discountID}}Crear{{/discount.discountID}}
       </button>
 
       <a href="/admin/admin" class="btn btn-secondary">Cancelar</a>
