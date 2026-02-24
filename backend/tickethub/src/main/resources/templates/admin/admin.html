@@ -23,22 +23,39 @@
       <div class="col-md-3"><div class="card text-center p-3"><h5>Usuarios</h5><p class="h4">540</p></div></div>
       <div class="col-md-3"><div class="card text-center p-3"><h5>Próximos Eventos</h5><p class="h4">5</p></div></div>
     </div>
-    <div class="d-flex flex-wrap gap-3">
-      <a href="/admin/events/create_event" class="btn btn-primary">Crear evento</a>
-      <a href="/admin/events/manage_events" class="btn btn-outline-primary">Gestionar eventos</a>
-      <a href="/admin/artists/create_artist" class="btn btn-primary">Crear artista</a>
-      <a href="/admin/artists/manage_artists" class="btn btn-outline-primary">Gestionar artistas</a>
-      <a href="/admin/zones/create_zone" class="btn btn-primary">Crear zona</a>
-      <a href="/admin/zones/manage_zones" class="btn btn-outline-primary">Gestionar zonas</a>
-      <a href="/admin/discounts/create_discount" class="btn btn-primary">Crear descuento</a>
-      <a href="/admin/discounts/manage_discounts" class="btn btn-outline-primary">Gestionar descuentos</a>
-      <a href="/admin/statistics" class="btn btn-outline-primary">Ver Estadísticas</a>
+    <div class="d-flex flex-wrap gap-4 mt-4"> 
+
+      <div class="btn-group shadow-sm" role="group">
+        <a href="/admin/events/create_event" class="btn btn-primary btn-admin-pair">Crear evento</a>
+        <a href="/admin/events/manage_events" class="btn btn-outline-primary btn-admin-pair">Gestionar eventos</a>
+      </div>
+
+      <div class="btn-group shadow-sm" role="group">
+        <a href="/admin/artists/create_artist" class="btn btn-primary btn-admin-pair">Crear artista</a>
+        <a href="/admin/artists/manage_artists" class="btn btn-outline-primary btn-admin-pair">Gestionar artistas</a>
+      </div>
+
+      <div class="btn-group shadow-sm" role="group">
+        <a href="/admin/zones/create_zone" class="btn btn-primary btn-admin-pair">Crear zona</a>
+        <a href="/admin/zones/manage_zones" class="btn btn-outline-primary btn-admin-pair">Gestionar zonas</a>
+      </div>
+
+      <div class="btn-group shadow-sm" role="group">
+        <a href="/admin/discounts/create_discount" class="btn btn-primary btn-admin-pair">Crear descuento</a>
+        <a href="/admin/discounts/manage_discounts" class="btn btn-outline-primary btn-admin-pair">Gestionar descuentos</a>
+      </div>
+
+      <div>
+        <a href="/admin/statistics" class="btn btn-outline-primary">
+            <i class="bi bi-bar-chart-line me-1"></i> Ver Estadísticas
+        </a>
+      </div>
+    </div> 
     </div>
-  </div>
 
 <!--LOCATION OF THE FOOTER OF THE WEB-->
 
 {{>components/footer_admin}}
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
