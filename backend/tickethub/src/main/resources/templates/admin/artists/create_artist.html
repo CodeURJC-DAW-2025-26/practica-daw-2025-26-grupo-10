@@ -3,7 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Crear Artista</title>
+    <title>
+      {{#artist}}Crear Artista{{/artist}}
+      {{#artist}}Editar Artista{{/artist}}
+    </title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -18,37 +21,80 @@
 
     <!-- CONTENT -->
     <main class="container my-5 flex-grow-1">
-      <h2>Crear Artista</h2>
+      <h2>{{#artist}}Crear Artista{{/artist}}
+          {{#artist}}Editar Artista{{/artist}}</h2>
 
-      <form action="/artists/save" method="post" enctype="multipart/form-data">
+      <form method="post" enctype="multipart/form-data" action="/admin/artists/{{#artist}}edit_artist/{{artistID}}{{/artist}}{{^artist}}create_artist{{/artist}}">
 
-        <input type="hidden" name="artistID" value="{{artist.artistID}}">
+        {{#artist.artistID}}
+          <input type="hidden" name="artistID" value="{{artist.artistID}}">
+        {{/artist.artistID}}
 
         <p class="fw-bold mb-1">Nombre del artista</p>
-        <input name="artistName" class="form-control mb-3"
-              value="{{artist.artistName}}" placeholder="Nombre del artista">
+
+        {{#artist}}
+          <input name="artistName" class="form-control mb-3"
+                value="{{artist.artistName}}" placeholder="Nombre del artista">
+        {{/artist}}
+
+        {{^artist}}
+          <input name="artistName" class="form-control mb-3"
+                placeholder="Nombre del artista">
+        {{/artist}}
+
 
         <p class="fw-bold mb-1">Información del artista</p>
-        <textarea name="info" class="form-control mb-3"
-                  placeholder="Información">{{artist.info}}</textarea>
+
+        {{#artist}}
+          <textarea name="info" class="form-control mb-3"
+                    placeholder="Información">{{artist.info}}</textarea>
+        {{/artist}}
+
+        {{^artist}}
+          <textarea name="info" class="form-control mb-3"
+                    placeholder="Información"></textarea>
+        {{/artist}}
+
 
         <p class="fw-bold mb-1">Instagram</p>
-        <input name="instagram" class="form-control mb-3"
-              value="{{artist.instagram}}" placeholder="@usuario">
+
+        {{#artist}}
+          <input name="instagram" class="form-control mb-3"
+                value="{{artist.instagram}}" placeholder="@usuario">
+        {{/artist}}
+
+        {{^artist}}
+          <input name="instagram" class="form-control mb-3"
+                placeholder="@usuario">
+        {{/artist}}
+
 
         <p class="fw-bold mb-1">Twitter (X)</p>
-        <input name="twitter" class="form-control mb-3"
-              value="{{artist.twitter}}" placeholder="usuario">
+
+        {{#artist}}
+          <input name="twitter" class="form-control mb-3"
+                value="{{artist.twitter}}" placeholder="usuario">
+        {{/artist}}
+
+        {{^artist}}
+          <input name="twitter" class="form-control mb-3"
+                placeholder="usuario">
+        {{/artist}}
+
 
         <p class="fw-bold mb-1">Imagen del artista</p>
         <input type="file" name="image" class="form-control mb-3" accept="image/*">
 
-        <button type="submit" class="btn btn-success">
-          {{#artist}}Guardar cambios{{/artist}}
-          {{^artist}}Crear artista{{/artist}}
-        </button>
+        <div class="d-flex justify-content-between mt-3">
 
-        <a href="/admin/artists/manage_artists" class="btn btn-secondary">Cancelar</a>
+          <a href="/admin/artists/manage_artists" class="btn btn-secondary">Cancelar</a>
+
+          <button type="submit" class="btn btn-success">
+            {{#artist}}Guardar cambios{{/artist}}
+            {{^artist}}Crear artista{{/artist}}
+          </button>
+          
+        </div>
       </form>
     </main>
 

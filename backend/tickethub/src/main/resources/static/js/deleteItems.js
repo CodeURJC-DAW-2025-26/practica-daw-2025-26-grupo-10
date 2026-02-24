@@ -1,5 +1,3 @@
-// deleteItem.js
-
 function deleteItem(baseUrl, element) {
     const id = element.dataset.id;
 

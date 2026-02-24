@@ -72,13 +72,16 @@
         </select>
       </div>
 
-      <button type="submit" class="btn btn-primary">
-        {{#discount.discountID}}Actualizar{{/discount.discountID}}
-        {{^discount.discountID}}Crear{{/discount.discountID}}
-      </button>
+      <div class="d-flex justify-content-between mt-3">
 
-      <a href="/admin/admin" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-primary">
+          {{#discount.discountID}}Actualizar{{/discount.discountID}}
+          {{^discount.discountID}}Crear{{/discount.discountID}}
+        </button>
 
+        <a href="/admin/admin" class="btn btn-secondary">Cancelar</a>
+
+      </div>
     </form>
   </div>
 

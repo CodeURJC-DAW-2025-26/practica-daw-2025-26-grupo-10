@@ -40,12 +40,12 @@ public class Artist {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Event> eventsIncoming = new ArrayList<>();
     
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Event> lastEvents = new ArrayList<>();
 
     //the cascade thing means that the object associated to this column will be saved and deleted with the artist
     @OneToOne(cascade = CascadeType.ALL)
-    private Image artistImage = new Image();
+    private Image artistImage;
 
     private String instagram = "";
 
@@ -59,12 +59,9 @@ public class Artist {
     public Artist(String artistName, String info, Image artistImage, String instagram, String twitter) {
         this.artistName = artistName;
         this.info = info;
-        if (artistImage != null) {
-            this.artistImage = artistImage;
-        }
+        this.artistImage = artistImage;
         this.instagram = instagram;
         this.twitter = twitter;
     }
-
 
 }

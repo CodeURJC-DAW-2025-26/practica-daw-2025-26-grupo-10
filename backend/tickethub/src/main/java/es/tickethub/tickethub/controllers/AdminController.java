@@ -7,18 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import es.tickethub.tickethub.entities.Artist;
 import es.tickethub.tickethub.entities.Event;
-import es.tickethub.tickethub.services.ArtistService;
 import es.tickethub.tickethub.services.EventService;
 
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-
-    @Autowired
-    private ArtistService artistService;
 
     @Autowired
     private EventService eventService;
@@ -58,23 +53,6 @@ public class AdminController {
         model.addAttribute("event", event);
 
         return "admin/events/create_event";
-    }
-    
-    @GetMapping("/artists/manage_artists")
-    public String showManageArtists(Model model) {
-
-        model.addAttribute("artists", artistService.findAll());
-
-        return "admin/artists/manage_artists";
-    }
-
-    @GetMapping("/artists/edit_artist/{artistID}")
-    public String editArtist(@PathVariable Long artistID, Model model) {
-        Artist artist = artistService.findById(artistID);
-
-        model.addAttribute("artist", artist);
-
-        return "admin/artists/create_artist";
     }
     
 }
