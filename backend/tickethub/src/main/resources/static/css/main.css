@@ -4,7 +4,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;600&display=swap');
 
 :root {
-    --pitch-black: #231C07;
+    --pitch-black: #231c07;
     --vivid-tangerine: #F77F00;
     --vivid-hover: #ff9500;
     --beige: #F2F2E4;
@@ -99,6 +99,49 @@ main .container,
     transform: translateY(-3px);
 }
 
+/* Delete button */
+.btn-danger {
+    background-color: #A62626 !important;
+    border: none !important;
+    color: white !important;
+}
+
+.btn-danger:hover {
+    background-color: #7d1d1d !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 15px rgba(166, 38, 38, 0.3) !important;
+}
+
+.btn-admin-pair {
+    width: 180px;
+    height: 45px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    margin: 0 !important;
+}
+
+.btn-group > .btn-admin-pair {
+    border-radius: 0 !important;
+}
+
+.btn-group > .btn-admin-pair:first-child {
+    border-top-left-radius: 10px !important;
+    border-bottom-left-radius: 10px !important;
+    border-right: none !important; 
+}
+
+.btn-group > .btn-admin-pair:last-child {
+    border-top-right-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+}
+
+.btn-group.shadow-sm {
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(35, 28, 7, 0.1) !important;
+}
+
 /* ==========================================================================
    6. NAVBAR & FOOTER
    ========================================================================== */
@@ -117,8 +160,25 @@ main .container,
     color: var(--vivid-hover) !important;
 }
 
+.navbar-nav .nav-link {
+    color: var(--footer-text) !important; /* Usamos el beige clarito para que contraste */
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--vivid-tangerine) !important; /* Naranja al pasar el ratón */
+}
+
+/* Si quieres que el enlace de la página donde estás (Estadísticas) se vea resaltado */
+.navbar-nav .nav-link.active {
+    color: var(--vivid-tangerine) !important;
+    font-weight: 700;
+}
+
 footer {
-    background-color: var(--pitch-black);
+    background-color: #231c07;
     color: var(--footer-text) !important; 
     padding: 4rem 0;
     border-top: 1px solid rgba(255,255,255,0.1); 
@@ -399,4 +459,19 @@ main .hero-section .container {
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1) !important;
     padding: 50px;
     max-width: 900px; 
+}
+
+
+/* Espaciado para botones en tablas cuando se apilan en móvil */
+@media (max-width: 768px) {
+    .table td .btn {
+        margin-bottom: 5px; /* Crea espacio hacia abajo si se ponen uno encima de otro */
+        width: 100%;        /* Opcional: hace que los botones ocupen todo el ancho de la celda en móvil para que sean más fáciles de pulsar */
+        display: block;     /* Cambia a bloque para que el margen funcione mejor */
+    }
+    
+    /* Alineación de texto en móvil para que no se vea todo apretado */
+    .table td {
+        vertical-align: middle;
+    }
 }
