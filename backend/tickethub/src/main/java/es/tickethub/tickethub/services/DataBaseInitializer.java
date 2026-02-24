@@ -239,6 +239,7 @@ public class DataBaseInitializer {
     /* This function will be executed after the database tables are created and will put the default data that will be at the website */
     @PostConstruct
     public void initializeDataBase() {
+
         List <List <Image> > images = initializeImages();
 
         Client defaultClient = initializeUsers(images.get(1));
