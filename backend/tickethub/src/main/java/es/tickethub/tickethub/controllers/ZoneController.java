@@ -31,14 +31,14 @@ public class ZoneController {
         return "admin/zones/manage_zones";
     }
 
-    // New discount form
+    // New zone form
     @GetMapping("/create_zone")
     public String showCreateForm(Model model) {
         
         return "/admin/zones/create_zone"; 
     }
 
-    // Creation of new discount
+    // Creation of new zone
     @PostMapping("/create_zone")
     public String createZone(@Valid Zone zone, BindingResult result, Model model) {
 
@@ -68,9 +68,9 @@ public class ZoneController {
     //To save the edited zone
     @PostMapping("/edit_zone/{id}")
     public String editZone(@Valid Zone zone, BindingResult result, Model model) {
-        Zone editedZone = zone;
+
         try {
-            zoneService.saveAndEditZone(editedZone);
+            zoneService.saveAndEditZone(zone);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "/admin/zones/create_zone";
@@ -80,8 +80,7 @@ public class ZoneController {
 
     @DeleteMapping("/delete_zone/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public String deleteZone(@PathVariable Long id) {
+    public void deleteZone(@PathVariable Long id) {
         zoneService.deleteById(id);
-        return "/admin/zones/manage_zones";
     }
 }

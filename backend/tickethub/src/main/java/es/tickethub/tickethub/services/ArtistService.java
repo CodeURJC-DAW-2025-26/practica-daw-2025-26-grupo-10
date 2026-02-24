@@ -44,18 +44,19 @@ public class ArtistService {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artista no encontrado");
     }
-    public Artist save(Artist artist) {
-        // Duplicate validation
-        if (artist.getArtistID() == null && artistRepository.findByArtistName(artist.getArtistName()).isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ya existe un artista con ese nombre");
-        }
+
+    public Artist saveAndEditArtist(Artist artist) {
+        
         return artistRepository.save(artist);
     }
+
     public void deleteById(Long id) {
-            if (!artistRepository.existsById(id)) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artista no encontrado");
-            }
-            artistRepository.deleteById(id);
+        Optional<Artist> optionalArtist = artistRepository.findById(id);
+        if (!optionalArtist.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artist not found");
+        }
+        Artist artist = optionalArtist.get();
+        artistRepository.deleteById(artist.getArtistID()); 
     }
 
     public List<Artist> findPaginated(int page, int size) {

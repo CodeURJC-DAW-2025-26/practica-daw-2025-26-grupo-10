@@ -62,12 +62,12 @@ public class ZoneService {
     }
 
     public void deleteById(Long id) {
-        Optional<Zone> optionalDiscount = zoneRepository.findById(id);
-        if (!optionalDiscount.isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Descuento no encontrado");
+        Optional<Zone> optionalZone = zoneRepository.findById(id);
+        if (!optionalZone.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Zone not found");
         }
-        Zone discount = optionalDiscount.get();
-        zoneRepository.deleteById(discount.getId()); 
+        Zone zone = optionalZone.get();
+        zoneRepository.deleteById(zone.getId());
     }
 }
 

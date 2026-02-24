@@ -17,20 +17,39 @@
 
   <div class="container my-5">
     <h2>Gestión de Artistas</h2>
-    {{#artists}}
+    
     <table class="table">
-      <thead><tr><th>Nombre</th><th>Acciones</th></tr></thead>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Instagram</th>
+          <th>Twitter (X)</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      {{#artists}}
       <tbody>
         <tr>
           <td>{{artistName}}</td>
+          <td>{{instagram}}</td>
+          <td>{{twitter}}</td>
           <td>
             <a href="/admin/artists/edit_artist/{{artistID}}" class="btn btn-sm btn-primary">Editar</a>
-            <a href="/admin/artists/delete_artist/{{artistID}}" class="btn btn-sm btn-secondary">Eliminar</a>
+            <a class="btn btn-sm btn-danger"
+                data-id = "{{artistID}}" onclick="deleteItem('/artists/delete_artist', this)">Eliminar</a>
           </td>
         </tr>
       </tbody>
+      {{/artists}}
     </table>
-    {{/artists}}
+
+    <div class="row mb-3">
+      <div class="col d-flex justify-content-end">
+
+        <a href="/admin/admin" class="btn btn-success">Volver a vista de admin</a>
+
+      </div>
+    </div>
   </div>
 
   <!--LOCATION OF THE FOOTER OF THE WEB-->
