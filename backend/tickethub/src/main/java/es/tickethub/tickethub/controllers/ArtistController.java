@@ -119,7 +119,7 @@ public class ArtistController {
             existing.getEventsIncoming().addAll(artist.getEventsIncoming());
 
             existing.getLastEvents().clear();
-            existing.getLastEvents().addAll();
+            existing.getLastEvents().addAll(artist.getLastEvents());
             if (!file.isEmpty()) {
                 Blob blob = new SerialBlob(file.getBytes());
                 Image image = new Image(file.getOriginalFilename(), blob);
