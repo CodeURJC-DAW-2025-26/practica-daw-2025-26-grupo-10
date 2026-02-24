@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
-
 import jakarta.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,6 +45,6 @@ public class User {
         this.email = email;
         this.username = username;
         this.password = password;
-        this.admin = admin;
+        this.admin = admin; 
     }
 }

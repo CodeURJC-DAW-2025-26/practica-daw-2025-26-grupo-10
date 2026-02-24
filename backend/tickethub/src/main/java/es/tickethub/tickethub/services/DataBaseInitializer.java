@@ -107,8 +107,9 @@ public class DataBaseInitializer {
         );
 
         List <Image> eventImages = Arrays.asList(
-            new Image("eventImage1", convertToBlob(loadImage("classes-diagram.png"))),
-            new Image("eventImage2", convertToBlob(loadImage("database-diagram.png")))
+            // adding .png to the name
+            new Image("eventImage1.png", convertToBlob(loadImage("classes-diagram.png"))),
+            new Image("eventImage2.png", convertToBlob(loadImage("database-diagram.png")))
         );
 
         allImages.addFirst(artistImages);   //We add the artistImages list to the big list

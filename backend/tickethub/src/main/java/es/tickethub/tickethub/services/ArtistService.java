@@ -3,6 +3,9 @@ package es.tickethub.tickethub.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -53,5 +56,25 @@ public class ArtistService {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artista no encontrado");
             }
             artistRepository.deleteById(id);
+    }
+
+    public List<Artist> findPaginated(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return artistRepository.findAll(pageable).getContent();
+    }
+
+    public Page<Artist> searchArtists(String name, int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        if (name == null || name.isBlank()) {
+            return artistRepository.findAll(pageable);
         }
+
+        return artistRepository.findByArtistNameContainingIgnoreCase(name, pageable);
+    } 
+
 }
+
+
+

@@ -12,8 +12,6 @@ import org.springframework.data.domain.Slice;
 
 public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
     List<Purchase> findByClientEmail(String email);
-
-
     Slice<Purchase> findByClient_UserID(Long clientID,Pageable pageable);
 
     Optional<Purchase> findByPurchaseIDAndClient(Long id, Client client);

@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Min;
@@ -53,7 +54,6 @@ public class Event {
     @Column(nullable = false) //I think this make no sense
     private List<Session> sessions = new ArrayList<>();
 
-
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", nullable = true)
     private List<Zone> zones = new ArrayList<>();
@@ -61,7 +61,6 @@ public class Event {
     /* Here we don't have to put orphanRemoval because the discounts can be associated to more events*/
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
-
     private List<Discount> discounts = new ArrayList<>();
 
     @Column(nullable = false)
@@ -71,7 +70,6 @@ public class Event {
     @Column(nullable = false)
     @NotBlank(message = "La categoría del evento es obligatoria")
     private String category;
-
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", nullable = true)

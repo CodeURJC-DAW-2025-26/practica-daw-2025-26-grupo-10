@@ -9,10 +9,7 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="../public/index.html">TicketHub</a>
+<!--LOCATION OF THE HEADER OF THE WEB-->
 
     <button
       class="navbar-toggler"
@@ -98,6 +95,8 @@
         <label class="form-label">Foto de perfil</label>
         <input type="file" class="form-control" name="imageFile" accept=".jpg, .jpeg">
       </div>
+      <div class="mb-3" style="text-align: right">
+        <a href="change_password" class="btn btn-outline-primary">Cambiar contraseña</a>
       {{#error}}
       <div class="alert alert-danger" role="alert">
         {{error}}
@@ -116,10 +115,7 @@
     {{/clientLogged}}
   </div>
 </main>
-
 {{>components/footer}}
-
-
 </body>
 </html>
 

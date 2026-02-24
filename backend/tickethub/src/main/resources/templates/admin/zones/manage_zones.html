@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gestionar Zonas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+  {{>components/header_admin}}
+
+  <div class="container my-5">
+    <h2>Gestión de Zonas</h2>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Capacidad</th>
+          <th>Precio</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#zones}}
+        <tr>
+          <td>{{name}}</td>
+          <td>{{capacity}}</td>
+          <td>{{price}} €</td>
+          <td>
+            <a href="/admin/zones/edit_zone/{{id}}" class="btn btn-sm btn-primary">Editar</a>
+            <a class="btn btn-sm btn-danger"
+                data-id = "{{id}}" onclick="deleteItem('/zones/delete_zone', this)">Eliminar</a>
+          </td>
+        </tr>
+        {{/zones}}
+      </tbody>
+    </table>
+
+    <div class="row mb-3">
+      <div class="col d-flex justify-content-end">
+
+        <a href="/admin/admin" class="btn btn-success">Volver a vista de admin</a>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/deleteItems.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  {{>components/footer_admin}}
+
+</body>
+</html>

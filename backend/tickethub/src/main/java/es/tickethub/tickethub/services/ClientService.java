@@ -8,9 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import org.springframework.transaction.annotation.Transactional;
-
 import org.springframework.web.server.ResponseStatusException;
 import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Image;
@@ -18,15 +16,13 @@ import es.tickethub.tickethub.repositories.ClientRepository;
 import org.springframework.web.multipart.MultipartFile;
 @Service
 public class ClientService {
-    
     @Autowired
     private ClientRepository clientRepository;
-
 
     @Transactional
     public void registeClient( String name, String email, String surname,String password, String passWordConfirmation){
         if(!password.equals(passWordConfirmation)){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Las contraseñas no coinciden");
+             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Las contraseñas no coinciden");
         }
         boolean existClient =  clientRepository.existsByEmail(email);
         if(existClient){
@@ -93,5 +89,5 @@ public class ClientService {
         client.setPassword(newPassword);
         clientRepository.save(client);
     }
-    
+
 }

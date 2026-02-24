@@ -6,4 +6,4 @@ import es.tickethub.tickethub.entities.User;
 
 public interface UserRepository extends JpaRepository<User,Long>{
     
-}
+} 

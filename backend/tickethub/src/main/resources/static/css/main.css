@@ -1,122 +1,168 @@
-/* Base colors */
+/* ==========================================================================
+   1. IMPORTS & VARIABLES
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;600&display=swap');
+
 :root {
     --pitch-black: #231C07;
     --vivid-tangerine: #F77F00;
-    --beige: #EBEBD3;
+    --vivid-hover: #ff9500;
+    --beige: #F2F2E4;
+    --card-white: #FFFFFF;
+    --text-muted: #625027;
+    --footer-text: #EBEBD3;
 }
 
-/* Body */
+/* ==========================================================================
+   2. BASE STYLE & TYPOGRAPHY
+   ========================================================================== */
 body {
     background-color: var(--beige);
     color: var(--pitch-black);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Poppins', 'Segoe UI', Tahoma, sans-serif;
+    font-weight: 400;
 }
 
-/* Navbar */
+h1, h2, h3, h4, h5, .navbar-brand {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--pitch-black);
+}
+
+/* ==========================================================================
+   3. COMMON COMPONENTS (CARDS & CONTAINERS)
+   ========================================================================== */
+.card, 
+main .container, 
+.container form,
+.card.text-center {
+    background-color: var(--card-white) !important;
+    border: 1px solid rgba(0,0,0,0.05) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px rgba(35, 28, 7, 0.08) !important;
+    padding: 25px;
+    margin-bottom: 2rem;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(35, 28, 7, 0.12) !important;
+    border-color: var(--vivid-tangerine) !important;
+}
+
+/* ==========================================================================
+   4. BUTTONS
+   ========================================================================== */
+.btn {
+    border-radius: 10px !important;
+    padding: 10px 20px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    font-weight: 600 !important;
+}
+
+.navbar .btn-outline-primary {
+    border: 2px solid var(--vivid-tangerine) !important;
+    color: var(--vivid-tangerine) !important;
+    background-color: transparent !important;
+    border-color: var(--vivid-tangerine) !important;
+}
+
+.btn-primary, .btn-success, .btn-light {
+    background-color: var(--vivid-tangerine) !important;
+    border: none !important;
+    color: var(--pitch-black) !important;
+}
+
+.btn:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 15px rgba(247, 127, 0, 0.3) !important;
+}
+
+.btn-primary:hover, .btn-success:hover, .navbar .btn-outline-primary:hover {
+    background-color: var(--vivid-tangerine) !important;
+    color: white !important;
+    transform: translateY(-3px);
+}
+
+.btn-outline-primary {
+    border: 2px solid var(--vivid-tangerine) !important;
+    color: var(--vivid-tangerine) !important;
+    background-color: transparent !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--vivid-tangerine) !important;
+    color: white !important;
+    border-color: var(--vivid-tangerine) !important;
+    transform: translateY(-3px);
+}
+
+/* ==========================================================================
+   6. NAVBAR & FOOTER
+   ========================================================================== */
 .navbar {
     background-color: var(--pitch-black) !important;
+    padding: 1rem 0 !important;
 }
 
 .navbar-brand {
-    color: var(--vivid-tangerine) !important;
-    font-weight: bold;
-    font-size: 1.5rem;
+    color: var(--vivid-tangerine) !important; 
+    font-size: 1.6rem;
+    opacity: 1 !important;
 }
 
-.navbar-nav .nav-link {
-    color: var(--beige) !important;
-    transition: color 0.3s;
+.navbar-brand:hover {
+    color: var(--vivid-hover) !important;
 }
 
-.navbar-nav .nav-link:hover,
-.navbar-nav .nav-link.active {
-    color: var(--vivid-tangerine) !important;
-}
-
-.btn-light {
-    background-color: var(--vivid-tangerine);
-    border: none;
-    color: var(--pitch-black);
-    font-weight: bold;
-    transition: background-color 0.3s;
-}
-
-.btn-light:hover {
-    background-color: #ff9500;
-    color: white;
-}
-
-/* Event cards */
-.card {
-    border: none;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.card h5 {
-    color: var(--pitch-black);
-}
-
-.card p {
-    color: #4a3b1c; 
-}
-
-.card .btn-primary {
-    background-color: var(--vivid-tangerine);
-    border: none;
-}
-
-.card .btn-primary:hover {
-    background-color: #ff9500;
-}
-
-/* Inputs & selects */
-input.form-control,
-select.form-control {
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
-
-input.form-control:focus,
-select.form-control:focus {
-    border-color: var(--vivid-tangerine);
-    box-shadow: 0 0 0 0.2rem rgba(247,127,0,0.25);
-}
-
-/* Footer */
 footer {
     background-color: var(--pitch-black);
-    color: var(--beige);
-    padding: 2rem 0;
+    color: var(--footer-text) !important; 
+    padding: 4rem 0;
+    border-top: 1px solid rgba(255,255,255,0.1); 
+}
+
+footer p, 
+footer span, 
+footer h1, 
+footer h2, 
+footer h3, 
+footer h4,
+footer h5, 
+footer div {
+    color: var(--footer-text) !important; 
 }
 
 footer a {
-    color: var(--beige);
-    transition: color 0.3s;
+    color: var(--vivid-tangerine) !important;
+    text-decoration: none;
+    font-weight: 600;
 }
 
 footer a:hover {
-    color: var(--vivid-tangerine);
+    color: white !important;
+    text-decoration: underline;
 }
 
-/* Social icons */
-.social-icons i {
-    font-size: 1.2rem;
+footer .social-icons a {
+    color: var(--footer-text) !important;
+    font-size: 1.5rem;
+    margin: 0 10px;
 }
 
-.social-icons a:hover i {
-    color: var(--vivid-tangerine);
+footer .social-icons a:hover {
+    color: var(--vivid-tangerine) !important;
 }
 
-/* Responsive tweaks */
-@media (max-width: 768px) {
-    .navbar-nav {
-        text-align: center;
-    }
-
-    .row.g-4 .col-md-4 {
-        margin-bottom: 1rem;
-    }
+/* ==========================================================================
+   7. CAROUSEL & SPECIFIC ELEMENTS
+   ========================================================================== */
+.carousel-item {
+    height: 500px;
+    background-color: #000;
+    border-radius: 15px;
 }
 
 /* Artist Card */
@@ -329,172 +375,23 @@ main button.btn-primary:hover {
     color: var(--pitch-black);
     font-weight: bold;
     width: 100%;
-    margin-top: 1rem;
-}
-
-.container form button.btn-primary:hover {
-    background-color: #ff9500;
-    color: var(--pitch-black);
-}
-
-/* form inside titles*/
-.container form h2, .container form h4, .container form h5 {
-    color: var(--pitch-black);
-}
-
-/* sign up container */
-main .container {
-    background-color: var(--beige);
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    margin: auto;
-}
-
-/* title */
-main h3 {
-    color: var(--pitch-black);
-}
-
-/* Inputs */
-main input.form-control {
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    margin-bottom: 0.5rem;
-}
-
-main input.form-control:focus {
-    border-color: var(--vivid-tangerine);
-    box-shadow: 0 0 0 0.2rem rgba(247,127,0,0.25);
-}
-
-/* button */
-main button.btn-success {
-    background-color: var(--vivid-tangerine);
-    border: none;
-    color: var(--pitch-black);
-    font-weight: bold;
-}
-
-main button.btn-success:hover {
-    background-color: #ff9500;
-    color: var(--pitch-black);
-}
-/* profile card */
-.card.text-center {
-    background-color: var(--beige);
-    border: none;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    padding: 2rem;
-}
-
-.card.text-center h4 {
-    color: var(--pitch-black);
-    margin-bottom: 0.3rem;
-}
-
-.card.text-center p.text-muted {
-    color: #4a3b1c;
-}
-
-/* profile image */
-.card img.rounded-circle {
-    border: 3px solid var(--vivid-tangerine);
-    padding: 2px;
-    width: 150px;
-    height: 150px;
     object-fit: cover;
 }
 
-/* buttons */
-.btn-outline-primary {
-    border-color: var(--vivid-tangerine);
-    color: var(--pitch-black);
-    background-color: var(--beige);
-    font-weight: bold;
-    margin-bottom: 0.3rem;
+.hero-section {
+    position: relative;
+    background: linear-gradient(rgba(242, 242, 228, 0.4), var(--beige)), url('../images/concert_background.png') no-repeat center center;
+    background-size: cover;
+    padding: 80px 0;
+    margin-bottom: 2rem;
 }
 
-.btn-outline-primary:hover {
-    background-color: var(--vivid-tangerine);
-    color: var(--pitch-black);
-    border-color: var(--vivid-tangerine);
-}
-
-.btn-primary {
-    background-color: var(--vivid-tangerine);
-    border: none;
-    color: var(--pitch-black);
-    font-weight: bold;
-}
-
-.btn-primary:hover {
-    background-color: #ff9500;
-    color: var(--pitch-black);
-}
-
-.btn-outline-secondary {
-    border-color: #ccc;
-    color: var(--pitch-black);
-    background-color: var(--beige);
-}
-
-.btn-outline-secondary:hover {
-    background-color: var(--vivid-tangerine);
-    color: var(--pitch-black);
-    border-color: var(--vivid-tangerine);
-}
-/* entry table */
-table {
-    background-color: var(--beige);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-table th, table td {
-    vertical-align: middle;
-    color: var(--pitch-black);
-    border: none;
-}
-
-table thead {
-    background-color: var(--pitch-black);
-    color: var(--beige);
-}
-
-table tbody tr {
-    background-color: #f7f5e8; /* beige for rows */
-}
-
-table tbody tr.table-success {
-    background-color: #fdf4e3;
-}
-
-table tbody tr.table-danger {
-    background-color: #ffe5d1;
-}
-
-/* table inside buttons */
-table .btn-primary {
-    background-color: var(--vivid-tangerine);
-    border: none;
-    color: var(--pitch-black);
-    font-weight: bold;
-}
-
-table .btn-primary:hover {
-    background-color: #ff9500;
-}
-
-table .btn-secondary {
-    background-color: #ccc;
-    border: none;
-    color: var(--pitch-black);
-}
-
-table .btn-secondary:hover {
-    background-color: var(--vivid-tangerine);
-    color: var(--pitch-black);
+main .hero-section .container {
+    background-color: rgba(255, 255, 255, 0.253) !important; 
+    backdrop-filter: blur(12px) saturate(180%); 
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1) !important;
+    padding: 50px;
+    max-width: 900px; 
 }

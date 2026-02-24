@@ -10,20 +10,8 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-<nav class="navbar navbar-expand-lg navbar-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="../public/index.html">TicketHub</a>
 
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarMain"
-      aria-controls="navbarMain"
-      aria-expanded="false"
-      aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+<!--LOCATION OF THE HEADER OF THE WEB-->
 
     <div class="collapse navbar-collapse" id="navbarMain">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -72,6 +60,17 @@
           </div>
         </h2>
         <table class="table">
+          <thead><tr><th>Evento</th><th>Fecha</th><th>Estado</th><th></th></tr></thead>
+            <tbody>
+                {{#tickets}}
+                    <tr class="table-success"><td>{{#events}}{{event}}</td><td>{{sessionDate}}</td>{{/events}}<td>{{isActive}}</td><td><button class="btn btn-sm btn-primary">Descargar</button></td></tr>
+                {{/tickets}}
+            </tbody>
+        </table>
+
+        <div style="text-align: end">
+            <a href="profile" class="btn btn-outline-primary">Regresar al perfil</a>
+
             <thead>
               <tr>
                 <th>Evento</th>
@@ -104,8 +103,5 @@
 </main>
 
 {{>/components/footer}}
-
-
-
 </body>
 </html>

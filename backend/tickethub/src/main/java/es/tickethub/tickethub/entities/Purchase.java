@@ -31,10 +31,8 @@ public class Purchase {
     The @JoinColumn annotation is used to define a One-to-Many relationship. You must specify the name of the ID field of the related entity.
     The orphanRemoval attribute ensures that when an entity instance is removed, all associated child entities are automatically deleted as well.*/
 
-
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     @JoinColumn(name = "purchase_id", nullable = false)
-
     private List<Ticket> tickets = new ArrayList<>();
 
     // Needed to associate many purchases to one session

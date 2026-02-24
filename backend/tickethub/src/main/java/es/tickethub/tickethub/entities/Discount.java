@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.DecimalMin;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,10 +25,11 @@ public class Discount {
 
     /* To indicate the if ammount to be discounted is a percentage or a specific money ammount */
     @Column(nullable = false)
-    private Boolean percentage; 
+    private Boolean percentage;
 
     /* precision is for the total of the numbers, scale for the number of decimals*/
     @Column(nullable = false, precision = 5, scale = 2)
+    @DecimalMin(value="0.00")
     private BigDecimal ammount;
 
     public Discount() {}    //Constructor for the Database

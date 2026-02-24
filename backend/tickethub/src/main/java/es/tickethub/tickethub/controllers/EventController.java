@@ -3,6 +3,7 @@ package es.tickethub.tickethub.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +23,8 @@ import es.tickethub.tickethub.services.DiscountService;
 import java.math.BigDecimal;
 
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 @RequestMapping("/public")
@@ -36,29 +39,29 @@ public class EventController {
     @Autowired
     private DiscountService discountService;
 
-    
+
     @GetMapping("/events")
-    public String listEvents(Model model) {
-        model.addAttribute("events", eventService.findAll());
-        return "public/events";
+    public String events(Model model) {
+        model.addAttribute("events", eventService.findPaginated(0, 5));
+        return "/public/events";
     }
 
-    @GetMapping("/new")
+    @GetMapping("/newEvent")
     public String showCreateForm(Model model) {
-        model.addAttribute("event", new Event());
+        
         return "create-event";
     }
 
     @PostMapping
     public String createEvent(@Valid Event event, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "create-event";
+            return "create_event";
         }
         try {
             eventService.save(event);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
-            return "create-event";
+            return "create_event";
         }
         return "redirect:/events";
     }
@@ -108,13 +111,6 @@ public class EventController {
         return "redirect:/events";
     }
 
-    @GetMapping("/manage/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
-        Event event = eventService.findById(id);
-        model.addAttribute("event", event);
-        return "manage-event";
-    }
-
     @PostMapping("/manage")
     public String updateEvent(@Valid Event event, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -123,5 +119,33 @@ public class EventController {
         eventService.save(event);
         return "redirect:/events";
     }
+
+    @GetMapping("/events/fragments")
+    public String getMoreEvents(
+            @RequestParam int page,
+            @RequestParam(required = false) String artist,
+            @RequestParam(required = false) String category,
+            Model model) {
+
+        int size = 5;
+        List<Event> events;
+        boolean hasMore;
+
+        // filter
+        if ((artist != null && !artist.isEmpty()) || (category != null && !category.isEmpty())) {
+            Page<Event> eventPage = eventService.searchEvents(artist, category, page, size);
+            events = eventPage.getContent();
+            hasMore = eventPage.hasNext();
+        } else {
+            // paginated
+            events = eventService.findPaginated(page, size);
+            hasMore = events.size() == size; 
+        }
+
+        model.addAttribute("events", events);
+        model.addAttribute("hasMore", hasMore);
+
+        return "fragments/eventsFragments";
+    } 
 
 }

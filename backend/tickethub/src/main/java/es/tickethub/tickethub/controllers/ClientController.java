@@ -23,6 +23,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.PostMapping;
 
+
 @Controller
 @RequestMapping("/clients")
 public class ClientController {
@@ -31,7 +32,6 @@ public class ClientController {
     //lo que nosotros le pongamos dentro de lo que es la creación del token
     @Autowired
     private ClientService clientService;
-
 
     @PostMapping("/registration")//TODO:Conectar con la parte de security
     public String registeClient(Model model, @RequestParam String name, @RequestParam String email,@RequestParam String surname,
@@ -73,6 +73,7 @@ public class ClientController {
             redirectAttributes.addFlashAttribute("success","Perfil actualizado correctamente");
             return "redirect:/clients/profile/" + userId + "/edit";
         } catch (ObjectOptimisticLockingFailureException e) {
+
             redirectAttributes.addFlashAttribute("error","Alguien ha modificado el perfil mientras lo editaba");
             return "redirect:/clients/profile/" + userId + "/edit";
         }catch(Exception e){
@@ -106,4 +107,7 @@ public class ClientController {
              return "redirect:/clients/profile/"+userId+"/password";
         }
     }
+    
+    
+
 }

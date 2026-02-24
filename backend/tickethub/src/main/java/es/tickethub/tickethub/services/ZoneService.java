@@ -36,20 +36,38 @@ public class ZoneService {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Zona no encontrada");
     }
 
-    public Zone save(Zone zone) {
-        if (zone.getCapacity() <= 0) {
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La capacidad debe ser mayor que 0");
-        }
+    public Zone saveAndEditZone(Zone zone) {
 
-        if (zone.getPrice().compareTo(BigDecimal.ZERO) < 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El precio no puede ser negativo");
-        }
+        if (zone.getId() == null) {
+            return zoneRepository.save(zone);
+        } else {
+            if (zone.getCapacity() <= 0) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La capacidad debe ser mayor que 0");
+            }
 
-        return zoneRepository.save(zone);
+            if (zone.getPrice().compareTo(BigDecimal.ZERO) < 0) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El precio no puede ser negativo");
+            }
+
+            Optional <Zone> existing = zoneRepository.findById(zone.getId());
+
+            //each setter to update
+            existing.get().setName(zone.getName());
+            existing.get().setCapacity(zone.getCapacity());
+            existing.get().setPrice(zone.getPrice());
+            existing.get().setTickets(zone.getTickets());
+
+            return zoneRepository.save(existing.get());
+        }
     }
 
     public void deleteById(Long id) {
-        zoneRepository.deleteById(id);
+        Optional<Zone> optionalDiscount = zoneRepository.findById(id);
+        if (!optionalDiscount.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Descuento no encontrado");
+        }
+        Zone discount = optionalDiscount.get();
+        zoneRepository.deleteById(discount.getId()); 
     }
 }
 

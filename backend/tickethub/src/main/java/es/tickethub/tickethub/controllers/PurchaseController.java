@@ -72,25 +72,6 @@ public class PurchaseController {
         return "user/purchase_details_fragment";
     }
 
-    /**
-     * Shows the details of a specific purchase for a given client email.
-     * Includes all tickets associated with the purchase.
-     */
-    @GetMapping("/{id}")
-    public String showPurchaseDetails(@PathVariable Long id, @RequestParam("email") String clientEmail, Model model) {
-        // Create a temporary Client object with the given email
-        Client client = new Client();
-        client.setEmail(clientEmail);
-
-        // Retrieve the purchase ensuring it belongs to the client
-        Purchase purchase = purchaseService.getPurchaseByIdAndClient(id, client);
-
-        // If not found, an exception is already thrown by the service (NOT_FOUND)
-        model.addAttribute("purchase", purchase);
-        model.addAttribute("tickets", purchase.getTickets()); // tickets inside this purchase
-        return "purchase-details"; // template to show purchase -> tickets
-    }
-    
     /* needed to see all the information at the purchase html*/
     @GetMapping("{eventId}")
     public String showPurchaseFromEvent(@PathVariable Long eventID, Model model) {
