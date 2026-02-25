@@ -66,15 +66,19 @@
         <input name="place" type="text" class="form-control mb-3">
       {{/event}}
 
-      <!--NO HE CONSEGUIDO ARREGLAR EL FALLO AL EDITAR, EL ERROR QUE DA ES QUE AL DARLE A GUARDAR CAMBIOS NO PILLA EL ARTISTA Y EL INPUT SE ELIMINA
-          SI LO CONSIGUES ARREGLAR FUNCIONARÍA BIEN EL EDITAR EVENT-->
       <p class="fw-bold mb-1">Artista principal</p>
-      {{#event}}
-        <input name="artist" type="text" class="form-control mb-3" value="{{artist.artistName}}">
-      {{/event}}
-      {{^event}}
-        <input name="artist" type="text" class="form-control mb-3">
-      {{/event}}
+        <select name="artistID" class="form-select" required>
+          {{#event}}
+            <option value="{{artist.artistID}}">{{artist.artistName}}</option>
+          {{/event}}
+          {{^event}}
+            <option selected>Selecciona un artista</option>
+          {{/event}}
+
+          {{#allArtists}}
+            <option value="{{artistID}}" {{#isSelected}}selected{{/isSelected}}>{{artistName}}</option>
+          {{/allArtists}}
+        </select>
 
       <p class="fw-bold mb-1">Edad objetivo</p>
       <select name="targetAge" class="form-select mb-3">
@@ -100,21 +104,19 @@
         </div>
       {{/event}}
 
-      <!--Aquí y debajo en los descuentos deben de aparecer en el desplegable las zonas y descuentos asociadas al evento (en sus listas)
-          Ahora mismo no aparecen porque las listas están vacías, para comprobar que aparecen correctamente tienes que añadirlas en el
-          dataBaseInitializer (donde el método de initialize events, que igual tienes que cambiar el orden de cómo se guardan las cosas
-          en el método de abajo del todo (initializeDatabase) para poderle pasar las zonas y descuentos que quieras al método) en el evento que quieras
-      -->
       <p class="fw-bold mb-1">Zonas presentes</p>
       <div id="zones-container">
         {{#event.zones}}
-        <div class="row g-2 mb-2 discount-row align-items-center">
+        <div class="row g-2 mb-2 zone-row align-items-center">
           <div class="col">
             <select name="zones" class="form-select">
               {{#allZones}}
                 <option value="{{id}}" {{#selected}}selected{{/selected}}>{{name}}</option>
               {{/allZones}}
             </select>
+          </div>
+          <div class="col">
+            <input type="number" name="zoneCapacity">
           </div>
           <div class="col-auto">
             <button type="button" class="btn btn-danger btn-sm remove-zone">Eliminar</button>
@@ -123,13 +125,16 @@
         {{/event.zones}}
 
         {{^event.zones}}
-        <div class="row g-2 mb-2 discount-row align-items-center">
+        <div class="row g-2 mb-2 zone-row align-items-center">
           <div class="col">
             <select name="zones" class="form-select">
               {{#allZones}}
                 <option value="{{id}}">{{name}}</option>
               {{/allZones}}
             </select>
+          </div>
+          <div class="col">
+            <input type="number" name="zoneCapacity" class="form-control" placeholder="Capacidad">
           </div>
           <div class="col-auto">
             <button type="button" class="btn btn-danger btn-sm remove-zone">Eliminar</button>
@@ -138,17 +143,21 @@
         {{/event.zones}}
       </div>
       <button type="button" class="btn btn-primary mb-3" id="add-zone">Agregar zona</button>
-
       <p class="fw-bold mb-1">Descuentos asociados</p>
       <div id="discounts-container">
         {{#event.discounts}}
         <div class="row g-2 mb-2 discount-row align-items-center">
           <div class="col">
-            <select name="discounts" class="form-select">
-              {{#allDiscounts}}
-                <option value="{{id}}" {{#selected}}selected{{/selected}}>{{discountName}}</option>
-              {{/allDiscounts}}
+            <input type="number" step="0.01" name="discountValue">
+          </div>
+          <div class="col">
+            <select name="discountType" class="form-select">
+              <option value="amount" {{#isAmount}}selected{{/isAmount}}>Cantidad</option>
+              <option value="percent" {{#isPercent}}selected{{/isPercent}}>Porcentaje</option>
             </select>
+          </div>
+          <div class="col">
+            <input type="number" step="0.01" name="discountValue" class="form-control" value="{{value}}" placeholder="Valor del descuento">
           </div>
           <div class="col-auto">
             <button type="button" class="btn btn-danger btn-sm remove-discount">Eliminar</button>
@@ -159,11 +168,16 @@
         {{^event.discounts}}
         <div class="row g-2 mb-2 discount-row align-items-center">
           <div class="col">
-            <select name="discounts" class="form-select">
-              {{#allDiscounts}}
-                <option value="{{id}}">{{discountName}}</option>
-              {{/allDiscounts}}
+            <input type="text" name="discountName" class="form-control" placeholder="Nombre del descuento">
+          </div>
+          <div class="col">
+            <select name="discountType" class="form-select">
+              <option value="amount">Cantidad</option>
+              <option value="percent">Porcentaje</option>
             </select>
+          </div>
+          <div class="col">
+            <input type="number" step="0.01" name="discountValue" class="form-control" placeholder="Valor del descuento">
           </div>
           <div class="col-auto">
             <button type="button" class="btn btn-danger btn-sm remove-discount">Eliminar</button>

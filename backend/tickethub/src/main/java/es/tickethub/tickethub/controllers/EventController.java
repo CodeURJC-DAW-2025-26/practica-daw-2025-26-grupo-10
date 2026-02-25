@@ -23,10 +23,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
+import es.tickethub.tickethub.entities.Artist;
 import es.tickethub.tickethub.entities.Discount;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Image;
 import es.tickethub.tickethub.entities.Zone;
+import es.tickethub.tickethub.services.ArtistService;
 import es.tickethub.tickethub.services.DiscountService;
 import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.ZoneService;
@@ -44,6 +46,9 @@ public class EventController {
 
     @Autowired
     private DiscountService discountService;
+
+    @Autowired
+    private ArtistService artistService;
 
     /*------------------------------------- FUNCTIONS FOR THE PUBLIC FOLDER ---------------------------------*/
     @GetMapping("/public/events")
@@ -138,18 +143,27 @@ public class EventController {
     //To show the create_event view
     @GetMapping("/admin/events/create_event")
     public String showCreateForm(Model model) {
-        
+        List <Artist> allArtists = artistService.findAll();
+        List<Zone> allZones = zoneService.findAll();
+        List<Discount> allDiscounts = discountService.getAllDiscounts();
+        model.addAttribute("allArtists", allArtists);
+        model.addAttribute("allZones", allZones);
+        model.addAttribute("allDiscounts", allDiscounts);
         return "/admin/events/create_event";
     }
 
     //To create a new event
     @PostMapping("/admin/events/create_event")
-    public String createEvent(@Valid Event event, BindingResult result, @RequestParam("images") MultipartFile[] files, Model model) {
+    public String createEvent(@Valid Event event, BindingResult result, @RequestParam("artistID") Long artistID,  @RequestParam("images") MultipartFile[] files, Model model) {
 
         if (result.hasErrors()) {
             return "/admin/events/create_event";
         }
         try {
+
+            Artist artist = artistService.findById(artistID);
+            event.setArtist(artist);
+            artist.getEventsIncoming().add(event);
 
             List<Image> images = new ArrayList<>();
             if (files != null && files.length > 0) {
@@ -175,15 +189,19 @@ public class EventController {
     @GetMapping("/admin/events/edit_event/{eventID}")
     public String editEvent(@PathVariable Long eventID, Model model) {
         Event event = eventService.findById(eventID);
-
+        List <Artist> allArtists = artistService.findAll();
+        List<Zone> allZones = zoneService.findAll();
+        List<Discount> allDiscounts = discountService.getAllDiscounts();
         model.addAttribute("event", event);
-
+        model.addAttribute("allArtists", allArtists);
+        model.addAttribute("allZones", allZones);
+        model.addAttribute("allDiscounts", allDiscounts);
         return "admin/events/create_event";
     }
 
     //To edit a event saved in the database
     @PostMapping("/admin/events/edit_event/{eventID}")
-    public String updateEvent(@Valid Event event, BindingResult result, @RequestParam("images") MultipartFile[] files, Model model) {
+    public String updateEvent(@Valid Event event, BindingResult result, @RequestParam("artistID") Long artistID, @RequestParam("images") MultipartFile[] files, Model model) {
 
         if (result.hasErrors()) {
             return "/admin/events/create_event";
@@ -195,7 +213,15 @@ public class EventController {
             existing.setName(event.getName());
             existing.setCapacity(event.getCapacity());
             existing.setTargetAge(event.getTargetAge());
-            existing.setArtist(event.getArtist());
+
+            Artist oldArtist = existing.getArtist();
+            oldArtist.getEventsIncoming().remove(existing);
+            oldArtist.getLastEvents().remove(existing);
+
+            Artist newArtist = artistService.findById(artistID);
+            newArtist.getEventsIncoming().add(existing);
+
+            existing.setArtist(newArtist);
 
             existing.getSessions().clear();
             existing.getSessions().addAll(event.getSessions());
@@ -232,6 +258,16 @@ public class EventController {
     @DeleteMapping("/admin/events/delete_event/{eventID}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteEvent(@PathVariable Long eventID) {
+        Event event = eventService.findById(eventID);
+        Artist artist = event.getArtist();
+
+        artist.getLastEvents().remove(event);
+        artist.getEventsIncoming().remove(event);
+            
+        event.setArtist(null);
+        event.setZones(null);
+        event.setDiscounts(null);
+
         eventService.deleteById(eventID);
     }
 

@@ -27,6 +27,14 @@ public class SessionService {
         return validateList(sessionRepository.findByEvent_EventID(eventID));
     }
 
+    public Session findById(Long sessionID) {
+        Optional<Session> optionalSession = sessionRepository.findById(sessionID);
+        if (!optionalSession.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sesión no encontrada");
+        }
+        return optionalSession.get();
+    }
+
     //Retrieves all active sessions from the current timestamp onwards.
     public List<Session> getSessionsFromNow() {
         Timestamp now = new Timestamp(System.currentTimeMillis());
