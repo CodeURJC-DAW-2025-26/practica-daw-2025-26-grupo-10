@@ -69,12 +69,18 @@
       <!--NO HE CONSEGUIDO ARREGLAR EL FALLO AL EDITAR, EL ERROR QUE DA ES QUE AL DARLE A GUARDAR CAMBIOS NO PILLA EL ARTISTA Y EL INPUT SE ELIMINA
           SI LO CONSIGUES ARREGLAR FUNCIONARÍA BIEN EL EDITAR EVENT-->
       <p class="fw-bold mb-1">Artista principal</p>
-      {{#event}}
-        <input name="artist" type="text" class="form-control mb-3" value="{{artist.artistName}}">
-      {{/event}}
-      {{^event}}
-        <input name="artist" type="text" class="form-control mb-3">
-      {{/event}}
+        <select name="artistID" class="form-select" required>
+          {{#event}}
+            <option value="{{artist.artistID}}">{{artist.artistName}}</option>
+          {{/event}}
+          {{^event}}
+            <option selected>Selecciona un artista</option>
+          {{/event}}
+
+          {{#allArtists}}
+            <option value="{{artistID}}" {{#isSelected}}selected{{/isSelected}}>{{artistName}}</option>
+          {{/allArtists}}
+        </select>
 
       <p class="fw-bold mb-1">Edad objetivo</p>
       <select name="targetAge" class="form-select mb-3">
