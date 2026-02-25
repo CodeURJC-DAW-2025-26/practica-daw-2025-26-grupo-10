@@ -70,14 +70,12 @@
 
       <select name="artistID" class="form-select" required>
 
-        <!-- opción por defecto -->
-        <option value="" disabled {{^event.artist}}selected{{/event.artist}}>
+        <option disabled>
           Selecciona un artista
         </option>
 
         {{#allArtists}}
-          <option value="{{artistID}}"
-            {{#isSelected}}selected{{/isSelected}}>
+          <option value="{{artistID}}" {{#selected}}selected{{/selected}}>
             {{artistName}}
           </option>
         {{/allArtists}}

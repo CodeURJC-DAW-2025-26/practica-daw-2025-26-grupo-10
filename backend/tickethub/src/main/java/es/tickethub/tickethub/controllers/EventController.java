@@ -190,6 +190,16 @@ public class EventController {
     public String editEvent(@PathVariable Long eventID, Model model) {
         Event event = eventService.findById(eventID);
         List <Artist> allArtists = artistService.findAll();
+
+        for (Artist artist : allArtists) {
+            if (event.getArtist() != null &&
+                artist.getArtistID().equals(event.getArtist().getArtistID())) {
+                artist.setSelected(true);
+            } else {
+                artist.setSelected(false);
+            }
+        }
+
         List<Zone> allZones = zoneService.findAll();
         List<Discount> allDiscounts = discountService.getAllDiscounts();
         model.addAttribute("event", event);
