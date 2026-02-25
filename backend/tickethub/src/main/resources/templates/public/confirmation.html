@@ -17,13 +17,18 @@
             <p>Tu pedido ha sido procesado correctamente.</p>
         </div>
 
-        <div class="card mx-auto" style="max-width: 500px;">
-            <div class="card-header">Resumen de la compra</div>
-            <ul class="list-group list-group-flush">
-                {{#event}}
-                <li class="list-group-item"><strong>Evento:</strong> {{name}}</li>
-                <li class="list-group-item"><strong>Categoría:</strong> {{category}}</li>
-                {{/event}}
+        <div class="container my-5 text-center">
+        <div class="alert alert-success">Compra realizada con éxito</div>
+        <ul class="list-group mb-3">
+            {{#event}}
+            <li class="list-group-item">Evento: {{name}}</li>
+            <li class="list-group-item">Categoría del evento: {{category}}</li>
+            <li class="list-group-item">Total: 30€</li>
+            {{/event}}
+        </ul>
+        <a href="/purchase/download/{{purchase.purchaseID}}" class="btn btn-outline-primary">Descargar PDF</a>
+        <a href="/public/index" class="btn btn-primary">Volver al inicio</a>
+        </div>
 
                 {{#purchase}}
                 <li class="list-group-item"><strong>ID de Pedido:</strong> #{{purchaseID}}</li>

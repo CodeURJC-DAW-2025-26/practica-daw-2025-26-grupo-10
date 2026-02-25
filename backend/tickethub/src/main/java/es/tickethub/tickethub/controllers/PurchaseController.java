@@ -24,6 +24,7 @@ import es.tickethub.tickethub.services.DiscountService;
 import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.PurchaseService;
 import es.tickethub.tickethub.services.QrService;
+import es.tickethub.tickethub.services.TicketService;
 import es.tickethub.tickethub.services.ZoneService;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -39,6 +40,9 @@ import com.itextpdf.io.image.ImageDataFactory;
 @Controller
 @RequestMapping("/purchases")
 public class PurchaseController {
+
+    @Autowired
+    private TicketService ticketService;
 
     @Autowired
     private PurchaseService purchaseService;
@@ -119,7 +123,7 @@ public class PurchaseController {
     }
 
     /**
-     * Processes the purchase submission. 
+     * Processes the purchase submission.
      * Uses CascadeType.ALL to save tickets along with the purchase.
      */
     @PostMapping("/save")
@@ -153,7 +157,7 @@ public class PurchaseController {
             ticket.setPurchase(purchase); // Set the owner side
 
             purchase.getTickets().add(ticket); // Add to the collection for cascading
-        }    
+        }
 
         // Save the purchase; tickets are persisted automatically due to CascadeType.ALL
         Purchase savedPurchase = purchaseService.createPurchase(purchase);
