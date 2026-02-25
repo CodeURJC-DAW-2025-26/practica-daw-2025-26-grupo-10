@@ -1,6 +1,8 @@
 package es.tickethub.tickethub.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +19,15 @@ import java.util.List;
 import es.tickethub.tickethub.services.DiscountService;
 import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.PurchaseService;
+import es.tickethub.tickethub.services.TicketService;
 import es.tickethub.tickethub.services.ZoneService;
 
 @Controller
 @RequestMapping("/purchase")
 public class PurchaseController {
+
+    @Autowired
+    private TicketService ticketService;
 
     @Autowired
     private PurchaseService purchaseService;
@@ -82,5 +88,20 @@ public class PurchaseController {
         model.addAttribute("totalPrice", BigDecimal.ZERO);
 
         return "public/purchase";
+    }
+
+    
+
+    @GetMapping("/download/{purchaseId}")
+    public ResponseEntity<byte[]> downloadTickets(@PathVariable Long purchaseId) throws Exception {
+
+        Purchase purchase = purchaseService.getPurchaseById(purchaseId);
+
+        byte[] pdf = ticketService.generateTicketsPdf(purchase);
+
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=entradas.pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdf);
     }
 }
