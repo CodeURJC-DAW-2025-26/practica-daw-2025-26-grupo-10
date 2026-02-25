@@ -56,21 +56,11 @@
         <h2 class="mb-4">
           <div>Mis entradas</div>
           <div style="text-align: end">
-            <a href="/clients/profile/{{userID}}" class="btn btn-outline-primary">Regresar al perfil</a>
+            <a href="/clients/profile" class="btn btn-outline-primary">Regresar al perfil</a>
           </div>
         </h2>
         <table class="table">
-          <thead><tr><th>Evento</th><th>Fecha</th><th>Estado</th><th></th></tr></thead>
-            <tbody>
-                {{#tickets}}
-                    <tr class="table-success"><td>{{#events}}{{event}}</td><td>{{sessionDate}}</td>{{/events}}<td>{{isActive}}</td><td><button class="btn btn-sm btn-primary">Descargar</button></td></tr>
-                {{/tickets}}
-            </tbody>
-        </table>
-
         <div style="text-align: end">
-            <a href="profile" class="btn btn-outline-primary">Regresar al perfil</a>
-
             <thead>
               <tr>
                 <th>Evento</th>

@@ -73,9 +73,13 @@
       <h4>{{username}}</h4>
       <p class="text-muted">{{email}}</p>
       <div class="d-grid gap-2">
-        <a href="/clients/profile/{{userID}}/edit" class="btn btn-outline-primary">Editar perfil</a>
-        <a href="/purchases/me/{{userID}}" class="btn btn-primary">Mis compras</a>
-        <a href="/clients/profile/{{userID}}/password" class="btn btn-outline-secondary">Cambiar contraseña</a>
+        <a href="/clients/profile/edit" class="btn btn-outline-primary">Editar perfil</a>
+        <a href="/purchases/me" class="btn btn-primary">Mis compras</a>
+        <a href="/clients/profile/password" class="btn btn-outline-secondary">Cambiar contraseña</a>
+        <form action="/logout" method="post" class="m-0 p-0 d-grid">
+            <input type="hidden" name="_csrf" value="{{token}}">
+            <button type="submit" class="btn btn-danger">Cerrar sesión</button>
+        </form>
       </div>
     </div>
     {{/clientLogged}}

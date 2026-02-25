@@ -217,6 +217,11 @@ footer .social-icons a:hover {
 .card img.rounded-circle {
     border: 3px solid var(--vivid-tangerine);
     padding: 2px;
+    width: 150px;       
+    height: 150px;        
+    object-fit: cover;    
+    max-width: 100%;     
+    display: block;
 }
 
 /* Alerts */

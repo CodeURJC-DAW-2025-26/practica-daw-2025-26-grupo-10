@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Discount;
 import es.tickethub.tickethub.entities.Purchase;
 import es.tickethub.tickethub.entities.Ticket;
@@ -14,6 +13,7 @@ import es.tickethub.tickethub.entities.Zone;
 import es.tickethub.tickethub.entities.Event;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.util.List;
 
 import es.tickethub.tickethub.services.DiscountService;
@@ -41,12 +41,12 @@ public class PurchaseController {
      * Retrieves 10 purchases for a given client ID.
      * Stateless: the client is identified via request parameter.
      */
-    @GetMapping("/me/{userId}")
-    public String listPurchasesByClientId(@PathVariable Long userId ,Model model) {
+    @GetMapping("/me")
+    public String getPurchasesByClientEmail(Principal principal ,Model model) {
         // TODO: Cuando tengamos Spring Security, sacaremos el ID/Email del usuario logueado
         // Long clientId = authentication.getName();
-        Slice<Purchase> purchasesSlice = purchaseService.getPurchasesByClientId(userId,0);
-        model.addAttribute("userID",userId);
+        String loggedEmail = principal.getName();
+        Slice<Purchase> purchasesSlice = purchaseService.getPurchasesByClientEmail(loggedEmail,0);
         model.addAttribute("purchases", purchasesSlice.getContent());
         model.addAttribute("hasNext",purchasesSlice.hasNext());
         model.addAttribute("nextPage",1);
@@ -56,9 +56,10 @@ public class PurchaseController {
     /**
      * This is for Ajax to load the next 10 purchases
      */
-    @GetMapping("/me/{userId}/more")
-    public String loadMorePurchases(@PathVariable Long userId,@RequestParam int pageNumber,Model model) {
-        Slice<Purchase> purchasesSlice = purchaseService.getPurchasesByClientId(userId, pageNumber);
+    @GetMapping("/me/more")
+    public String loadMorePurchases(Principal principal,@RequestParam int pageNumber,Model model) {
+        String loggedEmail = principal.getName();
+        Slice<Purchase> purchasesSlice = purchaseService.getPurchasesByClientEmail(loggedEmail, pageNumber);
         model.addAttribute("purchases",purchasesSlice.getContent());
         model.addAttribute("hasNext", purchasesSlice.hasNext());
         model.addAttribute("nextPage", pageNumber + 1);

@@ -65,7 +65,8 @@
   <div class="container my-5" style="max-width:600px">
     {{#clientLogged}}
     <h2 class="mb-4">Editar perfil</h2>
-    <form method="post" action="/clients/profile/{{userID}}/edit" enctype="multipart/form-data">
+    <form method="post" action="/clients/profile/edit" enctype="multipart/form-data">
+      <input type="hidden" name="_csrf" value="{{token}}">
       <div class="mb-3">
         <input type="hidden" name="version" value="{{version}}">
         <label class="form-label">Nombre</label>
@@ -85,18 +86,17 @@
       </div>
       <div class="mb-3">
         <label class="form-label">Teléfono</label>
-        <input type="text" class="form-control" name="phone"  value="{{phone}}">
+        <input type="text" class="form-control" name="phone"  {{#phone}} value="{{phone}}" {{/phone}}>
       </div>
+      
       <div class="mb-3">
         <label class="form-label">Edad</label>
-        <input type="number" class="form-control" name="age"  value="{{age}}">
+        <input type="number" class="form-control" name="age"  {{#age}}value="{{age}}" {{/age}}>
       </div>
       <div class="mb-3">
         <label class="form-label">Foto de perfil</label>
         <input type="file" class="form-control" name="imageFile" accept=".jpg, .jpeg">
       </div>
-      <div class="mb-3" style="text-align: right">
-        <a href="change_password" class="btn btn-outline-primary">Cambiar contraseña</a>
       {{#error}}
       <div class="alert alert-danger" role="alert">
         {{error}}
@@ -109,7 +109,7 @@
       {{/success}}
       <div class="d-flex gap-2">
         <button class="btn btn-primary equal-btn" type="submit">Guardar</button>
-        <a href="/clients/profile/{{userID}}" class="btn btn-primary equal-btn">Volver</a>
+        <a href="/clients/profile" class="btn btn-primary equal-btn">Volver</a>
       </div>
     </form>
     {{/clientLogged}}

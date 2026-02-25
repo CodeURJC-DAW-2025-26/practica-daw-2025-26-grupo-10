@@ -12,6 +12,7 @@ import java.util.List;
 import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import es.tickethub.tickethub.entities.Admin;
@@ -58,6 +59,9 @@ public class DataBaseInitializer {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private byte[] loadImage(String imageName) {
         try (InputStream inputStream = getClass().getClassLoader()
@@ -177,8 +181,8 @@ public class DataBaseInitializer {
 
     public Client initializeUsers(List <Image> clientImages) {
 
-        Client defaultClient = new Client("pepe@gmail.com", "PepeG", "pepe123", "Pepe", "Garcia", 33, 666666666, BigDecimal.ZERO, null, null, clientImages.get(0));
-        Admin defaultAdmin = new Admin("adminEmail@gmail.com", "newAdmin", "admin");
+        Client defaultClient = new Client("pepe@gmail.com", "PepeG", passwordEncoder.encode("pepe123"), "Pepe", "Garcia", 33, 666666666, BigDecimal.ZERO, null, null, clientImages.get(0));
+        Admin defaultAdmin = new Admin("adminEmail@gmail.com", "newAdmin", passwordEncoder.encode("admin"));
 
         userRepository.save(defaultClient);
         userRepository.save(defaultAdmin);

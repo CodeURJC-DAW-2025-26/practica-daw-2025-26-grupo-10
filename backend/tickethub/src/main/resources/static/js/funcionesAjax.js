@@ -5,7 +5,7 @@ async function cargarMasCompras(boton,userId) {
         boton.innerText = "Cargando...";
         boton.disabled = true;
 
-        const response = await fetch(`/purchases/me/${userId}/more?pageNumber=${nextPage}`);
+        const response = await fetch(`/purchases/me/more?pageNumber=${nextPage}`);
         const htmlFragment = await response.text();
 
         const tbody = document.getElementById("purchase-table-body");

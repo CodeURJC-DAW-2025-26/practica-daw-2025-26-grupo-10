@@ -53,12 +53,12 @@ public class PurchaseService {
      * Useful for displaying the client's purchase history
      */
     @Transactional(readOnly = true)
-    public Slice<Purchase> getPurchasesByClientId(Long clientId,int pageNumber) {
-        if(!clientRepository.existsById(clientId)){
+    public Slice<Purchase> getPurchasesByClientEmail(String loggedEmail,int pageNumber) {
+        if(!clientRepository.existsByEmail(loggedEmail)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado");
         }
         PageRequest pageRequest =  PageRequest.of(pageNumber,10,Sort.by(Sort.Direction.DESC,"session.date"));
-        return purchaseRepository.findByClient_UserID(clientId,pageRequest);
+        return purchaseRepository.findByClient_Email(loggedEmail,pageRequest);
     }
 
     @Transactional(readOnly = true)

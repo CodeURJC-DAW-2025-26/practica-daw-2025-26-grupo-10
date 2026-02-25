@@ -16,17 +16,21 @@
 <main class="flex-fill">
   <div class="container my-5" style="max-width:450px">
     <h3 class="mb-4 text-center">Crear cuenta</h3>
-    <form method="post" action="/clients/registration">
+    <form method="post" action="/public/registration">
+      <input type="hidden" name="_csrf" value="{{token}}">
       <input class="form-control mb-3" placeholder="Nombre" name="name">
       <input class="form-control mb-3" placeholder="Apellidos" name="surname">
+      <input class="form-control mb-3" placeholder="Nombre de usuario" name="username">
       <input class="form-control mb-3" placeholder="Correo electrónico" name="email">
       <input type="password" class="form-control mb-3" placeholder="Contraseña" name="password">
       <input type="password" class="form-control mb-3" placeholder="Repetir contraseña" name="passWordConfirmation">
+      
       {{#error}}
       <div class="alert alert-danger" role="alert">
         {{error}}
       </div>
       {{/error}}
+      
       <button class="btn btn-success w-100">Registrarse</button>
     </form>
   </div>

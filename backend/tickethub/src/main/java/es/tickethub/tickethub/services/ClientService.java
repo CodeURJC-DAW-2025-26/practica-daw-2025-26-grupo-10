@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -19,8 +20,11 @@ public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Transactional
-    public void registeClient( String name, String email, String surname,String password, String passWordConfirmation){
+    public void registeClient( String name, String email, String surname,String password, String passWordConfirmation,String username){
         if(!password.equals(passWordConfirmation)){
              throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Las contraseñas no coinciden");
         }
@@ -28,12 +32,18 @@ public class ClientService {
         if(existClient){
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Este correo electrónico ya está en uso");
         }
+        existClient = clientRepository.existsByUsername(username);
+        if(existClient){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Este nombre de usuario ya está en uso");
+        }
 
         Client client = new Client();
         client.setName(name);
         client.setEmail(email);
         client.setSurname(surname);
-        client.setPassword(password);
+        client.setUsername(username);
+        String encodedPassword = passwordEncoder.encode(password);
+        client.setPassword(encodedPassword);
         client.setAdmin(false);
         client.setCoins(BigDecimal.ZERO);
         clientRepository.save(client);
@@ -48,13 +58,28 @@ public class ClientService {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado");
     }
 
+    @Transactional(readOnly = true)
+    public Client getClientByEmail(String email){
+        Optional<Client> clientOptional = clientRepository.findByEmail(email);
+        if(clientOptional.isPresent()){
+            return clientOptional.get();
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado");
+    }
+
     // TODO: llamar al service de imagen para poder actualizar la imagen si es que
     // se manda
     @Transactional
-    public void updateClient(Long clientID, Client clientUpdated, MultipartFile imageFile) throws IOException {
-        Client client = clientRepository.findById(clientID)
+    public void updateClient(String loggedEmail, Client clientUpdated, MultipartFile imageFile) throws IOException {
+        Client client = clientRepository.findByEmail(loggedEmail)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado"));
-
+        
+        String nuevoEmail = clientUpdated.getEmail();
+        if (!client.getEmail().equals(nuevoEmail)) {
+            if (clientRepository.existsByEmail(nuevoEmail)) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Ese correo electrónico ya está en uso");
+            }
+        }
         client.setName(clientUpdated.getName());
         client.setSurname(clientUpdated.getSurname());
         client.setUsername(clientUpdated.getUsername());
@@ -75,10 +100,11 @@ public class ClientService {
     }
 
     @Transactional
-    public void changePassword(Long clientID, String oldPassword, String newPassword, String newPasswordConfirmation) {
-        Client client = clientRepository.findById(clientID)
+    public void changePassword(String loggedEmail, String oldPassword, String newPassword, String newPasswordConfirmation) {
+        Client client = clientRepository.findByEmail(loggedEmail)
                          .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado"));
-        if(!client.getPassword().equals(oldPassword)){
+
+        if(!passwordEncoder.matches(oldPassword, client.getPassword())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"La contraseña actual es incorrecta");
         }
 
@@ -86,7 +112,7 @@ public class ClientService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Las contraseñas nuevas no coinciden");
         }
 
-        client.setPassword(newPassword);
+        client.setPassword(passwordEncoder.encode(newPassword));
         clientRepository.save(client);
     }
 

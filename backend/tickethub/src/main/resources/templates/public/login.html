@@ -16,11 +16,19 @@
 <main class="flex-fill">
   <div class="container my-5" style="max-width:400px">
     <h3 class="mb-4 text-center">Iniciar sesión</h3>
-    <form>
-      <input class="form-control mb-3" placeholder="Correo electrónico">
-      <input type="password" class="form-control mb-3" placeholder="Contraseña">
+
+    <form action="/public/login" method="post">
+      <input type="hidden" name="_csrf" value="{{token}}">
+      <input class="form-control mb-3" placeholder="Correo electrónico" name="email">
+      <input type="password" class="form-control mb-3" placeholder="Contraseña" name="password">
       <button class="btn btn-primary w-100">Entrar</button>
     </form>
+    {{#success}}
+      <div class="alert alert-success">{{success}}</div>
+    {{/success}}
+    {{#error}}
+      <div class="alert alert-danger">Email o contraseña incorrectos</div>
+    {{/error}}
   </div>
 </main>
 
