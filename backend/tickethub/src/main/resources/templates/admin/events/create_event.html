@@ -67,18 +67,22 @@
       {{/event}}
 
       <p class="fw-bold mb-1">Artista principal</p>
-        <select name="artistID" class="form-select" required>
-          {{#event}}
-            <option value="{{artist.artistID}}">{{artist.artistName}}</option>
-          {{/event}}
-          {{^event}}
-            <option selected>Selecciona un artista</option>
-          {{/event}}
 
-          {{#allArtists}}
-            <option value="{{artistID}}" {{#isSelected}}selected{{/isSelected}}>{{artistName}}</option>
-          {{/allArtists}}
-        </select>
+      <select name="artistID" class="form-select" required>
+
+        <!-- opción por defecto -->
+        <option value="" disabled {{^event.artist}}selected{{/event.artist}}>
+          Selecciona un artista
+        </option>
+
+        {{#allArtists}}
+          <option value="{{artistID}}"
+            {{#isSelected}}selected{{/isSelected}}>
+            {{artistName}}
+          </option>
+        {{/allArtists}}
+
+      </select>
 
       <p class="fw-bold mb-1">Edad objetivo</p>
       <select name="targetAge" class="form-select mb-3">
