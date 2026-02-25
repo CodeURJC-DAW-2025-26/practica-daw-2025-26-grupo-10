@@ -1,100 +1,127 @@
-/*LO QUE FALTA POR PONER EN ESTE JS:
-- De session: NADA, YA LO HE HECHO Y FUNCIONA
-- De discount: arreglar que se puedan crear líneas de descuentos si no hay ninguna (si eliminas todas el botón se bloquea)
-- De zone: hacer exactamente lo mismo que con discounts (que puedan añadirse filas haya o no haya ninguna)
-
-LOS CRUD DE ZONE Y DISCOUNT FUNCIONAN PERFECTAMENTE, LO PUEDES COMPROBAR EN LAS RUTAS DE /ADMIN/ZONES/MANAGE_ZONES Y /ADMIN/DISCOUNTS/MANAGE_DISCOUNTS
-ASÍ QUE TIENES QUE TIENES QUE LINKEAR LAS RUTAS DEL BACKEND CON LO DEL JS
-
-PARA COMPROBAR SI FUNCIONA LO DE DISCOUNT O ZONE AÑÁDELE AL EVENTO QUE QUIERAS EN EL DATABASEINITIALIZER UNA LISTA DE DESCUENTOS Y ZONAS VÁLIDA
-(AHORA MISMO TODAS ESAS ESTÁN VACÍAS Y LOS ÚNICOS EVENTOS QUE TIENEN SESSIONS SON LOS DOS PRIMEROS)
-*/
-
-//Functions to delete session or discount
-function attachSessionListeners(row) {
-  const btn = row.querySelector('.remove-session');
+// ----------------- FUNCTIONS -----------------
+function attachRemoveButton(row, selector) {
+  const btn = row.querySelector(selector);
   if (btn) btn.addEventListener('click', () => row.remove());
 }
 
-function attachDiscountListeners(row) {
-  const btn = row.querySelector('.remove-discount');
-  if (btn) btn.addEventListener('click', () => row.remove());
+function cloneRow(template, inputsToReset = [], selectsToReset = []) {
+  const clone = template.cloneNode(true);
+  inputsToReset.forEach(name => {
+    const input = clone.querySelector(`[name="${name}"]`);
+    if (input) input.value = '';
+  });
+  selectsToReset.forEach(name => {
+    const select = clone.querySelector(`[name="${name}"]`);
+    if (select) select.selectedIndex = 0;
+  });
+  return clone;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+// ----------------- ZONES -----------------
+const zonesContainer = document.getElementById('zones-container');
+let zoneTemplate = zonesContainer.querySelector('.zone-row');
 
-  //For Discounts (This is working to create new rows but only when there is one or more discounts,
-  //if there are no discounts the add button doesn't work,
-  //this is because the template is being cloned from an existing row, so if there are no rows to clone it doesn't work)
-  document.querySelectorAll('.discount-row').forEach(attachDiscountListeners);
+if (!zoneTemplate) {
+  zoneTemplate = document.createElement('div');
+  zoneTemplate.classList.add('row', 'g-2', 'mb-2', 'zone-row', 'align-items-center');
+  zoneTemplate.innerHTML = `
+    <div class="col">
+      <select name="zones" class="form-select">
+        {{#allZones}}
+          <option value="{{id}}">{{name}}</option>
+        {{/allZones}}
+      </select>
+    </div>
+    <div class="col">
+      <input type="number" name="zoneCapacity" class="form-control" placeholder="Capacidad">
+    </div>
+    <div class="col-auto">
+      <button type="button" class="btn btn-danger btn-sm remove-zone">Eliminar</button>
+    </div>
+  `;
+}
 
-  const addDiscountBtn = document.getElementById('add-discount');
-  if (addDiscountBtn) {
-    addDiscountBtn.addEventListener('click', () => {
-      const container = document.getElementById('discounts-container');
-      const template = container.querySelector('.discount-row').cloneNode(true);
-      template.querySelector('select').selectedIndex = 0;
-      container.appendChild(template);
-      attachDiscountListeners(template);
-    });
-  }
+zonesContainer.querySelectorAll('.zone-row').forEach(r => attachRemoveButton(r, '.remove-zone'));
 
+document.getElementById('add-zone').addEventListener('click', () => {
+  const clone = cloneRow(zoneTemplate, ['zoneCapacity'], ['zones']);
+  attachRemoveButton(clone, '.remove-zone');
+  zonesContainer.appendChild(clone);
 });
 
-//For the create and edit functions of sessions
-document.addEventListener('DOMContentLoaded', () => {
+// ----------------- DISCOUNTS -----------------
+const discountsContainer = document.getElementById('discounts-container');
+let discountTemplate = discountsContainer.querySelector('.discount-row');
 
-  //Consts to get all the elements we need to work with sessions
-  const sessionsBody = document.getElementById('sessions-body');
-  const addBtn = document.getElementById('add-session');
-  const eventId = addBtn.dataset.eventid;
+if (!discountTemplate) {
+  discountTemplate = document.createElement('div');
+  discountTemplate.classList.add('row', 'g-2', 'mb-2', 'discount-row', 'align-items-center');
+  discountTemplate.innerHTML = `
+    <div class="col">
+      <input type="text" name="discountName" class="form-control" placeholder="Nombre del descuento">
+    </div>
+    <div class="col">
+      <select name="discountType" class="form-select">
+        <option value="amount">Cantidad</option>
+        <option value="percent">Porcentaje</option>
+      </select>
+    </div>
+    <div class="col">
+      <input type="number" step="0.01" name="discountValue" class="form-control" placeholder="Valor del descuento">
+    </div>
+    <div class="col-auto">
+      <button type="button" class="btn btn-danger btn-sm remove-discount">Eliminar</button>
+    </div>
+  `;
+}
 
-  // Add new session (working)
-  addBtn.addEventListener('click', () => {
+discountsContainer.querySelectorAll('.discount-row').forEach(r => attachRemoveButton(r, '.remove-discount'));
 
-    //To delete the noRow message when there are no sessions
+document.getElementById('add-discount').addEventListener('click', () => {
+  const clone = cloneRow(discountTemplate, ['discountName', 'discountValue'], ['discountType']);
+  attachRemoveButton(clone, '.remove-discount');
+  discountsContainer.appendChild(clone);
+});
+
+// ----------------- SESSIONS -----------------
+const sessionsBody = document.getElementById('sessions-body');
+const addSessionBtn = document.getElementById('add-session');
+
+if (sessionsBody && addSessionBtn) {
+  const eventId = addSessionBtn.dataset.eventid;
+
+  // CREATE NEW SESSION
+  addSessionBtn.addEventListener('click', () => {
     const noRow = document.getElementById('no-sessions-row');
     if (noRow) noRow.remove();
 
-    //This creates a new row for the session
     const newRow = document.createElement('tr');
     newRow.classList.add('session-row');
     newRow.innerHTML = `
-      <td>
-        <input type="datetime-local" class="form-control new-date">
-      </td>
-      <td class="text-center">
-        <button class="btn btn-success btn-sm save-new">Guardar</button>
-      </td>
+      <td><input type="datetime-local" class="form-control new-date"></td>
+      <td class="text-center"><button class="btn btn-success btn-sm save-new">Guardar</button></td>
     `;
-
-    //This adds the new row to the table
     sessionsBody.appendChild(newRow);
 
-    //The method to save the new session that links with the backend method with the route
     newRow.querySelector('.save-new').addEventListener('click', () => {
+
       const date = newRow.querySelector('.new-date').value;
+
+      if (!date) { alert("Debes seleccionar una fecha"); return; }
 
       const data = new URLSearchParams();
       data.append('date', date);
       fetch('/admin/events/' + eventId + '/add_session', {
         method: 'POST',
         body: data
-      })
-      .then(res => {
-        if (res.ok) location.reload();
-      });
-
+      }).then(res => { if (res.ok) location.reload(); });
     });
-
   });
 
-  // Edit existing session working
+  // EDIT ACTUAL SESSION
   document.querySelectorAll('.edit-session').forEach(btn => {
-
-    btn.addEventListener('click', function () {
-
-      const row = this.closest('tr');
+    btn.addEventListener('click', () => {
+      const row = btn.closest('tr');
       const sessionId = row.dataset.id;
       const eventId = row.dataset.eventid;
       const dateCell = row.querySelector('.date-cell');
@@ -106,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
       actionsCell.innerHTML =
         `<button class="btn btn-success btn-sm save-edit">
             Guardar
-         </button>`;
+          </button>`;
 
       row.querySelector('.save-edit').addEventListener('click', () => {
 
@@ -133,5 +160,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
   });
-
-});
+}
