@@ -79,6 +79,8 @@ public class PurchaseService {
         return optionalPurchase.get();
     }
 
+
+
     /**
      * Deletes a purchase by its ID
      * If the purchase does not exist, throws a NOT_FOUND exception
@@ -90,5 +92,13 @@ public class PurchaseService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Compra no encontrada");
         }
         purchaseRepository.deleteById(purchaseId);
+    }
+
+    public Purchase getPurchaseById(Long purchaseId) {
+        Optional<Purchase> optionalPurchase = purchaseRepository.findById(purchaseId);
+        if (!optionalPurchase.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Compra no encontrada");
+        }
+        return optionalPurchase.get();
     }
 }
