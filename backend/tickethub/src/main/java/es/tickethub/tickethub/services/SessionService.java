@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -84,4 +85,18 @@ public class SessionService {
         int capacity = session.getEvent().getCapacity();
         return ticketsSold < capacity;
     }
+
+    public void deleteSession(Long sessionID){
+        Optional <Session> optionalSession = sessionRepository.findById(sessionID);
+        if (!optionalSession.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sesión no encontrada");
+        }
+        Session session = optionalSession.get();
+        sessionRepository.deleteById(session.getSessionID());
+    }
+
+    public void save(Session session) {
+        sessionRepository.save(session);
+    }
+
 }

@@ -4,22 +4,33 @@ import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import es.tickethub.tickethub.services.SessionService;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-
-
+import es.tickethub.tickethub.entities.Event;
+import es.tickethub.tickethub.entities.Session;
+import es.tickethub.tickethub.services.EventService;
+import es.tickethub.tickethub.services.SessionService;
 
 @Controller
-@RequestMapping("/sessions")
+@RequestMapping("/admin/events")
 public class SessionController {
 
-    @Autowired SessionService sessionService;
+    @Autowired
+    private SessionService sessionService;
+
+    @Autowired
+    private EventService eventService;
 
     // Show upcoming sessions
     @GetMapping("/upcoming")
@@ -48,4 +59,27 @@ public class SessionController {
         model.addAttribute("eventID", eventID);
         return "sessions"; 
     }
+
+    @PostMapping("{eventID}/add_session")
+    @ResponseBody   //To return a simple status without redirecting
+    public ResponseEntity<?> addSession(@RequestParam String date, @PathVariable Long eventID) {
+        Event event = eventService.findById(eventID);
+
+        Session session = new Session();
+        session.setEvent(event);
+        System.out.println("Received: [" + date + "]");
+        session.setDate(session.getTimestampedDate(date));
+
+        event.getSessions().add(session);
+        sessionService.save(session);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/delete_session/{sessionID}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteSession(@PathVariable Long sessionID) {
+        sessionService.deleteSession(sessionID);
+    }
+
 }

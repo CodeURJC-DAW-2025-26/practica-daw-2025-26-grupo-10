@@ -1,6 +1,8 @@
 package es.tickethub.tickethub.controllers;
 
+import java.io.IOException;
 import java.sql.Blob;
+import java.sql.SQLException;
 
 import javax.sql.rowset.serial.SerialBlob;
 
@@ -98,8 +100,8 @@ public class ArtistController {
                 artist.setArtistImage(image);
             }
 
-            artistService.saveAndEditArtist(artist);
-        } catch (Exception e) {
+            artistService.saveArtist(artist);
+        } catch (IOException | SQLException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "admin/artists/create_artist";
         }
@@ -108,6 +110,11 @@ public class ArtistController {
 
     @PostMapping("/admin/artists/edit_artist/{artistID}")
     public String editArtist(@Valid Artist artist, BindingResult result, @RequestParam("image") MultipartFile file, Model model) {
+        
+        if (result.hasErrors()) {
+            return "/admin/artists/create_artist";
+        }
+
         try {
             Artist existing = artistService.findById(artist.getArtistID());
 
@@ -128,20 +135,19 @@ public class ArtistController {
             }
             existing.setInstagram(artist.getInstagram());
             existing.setTwitter(artist.getTwitter());
-            artistService.saveAndEditArtist(artist);
+            artistService.saveArtist(artist);
             
-        } catch (Exception e) {
+        } catch (IOException | SQLException e) {
             model.addAttribute("errorMessage", e.getMessage());
-            System.out.println("--------Causa del error:  " + e.getMessage());
             return "/admin/artists/create_artist";
         }
         return "redirect:/admin/artists/manage_artists";
     }
 
-    @DeleteMapping("/admin/artists/delete_artist/{id}")
+    @DeleteMapping("/admin/artists/delete_artist/{artistID}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteArtist(@PathVariable Long id) {
-        artistService.deleteById(id);
+    public void deleteArtist(@PathVariable Long artistID) {
+        artistService.deleteById(artistID);
     }
 
 }
