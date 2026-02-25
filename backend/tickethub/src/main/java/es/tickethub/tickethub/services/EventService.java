@@ -3,7 +3,6 @@ package es.tickethub.tickethub.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,18 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import es.tickethub.tickethub.entities.Artist;
 import es.tickethub.tickethub.entities.Event;
-import es.tickethub.tickethub.repositories.ArtistRepository;
 import es.tickethub.tickethub.repositories.EventRepository;
 
 @Service
 public class EventService {
     
     private final EventRepository eventRepository;
-
-    @Autowired
-    private ArtistRepository artistRepository;
     
     public EventService (EventRepository eventRepository){
         this.eventRepository = eventRepository;
@@ -58,13 +52,6 @@ public class EventService {
     }
     
     public void deleteById(Long id){
-        Event event = findById(id);
-
-        Artist artist = event.getArtist();
-        artist.getLastEvents().remove(eventRepository.findById(id).get());
-        artist.getEventsIncoming().remove(eventRepository.findById(id).get());
-        
-        event.setArtist(null);
         
         eventRepository.deleteById(id);
     }
