@@ -62,4 +62,18 @@ public class Session {
         return fmt.format(this.date);
     }
 
+    public Timestamp getTimestampedDate(String formattedDate) {
+        try {
+            formattedDate = formattedDate.replace("T", " ");
+            formattedDate = formattedDate.replace("-", "/");
+            System.out.println("Formatted date received: " + formattedDate);
+            java.text.SimpleDateFormat fmt = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm");
+            java.util.Date parsedDate = fmt.parse(formattedDate);
+            return new Timestamp(parsedDate.getTime());
+        } catch (java.text.ParseException e) {
+            throw new IllegalArgumentException("Fecha con formato incorrecto. Se esperaba 'yyyy/MM/dd HH:mm'.", e);
+        }
+
+    }
+
 }

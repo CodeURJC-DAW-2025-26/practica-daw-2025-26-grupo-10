@@ -16,7 +16,7 @@
   {{>components/header_admin}}
 
   <div class="container my-5">
-<<<<<<< Updated upstream
+    
     <h2>Gestión de Artistas</h2>
     
     <table class="table">
@@ -36,6 +36,8 @@
           <td>{{twitter}}</td>
           <td>
             <a href="/admin/artists/edit_artist/{{artistID}}" class="btn btn-sm btn-primary">Editar</a>
+
+            <!--FALTA POR HACER FUNCIONAR CORRECTAMENTE LOS DOS BOTONES-->
             <a class="btn btn-sm btn-danger"
                 data-id = "{{artistID}}" onclick="deleteItem('/artists/delete_artist', this)">Eliminar</a>
           </td>
@@ -51,26 +53,7 @@
 
       </div>
     </div>
-=======
-      <h2>Gestión de Artistas</h2>
-      <table class="table table-hover align-middle">
-          <thead>
-              <tr>
-                  <th>Nombre</th>
-                  <th class="text-end">Acciones</th> </tr>
-          </thead>
-          <tbody>
-              {{#artists}}
-              <tr>
-                  <td>{{artistName}}</td>
-                  <td class="text-end"> <a href="/admin/artists/edit_artist/{{artistID}}" class="btn btn-sm btn-primary">Editar</a>
-                      <a href="/admin/artists/delete_artist/{{artistID}}" class="btn btn-sm btn-danger">Eliminar</a>
-                  </td>
-              </tr>
-              {{/artists}}
-          </tbody>
-      </table>
->>>>>>> Stashed changes
+
   </div>
 
   <script src="/js/deleteItems.js"></script>

@@ -45,7 +45,7 @@ public class ArtistService {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artista no encontrado");
     }
 
-    public Artist saveAndEditArtist(Artist artist) {
+    public Artist saveArtist(Artist artist) {
         
         return artistRepository.save(artist);
     }

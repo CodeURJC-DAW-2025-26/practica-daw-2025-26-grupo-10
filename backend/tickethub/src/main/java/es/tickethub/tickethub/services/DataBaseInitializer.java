@@ -24,7 +24,6 @@ import es.tickethub.tickethub.entities.Purchase;
 import es.tickethub.tickethub.entities.Session;
 import es.tickethub.tickethub.entities.Ticket;
 import es.tickethub.tickethub.entities.Zone;
-
 import es.tickethub.tickethub.repositories.ArtistRepository;
 import es.tickethub.tickethub.repositories.DiscountRepository;
 import es.tickethub.tickethub.repositories.EventRepository;
@@ -32,7 +31,6 @@ import es.tickethub.tickethub.repositories.PurchaseRepository;
 import es.tickethub.tickethub.repositories.SessionRepository;
 import es.tickethub.tickethub.repositories.UserRepository;
 import es.tickethub.tickethub.repositories.ZoneRepository;
-
 import jakarta.annotation.PostConstruct;
 
 @Service
@@ -215,7 +213,8 @@ public class DataBaseInitializer {
         List<Session> sessions = Arrays.asList(
             new Session(events.get(0), null, Timestamp.valueOf("2026-06-10 21:00:00")),
             new Session(events.get(1), null, Timestamp.valueOf("2026-06-11 21:00:00")),
-            new Session(events.get(2), null, Timestamp.valueOf("2026-06-12 21:00:00"))
+            new Session(events.get(0), null, Timestamp.valueOf("2026-06-12 21:00:00")),
+            new Session(events.get(1), null, Timestamp.valueOf("2026-06-13 21:00:00"))
         );
 
         sessionRepository.saveAll(sessions);
