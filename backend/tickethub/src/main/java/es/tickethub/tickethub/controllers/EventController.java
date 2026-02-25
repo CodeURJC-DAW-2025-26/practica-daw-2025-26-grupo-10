@@ -144,8 +144,11 @@ public class EventController {
     @GetMapping("/admin/events/create_event")
     public String showCreateForm(Model model) {
         List <Artist> allArtists = artistService.findAll();
-
+        List<Zone> allZones = zoneService.findAll();
+        List<Discount> allDiscounts = discountService.getAllDiscounts();
         model.addAttribute("allArtists", allArtists);
+        model.addAttribute("allZones", allZones);
+        model.addAttribute("allDiscounts", allDiscounts);
         return "/admin/events/create_event";
     }
 
@@ -187,10 +190,12 @@ public class EventController {
     public String editEvent(@PathVariable Long eventID, Model model) {
         Event event = eventService.findById(eventID);
         List <Artist> allArtists = artistService.findAll();
-
+        List<Zone> allZones = zoneService.findAll();
+        List<Discount> allDiscounts = discountService.getAllDiscounts();
         model.addAttribute("event", event);
         model.addAttribute("allArtists", allArtists);
-
+        model.addAttribute("allZones", allZones);
+        model.addAttribute("allDiscounts", allDiscounts);
         return "admin/events/create_event";
     }
 
