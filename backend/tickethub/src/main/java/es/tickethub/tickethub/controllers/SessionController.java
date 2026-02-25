@@ -67,10 +67,24 @@ public class SessionController {
 
         Session session = new Session();
         session.setEvent(event);
-        System.out.println("Received: [" + date + "]");
         session.setDate(session.getTimestampedDate(date));
 
         event.getSessions().add(session);
+        sessionService.save(session);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("{eventID}/update_session")
+    @ResponseBody   //To return a simple status without redirecting
+    public ResponseEntity<?> editSession(@RequestParam("newDate") String date, @PathVariable Long eventID, @RequestParam("sessionID") Long sessionID) {
+
+        Session session = sessionService.findById(sessionID);
+         if (session == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        session.setDate(session.getTimestampedDate(date));
         sessionService.save(session);
 
         return ResponseEntity.ok().build();
