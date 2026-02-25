@@ -1,6 +1,8 @@
 function deleteItem(baseUrl, element) {
     const id = element.dataset.id;
-
+    // NOTE: This uses SweetAlert2
+    // Swal is the global object from SweetAlert2
+    // Swal.fire shows a modal alert with the options you provide:
     Swal.fire({
         title: '¿Estás seguro?',
         text: "Esta acción no se puede deshacer",

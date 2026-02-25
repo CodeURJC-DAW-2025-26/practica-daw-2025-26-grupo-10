@@ -13,13 +13,13 @@ const addDiscountBtn = document.getElementById("addDiscount");
 function goToConfirmation() {
     const eventIdInput = document.getElementById('currentEventId');
     const currentEventId = eventIdInput ? eventIdInput.value : window.currentEventId;
-    
+
     if (!currentEventId) {
         console.error("No Event ID found");
         return;
     }
 
-    executeSubmit(currentEventId); 
+    executeSubmit(currentEventId);
 }
 
 /**
@@ -28,10 +28,10 @@ function goToConfirmation() {
 function executeSubmit(currentEventId) {
     const totalPriceElement = document.getElementById('totalPrice');
     const sessionElement = document.getElementById('sessionSelect');
-    
+
     const totalRaw = totalPriceElement ? totalPriceElement.innerText : "0";
     const totalClean = totalRaw.replace('€', '').replace(',', '.').trim();
-    
+
     const sessionId = sessionElement ? sessionElement.value : null;
     const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
 
@@ -40,7 +40,7 @@ function executeSubmit(currentEventId) {
     form.action = '/purchases/save';
 
     const fields = {
-        'eventId': currentEventId, 
+        'eventId': currentEventId,
         'totalPrice': totalClean,
         '_csrf': csrfToken,
         'sessionId': sessionId
@@ -85,7 +85,7 @@ function updateTotalPrice() {
         if (opt && opt.value !== "") {
             const amount = parseFloat(opt.getAttribute('data-amount')) || 0;
             const percent = parseFloat(opt.getAttribute('data-percent')) || 0;
-            
+
             if (amount > 0) total -= amount;
             if (percent > 0) total -= (total * (percent / 100));
         }
@@ -137,11 +137,10 @@ function addDiscountSelect() {
     updateTotalPrice();
 }
 
-// --- Event Listeners ---
-
+addDiscountSelect();
 document.addEventListener("change", e => {
-    if (e.target.classList.contains("zone-select") || 
-        e.target.classList.contains("discount-select") || 
+    if (e.target.classList.contains("zone-select") ||
+        e.target.classList.contains("discount-select") ||
         e.target.id === "sessionSelect") {
         updateTotalPrice();
     }
@@ -177,4 +176,4 @@ if (addDiscountBtn) {
 
 // Initial setup on page load
 if (ticketSelect) generateTickets(ticketSelect.value);
-addDiscountSelect()
+addDiscountSelect();
