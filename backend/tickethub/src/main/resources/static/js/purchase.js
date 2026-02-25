@@ -6,9 +6,9 @@ const addDiscountBtn = document.getElementById("addDiscount");
 
 let ticketCount = 0;
 
-// 🎟 GENERAR ENTRADAS
+//Ticket generation
 function generateTickets(count) {
-  ticketsContainer.innerHTML = "";
+  ticketsContainer.replaceChildren();
   ticketCount = count;
 
   for (let i = 0; i < count; i++) {
@@ -33,23 +33,22 @@ function generateTickets(count) {
   }
 }
 
-// eliminar ticket
+// remove ticket
 ticketsContainer.addEventListener("click", e => {
   if (e.target.classList.contains("remove-ticket")) {
     e.target.closest(".ticket-card").remove();
   }
 });
 
-// cambio número entradas
+//change tickets
 ticketSelect.addEventListener("change", e => {
   generateTickets(e.target.value);
 });
 
-// carga inicial
+// load tickets
 generateTickets(ticketSelect.value);
 
-// 🎟 DESCUENTOS DINÁMICOS
-
+//Discounts
 function addDiscountSelect() {
   const index = discountContainer.children.length;
 
@@ -62,7 +61,6 @@ function addDiscountSelect() {
   `);
 }
 
-// primer descuento automático
 addDiscountSelect();
 
 addDiscountBtn.addEventListener("click", addDiscountSelect);

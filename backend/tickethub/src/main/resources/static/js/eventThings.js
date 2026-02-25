@@ -1,4 +1,12 @@
 // ----------------- FUNCTIONS -----------------
+
+/**
+ * Attaches a click event listener to a button inside a given row
+ * that removes the row from the DOM when clicked.
+ *
+ * @param {HTMLElement} row - The row element containing the button.
+ * @param {string} selector - The CSS selector for the button within the row.
+ */
 function attachRemoveButton(row, selector) {
   const btn = row.querySelector(selector);
   if (btn) btn.addEventListener('click', () => row.remove());
@@ -7,7 +15,7 @@ function attachRemoveButton(row, selector) {
 function cloneRow(template, inputsToReset = [], selectsToReset = []) {
   const clone = template.cloneNode(true);
   inputsToReset.forEach(name => {
-    const input = clone.querySelector(`[name="${name}"]`);
+    const input = clone.querySelector(`[name="${name}"]`); //return the first element with that CSS name
     if (input) input.value = '';
   });
   selectsToReset.forEach(name => {
