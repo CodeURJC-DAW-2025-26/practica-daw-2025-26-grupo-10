@@ -1,35 +1,50 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Confirmación</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="/css/main.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Confirmación de Compra</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 
-<!--LOCATION OF THE HEADER OF THE WEB-->
+  {{>components/header}}
 
-{{>components/header}}
+  <div class="container my-5 text-center">
+      <div class="alert alert-success">
+          <h4 class="alert-heading">¡Compra realizada con éxito!</h4>
+          <p>Tu pedido ha sido procesado correctamente.</p>
+      </div>
 
-<div class="container my-5 text-center">
-  <div class="alert alert-success">Compra realizada con éxito</div>
-  <ul class="list-group mb-3">
-    {{#event}}
-    <li class="list-group-item">Evento: {{name}}</li>
-    <li class="list-group-item">Categoría del evento: {{category}}</li>
-    <li class="list-group-item">Total: 30€</li>
-    {{/event}}
-  </ul>
-  <a href="/purchase/download/{{purchase.purchaseID}}" class="btn btn-outline-primary">Descargar PDF</a>
-  <a href="/public/index" class="btn btn-primary">Volver al inicio</a>
-</div>
+      <div class="card mx-auto" style="max-width: 500px;">
+          <div class="card-header">Resumen de la compra</div>
+          <ul class="list-group list-group-flush">
+              {{#event}}
+              <li class="list-group-item"><strong>Evento:</strong> {{name}}</li>
+              <li class="list-group-item"><strong>Categoría:</strong> {{category}}</li>
+              {{/event}}
 
-<!--LOCATION OF THE FOOTER OF THE WEB-->
+              {{#purchase}}
+              <li class="list-group-item"><strong>ID de Pedido:</strong> #{{purchaseID}}</li>
+              <li class="list-group-item"><strong>Total Pagado:</strong> {{totalPrice}} €</li>
+              
+              {{#session}}
+              <li class="list-group-item"><strong>Fecha:</strong> {{formattedDate}}</li>
+              {{/session}}
+              {{/purchase}}
+          </ul>
+      </div>
 
-{{>/components/footer}}
+      <div class="mt-4 gap-2">
+          <a href="/purchases/download/{{purchase.purchaseID}}" class="btn btn-outline-primary">
+              Descargar entradas (PDF)
+          </a>
+          <a href="/public/index" class="btn btn-primary">Volver al inicio</a>
+      </div>
+  </div>
+
+  {{>/components/footer}}
 
 </body>
 </html>
-

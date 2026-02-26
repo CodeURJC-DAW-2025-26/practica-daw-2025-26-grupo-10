@@ -81,16 +81,12 @@ public class EventController {
     /* To see the purchase page*/
     @GetMapping("/purchase/{eventID}")
     public String showPurchaseFromEvent(@PathVariable Long eventID, Model model) {
+        
         Event event = eventService.findById(eventID);
-        List<Zone> zones = zoneService.findAll();
-        List<Discount> discounts = discountService.getAllDiscounts();
-
         model.addAttribute("event", event);
-        model.addAttribute("zones", zones);
-        model.addAttribute("discounts", discounts);
-        model.addAttribute("ticketCounts", List.of(1, 2, 3, 4, 5));
-        model.addAttribute("tickets", List.of());
-        model.addAttribute("totalPrice", BigDecimal.ZERO);
+        model.addAttribute("zones", zoneService.findAll());
+        model.addAttribute("discounts", discountService.getAllDiscounts());
+        model.addAttribute("totalPrice", 0);
 
         return "public/purchase";
     }

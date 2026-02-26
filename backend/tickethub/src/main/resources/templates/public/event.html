@@ -46,10 +46,10 @@
           <!-- example: sessions should be a list inside event if you later add them -->
           <div class="d-flex align-items-center gap-2 mb-3">
             <strong><p>Sesiones disponibles:</p></strong>
-            <select class="form-select form-control-sm w-auto">
-              <option>Seleccionar sesión</option>
+            <select id="sessionSelect" class="form-select form-control-sm w-auto">
+              <option value="">Seleccionar sesión</option>
               {{#event.sessions}}
-              <option>{{formattedDate}}</option>
+              <option value="{{sessionID}}">{{formattedDate}}</option>
               {{/event.sessions}}
             </select>
           </div>
@@ -78,7 +78,6 @@
 <script src="/js/carousel.js"></script>
 
 <!--LOCATION OF THE FOOTER OF THE WEB-->
-
 {{>/components/footer}}
 
 </body>
