@@ -34,9 +34,8 @@
               Editar
             </button>
 
-            <a class="btn btn-sm btn-danger"
-              data-id="{{sessionID}}"
-              onclick="deleteItem('/events/delete_session', this)">
+            <a class="btn btn-sm btn-danger delete-item"
+              data-id="{{sessionID}}" data-url="/admin/events/delete_session">
               Eliminar
             </a>
           </td>
@@ -66,7 +65,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="/js/eventThings.js"></script>
-  <script src="/js/confirmation.js"></script>
+  <script type="module" src="/js/confirmation.js"></script>
   
   <!--LOCATION OF THE FOOTER OF THE WEB-->
 

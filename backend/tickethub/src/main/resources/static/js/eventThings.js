@@ -27,31 +27,43 @@ function cloneRow(template, inputsToReset = [], selectsToReset = []) {
 
 // ----------------- ZONES -----------------
 const zonesContainer = document.getElementById('zones-container');
-let zoneTemplate = zonesContainer.querySelector('.zone-row');
+let zoneTemplate = Array.from(
+    zonesContainer.querySelectorAll('.zone-row')
+  ).find(row => row.querySelector('.remove-zone')) || null;
 
 if (!zoneTemplate) {
   zoneTemplate = document.createElement('div');
   zoneTemplate.classList.add('row', 'g-2', 'mb-2', 'zone-row', 'align-items-center');
   zoneTemplate.innerHTML = `
-    <div class="col">
+    <div class="col-auto">
       <select name="zones" class="form-select">
-        {{#allZones}}
-          <option value="{{id}}">{{name}}</option>
-        {{/allZones}}
+        <option value="">Seleccionar zona</option>
+        ${document.querySelector('select[name="zones"]')?.innerHTML || ''}
       </select>
     </div>
-    <div class="col">
-      <input type="number" name="zoneCapacity" class="form-control" placeholder="Capacidad">
-    </div>
     <div class="col-auto">
-      <button type="button" class="btn btn-danger btn-sm remove-zone">Eliminar</button>
+      <button type="button" class="btn btn-danger btn-sm remove-zone">
+        Eliminar
+      </button>
     </div>
   `;
 }
 
+zonesContainer.querySelectorAll('.zone-row').forEach(r => {
+  if (r.querySelector('.remove-zone')) {
+    attachRemoveButton(r, '.remove-zone');
+  }
+});
+
 zonesContainer.querySelectorAll('.zone-row').forEach(r => attachRemoveButton(r, '.remove-zone'));
 
 document.getElementById('add-zone').addEventListener('click', () => {
+  
+  const emptyMsg = document.getElementById('no-zones-asociated');
+  if (emptyMsg) {
+    emptyMsg.closest('.zone-row').remove();
+  }
+
   const clone = cloneRow(zoneTemplate, ['zoneCapacity'], ['zones']);
   attachRemoveButton(clone, '.remove-zone');
   zonesContainer.appendChild(clone);
@@ -59,33 +71,44 @@ document.getElementById('add-zone').addEventListener('click', () => {
 
 // ----------------- DISCOUNTS -----------------
 const discountsContainer = document.getElementById('discounts-container');
-let discountTemplate = discountsContainer.querySelector('.discount-row');
+let discountTemplate = Array.from(
+    discountsContainer.querySelectorAll('.discount-row')
+  ).find(row => row.querySelector('.remove-discount')) || null;
 
+// Si no hay ninguna fila válida (solo está el mensaje)
 if (!discountTemplate) {
   discountTemplate = document.createElement('div');
   discountTemplate.classList.add('row', 'g-2', 'mb-2', 'discount-row', 'align-items-center');
   discountTemplate.innerHTML = `
     <div class="col">
-      <input type="text" name="discountName" class="form-control" placeholder="Nombre del descuento">
-    </div>
-    <div class="col">
-      <select name="discountType" class="form-select">
-        <option value="amount">Cantidad</option>
-        <option value="percent">Porcentaje</option>
+      <select name="discounts" class="form-select">
+        <option value="">Seleccionar descuento</option>
+        ${document.querySelector('select[name="discounts"]')?.innerHTML || ''}
       </select>
     </div>
-    <div class="col">
-      <input type="number" step="0.01" name="discountValue" class="form-control" placeholder="Valor del descuento">
-    </div>
     <div class="col-auto">
-      <button type="button" class="btn btn-danger btn-sm remove-discount">Eliminar</button>
+      <button type="button" class="btn btn-danger btn-sm remove-discount">
+        Eliminar
+      </button>
     </div>
   `;
 }
 
+discountsContainer.querySelectorAll('.discount-row').forEach(r => {
+  if (r.querySelector('.remove-discount')) {
+    attachRemoveButton(r, '.remove-discount');
+  }
+});
+
 discountsContainer.querySelectorAll('.discount-row').forEach(r => attachRemoveButton(r, '.remove-discount'));
 
 document.getElementById('add-discount').addEventListener('click', () => {
+  
+  const emptyMsg = document.getElementById('no-discounts-asociated');
+  if (emptyMsg) {
+    emptyMsg.closest('.discount-row').remove();
+  }
+
   const clone = cloneRow(discountTemplate, ['discountName', 'discountValue'], ['discountType']);
   attachRemoveButton(clone, '.remove-discount');
   discountsContainer.appendChild(clone);
@@ -111,9 +134,9 @@ if (sessionsBody && addSessionBtn) {
     `;
     sessionsBody.appendChild(newRow);
 
-    newRow.querySelector('.save-new').addEventListener('click', () => {
+    newRow.querySelector('save-new').addEventListener('click', () => {
 
-      const date = newRow.querySelector('.new-date').value;
+      const date = newRow.querySelector('new-date').value;
 
       if (!date) { alert("Debes seleccionar una fecha"); return; }
 
@@ -127,13 +150,13 @@ if (sessionsBody && addSessionBtn) {
   });
 
   // EDIT ACTUAL SESSION
-  document.querySelectorAll('.edit-session').forEach(btn => {
+  document.querySelectorAll('edit-session').forEach(btn => {
     btn.addEventListener('click', () => {
       const row = btn.closest('tr');
       const sessionId = row.dataset.id;
       const eventId = row.dataset.eventid;
-      const dateCell = row.querySelector('.date-cell');
-      const actionsCell = row.querySelector('.actions-cell');
+      const dateCell = row.querySelector('date-cell');
+      const actionsCell = row.querySelector('actions-cell');
 
       dateCell.innerHTML =
         `<input type="datetime-local" class="form-control edit-date">`;
@@ -143,9 +166,9 @@ if (sessionsBody && addSessionBtn) {
             Guardar
           </button>`;
 
-      row.querySelector('.save-edit').addEventListener('click', () => {
+      row.querySelector('save-edit').addEventListener('click', () => {
 
-        const newDate = row.querySelector('.edit-date').value;
+        const newDate = row.querySelector('edit-date').value;
 
         const data = new URLSearchParams();
         data.append('newDate', newDate);
@@ -166,6 +189,22 @@ if (sessionsBody && addSessionBtn) {
       });
 
     });
+
+  });
+
+  // DELETE SESSION
+  document.addEventListener('click', function (e) {
+
+    const btn = e.target.closest('.delete-item');
+    console.log("Boton encontrado");
+    if (!btn) return;
+
+    const id = btn.dataset.id;
+    const baseUrl = btn.dataset.url;
+
+    if (!id || !baseUrl) return;
+
+    deleteItem(baseUrl, btn);
 
   });
 }

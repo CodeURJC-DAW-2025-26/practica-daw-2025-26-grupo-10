@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.DecimalMin;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,6 +32,9 @@ public class Discount {
     @Column(nullable = false, precision = 5, scale = 2)
     @DecimalMin(value="0.00")
     private BigDecimal ammount;
+
+    @Transient
+    private boolean selected;
 
     public Discount() {}    //Constructor for the Database
 
