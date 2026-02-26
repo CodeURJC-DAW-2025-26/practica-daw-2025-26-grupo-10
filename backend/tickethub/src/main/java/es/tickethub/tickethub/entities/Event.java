@@ -13,7 +13,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -38,8 +37,7 @@ public class Event {
     private String name;
 
     @Column(nullable = false)
-    @Min(value = 1, message = "No se puede hacer un evento sin asistentes")
-    private Integer capacity;
+    private Integer capacity = 0;
 
     @Column(nullable = false)
     private Integer targetAge;
@@ -53,7 +51,7 @@ public class Event {
     @Column(nullable = false) //I think this make no sense
     private List<Session> sessions = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany
     @JoinTable(
         name = "event_zones",
         joinColumns = @JoinColumn(name = "event_id"),
@@ -62,7 +60,7 @@ public class Event {
     private List<Zone> zones = new ArrayList<>();
 
     /* Here we don't have to put orphanRemoval because the discounts can be associated to more events*/
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
     @JoinTable(
         name = "event_discounts",
         joinColumns = @JoinColumn(name = "event_id"),
@@ -91,12 +89,11 @@ public class Event {
     }
 
     // Constructor of the class (we have to put all the parameters that can not be null in the database)
-    public Event(String name, Integer capacity, Artist artist,
+    public Event(String name, Artist artist,
         List<Session> sessions, List<Zone> zones, String place,
         String category, List<Image> eventImages, Integer targetAge) {
 
         this.name = name;
-        this.capacity = capacity;
         this.targetAge = targetAge;
         this.artist = artist;
         if (sessions != null) {
@@ -104,6 +101,7 @@ public class Event {
         }
         if (zones != null) {
             this.zones = zones;
+            this.capacity = zones.stream().mapToInt(Zone::getCapacity).sum();   //This adds the capacity of all the zones to set the total capacity of the event
         }
         this.place = place;
         this.category = category;

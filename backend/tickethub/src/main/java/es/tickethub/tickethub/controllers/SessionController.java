@@ -60,7 +60,7 @@ public class SessionController {
         return "sessions"; 
     }
 
-    @PostMapping("{eventID}/add_session")
+    @PostMapping("/{eventID}/add_session")
     @ResponseBody   //To return a simple status without redirecting
     public ResponseEntity<?> addSession(@RequestParam String date, @PathVariable Long eventID) {
         Event event = eventService.findById(eventID);
@@ -75,9 +75,9 @@ public class SessionController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("{eventID}/update_session")
+    @PostMapping("/{eventID}/update_session")
     @ResponseBody   //To return a simple status without redirecting
-    public ResponseEntity<?> editSession(@RequestParam("newDate") String date, @PathVariable Long eventID, @RequestParam("sessionID") Long sessionID) {
+    public ResponseEntity<?> editSession(@RequestParam("newDate") String date, @PathVariable Long eventID, @RequestParam Long sessionID) {
 
         Session session = sessionService.findById(sessionID);
          if (session == null) {

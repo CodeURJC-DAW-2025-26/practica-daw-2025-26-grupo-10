@@ -31,18 +31,27 @@
           <td>
             <a href="/admin/events/edit_event/{{eventID}}" class="btn btn-sm btn-primary">Editar</a>
 
-            <a class="btn btn-sm btn-danger"
-              data-id = "{{eventID}}" onclick="deleteItem('/events/delete_event', this)">Eliminar</a>
+            <a class="btn btn-sm btn-danger delete-item"
+              data-id = "{{eventID}}" data-url="/admin/events/delete_event">Eliminar</a>
           </td>
         </tr>
         {{/events}}
       </tbody>
 
     </table>
+
+    <div class="row mb-3">
+      <div class="col d-flex justify-content-end">
+
+        <a href="/admin/admin" class="btn btn-success">Volver a vista de admin</a>
+
+      </div>
+    </div>
   </div>
 
-  <script src="/js/confirmation.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script type="module" src="/js/confirmation.js"></script>
+  <script src="/js/eventThings.js"></script>
 
   <!--LOCATION OF THE FOOTER OF THE WEB-->
 

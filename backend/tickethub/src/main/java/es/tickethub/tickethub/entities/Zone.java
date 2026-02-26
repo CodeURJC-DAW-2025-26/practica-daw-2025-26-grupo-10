@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -38,6 +39,9 @@ public class Zone {
 
     @OneToMany(mappedBy = "zone")
     private List<Ticket> tickets;
+
+    @Transient
+    private boolean selected;
 
     public Zone() {} /* Constructor for the Database*/
 

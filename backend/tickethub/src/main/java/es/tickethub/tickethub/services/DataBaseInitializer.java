@@ -149,19 +149,19 @@ public class DataBaseInitializer {
         */
 
         List<Event> events = Arrays.asList(
-            new Event("Concierto Duki Wizink Center", 20000, artists.get(0), null, null, "Wizink Center", "Música", eventImages, 3),
-            new Event("Film Symphony Orchestra Wizink Center", 20000, artists.get(1), null, null, "Wizink Center", "Música", null,4),
-            new Event("Concierto Aitana Wizink Center", 20000, artists.get(2), null, null, "Wizink Center", "Música", null,2),
-            new Event("El show de Juan Dávila", 15000, artists.get(3), null, null, "Palacio Vistalegre", "Comedia", null,6),
-            new Event("Riendo con Galder Varas", 15000, artists.get(4), null, null, "Palacio Vistalegre", "Comedia", null,2),
-            new Event("Noche de Rock Urbano", 12000, artists.get(5), null, null, "WiZink Center", "Rock", null,3),
-            new Event("Festival Indie Madrid", 18000, artists.get(6), null, null, "IFEMA", "Indie", null,3),
-            new Event("Electro Night Experience", 22000, artists.get(7), null, null, "La Riviera", "Electrónica", null,4),
-            new Event("Jazz & Soul Sessions", 8000, artists.get(8), null, null, "Teatro Real", "Jazz", null,4),
-            new Event("Trap Revolution Tour", 16000, artists.get(0), null, null, "Palacio Vistalegre", "Trap", null,5),
-            new Event("Clásicos del Pop Español", 14000, artists.get(9), null, null, "Movistar Arena", "Pop", null,1),
-            new Event("Festival Flamenco Fusión", 9000, artists.get(10), null, null, "Teatro Circo Price", "Flamenco", null,2),
-            new Event("Metal Legends Live", 20000, artists.get(11), null, null, "Auditorio Miguel Ríos", "Metal", null,3)
+            new Event("Concierto Duki Wizink Center", artists.get(0), null, null, "Wizink Center", "Música", eventImages, 3),
+            new Event("Film Symphony Orchestra Wizink Center", artists.get(1), null, null, "Wizink Center", "Música", null,4),
+            new Event("Concierto Aitana Wizink Center", artists.get(2), null, null, "Wizink Center", "Música", null,2),
+            new Event("El show de Juan Dávila", artists.get(3), null, null, "Palacio Vistalegre", "Comedia", null,6),
+            new Event("Riendo con Galder Varas", artists.get(4), null, null, "Palacio Vistalegre", "Comedia", null,2),
+            new Event("Noche de Rock Urbano", artists.get(5), null, null, "WiZink Center", "Rock", null,3),
+            new Event("Festival Indie Madrid", artists.get(6), null, null, "IFEMA", "Indie", null,3),
+            new Event("Electro Night Experience", artists.get(7), null, null, "La Riviera", "Electrónica", null,4),
+            new Event("Jazz & Soul Sessions", artists.get(8), null, null, "Teatro Real", "Jazz", null,4),
+            new Event("Trap Revolution T", artists.get(0), null, null, "Palacio Vistalegre", "Trap", null,5),
+            new Event("Clásicos del Pop Español", artists.get(9), null, null, "Movistar Arena", "Pop", null,1),
+            new Event("Festival Flamenco Fusión", artists.get(10), null, null, "Teatro Circo Price", "Flamenco", null,2),
+            new Event("Metal Legends Live", artists.get(11), null, null, "Auditorio Miguel Ríos", "Metal", null,3)
         );
 
         artists.get(0).getLastEvents().add(events.get(0));

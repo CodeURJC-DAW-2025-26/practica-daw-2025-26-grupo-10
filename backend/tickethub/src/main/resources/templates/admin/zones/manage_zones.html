@@ -33,8 +33,8 @@
           <td>{{price}} €</td>
           <td>
             <a href="/admin/zones/edit_zone/{{id}}" class="btn btn-sm btn-primary">Editar</a>
-            <a class="btn btn-sm btn-danger"
-                data-id = "{{id}}" onclick="deleteItem('/zones/delete_zone', this)">Eliminar</a>
+            <a class="btn btn-sm btn-danger delete-item"
+                data-id = "{{id}}" data-url="/admin/zones/delete_zone">Eliminar</a>
           </td>
         </tr>
         {{/zones}}
@@ -50,8 +50,9 @@
     </div>
   </div>
 
-  <script src="/js/confirmation.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script type="module" src="/js/confirmation.js"></script>
+  <script src="/js/eventThings.js"></script>
 
   {{>components/footer_admin}}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

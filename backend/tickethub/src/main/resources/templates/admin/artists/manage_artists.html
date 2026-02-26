@@ -38,8 +38,8 @@
             <a href="/admin/artists/edit_artist/{{artistID}}" class="btn btn-sm btn-primary">Editar</a>
 
             <!--FALTA POR HACER FUNCIONAR CORRECTAMENTE LOS DOS BOTONES-->
-            <a class="btn btn-sm btn-danger"
-                data-id = "{{artistID}}" onclick="deleteItem('/artists/delete_artist', this)">Eliminar</a>
+            <a class="btn btn-sm btn-danger delete-item"
+                data-id = "{{artistID}}" data-url="/admin/artists/delete_artist">Eliminar</a>
           </td>
         </tr>
       </tbody>
@@ -56,8 +56,9 @@
 
   </div>
 
-  <script src="/js/confirmation.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script type="module" src="/js/confirmation.js"></script>
+  <script src="/js/eventThings.js"></script>
 
   <!--LOCATION OF THE FOOTER OF THE WEB-->
 

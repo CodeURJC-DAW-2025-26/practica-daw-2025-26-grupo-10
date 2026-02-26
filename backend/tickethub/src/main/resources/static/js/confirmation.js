@@ -61,7 +61,7 @@ function deleteItem(baseUrl, element) {
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            fetch(`/admin${baseUrl}/${id}`, { method: 'DELETE' })
+            fetch(`${baseUrl}/${id}`, { method: 'DELETE' })
                 .then(response => {
                     if (response.ok) {
                         Swal.fire('Eliminado', 'El elemento ha sido eliminado.', 'success')
@@ -70,4 +70,32 @@ function deleteItem(baseUrl, element) {
                 });
         }
     });
+}
+
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.delete-item');
+  if (!btn) return;
+
+  const baseUrl = btn.dataset.url;
+  const id = btn.dataset.id;
+  if (!baseUrl || !id) return;
+
+  deleteItem(baseUrl, btn);
+});
+
+//To show the error message in the create/edit event page
+const form = document.querySelector('form[action*="edit_event"], form[action*="create_event"]');
+
+if (form) {
+  form.addEventListener('submit', e => {
+    const files = form.querySelector('[name="images"]').files;
+
+    for (const file of files) {
+      if (!/\.(jpg|jpeg|png|webp)$/i.test(file.name)) {
+        e.preventDefault(); // Detenemos el submit
+        Swal.fire("Error", "Solo se permiten imágenes (.jpg, .jpeg, .png, .webp)", "error");
+        return;
+      }
+    }
+  });
 }
