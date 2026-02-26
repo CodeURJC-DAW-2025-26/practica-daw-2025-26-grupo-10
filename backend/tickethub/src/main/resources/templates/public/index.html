@@ -53,6 +53,35 @@
       </div>
     </section>
 
+    <!-- RECOMMENDED EVENTS -->
+    <section class="mb-5">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Recomendaciones para ti</h2>
+        <a href="/public/events" class="btn btn-outline-primary btn-sm">Ver todos</a>
+      </div>
+
+      <div class="row g-4">
+        {{#recommendedEvents}}
+        <div class="col-md-4">
+          <div class="card h-100">
+            {{#eventImages}}
+            <img src="/public/image/{{recommendedEvent.mainImage.imageName}}" class="card-img-top" alt="Evento recomendado">
+            {{/eventImages}}
+            <div class="card-body">
+              <h5 class="card-title">{{name}}</h5>
+              <p class="mb-1">{{category}}</p>
+              <p class="text-muted">{{place}}</p>
+              <p class="text-muted">Precio medio: ${{averagePrice}}</p>
+              <a href="/public/event/{{eventID}}" class="btn btn-primary btn-sm">Ver evento</a>
+            </div>
+          </div>
+        </div>
+        {{/recommendedEvents}}
+        {{^recommendedEvents}}
+        <p>No tenemos información suficiente para recomendarte un evento</p>
+        {{/recommendedEvents}}
+      </div>
+    </section>
     <!-- ARTISTS WITH MORE EVENTS IN THE SITE -->
     <section class="mb-5">
       <div class="d-flex justify-content-between align-items-center mb-4">

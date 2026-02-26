@@ -118,4 +118,22 @@ public class Event {
         }
         return null;
     }
+
+    public double getAveragePrice() {
+        if (zones == null || zones.isEmpty()) return 0.0;
+
+        double sum = 0.0;
+        int count = 0;
+
+        for (Zone z : zones) {
+            if (z.getPrice() != null) {
+                sum += z.getPrice().doubleValue();
+                count++;
+            }
+        }
+
+        if (count == 0) return 0.0;
+
+        return sum / count;
+    }
 }
