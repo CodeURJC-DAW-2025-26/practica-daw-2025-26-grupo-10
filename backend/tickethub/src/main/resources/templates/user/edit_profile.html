@@ -70,19 +70,19 @@
       <div class="mb-3">
         <input type="hidden" name="version" value="{{version}}">
         <label class="form-label">Nombre</label>
-        <input type="text" class="form-control" name="name"  value="{{name}}">
+        <input type="text" class="form-control" name="name"  value="{{name}}" required>
       </div>
       <div class="mb-3">
         <label class="form-label">Apellidos</label>
-        <input type="text" class="form-control" name="surname" value="{{surname}}">
+        <input type="text" class="form-control" name="surname" value="{{surname}}" required>
       </div>
       <div class="mb-3">
         <label class="form-label">Nombre de usuario</label>
-        <input type="text" class="form-control" name="username"  value="{{username}}">
+        <input type="text" class="form-control" name="username"  value="{{username}}" required>
       </div>
       <div class="mb-3">
         <label class="form-label">Correo electrónico</label>
-        <input type="email" class="form-control" name="email"  value="{{email}}">
+        <input type="email" class="form-control" name="email"  value="{{email}}" required>
       </div>
       <div class="mb-3">
         <label class="form-label">Teléfono</label>
@@ -95,7 +95,7 @@
       </div>
       <div class="mb-3">
         <label class="form-label">Foto de perfil</label>
-        <input type="file" class="form-control" name="imageFile" accept=".jpg, .jpeg">
+        <input type="file" class="form-control" name="imageFile" accept=".jpg, .jpeg, .png">
       </div>
       {{#error}}
       <div class="alert alert-danger" role="alert">

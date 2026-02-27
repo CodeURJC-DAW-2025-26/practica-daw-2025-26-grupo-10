@@ -18,9 +18,9 @@
     <h3 class="mb-4 text-center">Iniciar sesión</h3>
 
     <form action="/public/login" method="post">
-      <input type="hidden" name="_csrf" value="{{token}}">
-      <input class="form-control mb-3" placeholder="Correo electrónico" name="email">
-      <input type="password" class="form-control mb-3" placeholder="Contraseña" name="password">
+      <input type="hidden" name="_csrf" value="{{token}}" required>
+      <input class="form-control mb-3" placeholder="Correo electrónico" name="email" required>
+      <input type="password" class="form-control mb-3" placeholder="Contraseña" name="password" required>
       <button class="btn btn-primary w-100">Entrar</button>
     </form>
     {{#success}}

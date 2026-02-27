@@ -24,7 +24,7 @@
   <h2>Crear Evento</h2>
   <form action="/events/save" method="post" enctype="multipart/form-data">
 
-    <input type="hidden" name="eventID" value="{{eventID}}">
+    <input type="hidden" name="eventID" value="{{eventID}}" required>
 
     <p class="fw-bold mb-1">Nombre del evento</p>
     <input name="name" class="form-control mb-3"
@@ -32,15 +32,15 @@
 
     <p class="fw-bold mb-1">Capacidad total</p>
     <input name="capacity" type="number" class="form-control mb-3"
-          value="{{event.capacity}}">
+          value="{{event.capacity}}" required>
 
     <p class="fw-bold mb-1">Categoría</p>
     <input name="category" type="text" class="form-control mb-3"
-          value="{{event.category}}">
+          value="{{event.category}}" required>
 
     <p class="fw-bold mb-1">Artista principal</p>
     <input name="artist" type="text" class="form-control mb-3"
-          value="{{event.artist.artistName}}">
+          value="{{event.artist.artistName}}" required>
 
     <p class="fw-bold mb-1">Edad objetivo</p>
     <select name="targetAge" class="form-select mb-3">
@@ -56,11 +56,11 @@
     <p class="fw-bold mb-1">Sesiones</p>
     {{#event.sessions}}
     <input type="datetime-local" name="sessions"
-          value="{{date}}" class="form-control mb-2">
+          value="{{date}}" class="form-control mb-2" required>
     {{/event.sessions}}
 
     {{^event.sessions}}
-    <input type="datetime-local" name="sessions" class="form-control mb-2">
+    <input type="datetime-local" name="sessions" class="form-control mb-2" required>
     {{/event.sessions}}
 
     <p class="fw-bold mb-1">Zonas y precios</p>
@@ -68,22 +68,22 @@
     {{#event.zones}}
     <div class="row g-2 mb-2">
       <div class="col">
-        <input name="zoneName" value="{{name}}" class="form-control">
+        <input name="zoneName" value="{{name}}" class="form-control" required>
       </div>
       <div class="col">
-        <input name="zonePrice" value="{{price}}" class="form-control">
+        <input name="zonePrice" value="{{price}}" class="form-control" required>
       </div>
       <div class="col">
-        <input name="zoneCapacity" value="{{capacity}}" class="form-control">
+        <input name="zoneCapacity" value="{{capacity}}" class="form-control" required>
       </div>
     </div>
     {{/event.zones}}
 
     {{^event.zones}}
     <div class="row g-2 mb-2">
-      <div class="col"><input name="zoneName" class="form-control"></div>
-      <div class="col"><input name="zonePrice" class="form-control"></div>
-      <div class="col"><input name="zoneCapacity" class="form-control"></div>
+      <div class="col"><input name="zoneName" class="form-control" required></div>
+      <div class="col"><input name="zonePrice" class="form-control" required></div>
+      <div class="col"><input name="zoneCapacity" class="form-control" required></div>
     </div>
     {{/event.zones}}
 

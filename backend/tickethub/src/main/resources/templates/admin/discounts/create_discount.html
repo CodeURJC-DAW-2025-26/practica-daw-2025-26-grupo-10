@@ -24,7 +24,7 @@
     <form method="post" action="/admin/discounts/{{#discount}}edit_discount/{{discount.discountID}}{{/discount}}{{^discount}}create_discount{{/discount}}">
 
       {{#discount.discountID}}
-        <input type="hidden" name="id" value="{{discountID}}">
+        <input type="hidden" name="id" value="{{discountID}}" required>
       {{/discount.discountID}}
 
       <div class="mb-3">
@@ -77,7 +77,7 @@
         {{^discount.discountID}}Crear{{/discount.discountID}}
       </button>
 
-      <a href="/admin/admin" class="btn btn-secondary">Cancelar</a>
+      <a href="/admin" class="btn btn-secondary">Cancelar</a>
 
     </form>
   </div>
