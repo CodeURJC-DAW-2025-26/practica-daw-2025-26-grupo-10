@@ -96,4 +96,15 @@ public class AuxiliarController {
         }
     }
 
+    @GetMapping("/error/403")
+    public String show403Error(Model model) {
+        model.addAttribute("mensajeError", "No tienes permiso para acceder a este recurso.");
+        return "error/403";
+    }
+
+    @GetMapping("/error/404")
+    public String show404Error() {
+        return "error/404";
+    }
+
 }

@@ -62,8 +62,11 @@ public class PurchaseService {
     }
 
     @Transactional(readOnly = true)
-    public List<Ticket> getTicketsByPurchase(Long purchaseID){
+    public List<Ticket> getTicketsByPurchase(Long purchaseID,String loggedEmail){
         Purchase purchase = purchaseRepository.findById(purchaseID).orElseThrow(()->new  ResponseStatusException(HttpStatus.NOT_FOUND, "Compra no encontrada") );
+        if(!purchase.getClient().getEmail().equals(loggedEmail)){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permiso para ver esta información");
+        }
         return purchase.getTickets();
     }
 

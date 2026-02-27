@@ -90,8 +90,9 @@ public class PurchaseController {
      * Loads a fragment containing ticket details for a specific purchase.
      */
     @GetMapping("/{purchaseId}/tickets")
-    public String getPurchaseTickets(@PathVariable Long purchaseId, Model model) {
-        List<Ticket> tickets = purchaseService.getTicketsByPurchase(purchaseId);
+    public String getPurchaseTickets(@PathVariable Long purchaseId, Model model,Principal principal) {
+        String loggedEmail = principal.getName();
+        List<Ticket> tickets = purchaseService.getTicketsByPurchase(purchaseId,loggedEmail);
         model.addAttribute("tickets", tickets);
         return "user/purchase_details_fragment";
     }

@@ -5,14 +5,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.server.ResponseStatusException;
+import jakarta.servlet.http.HttpServletResponse;
 
 @ControllerAdvice
 public class GlobalExeceptionHandler {
     
     @ExceptionHandler(ResponseStatusException.class)
-    public String handleResponseStatusException(ResponseStatusException ex, Model model) {
-        //
+    public String handleResponseStatusException(ResponseStatusException ex, Model model,HttpServletResponse response) {
+    
         model.addAttribute("mensajeError", ex.getReason());
+        model.addAttribute("status",ex.getStatusCode().value());
+        response.setStatus(ex.getStatusCode().value());
         if (ex.getStatusCode() == HttpStatus.NOT_FOUND) {
             return "error/404";
         } else if (ex.getStatusCode() == HttpStatus.FORBIDDEN) {

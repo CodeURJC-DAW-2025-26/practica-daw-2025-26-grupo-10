@@ -49,7 +49,19 @@ async function toggleTickets(purchaseId, boton) {
         boton.innerText = "Cargando...";
 
         const response = await fetch(`/purchases/${purchaseId}/tickets`);
-        if (!response.ok) throw new Error("Error al cargar tickets");
+
+        if (!response.ok) {
+            if (response.status === 403) {
+                window.location.href = "/public/error/403";
+                return;
+            } else if (response.status === 404) {
+                window.location.href = "/public/error/404";
+                return;
+            } else {
+                throw new Error("Error inesperado");
+            }
+        }
+
         const htmlFragment = await response.text();
         parentRow.insertAdjacentHTML('afterend', htmlFragment);
         

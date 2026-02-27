@@ -19,7 +19,12 @@
 <div class="text-center">
 <h1 class="display-1">403</h1>
 <p class="lead">Acceso no autorizado</p>
-<a href="public/index" class="btn btn-primary">Volver al inicio</a>
+<p class="lead mb-4">
+            {{#mensajeError}}{{mensajeError}}{{/mensajeError}}
+            {{^mensajeError}}No tienes permisos suficientes para acceder a este recurso.{{/mensajeError}}
+</p>
+<a href="/public/index" class="btn btn-primary">Volver al inicio</a>
+<a href="javascript:history.back()" class="btn btn-outline-secondary">Regresar</a>
 </div>
 </main>
 
