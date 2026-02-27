@@ -22,11 +22,11 @@
 
       <form action="/artists/save" method="post" enctype="multipart/form-data">
 
-        <input type="hidden" name="artistID" value="{{artist.artistID}}">
+        <input type="hidden" name="artistID" value="{{artist.artistID}}" required>
 
         <p class="fw-bold mb-1">Nombre del artista</p>
         <input name="artistName" class="form-control mb-3"
-              value="{{artist.artistName}}" placeholder="Nombre del artista">
+              value="{{artist.artistName}}" placeholder="Nombre del artista" required>
 
         <p class="fw-bold mb-1">Información del artista</p>
         <textarea name="info" class="form-control mb-3"
@@ -34,14 +34,14 @@
 
         <p class="fw-bold mb-1">Instagram</p>
         <input name="instagram" class="form-control mb-3"
-              value="{{artist.instagram}}" placeholder="@usuario">
+              value="{{artist.instagram}}" placeholder="@usuario" required>
 
         <p class="fw-bold mb-1">Twitter (X)</p>
         <input name="twitter" class="form-control mb-3"
-              value="{{artist.twitter}}" placeholder="usuario">
+              value="{{artist.twitter}}" placeholder="usuario" required>
 
         <p class="fw-bold mb-1">Imagen del artista</p>
-        <input type="file" name="image" class="form-control mb-3" accept="image/*">
+        <input type="file" name="image" class="form-control mb-3" accept="image/*" required>
 
         <button type="submit" class="btn btn-success">
           {{#artist}}Guardar cambios{{/artist}}
