@@ -74,12 +74,12 @@
 
       <div class="d-flex justify-content-between mt-3">
 
-        <button type="submit" class="btn btn-primary">
-          {{#discount.discountID}}Actualizar{{/discount.discountID}}
-          {{^discount.discountID}}Crear{{/discount.discountID}}
-        </button>
+        <a href="/admin/discounts/manage_discounts" class="btn btn-secondary">Cancelar</a>
 
-        <a href="/discounts/manage_discounts" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-primary">
+          {{#discount.discountID}}Actualizar descuento{{/discount.discountID}}
+          {{^discount.discountID}}Crear descuento{{/discount.discountID}}
+        </button>
 
       </div>
     </form>
