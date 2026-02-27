@@ -46,7 +46,7 @@ public class EventService {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado");
     }
 
-    public Event saveAndEditEvent(Event event){
+    public Event save(Event event){
         
         return eventRepository.save(event);
     }

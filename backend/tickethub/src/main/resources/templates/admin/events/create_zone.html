@@ -22,7 +22,7 @@
     </h2>
 
     <!--This is needed to make a difference between the form that will be to create a new zone and the form to edit one-->
-    <form method="post" action="/admin/zones/{{#zone}}edit_zone/{{id}}{{/zone}}{{^zone}}create_zone{{/zone}}">
+    <form method="post" action="/admin/events/edit_event/{{eventID}}/{{#zone}}edit_zone/{{id}}{{/zone}}{{^zone}}create_zone{{/zone}}">
 
       {{#zone}}
         <input type="hidden" name="id" value="{{zone.id}}" required>
@@ -74,7 +74,7 @@
           {{^zone}}Crear{{/zone}}
         </button>
 
-        <a href="/zones/manage_zones" class="btn btn-secondary">Cancelar</a>
+        <a href="/events/{{eventID}}/manage_zones" class="btn btn-secondary">Cancelar</a>
 
       </div>
     </form>

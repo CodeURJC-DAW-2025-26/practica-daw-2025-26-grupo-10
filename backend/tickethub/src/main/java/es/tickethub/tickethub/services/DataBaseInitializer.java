@@ -31,7 +31,6 @@ import es.tickethub.tickethub.repositories.EventRepository;
 import es.tickethub.tickethub.repositories.PurchaseRepository;
 import es.tickethub.tickethub.repositories.SessionRepository;
 import es.tickethub.tickethub.repositories.UserRepository;
-import es.tickethub.tickethub.repositories.ZoneRepository;
 import jakarta.annotation.PostConstruct;
 
 @Service
@@ -51,9 +50,6 @@ public class DataBaseInitializer {
     
     @Autowired
     private ArtistRepository artistRepository;
-
-    @Autowired
-    private ZoneRepository zoneRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -143,7 +139,7 @@ public class DataBaseInitializer {
         return artists;
     }
 
-    public List<Event>  initializeEvents(List<Artist> artists, List<Image> eventImages) {
+    public List<Event>  initializeEvents(List<Artist> artists, List<Image> eventImages, List<Zone> zones) {
 
         /* This is for the initializeZones function. If u want to add zones to any event do it a set/list/array and pass it here
         To add anything (zones, sessions or discounts) u have to do events.get().getzones/getSessions/getDiscounts().add(zone/session/discount)
@@ -170,6 +166,12 @@ public class DataBaseInitializer {
 
         artists.get(0).getLastEvents().add(events.get(0));
         artists.get(0).getEventsIncoming().add(events.get(9));
+
+        for (Zone zone : zones) {
+            zone.setEvent(events.get(0));
+        }
+        events.get(0).getZones().addAll(zones);
+        events.get(0).setCapacity(zones.stream().mapToInt(Zone::getCapacity).sum());
 
         eventRepository.saveAll(events);
         artistRepository.saveAll(artists);
@@ -208,7 +210,6 @@ public class DataBaseInitializer {
             new Zone("Front Stage", 800, new BigDecimal("80.00"))
         );
 
-        zoneRepository.saveAll(zones);
         return zones;
     }
 
@@ -262,15 +263,15 @@ public class DataBaseInitializer {
     public void initializeDataBase() {
         List <List <Image> > images = initializeImages();
 
+        List<Zone> zones = initializeZones();
+
         Client defaultClient = initializeUsers(images.get(1));
  
         List <Artist> artists = initializeArtists(images.get(0));
 
-        List<Event> events = initializeEvents(artists, images.get(2));
+        List<Event> events = initializeEvents(artists, images.get(2), zones);
 
         initializeDiscounts();
-
-        List<Zone> zones = initializeZones();
 
         List<Session> sessions = initializeSessions(events);
 

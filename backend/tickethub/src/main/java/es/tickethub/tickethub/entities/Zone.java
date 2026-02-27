@@ -3,11 +3,14 @@ package es.tickethub.tickethub.entities;
 import java.math.BigDecimal;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.DecimalMin;
@@ -37,8 +40,12 @@ public class Zone {
     @DecimalMin(value = "0.00", inclusive = true) //not 0,1 due to discounts (possible -20 $ discount)
     private BigDecimal price;
 
-    @OneToMany(mappedBy = "zone")
+    @OneToMany(mappedBy = "zone", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ticket> tickets;
+
+    @ManyToOne
+    @JoinColumn(name = "eventID", nullable = false)
+    private Event event;
 
     @Transient
     private boolean selected;

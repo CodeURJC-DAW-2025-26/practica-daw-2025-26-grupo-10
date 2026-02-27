@@ -180,7 +180,7 @@ public class EventController {
             event.setCapacity(event.getZones().stream().mapToInt(Zone::getCapacity).sum());   //This adds the capacity of all the zones to set the total capacity of the event
 
             event.setEventImages(images);
-            eventService.saveAndEditEvent(event);
+            eventService.save(event);
         } catch (IOException | SQLException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "/admin/events/create_event";
@@ -193,9 +193,10 @@ public class EventController {
     public String editEvent(@PathVariable Long eventID, Model model) {
         Event event = eventService.findById(eventID);
         List <Artist> allArtists = artistService.findAll();
-        List<Zone> allZones = zoneService.findAll();
+        List<Zone> allZones = event.getZones();
         List<Discount> allDiscounts = discountService.getAllDiscounts();
 
+        //To mark the correct artist as selected in the edit view
         for (Artist artist : allArtists) {
             if (event.getArtist() != null &&
                 artist.getArtistID().equals(event.getArtist().getArtistID())) {
@@ -205,27 +206,31 @@ public class EventController {
             }
         }
 
-        //ALL OF THIS IS TO MARK THE ZONES OF THE EVENT AS SELECTED IN THE EDIT VIEW
-        List<Map<String,Object>> eventZonesForTemplate = new ArrayList<>();
+        addingZonesAndDiscounts(model, event, allDiscounts);
 
-        for (Zone zone : event.getZones()) {
-            zone.setSelected(true);
-            List<Map<String,Object>> allZonesCopy = new ArrayList<>();
-            for (Zone z : allZones) {
-                Map<String,Object> zoneMap = new HashMap<>();
-                zoneMap.put("id", z.getId());
-                zoneMap.put("name", z.getName());
-                zoneMap.put("selected", z.isSelected());
-                allZonesCopy.add(zoneMap);
-            }
+        addingAttributesCreateEvent(model, event, allArtists, allZones, allDiscounts);
 
-            Map<String,Object> row = new HashMap<>();
-            row.put("allZones", allZonesCopy);
+        return "admin/events/create_event";
+    }
 
-            eventZonesForTemplate.add(row);
-        }
+    public void addingAttributesCreateEvent(Model model, Event event, List<Artist> allArtists, List<Zone> allZones, List<Discount> allDiscounts) {
+        model.addAttribute("event", event);
+        model.addAttribute("allArtists", allArtists);
+        model.addAttribute("allZones", allZones);
+        model.addAttribute("allDiscounts", allDiscounts);
 
+        //This is to mark the correct target age when editing an event
+        model.addAttribute("targetAge0", event.getTargetAge() == 0);
+        model.addAttribute("targetAge1", event.getTargetAge() == 1);
+        model.addAttribute("targetAge2", event.getTargetAge() == 2);
+        model.addAttribute("targetAge3", event.getTargetAge() == 3);
+        model.addAttribute("targetAge4", event.getTargetAge() == 4);
+        model.addAttribute("targetAge5", event.getTargetAge() == 5);
+        model.addAttribute("targetAge6", event.getTargetAge() == 6);
+    }
 
+    public void addingZonesAndDiscounts(Model model, Event event, List<Discount> allDiscounts) {
+        
         List<Map<String,Object>> eventDiscountsForTemplate = new ArrayList<>();
 
         for (Discount d : event.getDiscounts()) {
@@ -243,31 +248,14 @@ public class EventController {
 
             Map<String,Object> row = new HashMap<>();
             row.put("value", d.getAmmount());
-            row.put("isAmount", d.getPercentage().equals(true));
-            row.put("isPercent", d.getPercentage().equals(false));
+            row.put("isPercent", d.getPercentage().equals(true));
+            row.put("isAmmount", d.getPercentage().equals(false));
             row.put("allDiscounts", allDiscountsCopy);
 
             eventDiscountsForTemplate.add(row);
         }
 
         model.addAttribute("eventDiscounts", eventDiscountsForTemplate);
-
-        model.addAttribute("event", event);
-        model.addAttribute("allArtists", allArtists);
-        model.addAttribute("eventZones", eventZonesForTemplate);
-        model.addAttribute("allZones", allZones);
-        model.addAttribute("allDiscounts", allDiscounts);
-
-        //This is to mark the correct target age when editing an event
-        model.addAttribute("targetAge0", event.getTargetAge() == 0);
-        model.addAttribute("targetAge1", event.getTargetAge() == 1);
-        model.addAttribute("targetAge2", event.getTargetAge() == 2);
-        model.addAttribute("targetAge3", event.getTargetAge() == 3);
-        model.addAttribute("targetAge4", event.getTargetAge() == 4);
-        model.addAttribute("targetAge5", event.getTargetAge() == 5);
-        model.addAttribute("targetAge6", event.getTargetAge() == 6);
-
-        return "admin/events/create_event";
     }
 
     //To edit a event saved in the database
@@ -296,8 +284,10 @@ public class EventController {
                 existing.setArtist(newArtist);
             }
 
-            existing.getZones().clear();
-            existing.getZones().addAll(event.getZones());
+            for (Zone zone : event.getZones()) {
+                zone.setEvent(existing);
+                existing.getZones().add(zone);
+            }
 
             existing.getDiscounts().clear();
             existing.getDiscounts().addAll(event.getDiscounts());
@@ -315,7 +305,7 @@ public class EventController {
                 }
             }
 
-            eventService.saveAndEditEvent(existing);
+            eventService.save(existing);
 
         } catch (IOException | SQLException e) {
             model.addAttribute("errorMessage", e.getMessage());

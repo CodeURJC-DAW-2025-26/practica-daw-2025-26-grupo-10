@@ -36,7 +36,7 @@ public class ZoneService {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Zona no encontrada");
     }
 
-    public Zone saveAndEditZone(Zone zone) {
+    public Zone save(Zone zone) {
 
         if (zone.getId() == null) {
             return zoneRepository.save(zone);
@@ -49,15 +49,7 @@ public class ZoneService {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El precio no puede ser negativo");
             }
 
-            Optional <Zone> existing = zoneRepository.findById(zone.getId());
-
-            //each setter to update
-            existing.get().setName(zone.getName());
-            existing.get().setCapacity(zone.getCapacity());
-            existing.get().setPrice(zone.getPrice());
-            existing.get().setTickets(zone.getTickets());
-
-            return zoneRepository.save(existing.get());
+            return zoneRepository.save(zone);
         }
     }
 
@@ -67,6 +59,7 @@ public class ZoneService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Zone not found");
         }
         Zone zone = optionalZone.get();
+        zone.setEvent(null);
         zoneRepository.deleteById(zone.getId());
     }
 }
