@@ -42,7 +42,9 @@
         <input name="name" class="form-control mb-3" required>
       {{/event}}
 
+      {{#event}}
       <p class="fw-bold mb-1">Capacidad total: {{event.capacity}}</p>
+      {{/event}}
 
       <p class="fw-bold mb-1">Categoría</p>
       {{#event}}
@@ -102,29 +104,48 @@
 
       <p class="fw-bold mb-1">Zonas del evento</p>
       <div id="zones-container">
-        {{#event.zones}}
-        <div class="row g-2 mb-2 zone-row align-items-center">
-          <div class="col d-flex align-items-center justify-content-between">
-            
-            <div class="d-flex gap-3">
-              <p class="mb-0">Zona: {{name}}</p>
-              <p class="mb-0">Capacidad: {{capacity}}</p>
-              <p class="mb-0">Precio: {{price}} €</p>
+        {{#event}}
+          <div class="row g-2 mb-2 zone-row align-items-center">
+            <div class="col d-flex align-items-center justify-content-between">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Zona</th>
+                    <th>Capacidad</th>
+                    <th>Precio</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {{#event.zones}}
+                  <tr>
+                    <td>{{name}}</td>
+                    <td>{{capacity}}</td>
+                    <td>{{price}} €</td>
+                  </tr>
+                  {{/event.zones}}
+                </tbody>
+              </table>
+
             </div>
-
           </div>
-        </div>
-        {{/event.zones}}
 
-        {{^event.Zones}}
-        <div class="row g-2 mb-2 zone-row align-items-center">
-          <div class="col" id="no-zones-asociated">
-            <p>Aún no hay ninguna zona asociada a este evento</p>
+          {{^event.Zones}}
+          <div class="row g-2 mb-2 zone-row align-items-center">
+            <div class="col" id="no-zones-asociated">
+              <p>Aún no hay ninguna zona asociada a este evento</p>
+            </div>
           </div>
+          {{/event.Zones}}
         </div>
-        {{/event.Zones}}
-      </div>
-      <a class="btn btn-secondary mb-3" href="/admin/events/edit_event/{{eventID}}/manage_zones">Gestionar zonas</a>
+        <a class="btn btn-secondary mb-3" href="/admin/events/edit_event/{{event.eventID}}/manage_zones">Gestionar zonas</a>
+      {{/event}}
+      
+      {{^event}}
+        <div class="mb-3">
+          <label class="form-label">Primero guarda el evento para gestionar sus zonas</label>
+        </div>
+      {{/event}}
 
       <p class="fw-bold mb-1">Descuentos asociados</p>
       <div id="discounts-container">
@@ -151,6 +172,7 @@
         </div>
         {{/event.discounts}}
 
+        {{#event}}
         {{^event.discounts}}
         <div class="row g-2 mb-2 discount-row align-items-center">
           <div class="col" id="no-discounts-asociated">
@@ -168,8 +190,20 @@
           </div>
         </div>
         {{/event.discounts}}
+        {{/event}}
+
+        {{^event}}
+          <div class="mb-3">
+            <label class="form-label">
+              Primero guarda el evento para poder gestionar descuentos
+            </label>
+          </div>
+        {{/event}}
+
       </div>
+      {{#event}}
       <button type="button" class="btn btn-primary mb-3" id="add-discount">Agregar descuento</button>
+      {{/event}}
 
       <p class="fw-bold mb-1">Imágenes</p>
       <input type="file" name="images" class="form-control mb-3" multiple>
