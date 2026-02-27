@@ -9,42 +9,42 @@
 </head>
 <body>
 
-  {{>components/header}}
+    {{>components/header}}
 
-  <div class="container my-5 text-center">
-      <div class="alert alert-success">
-          <h4 class="alert-heading">¡Compra realizada con éxito!</h4>
-          <p>Tu pedido ha sido procesado correctamente.</p>
-      </div>
+    <div class="container my-5 text-center">
+        <div class="alert alert-success">
+            <h4 class="alert-heading">¡Compra realizada con éxito!</h4>
+            <p>Tu pedido ha sido procesado correctamente.</p>
+        </div>
 
-      <div class="card mx-auto" style="max-width: 500px;">
-          <div class="card-header">Resumen de la compra</div>
-          <ul class="list-group list-group-flush">
-              {{#event}}
-              <li class="list-group-item"><strong>Evento:</strong> {{name}}</li>
-              <li class="list-group-item"><strong>Categoría:</strong> {{category}}</li>
-              {{/event}}
+        <div class="card mx-auto" style="max-width: 500px;">
+            <div class="card-header">Resumen de la compra</div>
+            <ul class="list-group list-group-flush">
+                {{#event}}
+                <li class="list-group-item"><strong>Evento:</strong> {{name}}</li>
+                <li class="list-group-item"><strong>Categoría:</strong> {{category}}</li>
+                {{/event}}
 
-              {{#purchase}}
-              <li class="list-group-item"><strong>ID de Pedido:</strong> #{{purchaseID}}</li>
-              <li class="list-group-item"><strong>Total Pagado:</strong> {{totalPrice}} €</li>
-              
-              {{#session}}
-              <li class="list-group-item"><strong>Fecha:</strong> {{formattedDate}}</li>
-              {{/session}}
-              {{/purchase}}
-          </ul>
-      </div>
+                {{#purchase}}
+                <li class="list-group-item"><strong>ID de Pedido:</strong> #{{purchaseID}}</li>
+                <li class="list-group-item"><strong>Total Pagado:</strong> {{totalPrice}} €</li>
+                
+                {{#session}}
+                <li class="list-group-item"><strong>Fecha:</strong> {{formattedDate}}</li>
+                {{/session}}
+                {{/purchase}}
+            </ul>
+        </div>
 
-      <div class="mt-4 gap-2">
-          <a href="/purchases/download/{{purchase.purchaseID}}" class="btn btn-outline-primary">
-              Descargar entradas (PDF)
-          </a>
-          <a href="/public/index" class="btn btn-primary">Volver al inicio</a>
-      </div>
-  </div>
+        <div class="mt-4 gap-2">
+            <a href="/purchases/download/{{purchase.purchaseID}}" class="btn btn-outline-primary">
+                Descargar entradas (PDF)
+            </a>
+            <a href="/public/index" class="btn btn-primary">Volver al inicio</a>
+        </div>
+    </div>
 
-  {{>/components/footer}}
+    {{>/components/footer}}
 
 </body>
 </html>

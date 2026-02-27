@@ -42,7 +42,7 @@ public class WebSecurityConfig {
 						.requestMatchers("/").permitAll()
 						.requestMatchers("/css/**").permitAll()
                         .requestMatchers("/js/**").permitAll()
-                        .requestMatchers("/image/**").permitAll()
+                        .requestMatchers("/images/**").permitAll()
 						.requestMatchers("/favicon.ico").permitAll()
                         .requestMatchers("/public/**","/images/entities/**").permitAll()
 						// USER (CLIENT OR ADMIN) ROUTES
@@ -58,7 +58,7 @@ public class WebSecurityConfig {
 						.failureUrl("/public/login?error=true")
                         .usernameParameter("email")
                         .passwordParameter("password")
-						.defaultSuccessUrl("/clients/profile")
+						.defaultSuccessUrl("/clients/profile", true)
 						.permitAll())
 				.logout(logout -> logout
 						.logoutUrl("/logout")//lo mismo que con el login, intercepta la señal de cerrar sesión

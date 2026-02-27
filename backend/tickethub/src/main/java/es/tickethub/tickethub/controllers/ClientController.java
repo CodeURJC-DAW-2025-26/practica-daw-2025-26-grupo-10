@@ -98,7 +98,7 @@ public class ClientController {
             return "redirect:/clients/profile/password";
         }catch(ResponseStatusException e){
             redirectAttributes.addFlashAttribute("error",e.getReason());
-             return "redirect:/clients/profile/password";
+            return "redirect:/clients/profile/password";
         }
     }
     
