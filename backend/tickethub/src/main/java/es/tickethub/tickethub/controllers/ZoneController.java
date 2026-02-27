@@ -12,75 +12,121 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import es.tickethub.tickethub.entities.Event;
+import es.tickethub.tickethub.entities.Ticket;
 import es.tickethub.tickethub.entities.Zone;
+import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.ZoneService;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/admin/zones")
+@RequestMapping("/admin/events")
 public class ZoneController {
 
-    @Autowired ZoneService zoneService;
+    @Autowired
+    private EventService eventService;
 
-    // Show all zones
-    @GetMapping("/manage_zones")
-    public String listZones(Model model) {
+    @Autowired
+    private ZoneService zoneService;
 
-        model.addAttribute("zones", zoneService.findAll());
+    // Show all zones of an event
+    @GetMapping("/edit_event/{eventID}/manage_zones")
+    public String listZones(@PathVariable Long eventID, Model model) {
+        Event event = eventService.findById(eventID);
 
-        return "admin/zones/manage_zones";
+        model.addAttribute("zones", event.getZones());
+
+        return "admin/events/manage_zones";
     }
 
     // New zone form
-    @GetMapping("/create_zone")
-    public String showCreateForm(Model model) {
+    @GetMapping("/edit_event/{eventID}/create_zone")
+    public String showCreateForm(@PathVariable Long eventID, Model model) {
+        Event event = eventService.findById(eventID);
+
+        model.addAttribute("event", event);
         
-        return "/admin/zones/create_zone"; 
+        return "/admin/events/create_zone"; 
     }
 
     // Creation of new zone
-    @PostMapping("/create_zone")
-    public String createZone(@Valid Zone zone, BindingResult result, Model model) {
+    @PostMapping("/edit_event/{eventID}/create_zone")
+    public String createZone(@Valid Zone zone, @PathVariable Long eventID, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
-            return "admin/zones/create_zone";
+            return "admin/events/edit_event/{eventID}";
         }
 
         try {
-            zoneService.saveAndEditZone(zone);
+            Event event = eventService.findById(eventID);
+            Zone newZone = new Zone(zone.getName(), zone.getCapacity(), zone.getPrice());
+            newZone.setEvent(event);
+            event.getZones().add(newZone);
+
+            event.setCapacity(event.getZones().stream().mapToInt(Zone::getCapacity).sum());
+
+            zoneService.save(newZone);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
-            return "admin/zones/create_zone";
+            return "admin/events/edit_event/{eventID}";
         }
 
-        return "redirect:/admin/zones/manage_zones";
+        return "redirect:/admin/events/edit_event/{eventID}/manage_zones";
     }
 
-    @GetMapping("/edit_zone/{id}")
-    public String showZone(@PathVariable Long id, Model model) {
+    @GetMapping("/edit_event/{eventID}/edit_zone/{id}")
+    public String showZone(@PathVariable Long id, @PathVariable Long eventID, Model model) {
+        Event event = eventService.findById(eventID);
 
-        Zone zone = zoneService.findById(id);
+        Zone zone = event.getZones().stream().filter(z -> z.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Zone not found"));
+        
+        model.addAttribute("event", event);
         model.addAttribute("zone", zone);
 
-        return "admin/zones/create_zone";
+        return "/admin/events/create_zone";
     }
 
     //To save the edited zone
-    @PostMapping("/edit_zone/{id}")
-    public String editZone(@Valid Zone zone, BindingResult result, Model model) {
+    @PostMapping("/edit_event/{eventID}/edit_zone/{id}")
+    public String editZone(@Valid Zone zone, @PathVariable Long eventID, BindingResult result, Model model) {
 
         try {
-            zoneService.saveAndEditZone(zone);
+            if (result.hasErrors()) {
+                return "admin/events/edit_event/{eventID}/create_zone";
+            }
+
+            Event event = eventService.findById(eventID);
+
+            Zone existing = event.getZones().stream()
+                    .filter(z -> z.getId().equals(zone.getId()))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("Zone not found"));
+
+            existing.setName(zone.getName());
+            existing.setCapacity(zone.getCapacity());
+            existing.setPrice(zone.getPrice());
+            for (Ticket ticket : existing.getTickets()) {
+                ticket.setZone(existing);
+            }
+
+            // Update the event's total capacity
+            event.setCapacity(event.getZones().stream().mapToInt(Zone::getCapacity).sum());
+
+            zoneService.save(existing);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "/admin/zones/create_zone";
         }
-        return "redirect:/admin/zones/manage_zones";
+        return "redirect:/admin/events/edit_event/{eventID}/manage_zones";
     }
 
-    @DeleteMapping("/delete_zone/{id}")
+    @DeleteMapping("/edit_event/{eventID}/delete_zone/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteZone(@PathVariable Long id) {
+    public void deleteZone(@PathVariable Long eventID, @PathVariable Long id) {
+        Event event = eventService.findById(eventID);
+        event.getZones().removeIf(z -> z.getId().equals(id));
         zoneService.deleteById(id);
     }
 }

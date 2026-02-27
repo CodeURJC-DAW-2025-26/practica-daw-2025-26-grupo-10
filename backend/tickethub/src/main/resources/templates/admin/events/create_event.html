@@ -42,13 +42,7 @@
         <input name="name" class="form-control mb-3" required>
       {{/event}}
 
-      <p class="fw-bold mb-1">Capacidad total</p>
-      {{#event}}
-        <input name="capacity" type="number" class="form-control mb-3" value="{{event.capacity}}">
-      {{/event}}
-      {{^event}}
-        <input name="capacity" type="number" class="form-control mb-3">
-      {{/event}}
+      <p class="fw-bold mb-1">Capacidad total: {{event.capacity}}</p>
 
       <p class="fw-bold mb-1">Categoría</p>
       {{#event}}
@@ -106,40 +100,31 @@
         </div>
       {{/event}}
 
-      <p class="fw-bold mb-1">Zonas presentes</p>
+      <p class="fw-bold mb-1">Zonas del evento</p>
       <div id="zones-container">
-        {{#eventZones}}
+        {{#event.zones}}
         <div class="row g-2 mb-2 zone-row align-items-center">
-          <div class="col-auto">
-            <select name="zones" class="form-select">
-              {{#allZones}}
-                <option value="{{id}}" {{#selected}}selected{{/selected}}>{{name}}</option>
-              {{/allZones}}
-            </select>
-          </div>
-          <div class="col-auto">
-            <button type="button" class="btn btn-danger btn-sm remove-zone">Eliminar</button>
+          <div class="col d-flex align-items-center justify-content-between">
+            
+            <div class="d-flex gap-3">
+              <p class="mb-0">Zona: {{name}}</p>
+              <p class="mb-0">Capacidad: {{capacity}}</p>
+              <p class="mb-0">Precio: {{price}} €</p>
+            </div>
+
           </div>
         </div>
-        {{/eventZones}}
+        {{/event.zones}}
 
-        {{^eventZones}}
+        {{^event.Zones}}
         <div class="row g-2 mb-2 zone-row align-items-center">
           <div class="col" id="no-zones-asociated">
             <p>Aún no hay ninguna zona asociada a este evento</p>
           </div>
-
-          <div class="col-auto d-none">
-            <select name="zones" class="form-select">
-              {{#allZones}}
-                <option value="{{id}}">{{name}}</option>
-              {{/allZones}}
-            </select>
-          </div>
         </div>
-        {{/eventZones}}
+        {{/event.Zones}}
       </div>
-      <button type="button" class="btn btn-primary mb-3" id="add-zone">Agregar zona</button>
+      <a class="btn btn-secondary mb-3" href="/admin/events/edit_event/{{eventID}}/manage_zones">Gestionar zonas</a>
 
       <p class="fw-bold mb-1">Descuentos asociados</p>
       <div id="discounts-container">
@@ -151,7 +136,7 @@
               <option value="">Seleccionar descuento</option>
               {{#allDiscounts}}
                 <option value="{{discountID}}" {{#selected}}selected{{/selected}}>
-                  {{discountName}}
+                  {{discountName}} ({{ammount}} {{#isPercentage}}%{{/isPercentage}}{{^isPercentage}}€{{/isPercentage}} de descuento)
                 </option>
               {{/allDiscounts}}
             </select>
@@ -175,7 +160,9 @@
           <div class="col-auto d-none">
             <select name="discounts" class="form-select">
               {{#allDiscounts}}
-                <option value="{{discountID}}">{{discountName}}</option>
+                <option value="{{discountID}}">
+                  {{discountName}} ({{ammount}} {{#percentage}}%{{/percentage}}{{^percentage}}€{{/percentage}} de descuento)
+                </option>
               {{/allDiscounts}}
             </select>
           </div>
@@ -200,9 +187,9 @@
     </form>
   </div>
 
-  <script src="/js/eventThings.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script type="module" src="/js/confirmation.js"></script>
+  <script type="module" src="/js/discountsThings.js"></script>
 
   <!--LOCATION OF THE FOOTER OF THE WEB-->
 

@@ -51,12 +51,7 @@ public class Event {
     @Column(nullable = false) //I think this make no sense
     private List<Session> sessions = new ArrayList<>();
 
-    @OneToMany
-    @JoinTable(
-        name = "event_zones",
-        joinColumns = @JoinColumn(name = "event_id"),
-        inverseJoinColumns = @JoinColumn(name = "zone_id")
-    )
+    @OneToMany(mappedBy="event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Zone> zones = new ArrayList<>();
 
     /* Here we don't have to put orphanRemoval because the discounts can be associated to more events*/
