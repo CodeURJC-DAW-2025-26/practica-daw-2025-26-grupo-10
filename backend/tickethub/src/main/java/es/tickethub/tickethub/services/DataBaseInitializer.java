@@ -226,18 +226,36 @@ public class DataBaseInitializer {
         return sessions;
     }
 
-    public void initializePurchases(Client client, Session session, List <Zone> zones) {
+    public void initializePurchases(Client client, Session session, List<Zone> zones) {
+        Purchase purchase = new Purchase();
+        purchase.setClient(client);
+        purchase.setSession(session);
+        
+        Ticket t1 = new Ticket();
+        t1.setZone(zones.get(0));
+        t1.setTicketPrice(zones.get(0).getPrice());
+        t1.setPurchase(purchase); //
+        t1.setIsActive(true);
+        t1.setCode("QR-INIT-001");
 
-            List<Ticket> tickets = Arrays.asList(
-            new Ticket("QR1", zones.get(0), true),
-            new Ticket("QR2", zones.get(0), true),
-            new Ticket("QR3", zones.get(0), true),
-            new Ticket("QR4", zones.get(0), true)
-        );
+        Ticket t2 = new Ticket();
+        t2.setZone(zones.get(1));
+        t2.setTicketPrice(zones.get(1).getPrice());
+        t2.setPurchase(purchase);
+        t2.setIsActive(true);
+        t2.setCode("QR-INIT-002");
 
-        Purchase purchase = new Purchase(tickets, session, client);
+        List<Ticket> tickets = new ArrayList<>();
+        tickets.add(t1);
+        tickets.add(t2);
+        purchase.setTickets(tickets);
+
+        BigDecimal total = t1.getTicketPrice().add(t2.getTicketPrice());
+        purchase.setTotalPrice(total);
 
         purchaseRepository.save(purchase);
+        
+        System.out.println("Base de datos inicializada: Compra de prueba creada con " + tickets.size() + " tickets.");
     }
 
     /* This function will be executed after the database tables are created and will put the default data that will be at the website */
@@ -246,7 +264,7 @@ public class DataBaseInitializer {
         List <List <Image> > images = initializeImages();
 
         Client defaultClient = initializeUsers(images.get(1));
-
+ 
         List <Artist> artists = initializeArtists(images.get(0));
 
         List<Event> events = initializeEvents(artists, images.get(2));

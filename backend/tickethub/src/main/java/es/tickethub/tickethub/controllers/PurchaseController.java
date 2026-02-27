@@ -3,7 +3,6 @@ package es.tickethub.tickethub.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,16 +25,16 @@ import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.PurchaseService;
 import es.tickethub.tickethub.services.QrService;
 import es.tickethub.tickethub.services.ZoneService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.properties.AreaBreakType;
 import com.itextpdf.io.image.ImageDataFactory;
-
 
 @Controller
 @RequestMapping("/purchases")
@@ -49,7 +48,7 @@ public class PurchaseController {
 
     @Autowired
     private ZoneService zoneService;
-    
+
     @Autowired
     private DiscountService discountService;
 
@@ -58,35 +57,38 @@ public class PurchaseController {
 
     @Autowired
     private QrService qrService;
+
     /**
-     * Retrieves 10 purchases for a given client ID.
-     * Stateless: the client is identified via request parameter.
+     * Retrieves the first page of purchases for the currently logged-in user.
      */
     @GetMapping("/me")
-    public String getPurchasesByClientEmail(Principal principal ,Model model) {
-        // TODO: Cuando tengamos Spring Security, sacaremos el ID/Email del usuario logueado
-        // Long clientId = authentication.getName();
+    public String getPurchasesByClientEmail(Principal principal, Model model) {
         String loggedEmail = principal.getName();
-        Slice<Purchase> purchasesSlice = purchaseService.getPurchasesByClientEmail(loggedEmail,0);
+        Slice<Purchase> purchasesSlice = purchaseService.getPurchasesByClientEmail(loggedEmail, 0);
+        
         model.addAttribute("purchases", purchasesSlice.getContent());
-        model.addAttribute("hasNext",purchasesSlice.hasNext());
-        model.addAttribute("nextPage",1);
+        model.addAttribute("hasNext", purchasesSlice.hasNext());
+        model.addAttribute("nextPage", 1);
         return "user/purchases";
     }
 
     /**
-     * This is for Ajax to load the next 10 purchases
+     * Endpoint for AJAX requests to load subsequent pages of purchases.
      */
     @GetMapping("/me/more")
-    public String loadMorePurchases(Principal principal,@RequestParam int pageNumber,Model model) {
+    public String loadMorePurchases(Principal principal, @RequestParam int pageNumber, Model model) {
         String loggedEmail = principal.getName();
         Slice<Purchase> purchasesSlice = purchaseService.getPurchasesByClientEmail(loggedEmail, pageNumber);
-        model.addAttribute("purchases",purchasesSlice.getContent());
+        
+        model.addAttribute("purchases", purchasesSlice.getContent());
         model.addAttribute("hasNext", purchasesSlice.hasNext());
         model.addAttribute("nextPage", pageNumber + 1);
         return "user/purchase_items";
     }
 
+    /**
+     * Loads a fragment containing ticket details for a specific purchase.
+     */
     @GetMapping("/{purchaseId}/tickets")
     public String getPurchaseTickets(@PathVariable Long purchaseId, Model model) {
         List<Ticket> tickets = purchaseService.getTicketsByPurchase(purchaseId);
@@ -94,58 +96,65 @@ public class PurchaseController {
         return "user/purchase_details_fragment";
     }
 
-    /* needed to see all the information at the purchase html*/
-    @GetMapping("{eventId}")
-    public String showPurchaseFromEvent(@PathVariable Long eventID, Model model, HttpServletRequest request) {
+    /**
+     * Displays the purchase selection page (Zones, Sessions, etc.).
+     * Crucial: It checks if the user is 'logged in' to inform the Frontend.
+     */
+    @GetMapping("/select/{eventID}")
+    public String showPurchaseFromEvent(@PathVariable Long eventID, Model model, Principal principal) {
         Event event = eventService.findById(eventID);
         List<Zone> zones = zoneService.findAll();
         List<Discount> discounts = discountService.getAllDiscounts();
 
+        // Inform the JS if the user is authenticated to handle redirects manually
+        model.addAttribute("logged", principal != null);
+
         model.addAttribute("event", event);
         model.addAttribute("zones", zones);
         model.addAttribute("discounts", discounts);
-        model.addAttribute("tickets", List.of());
         model.addAttribute("totalPrice", BigDecimal.ZERO);
-
-        CsrfToken token = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-        if (token != null) {
-            model.addAttribute("_csrf", token);
-        }
 
         return "public/purchase";
     }
 
-    @GetMapping("/confirmation/{eventId}")
-    public String showConfirmation(@PathVariable Long eventId, @RequestParam(name = "total", defaultValue = "0") String total, Model model) {
-        Event event = eventService.findById(eventId);
-        model.addAttribute("event", event);
-        
-        Purchase tempPurchase = new Purchase();
-        tempPurchase.setTotalPrice(new BigDecimal(total));
-        tempPurchase.setPurchaseID(0L); 
-        model.addAttribute("purchase", tempPurchase);
-        
-        return "public/confirmation";
-    }
-
+    /**
+     * Processes the purchase submission. 
+     * Uses CascadeType.ALL to save tickets along with the purchase.
+     */
     @PostMapping("/save")
-    public String savePurchase(@RequestParam Long eventId, @RequestParam Long sessionId,@RequestParam String totalPrice, Principal principal, Model model) {
+    public String savePurchase(@RequestParam Long eventId, @RequestParam Long sessionId, @RequestParam String totalPrice, @RequestParam List<Long> zoneIds, Principal principal, Model model) {
+        
         Event event = eventService.findById(eventId);
         String email = principal.getName();
         Client client = clientRepository.findByEmail(email)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
 
         Purchase purchase = new Purchase();
-        
-        String cleanPrice = totalPrice.replace("€", "").replace(",", ".").trim();
-        purchase.setTotalPrice(new BigDecimal(cleanPrice));
         purchase.setClient(client);
 
+        // Clean and parse the total price string coming from the frontend
+        String cleanPrice = totalPrice.replace("€", "").replace(",", ".").trim();
+        purchase.setTotalPrice(new BigDecimal(cleanPrice));
+
+        // Assign the selected session using Java Streams
         event.getSessions().stream()
             .filter(s -> s.getSessionID().equals(sessionId))
             .findFirst()
             .ifPresent(purchase::setSession);
 
+        // Create tickets and establish the bidirectional relationship
+        for (Long zoneId : zoneIds) {
+            Zone zone = zoneService.findById(zoneId);
+
+            Ticket ticket = new Ticket();
+            ticket.setZone(zone);
+            ticket.setTicketPrice(zone.getPrice());
+            ticket.setPurchase(purchase); // Set the owner side
+
+            purchase.getTickets().add(ticket); // Add to the collection for cascading
+        }    
+
+        // Save the purchase; tickets are persisted automatically due to CascadeType.ALL
         Purchase savedPurchase = purchaseService.createPurchase(purchase);
 
         model.addAttribute("event", event);
@@ -154,11 +163,14 @@ public class PurchaseController {
         return "public/confirmation";
     }
 
+    /**
+     * Generates a PDF file containing all tickets and their corresponding QR codes.
+     */
     @GetMapping("/download/{purchaseId}")
     public void downloadTickets(@PathVariable Long purchaseId, HttpServletResponse response, Principal principal) throws Exception {
-        
         Purchase purchase = purchaseService.getPurchaseById(purchaseId);
         
+        // Security check: only the owner of the purchase can download the PDF
         if (!purchase.getClient().getEmail().equals(principal.getName())) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -171,20 +183,30 @@ public class PurchaseController {
         PdfDocument pdf = new PdfDocument(writer);
         Document document = new Document(pdf);
 
-        document.add(new Paragraph("TICKETHUB - RESUMEN DE COMPRA").setBold().setFontSize(18));
-        document.add(new Paragraph("Evento: " + purchase.getSession().getEvent().getName()));
-        document.add(new Paragraph("Fecha: " + purchase.getSession().getFormattedDate()));
-        document.add(new Paragraph("Cliente: " + purchase.getClient().getEmail()));
-        document.add(new Paragraph("Total pagado: " + purchase.getTotalPrice() + "€"));
-        document.add(new Paragraph("\n"));
+        // Add Header Info
+        document.add(new Paragraph("TICKETHUB - PURCHASE SUMMARY").setBold().setFontSize(18));
+        document.add(new Paragraph("Event: " + purchase.getSession().getEvent().getName()).setBold());
+        document.add(new Paragraph("Date: " + purchase.getSession().getFormattedDate()).setUnderline());
 
-        byte[] qrBytes = qrService.generateQR("TICKET-" + purchaseId);
-        Image qrImage = new Image(ImageDataFactory.create(qrBytes));
-        qrImage.setWidth(200);
-        
-        document.add(new Paragraph("Muestra este código QR en la entrada:"));
-        document.add(qrImage);
+        // Generate a page for each ticket with its unique QR code
+        List<Ticket> tickets = purchase.getTickets();
+        int i = 1;
+        for (Ticket ticket : tickets) {
+            document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+            document.add(new Paragraph("TICKET " + i).setBold().setFontSize(18));
+            document.add(new Paragraph("Zone: " + ticket.getZone().getName()));
+            document.add(new Paragraph("Code: " + ticket.getCode()));
+            document.add(new Paragraph("Price: " + ticket.getTicketPrice() + "€"));
 
+            // Generate QR code using the ticket's unique UUID code
+            byte[] qrBytes = qrService.generateQR(ticket.getCode());
+            Image qrImage = new Image(ImageDataFactory.create(qrBytes));
+            qrImage.setWidth(200);
+            
+            document.add(new Paragraph("Show this QR code at the entrance:"));
+            document.add(qrImage);
+            i++;
+        }
         document.close();
     }
 }

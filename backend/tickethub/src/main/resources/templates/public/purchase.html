@@ -1,170 +1,150 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="_csrf" content="{{token}}"/>
-<meta name="_csrf_header" content="X-CSRF-TOKEN"/>
-<title>Compra - {{event.name}}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="_csrf" content="{{token}}"/>
+    <meta name="_csrf_header" content="X-CSRF-TOKEN"/>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="/css/main.css">
+    <title>Compra - {{event.name}}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.css">
+    
+    <script src="/js/purchase.js" defer></script>
 </head>
 
 <body>
 
 {{>components/header}}
 
+<input type="hidden" id="currentEventId" value="{{event.eventID}}">
+
 <main class="flex-fill">
-  <div class="container my-5">
+    <div class="container my-5">
+        <h2 class="mb-4">Compra de Entradas - {{event.name}}</h2>
 
-    <h2 class="mb-4">Compra de entradas - {{event.name}}</h2>
-    <!-- SELECTOR DE SESIONES -->
-    <div class="mb-3">
-      <h4 class="mb-0">Selecciona la sesión:</h4>
-      <br>
-      <select id="sessionSelect" class="form-select w-auto">
-        {{#event.sessions}}
-          <option value="{{sessionID}}" {{#selected}}selected{{/selected}}>
-            {{formattedDate}}
-          </option>
-        {{/event.sessions}}
-      </select>
+        <div class="mb-3">
+            <h4 class="mb-0">Selecciona la sesión:</h4>
+            <br>
+            <select id="sessionSelect" class="form-select w-auto">
+                {{#event.sessions}}
+                <option value="{{sessionID}}" {{#selected}}selected{{/selected}}>
+                    {{formattedDate}}
+                </option>
+                {{/event.sessions}}
+            </select>
+        </div>
+
+        <div class="d-flex align-items-center gap-3 mb-4">
+            <h4 class="mb-0">Selecciona el número de entradas:</h4>
+            <select id="ticketCount" name="ticketCount" class="form-select form-control-sm w-auto">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+
+        <hr>
+
+        <div id="ticketsContainer"></div>
+
+        <hr>
+
+        <div class="mb-3">
+            <strong>Aplicar descuento:</strong>
+            <div id="discountContainer" class="mt-2"></div>
+            <button type="button" id="addDiscount" class="btn btn-outline-secondary btn-sm mt-2">
+                + New discount
+            </button>
+        </div>
+
+        {{^discounts}}
+        <p>No hay descuentos disponibles para este evento.</p>
+        {{/discounts}}
+
+        <hr>
+
+        <div class="col-md-4">
+            <div class="mb-3">
+                <strong><label class="form-label">Correo electrónico</label></strong>
+                <input type="email" name="email" class="form-control">
+            </div>
+            <div class="mb-3">
+                <strong><label class="form-label">Confirmación del correo electrónico</label></strong>
+                <input type="email" name="emailConfirm" class="form-control">
+            </div>
+        </div>
+
+        <h4 class="mb-4">Total: <span id="totalPrice">{{totalPrice}}</span> €</h4>
+
+        <hr>
+
+        <h4 class="mb-3">Datos de pago</h4>
+        <div class="row mb-3">
+            <div class="col-md-5">
+                <label class="form-label">Número de tarjeta</label>
+                <input class="form-control" name="cardNumber" placeholder="1234 5678 9012 3456">
+            </div>
+        </div>
+
+        <div class="d-flex gap-4 mb-4">
+            <div>
+                <label class="form-label">Mes</label>
+                <select class="form-select form-control-sm w-auto">
+                    <option>01</option><option>02</option><option>03</option>
+                    <option>12</option>
+                </select>
+            </div>
+            <div>
+                <label class="form-label">Año</label>
+                <select name="cardYear" class="form-select form-control-sm w-auto">
+                    <option>2026</option><option>2027</option><option>2028</option><option>2029</option>
+                </select>
+            </div>
+            <div>
+                <label class="form-label">CVV</label>
+                <input class="form-control form-control-sm" style="width:80px;" name="CVV" placeholder="123">
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2">
+            <button class="btn btn-outline-primary" type="button" 
+                    onclick="location.href='/public/event/{{event.eventID}}'">
+                Volver
+            </button>
+            <button class="btn btn-outline-primary" type="button" onclick="goToConfirmation()">
+                Confirmar compra
+            </button>
+        </div>
     </div>
-
-    <!-- NUMERO DE ENTRADAS -->
-    <div class="d-flex align-items-center gap-3 mb-4">
-      <h4 class="mb-0">Selecciona el número de entradas:</h4>
-
-      <select id="ticketCount" name="ticketCount" class="form-select form-control-sm w-auto">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-      </select>
-    </div>
-
-    <hr>
-
-    <!-- ENTRADAS DINÁMICAS -->
-    <div id="ticketsContainer"></div>
-
-    <hr>
-
-    <!-- DESCUENTOS DINÁMICOS -->
-    <div class="mb-3">
-      <strong>Aplicar descuento:</strong>
-
-      <div id="discountContainer" class="mt-2"></div>
-
-      <button type="button" id="addDiscount" class="btn btn-outline-secondary btn-sm mt-2">
-        + Nuevo descuento
-      </button>
-    </div>
-
-    {{^discounts}}
-      <p>No hay descuentos disponibles para este evento.</p>
-    {{/discounts}}
-
-    <hr>
-
-    <!-- EMAIL -->
-    <div class="col-md-4">
-      <div class="mb-3">
-        <strong><label class="form-label">Correo electrónico</label></strong>
-        <input type="email" name="email" class="form-control">
-      </div>
-
-      <div class="mb-3">
-        <strong><label class="form-label">Confirmación de correo electrónico</label></strong>
-        <input type="email" name="emailConfirm" class="form-control">
-      </div>
-    </div>
-
-    <h4 class="mb-4">Total: <span id="totalPrice">{{totalPrice}}</span> €</h4>
-
-    <hr>
-
-    <!-- DATOS DE PAGO -->
-    <h4 class="mb-3">Datos de pago</h4>
-
-    <div class="row mb-3">
-      <div class="col-md-5">
-        <label class="form-label">Número de tarjeta</label>
-        <input class="form-control" name="cardNumber" placeholder="1234 5678 9012 3456">
-      </div>
-    </div>
-
-    <div class="d-flex gap-4 mb-4">
-
-      <div>
-        <label class="form-label">Mes</label>
-        <select class="form-select form-control-sm w-auto">
-          <option>01</option><option>02</option><option>03</option>
-          <option>04</option><option>05</option><option>06</option>
-          <option>07</option><option>08</option><option>09</option>
-          <option>10</option><option>11</option><option>12</option>
-        </select>
-      </div>
-
-      <div>
-        <label class="form-label">Año</label>
-        <select name="cardYear" class="form-select form-control-sm w-auto">
-          <option>2026</option>
-          <option>2027</option>
-          <option>2028</option>
-          <option>2029</option>
-        </select>
-      </div>
-
-      <div>
-        <label class="form-label">CVV</label>
-        <input class="form-control form-control-sm" style="width:80px;" name="CVV" placeholder="123">
-      </div>
-
-    </div>
-
-    <div class="d-flex justify-content-end gap-2">
-
-      <button class="btn btn-outline-primary"
-              type="button"
-              onclick="location.href='/public/event/{{event.eventID}}'">
-        Volver
-      </button>
-
-      <button class="btn btn-outline-primary" type="button" onclick="goToConfirmation()">
-        Confirmar compra
-      </button>
-
-    </div>
-
-  </div>
 </main>
 
 {{>/components/footer}}
 
-<!-- DATOS PARA JAVASCRIPT -->
 <script>
-const zonesHTML = `
-{{#zones}}
-<option value="{{id}}" data-price="{{price}}">
-  {{name}} ({{price}}€)
-</option>
-{{/zones}}
-`;
+    window.currentEventId = "{{event.eventID}}";
 
-const discountsHTML = `
-<option value="">Ninguno</option>
-{{#discounts}}
-<option value="{{discountID}}" data-amount="{{ammount}}" data-percent="{{percentage}}">
-  {{discountName}}
-</option>
-{{/discounts}}
-`;
+    const zonesHTML = `
+    {{#zones}}
+    <option value="{{id}}" data-price="{{price}}">
+      {{name}} ({{price}}€)
+    </option>
+    {{/zones}}
+    `;
+
+    const discountsHTML = `
+    <option value="">None</option>
+    {{#discounts}}
+    <option value="{{discountID}}" data-amount="{{ammount}}" data-percent="{{percentage}}">
+      {{discountName}}
+    </option>
+    {{/discounts}}
+    `;
 </script>
-
-<script src="/js/purchase.js"></script>
 
 </body>
 </html>

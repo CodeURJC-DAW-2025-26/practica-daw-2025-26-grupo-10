@@ -1,32 +1,47 @@
+/**
+ * Global elements selection
+ */
 const ticketSelect = document.getElementById("ticketCount");
 const ticketsContainer = document.getElementById("ticketsContainer");
 const discountContainer = document.getElementById("discountContainer");
 const addDiscountBtn = document.getElementById("addDiscount");
 
 /**
- * Validates data and submits the purchase via a dynamic POST form
+ * Validates purchase data and handles authentication checks before submitting.
+ * Submits the purchase via a dynamically created POST form to avoid Error 999.
  */
 function goToConfirmation() {
-    const totalPriceElement = document.getElementById('totalPrice');
-    const sessionSelect = document.getElementById('sessionSelect');
+    const eventIdInput = document.getElementById('currentEventId');
+    const currentEventId = eventIdInput ? eventIdInput.value : window.currentEventId;
     
-    const total = totalPriceElement.innerText;
-    const sessionId = sessionSelect ? sessionSelect.value : null;
-    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-
-    if (!sessionId || sessionId === "") {
-        alert("Please select a valid session before proceeding.");
+    if (!currentEventId) {
+        console.error("No Event ID found");
         return;
     }
+
+    executeSubmit(currentEventId); 
+}
+
+/**
+ * Creates a dynamic form and submits it via POST
+ */
+function executeSubmit(currentEventId) {
+    const totalPriceElement = document.getElementById('totalPrice');
+    const sessionElement = document.getElementById('sessionSelect');
+    
+    const totalRaw = totalPriceElement ? totalPriceElement.innerText : "0";
+    const totalClean = totalRaw.replace('€', '').replace(',', '.').trim();
+    
+    const sessionId = sessionElement ? sessionElement.value : null;
+    const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
 
     const form = document.createElement('form');
     form.method = 'POST';
     form.action = '/purchases/save';
 
-    // The eventId is retrieved from the URL or the global event object
     const fields = {
-        'eventId': window.location.pathname.split('/').pop(), 
-        'totalPrice': total.replace('€', '').trim(),
+        'eventId': currentEventId, 
+        'totalPrice': totalClean,
         '_csrf': csrfToken,
         'sessionId': sessionId
     };
@@ -39,17 +54,24 @@ function goToConfirmation() {
         form.appendChild(input);
     }
 
+    document.querySelectorAll('.zone-select').forEach(select => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = "zoneIds";
+        input.value = select.value;
+        form.appendChild(input);
+    });
+
     document.body.appendChild(form);
     form.submit();
 }
 
 /**
- * Calculates the total price based on selected zones and active discounts
+ * Calculates the total price based on selected zones and active discounts.
  */
 function updateTotalPrice() {
     let total = 0;
 
-    // Calculate base price from all active zone selectors
     const zoneSelectors = document.querySelectorAll('.zone-select');
     zoneSelectors.forEach(select => {
         const selectedOption = select.options[select.selectedIndex];
@@ -57,7 +79,6 @@ function updateTotalPrice() {
         total += price;
     });
 
-    // Apply subtractions or percentage deductions from discount selectors
     const discountSelectors = document.querySelectorAll('.discount-select');
     discountSelectors.forEach(select => {
         const opt = select.options[select.selectedIndex];
@@ -71,13 +92,15 @@ function updateTotalPrice() {
     });
 
     if (total < 0) total = 0;
-    document.getElementById('totalPrice').innerText = total.toFixed(2);
+    const priceDisplay = document.getElementById('totalPrice');
+    if (priceDisplay) priceDisplay.innerText = total.toFixed(2);
 }
 
 /**
- * Generates ticket input rows dynamically based on the requested count
+ * Generates ticket rows dynamically based on the selected count.
  */
 function generateTickets(count) {
+    if (!ticketsContainer) return;
     ticketsContainer.innerHTML = "";
     for (let i = 0; i < count; i++) {
         ticketsContainer.insertAdjacentHTML("beforeend", `
@@ -99,9 +122,10 @@ function generateTickets(count) {
 }
 
 /**
- * Adds a new discount selector to the container
+ * Adds a new discount dropdown to the UI.
  */
 function addDiscountSelect() {
+    if (!discountContainer) return;
     discountContainer.insertAdjacentHTML("beforeend", `
         <div class="mb-2 discount-item d-flex gap-2 align-items-center">
             <select name="discount" class="form-select w-auto d-inline-block discount-select">
@@ -113,7 +137,8 @@ function addDiscountSelect() {
     updateTotalPrice();
 }
 
-// Global Event Listeners for dynamic price recalculation
+// --- Event Listeners ---
+
 document.addEventListener("change", e => {
     if (e.target.classList.contains("zone-select") || 
         e.target.classList.contains("discount-select") || 
@@ -122,28 +147,34 @@ document.addEventListener("change", e => {
     }
 });
 
-// Listener for ticket removal
-ticketsContainer.addEventListener("click", e => {
-    if (e.target.classList.contains("remove-ticket")) {
-        e.target.closest(".ticket-card").remove();
-        updateTotalPrice();
-    }
-});
+if (ticketsContainer) {
+    ticketsContainer.addEventListener("click", e => {
+        if (e.target.classList.contains("remove-ticket")) {
+            e.target.closest(".ticket-card").remove();
+            updateTotalPrice();
+        }
+    });
+}
 
-// Listener for discount removal
-discountContainer.addEventListener("click", e => {
-    if (e.target.classList.contains("remove-discount")) {
-        e.target.closest(".discount-item").remove();
-        updateTotalPrice();
-    }
-});
+if (discountContainer) {
+    discountContainer.addEventListener("click", e => {
+        if (e.target.classList.contains("remove-discount")) {
+            e.target.closest(".discount-item").remove();
+            updateTotalPrice();
+        }
+    });
+}
 
-ticketSelect.addEventListener("change", e => {
-    generateTickets(e.target.value);
-});
+if (ticketSelect) {
+    ticketSelect.addEventListener("change", e => {
+        generateTickets(e.target.value);
+    });
+}
 
-addDiscountBtn.addEventListener("click", addDiscountSelect);
+if (addDiscountBtn) {
+    addDiscountBtn.addEventListener("click", addDiscountSelect);
+}
 
-// Initialization
-generateTickets(ticketSelect.value);
-addDiscountSelect();
+// Initial setup on page load
+if (ticketSelect) generateTickets(ticketSelect.value);
+addDiscountSelect()
