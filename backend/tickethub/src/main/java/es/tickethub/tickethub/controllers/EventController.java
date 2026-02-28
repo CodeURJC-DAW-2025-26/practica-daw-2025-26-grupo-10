@@ -129,7 +129,8 @@ public class EventController {
     //To show the manage_events view
     @GetMapping("/admin/events/manage_events")
     public String showManageEvents(Model model) {
-
+        model.addAttribute("isAdmin", true);
+        model.addAttribute("isLogged", true);
         model.addAttribute("events", eventService.findAll());
 
         return "/admin/events/manage_events";
@@ -137,6 +138,8 @@ public class EventController {
 
     @GetMapping("/admin/events/{id}/manage_sessions")
     public String manageSessions(@PathVariable Long id, Model model) {
+        model.addAttribute("isAdmin", true);
+        model.addAttribute("isLogged", true);
         Event event = eventService.findById(id);
         model.addAttribute("event", event);
         return "/admin/events/manage_sessions"; // tu HTML de sesiones
@@ -151,6 +154,8 @@ public class EventController {
         model.addAttribute("allArtists", allArtists);
         model.addAttribute("allZones", allZones);
         model.addAttribute("allDiscounts", allDiscounts);
+        model.addAttribute("isAdmin", true);
+        model.addAttribute("isLogged", true);
         return "/admin/events/create_event";
     }
 
@@ -209,7 +214,8 @@ public class EventController {
         addingZonesAndDiscounts(model, event, allDiscounts);
 
         addingAttributesCreateEvent(model, event, allArtists, allZones, allDiscounts);
-
+        model.addAttribute("isAdmin", true);
+        model.addAttribute("isLogged", true);
         return "admin/events/create_event";
     }
 

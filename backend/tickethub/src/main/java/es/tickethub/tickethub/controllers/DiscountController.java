@@ -25,6 +25,8 @@ public class DiscountController {
     // Show all discounts
     @GetMapping("/manage_discounts")
     public String listDiscounts(Model model) {
+        model.addAttribute("isAdmin", true);
+        model.addAttribute("isLogged", true);
         model.addAttribute("discounts", discountService.getAllDiscounts());
         return "/admin/discounts/manage_discounts";
     }
@@ -32,7 +34,8 @@ public class DiscountController {
     // New discount form
     @GetMapping("/create_discount")
     public String showCreateForm(Model model) {
-        
+        model.addAttribute("isAdmin", true);
+        model.addAttribute("isLogged", true);
         return "/admin/discounts/create_discount"; 
     }
 
@@ -59,6 +62,8 @@ public class DiscountController {
     public String showDiscount(@PathVariable Long discountID, Model model) {
         Discount discount = discountService.findById(discountID);
         model.addAttribute("discount", discount);
+        model.addAttribute("isAdmin", true);
+        model.addAttribute("isLogged", true);
         return "/admin/discounts/create_discount";
     }
 
