@@ -1,10 +1,10 @@
 
-
 /**
- * @param {Function} onConfirm
+ * @param {HTMLElement} element
+ * @param {string} message
  */
-function showConfirmation(onConfirm, message = "Esta acción no se puede deshacer") {
-    Swal.fire({
+export function confirmRemove(element, message = "Esta acción no se puede deshacer") {
+    return Swal.fire({
         title: "¿Eliminar?",
         text: message,
         icon: "warning",
@@ -12,46 +12,117 @@ function showConfirmation(onConfirm, message = "Esta acción no se puede deshace
         confirmButtonText: "Eliminar",
         cancelButtonText: "Cancelar"
     }).then(result => {
-        if (result.isConfirmed) onConfirm();
+        if (result.isConfirmed) {
+            element.remove();
+            return true;
+        }
+        return false;
     });
 }
 
+/**
+ * @param {string} msg
+ */
+export function showMsg(msg){
+    Swal.fire( 'Información', msg, 'info');
+}
 
-function getCsrf() {
-    const token = document.querySelector('meta[name="_csrf"]').content;
-    const header = document.querySelector('meta[name="_csrf_header"]').content;
-    return { token, header };
+/**
+ * @param {string} msg
+ */
+export function showError(msg) {
+    Swal.fire("Error", msg, "error");
+}
+
+/**
+ * @param {string} msg
+ */
+export function showSuccess(msg) {
+    Swal.fire("Éxito", msg, "success");
 }
 
 /**
  * @param {string} url
- * @param {HTMLElement} element
+ * @param {string} confirmText
  */
-function deleteItem(url, element) {
-    const { token, header } = getCsrf();
-
-    fetch(url, {
-        method: "DELETE",
-        headers: {
-            [header]: token
+export function deleteItem(baseUrl, element) {
+    const id = element.dataset.id;
+    // NOTE: This uses SweetAlert2
+    // Swal is the global object from SweetAlert2
+    // Swal.fire shows a modal alert with the options you provide:
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "Esta acción no se puede deshacer",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`${baseUrl}/${id}`, { method: 'DELETE' })
+                .then(response => {
+                    if (response.ok) {
+                        Swal.fire('Eliminado', 'El elemento ha sido eliminado.', 'success')
+                            .then(() => location.reload());
+                    }
+                });
         }
-    })
-    .then(res => {
-        if (!res.ok) throw new Error("No se pudo eliminar");
-        element.closest("tr")?.remove();
-        Swal.fire("Eliminado", "El elemento ha sido eliminado.", "success");
-    })
-    .catch(err => Swal.fire("Error", err.message, "error"));
+    });
 }
 
-// ----------------- EVENT LISTENER GLOBAL -----------------
-document.addEventListener("click", e => {
-    const btn = e.target.closest(".delete-item");
-    if (!btn) return;
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.delete-item');
+  if (!btn) return;
 
-    const baseUrl = btn.dataset.url;
-    const id = btn.dataset.id;
-    if (!baseUrl || !id) return;
+  const baseUrl = btn.dataset.url;
+  const id = btn.dataset.id;
+  if (!baseUrl || !id) return;
 
-    showConfirmation(() => deleteItem(`${baseUrl}/${id}`, btn));
+  deleteItem(baseUrl, btn);
 });
+
+//To show the error message in the create/edit_event and create/edit artist pages
+const form = document.querySelector('form[action*="edit_event"], form[action*="create_event"]');
+
+if (form) {
+  form.addEventListener('submit', e => {
+    const files = form.querySelector('[name="images"]').files;
+
+    for (const file of files) {
+      if (!/\.(jpg|jpeg|png|webp)$/i.test(file.name)) {
+        e.preventDefault(); // Detenemos el submit
+        Swal.fire("Error", "Solo se permiten imágenes (.jpg, .jpeg, .png, .webp)", "error");
+        return;
+      }
+    }
+  });
+}
+
+// ----------------- FUNCTIONS -----------------
+
+/**
+ * Attaches a click event listener to a button inside a given row
+ * that removes the row from the DOM when clicked.
+ *
+ * @param {HTMLElement} row - The row element containing the button.
+ * @param {string} selector - The CSS selector for the button within the row.
+ */
+export function attachRemoveButton(row, selector) {
+  const btn = row.querySelector(selector);
+  if (btn) btn.addEventListener('click', () => row.remove());
+}
+
+export function cloneRow(template, inputsToReset = [], selectsToReset = []) {
+  const clone = template.cloneNode(true);
+  inputsToReset.forEach(name => {
+    const input = clone.querySelector(`[name="${name}"]`); //return the first element with that CSS name
+    if (input) input.value = '';
+  });
+  selectsToReset.forEach(name => {
+    const select = clone.querySelector(`[name="${name}"]`);
+    if (select) select.selectedIndex = 0;
+  });
+  return clone;
+}
