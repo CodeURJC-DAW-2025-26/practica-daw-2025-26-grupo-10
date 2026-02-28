@@ -16,7 +16,7 @@
   {{>components/header_admin}}
 
   <div class="container my-5">
-    <h2>
+    <h2 class="text-center">
       {{#discount.discountID}}Editar Descuento{{/discount.discountID}}
       {{^discount.discountID}}Crear Descuento{{/discount.discountID}}
     </h2>
@@ -72,13 +72,12 @@
         </select>
       </div>
 
-      <div class="d-flex justify-content-between mt-3">
+      <div class="d-flex justify-content-between mt-3 gap-2">
+        <a href="/admin/discounts/manage_discounts" class="btn btn-secondary">Cancelar</a>
         <button type="submit" class="btn btn-primary">
           {{#discount.discountID}}Actualizar{{/discount.discountID}}
           {{^discount.discountID}}Crear{{/discount.discountID}}
         </button>
-
-        <a href="/admin/discounts/manage_discounts" class="btn btn-secondary">Cancelar</a>
 
       </div>
     </form>

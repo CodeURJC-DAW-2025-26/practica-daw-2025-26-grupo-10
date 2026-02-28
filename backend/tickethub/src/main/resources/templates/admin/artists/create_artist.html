@@ -21,8 +21,10 @@
 
     <!-- CONTENT -->
     <main class="container my-5 flex-grow-1">
-      <h2>{{#artist}}Crear Artista{{/artist}}
-          {{#artist}}Editar Artista{{/artist}}</h2>
+      <h2 class="text-center">
+        {{#artist}}Editar Artista{{/artist}}
+        {{^artist}}Crear Artista{{/artist}}
+      </h2>
 
       <form method="post" enctype="multipart/form-data" action="/admin/artists/{{#artist}}edit_artist/{{artistID}}{{/artist}}{{^artist}}create_artist{{/artist}}">
 
