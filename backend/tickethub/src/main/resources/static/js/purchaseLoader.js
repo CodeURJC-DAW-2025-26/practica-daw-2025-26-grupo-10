@@ -1,9 +1,8 @@
-// Función asíncrona que será llamada desde el HTML
-async function cargarMasCompras(boton,userId) {
+async function loadMorePurchases(button,userId) {
     try {
-        let nextPage = boton.getAttribute("data-next-page");l
-        boton.innerText = "Cargando...";
-        boton.disabled = true;
+        let nextPage = button.getAttribute("data-next-page");l
+        button.innerText = "Cargando...";
+        button.disabled = true;
 
         const response = await fetch(`/purchases/me/more?pageNumber=${nextPage}`);
         const htmlFragment = await response.text();
@@ -16,37 +15,36 @@ async function cargarMasCompras(boton,userId) {
             const hasNext = (indicator.value === "true");
             const noMoreMsg = document.getElementById("no-more-msg");
             if (!hasNext) {
-                boton.parentElement.remove();
+                button.parentElement.remove();
                 if (noMoreMsg) noMoreMsg.style.display = "block";
             } else {
-                boton.setAttribute("data-next-page", parseInt(nextPage) + 1);
-                boton.innerText = "Cargar más";
-                boton.disabled = false;
+                button.setAttribute("data-next-page", parseInt(nextPage) + 1);
+                button.innerText = "Cargar más";
+                button.disabled = false;
             }
             indicator.remove();
         }
-
     } catch (error) {
         console.error("Falló la carga de más compras:", error);
-        boton.innerText = "Error. Reintentar";
-        boton.disabled = false;
+        button.innerText = "Error. Reintentar";
+        button.disabled = false;
     }
 }
 
-async function toggleTickets(purchaseId, boton) {
-    const parentRow = boton.closest('tr');
+async function toggleTickets(purchaseId, button) {
+    const parentRow = button.closest('tr');
     if (!parentRow) return;
     let detailsRow = parentRow.nextElementSibling;
 
     if (detailsRow && detailsRow.classList.contains('details-row')) {
-        const estaOculta = detailsRow.classList.toggle('d-none');
-        boton.innerText = estaOculta ? "Ver detalles" : "Ocultar detalles";
+        const isHidden = detailsRow.classList.toggle('d-none');
+        button.innerText = isHidden ? "Ver detalles" : "Ocultar detalles";
         return;
     }
 
     try {
-        boton.disabled = true;
-        boton.innerText = "Cargando...";
+        button.disabled = true;
+        button.innerText = "Cargando...";
 
         const response = await fetch(`/purchases/${purchaseId}/tickets`);
 
@@ -65,12 +63,12 @@ async function toggleTickets(purchaseId, boton) {
         const htmlFragment = await response.text();
         parentRow.insertAdjacentHTML('afterend', htmlFragment);
         
-        boton.innerText = "Ocultar detalles";
-        boton.disabled = false;
+        button.innerText = "Ocultar detalles";
+        button.disabled = false;
 
     } catch (error) {
         console.error(error);
-        boton.innerText = "Error";
-        boton.disabled = false;
+        button.innerText = "Error";
+        button.disabled = false;
     }
 }

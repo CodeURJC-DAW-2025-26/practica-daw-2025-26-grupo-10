@@ -144,8 +144,8 @@ public class DataBaseInitializer {
         /* This is for the initializeZones function. If u want to add zones to any event do it a set/list/array and pass it here
         To add anything (zones, sessions or discounts) u have to do events.get().getzones/getSessions/getDiscounts().add(zone/session/discount)
 
-        Zone zonaVip = new Zone("Zona VIP", 500, new BigDecimal(74.99));
-        zoneRepository.save(zonaVip);
+        Zone zoneVip = new Zone("Zone VIP", 500, new BigDecimal(74.99));
+        zoneRepository.save(zoneVip);
         */
 
         List<Event> events = Arrays.asList(
@@ -254,9 +254,7 @@ public class DataBaseInitializer {
         purchase.setTotalPrice(total);
 
         purchaseRepository.save(purchase);
-        
-        System.out.println("Base de datos inicializada: Compra de prueba creada con " + tickets.size() + " tickets.");
-    }
+        }
 
     /* This function will be executed after the database tables are created and will put the default data that will be at the website */
     @PostConstruct

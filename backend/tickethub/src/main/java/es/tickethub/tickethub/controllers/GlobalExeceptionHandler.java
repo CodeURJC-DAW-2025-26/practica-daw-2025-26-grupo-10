@@ -13,7 +13,7 @@ public class GlobalExeceptionHandler {
     @ExceptionHandler(ResponseStatusException.class)
     public String handleResponseStatusException(ResponseStatusException ex, Model model,HttpServletResponse response) {
     
-        model.addAttribute("mensajeError", ex.getReason());
+        model.addAttribute("messageError", ex.getReason());
         model.addAttribute("status",ex.getStatusCode().value());
         response.setStatus(ex.getStatusCode().value());
         if (ex.getStatusCode() == HttpStatus.NOT_FOUND) {
@@ -21,6 +21,6 @@ public class GlobalExeceptionHandler {
         } else if (ex.getStatusCode() == HttpStatus.FORBIDDEN) {
             return "error/403";
         }
-        return "error/500"; 
+        return "error/500";
     }
 }

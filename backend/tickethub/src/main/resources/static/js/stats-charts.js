@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const dataStore = document.getElementById('data-store');
     
-    // Extraer y limpiar los datos del HTML
     const getList = (attr) => dataStore.getAttribute(attr).split(',').filter(x => x !== "");
 
     const rankingLabels = getList('data-ranking-labels');
@@ -9,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const evolutionLabels = getList('data-evolution-labels');
     const evolutionValues = getList('data-evolution-values').map(Number);
 
-    // --- GRÁFICO 2: Ranking ---
     new Chart(document.getElementById('chart2'), {
         type: 'bar',
         data: {
@@ -23,7 +21,6 @@ document.addEventListener('DOMContentLoaded', function() {
         options: { indexAxis: 'y' }
     });
 
-    // --- GRÁFICO 3: Evolución ---
     new Chart(document.getElementById('chart3'), {
         type: 'line',
         data: {
@@ -39,28 +36,27 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // --- LÓGICA PARA GRÁFICO 1 ---
     const rawMonthEvent = dataStore.getAttribute('data-month-event').split(',').filter(x => x !== "");
     const formattedData = rawMonthEvent.map(item => {
-        const [mes, evento, cant] = item.split('|');
-        return { mes, evento, cant: Number(cant) };
+        const [month, event, quantity] = item.split('|');
+        return { month, event, quantity: Number(quantity) };
     });
 
-    const meses = [...new Set(formattedData.map(d => d.mes))];
-    const eventos = [...new Set(formattedData.map(d => d.evento))];
+    const months = [...new Set(formattedData.map(d => d.month))];
+    const events = [...new Set(formattedData.map(d => d.event))];
 
-    const datasets = eventos.map((evt, i) => ({
+    const datasets = events.map((evt, i) => ({
         label: evt,
-        data: meses.map(m => {
-            const found = formattedData.find(r => r.mes === m && r.evento === evt);
-            return found ? found.cant : 0;
+        data: months.map(m => {
+            const found = formattedData.find(r => r.month === m && r.event === evt);
+            return found ? found.quantity : 0;
         }),
-        backgroundColor: `hsl(${i * (360 / eventos.length)}, 70%, 60%)`
+        backgroundColor: `hsl(${i * (360 / events.length)}, 70%, 60%)`
     }));
 
     new Chart(document.getElementById('chart1'), {
         type: 'bar',
-        data: { labels: meses, datasets: datasets },
+        data: { labels: months, datasets: datasets },
         options: { responsive: true, scales: { y: { beginAtZero: true } } }
     });
 });

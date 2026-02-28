@@ -31,12 +31,11 @@ function attachDiscountRemove(row) {
   btn.addEventListener('click', () => {
     row.remove();
 
-    // Si no quedan filas con remove-discount, volver a poner mensaje
     if (!discountsContainer.querySelector('.remove-discount')) {
       const emptyRow = document.createElement('div');
       emptyRow.classList.add('row', 'g-2', 'mb-2', 'discount-row', 'align-items-center');
       emptyRow.innerHTML = `
-        <div class="col" id="no-discounts-asociated">
+        <div class="col" id="no-discounts-associated">
           <p>Aún no hay descuentos asociados a este evento</p>
         </div>
       `;
@@ -49,7 +48,7 @@ discountsContainer.querySelectorAll('.discount-row').forEach(r => attachDiscount
 
 document.getElementById('add-discount').addEventListener('click', () => {
   
-  const emptyMsg = document.getElementById('no-discounts-asociated');
+  const emptyMsg = document.getElementById('no-discounts-associated');
   if (emptyMsg) {
     emptyMsg.closest('.discount-row').remove();
   }

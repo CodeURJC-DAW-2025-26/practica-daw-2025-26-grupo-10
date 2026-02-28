@@ -10,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import es.tickethub.tickethub.entities.Zone;
 import es.tickethub.tickethub.repositories.ZoneRepository;
-/* VALIDATIONS ARE IN EVENT.JAVA & ZONE.JAVA */
+
 @Service
 public class ZoneService {
 

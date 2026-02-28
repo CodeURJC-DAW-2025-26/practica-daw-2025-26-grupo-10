@@ -33,14 +33,14 @@
           {{#isAdmin}}
             <a href="/admin/admin" class="btn btn-outline-primary btn-sm">
               Vista de admin
-            </a>        
+            </a>
           {{/isAdmin}}
 
           {{^isAdmin}}
             <a href="/clients/profile">
-              <img src="/images/entities/users/{{loggedUserID}}" 
-                  alt="Avatar" 
-                  class="rounded-circle border border-1 border-white" 
+              <img src="/images/entities/users/{{loggedUserID}}"
+                  alt="Avatar"
+                  class="rounded-circle border border-1 border-white"
                   style="width: 35px; height: 35px; object-fit: cover;">
             </a>
             <a href="/clients/profile" class="btn btn-outline-primary btn-sm">

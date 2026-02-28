@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="es">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,29 +10,24 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-  
 
-<!--LOCATION OF THE HEADER OF THE WEB-->
+  {{>components/header}}
 
-{{>components/header}}
+  <main class="flex-fill d-flex align-items-center justify-content-center">
+    <div class="text-center">
+      <h1 class="display-1">403</h1>
+      <p class="lead">Acceso no autorizado</p>
+      <p class="lead mb-4">
+        {{#messageError}}{{messageError}}{{/messageError}}
+        {{^messageError}}No tienes permisos suficientes para acceder a este recurso.{{/messageError}}
+      </p>
+      <a href="/public/index" class="btn btn-primary">Volver al inicio</a>
+      <a href="javascript:history.back()" class="btn btn-outline-secondary">Regresar</a>
+    </div>
+  </main>
 
-<main class="flex-fill d-flex align-items-center justify-content-center">
-<div class="text-center">
-<h1 class="display-1">403</h1>
-<p class="lead">Acceso no autorizado</p>
-<p class="lead mb-4">
-            {{#mensajeError}}{{mensajeError}}{{/mensajeError}}
-            {{^mensajeError}}No tienes permisos suficientes para acceder a este recurso.{{/mensajeError}}
-</p>
-<a href="/public/index" class="btn btn-primary">Volver al inicio</a>
-<a href="javascript:history.back()" class="btn btn-outline-secondary">Regresar</a>
-</div>
-</main>
-
-<!--LOCATION OF THE FOOTER OF THE WEB-->
-
-{{>/components/footer}}
+  {{>/components/footer}}
 
 </body>
-</html>
 
+</html>

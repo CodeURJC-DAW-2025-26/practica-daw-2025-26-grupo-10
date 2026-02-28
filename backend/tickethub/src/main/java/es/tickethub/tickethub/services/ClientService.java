@@ -26,7 +26,7 @@ public class ClientService {
     @Transactional
     public void registeClient( String name, String email, String surname,String password, String passWordConfirmation,String username){
         if(!password.equals(passWordConfirmation)){
-             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Las contraseñas no coinciden");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Las contraseñas no coinciden");
         }
         boolean existClient =  clientRepository.existsByEmail(email);
         if(existClient){
@@ -67,8 +67,6 @@ public class ClientService {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado");
     }
 
-    // TODO: llamar al service de imagen para poder actualizar la imagen si es que
-    // se manda
     @Transactional
     public void updateClient(String loggedEmail, Client clientUpdated, MultipartFile imageFile) throws IOException {
         Client client = clientRepository.findByEmail(loggedEmail)
@@ -102,7 +100,7 @@ public class ClientService {
     @Transactional
     public void changePassword(String loggedEmail, String oldPassword, String newPassword, String newPasswordConfirmation) {
         Client client = clientRepository.findByEmail(loggedEmail)
-                         .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado"));
+                        .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado"));
 
         if(!passwordEncoder.matches(oldPassword, client.getPassword())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"La contraseña actual es incorrecta");

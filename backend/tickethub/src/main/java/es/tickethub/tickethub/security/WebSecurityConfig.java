@@ -54,14 +54,14 @@ public class WebSecurityConfig {
                     )
 				.formLogin(formLogin -> formLogin
 						.loginPage("/public/login")
-                        .loginProcessingUrl("/public/login")//intercepta cualquier post que venga de la pantalla login
+                        .loginProcessingUrl("/public/login")
 						.failureUrl("/public/login?error=true")
                         .usernameParameter("email")
                         .passwordParameter("password")
 						.defaultSuccessUrl("/public/selector", true)
 						.permitAll())
 				.logout(logout -> logout
-						.logoutUrl("/logout")//lo mismo que con el login, intercepta la señal de cerrar sesión
+						.logoutUrl("/logout")
 						.logoutSuccessUrl("/public/login")
 						.permitAll());
 

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. IMPORTS & VARIABLES
+    1. IMPORTS & VARIABLES
    ========================================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;600&display=swap');
 
@@ -14,8 +14,8 @@
 }
 
 /* ==========================================================================
-   2. BASE STYLE & TYPOGRAPHY
-   ========================================================================== */
+    2. BASE STYLE & TYPOGRAPHY
+========================================================================== */
 body {
     background-color: var(--beige);
     color: var(--pitch-black);
@@ -31,10 +31,10 @@ h1, h2, h3, h4, h5, .navbar-brand {
 }
 
 /* ==========================================================================
-   3. COMMON COMPONENTS (CARDS & CONTAINERS)
+    3. COMMON COMPONENTS (CARDS & CONTAINERS)
    ========================================================================== */
-.card, 
-main .container, 
+.card,
+main .container,
 .container form,
 .card.text-center {
     background-color: var(--card-white) !important;
@@ -53,8 +53,8 @@ main .container,
 }
 
 /* ==========================================================================
-   4. BUTTONS
-   ========================================================================== */
+    4. BUTTONS
+========================================================================== */
 .btn {
     border-radius: 10px !important;
     padding: 10px 20px;
@@ -143,8 +143,8 @@ main .container,
 }
 
 /* ==========================================================================
-   6. NAVBAR & FOOTER
-   ========================================================================== */
+    6. NAVBAR & FOOTER
+========================================================================== */
 .navbar {
     background-color: var(--pitch-black) !important;
     padding: 1rem 0 !important;
@@ -161,17 +161,16 @@ main .container,
 }
 
 .navbar-nav .nav-link {
-    color: var(--footer-text) !important; /* Usamos el beige clarito para que contraste */
+    color: var(--footer-text) !important;
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
     transition: color 0.3s ease;
 }
 
 .navbar-nav .nav-link:hover {
-    color: var(--vivid-tangerine) !important; /* Naranja al pasar el ratón */
+    color: var(--vivid-tangerine) !important;
 }
 
-/* Si quieres que el enlace de la página donde estás (Estadísticas) se vea resaltado */
 .navbar-nav .nav-link.active {
     color: var(--vivid-tangerine) !important;
     font-weight: 700;
@@ -179,20 +178,20 @@ main .container,
 
 footer {
     background-color: #231c07;
-    color: var(--footer-text) !important; 
+    color: var(--footer-text) !important;
     padding: 4rem 0;
-    border-top: 1px solid rgba(255,255,255,0.1); 
+    border-top: 1px solid rgba(255,255,255,0.1);
 }
 
-footer p, 
-footer span, 
-footer h1, 
-footer h2, 
-footer h3, 
+footer p,
+footer span,
+footer h1,
+footer h2,
+footer h3,
 footer h4,
-footer h5, 
+footer h5,
 footer div {
-    color: var(--footer-text) !important; 
+    color: var(--footer-text) !important;
 }
 
 footer a {
@@ -217,8 +216,8 @@ footer .social-icons a:hover {
 }
 
 /* ==========================================================================
-   7. CAROUSEL & SPECIFIC ELEMENTS
-   ========================================================================== */
+    7. CAROUSEL & SPECIFIC ELEMENTS
+========================================================================== */
 .carousel-item {
     height: 500px;
     background-color: #000;
@@ -277,10 +276,10 @@ footer .social-icons a:hover {
 .card img.rounded-circle {
     border: 3px solid var(--vivid-tangerine);
     padding: 2px;
-    width: 150px;       
-    height: 150px;        
-    object-fit: cover;    
-    max-width: 100%;     
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    max-width: 100%;
     display: block;
 }
 
@@ -338,7 +337,7 @@ footer .social-icons a:hover {
 }
 
 .card p {
-    color: #4a3b1c; 
+    color: #4a3b1c;
 }
 
 /* Buttons */
@@ -458,19 +457,17 @@ main .hero-section .container {
     border: 1px solid rgba(255, 255, 255, 0.3) !important;
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1) !important;
     padding: 50px;
-    max-width: 900px; 
+    max-width: 900px;
 }
 
 
-/* Espaciado para botones en tablas cuando se apilan en móvil */
 @media (max-width: 768px) {
     .table td .btn {
-        margin-bottom: 5px; /* Crea espacio hacia abajo si se ponen uno encima de otro */
-        width: 100%;        /* Opcional: hace que los botones ocupen todo el ancho de la celda en móvil para que sean más fáciles de pulsar */
-        display: block;     /* Cambia a bloque para que el margen funcione mejor */
+        margin-bottom: 5px;
+        width: 100%;
+        display: block;
     }
     
-    /* Alineación de texto en móvil para que no se vea todo apretado */
     .table td {
         vertical-align: middle;
     }

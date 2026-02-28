@@ -9,8 +9,6 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-<!--LOCATION OF THE HEADER OF THE WEB-->
-
 {{>components/header}}
 
 <main class="flex-fill">
@@ -89,7 +87,6 @@
         <a href="/public/artists" class="btn btn-outline-primary btn-sm">Ver todos</a>
       </div>
 
-      <!--Wait until the preferences is done to put the mustache things correctly-->
       <div class="row g-4">
         {{#artists}}
         <div class="col-md-3">
@@ -113,7 +110,6 @@
         <a href="/public/events" class="btn btn-outline-primary btn-sm">Ver todos</a>
       </div>
 
-      <!--Wait until the preferences is done to put the mustache things correctly-->
       <div class="row g-4">
         {{#eventsBottom}}
         <div class="col-md-6">
@@ -132,8 +128,6 @@
 
   </div>
 </main>
-
-<!--LOCATION OF THE FOOTER OF THE WEB-->
 
 {{>/components/footer}}
 

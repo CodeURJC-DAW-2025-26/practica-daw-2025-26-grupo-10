@@ -46,7 +46,7 @@ public class ZoneController {
 
         model.addAttribute("event", event);
         
-        return "/admin/events/create_zone"; 
+        return "/admin/events/create_zone";
     }
 
     // Creation of new zone

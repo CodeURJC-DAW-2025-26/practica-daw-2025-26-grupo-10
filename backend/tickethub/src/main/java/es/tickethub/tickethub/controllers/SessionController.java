@@ -36,14 +36,14 @@ public class SessionController {
     @GetMapping("/upcoming")
     public String getUpcomingSessions(Model model) {
         model.addAttribute("sessions", sessionService.getSessionsFromNow());
-        return "sessions"; 
+        return "sessions";
     }
 
     // Filter by day
     @GetMapping("/date/{date}")
     public String getSessionsByDate(
-            @PathVariable 
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) 
+            @PathVariable
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
             LocalDate date,
             Model model) {
 
@@ -80,7 +80,7 @@ public class SessionController {
     public ResponseEntity<?> editSession(@RequestParam("newDate") String date, @PathVariable Long eventID, @RequestParam Long sessionID) {
 
         Session session = sessionService.findById(sessionID);
-         if (session == null) {
+        if (session == null) {
             return ResponseEntity.notFound().build();
         }
 

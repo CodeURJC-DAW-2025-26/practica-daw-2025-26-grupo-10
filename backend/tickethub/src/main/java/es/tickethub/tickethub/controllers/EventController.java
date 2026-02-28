@@ -90,7 +90,7 @@ public class EventController {
         } else {
             // paginated
             events = eventService.findPaginated(page, size);
-            hasMore = events.size() == size; 
+            hasMore = events.size() == size;
         }
 
         model.addAttribute("events", events);
@@ -138,7 +138,7 @@ public class EventController {
     public String manageSessions(@PathVariable Long id, Model model) {
         Event event = eventService.findById(id);
         model.addAttribute("event", event);
-        return "/admin/events/manage_sessions"; // tu HTML de sesiones
+        return "/admin/events/manage_sessions";
     }
 
     //To show the create_event view
@@ -155,7 +155,8 @@ public class EventController {
 
     //To create a new event
     @PostMapping("/admin/events/create_event")
-    public String createEvent(@Valid Event event, BindingResult result, @RequestParam("artistID") Long artistID,  @RequestParam("images") MultipartFile[] files, Model model) {
+    public String createEvent(@Valid Event event, BindingResult result, @RequestParam("artistID") Long artistID,
+                                @RequestParam("images") MultipartFile[] files, Model model) {
 
         if (result.hasErrors()) {
             return "/admin/events/create_event";

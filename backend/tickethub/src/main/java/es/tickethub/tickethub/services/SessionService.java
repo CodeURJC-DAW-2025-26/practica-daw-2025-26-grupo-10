@@ -39,7 +39,7 @@ public class SessionService {
     public List<Session> getSessionsFromNow() {
         Timestamp now = new Timestamp(System.currentTimeMillis());
         return validateList(sessionRepository.findByDateAfter(now));
-    } 
+    }
 
     /**
      * Retrieves all sessions within a full day (00:00 to 23:59:59.999).

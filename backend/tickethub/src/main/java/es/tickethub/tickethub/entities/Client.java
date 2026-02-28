@@ -56,7 +56,7 @@ public class Client extends User {
             List<Purchase> purchases,
             Image profileImage
     ) {
-        super(email, username, password, false); // cliente ≠ admin
+        super(email, username, password, false);
         this.name = name;
         this.surname = surname;
         this.age = age;

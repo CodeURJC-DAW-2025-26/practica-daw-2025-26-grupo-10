@@ -68,7 +68,6 @@ public class Session {
         try {
             formattedDate = formattedDate.replace("T", " ");
             formattedDate = formattedDate.replace("-", "/");
-            System.out.println("Formatted date received: " + formattedDate);
             java.text.SimpleDateFormat fmt = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm");
             java.util.Date parsedDate = fmt.parse(formattedDate);
             return new Timestamp(parsedDate.getTime());

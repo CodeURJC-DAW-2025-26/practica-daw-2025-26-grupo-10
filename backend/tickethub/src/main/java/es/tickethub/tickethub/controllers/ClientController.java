@@ -26,9 +26,7 @@ import java.security.Principal;
 @Controller
 @RequestMapping("/clients")
 public class ClientController {
-    //TODO: Cuando tengamos lo de security tendremos que sacar la información del authentication
-    //aqui se encuentra lo que es el id del usuario o el email
-    //lo que nosotros le pongamos dentro de lo que es la creación del token
+
     @Autowired
     private ClientService clientService;
     
@@ -41,7 +39,7 @@ public class ClientController {
         return "user/profile";
     }
 
-    // EDIT CLIENT INFORMACION
+    // EDIT CLIENT INFORMATION
     @GetMapping("/profile/edit")
     public String getClientData(Principal principal,Model model) {
         String loggedEmail = principal.getName();
@@ -52,7 +50,7 @@ public class ClientController {
     }
 
     @PostMapping("/profile/edit")
-    //TODO: futuramente con react usaremos el @RequestBody
+    //TODO: with react we'll use @RequestBody
     public String uptadeClientData(@Valid @ModelAttribute Client client,
         //BindingResult bindingResult,
         RedirectAttributes redirectAttributes,@RequestParam MultipartFile imageFile,

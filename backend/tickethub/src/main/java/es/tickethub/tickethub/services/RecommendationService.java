@@ -37,16 +37,16 @@ public class RecommendationService {
     }
 
     private double cosineSimilarity(double[] v1, double[] v2) {
-        double escalarProduct = 0.0;
+        double scalarProduct = 0.0;
         double normV1 = 0.0;
         double normV2 = 0.0;
 
         for (int i = 0; i < v1.length; i++) {
-            escalarProduct += v1[i] * v2[i];
+            scalarProduct += v1[i] * v2[i];
             normV1 += v1[i] * v1[i];
             normV2 += v2[i] * v2[i];
         }
 
-        return escalarProduct / (Math.sqrt(normV1) * Math.sqrt(normV2));
+        return scalarProduct / (Math.sqrt(normV1) * Math.sqrt(normV2));
     }
 }
