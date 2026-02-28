@@ -89,9 +89,8 @@ public class AuxiliarController {
             
             artists.add(artistInfo);
         }
-        boolean isLogged = (principal != null);
-        model.addAttribute("isLogged", isLogged);
-        if (isLogged) {
+        
+        if (principal != null) {
             Optional<Client> client = clientRepository.findByEmail(principal.getName());
             if (client.isPresent()) {
                 ClientRecommendationService clientService = new ClientRecommendationService(client.get());

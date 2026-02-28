@@ -8,34 +8,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import es.tickethub.tickethub.repositories.PurchaseRepository;
-import es.tickethub.tickethub.services.EventService;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
     @Autowired
-    private EventService eventService;
-
-    @Autowired
     private PurchaseRepository purchaseRepository;
 
     @GetMapping("/admin")
     public String getAdmin(Model model) {
-        model.addAttribute("isAdmin", true);
-        model.addAttribute("isLogged", true);
         return "admin/admin";
     }
     
     @GetMapping("/statistics")
     public String getStatistics(Model model) {
-
-        model.addAttribute("isAdmin", true);
-        model.addAttribute("isLogged", true);
-        
         // Data Graph 1 (Matrix Month/Event/Quantity)
         model.addAttribute("monthEventData", purchaseRepository.getTicketsByMonthAndEvent());
 

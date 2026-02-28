@@ -69,7 +69,6 @@ public class PurchaseController {
     public String getPurchasesByClientEmail(Principal principal, Model model) {
         String loggedEmail = principal.getName();
         Slice<Purchase> purchasesSlice = purchaseService.getPurchasesByClientEmail(loggedEmail, 0);
-        model.addAttribute("isLogged",true);
         model.addAttribute("purchases", purchasesSlice.getContent());
         model.addAttribute("hasNext", purchasesSlice.hasNext());
         model.addAttribute("nextPage", 1);

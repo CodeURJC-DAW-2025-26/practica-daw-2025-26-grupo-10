@@ -66,8 +66,6 @@ public class ArtistController {
     public String showAdminViewArtists(Model model) {
 
         model.addAttribute("artists", artistService.findAll());
-        model.addAttribute("isAdmin", true);
-        model.addAttribute("isLogged", true);
         return "admin/artists/manage_artists";
     }
 
@@ -77,15 +75,11 @@ public class ArtistController {
         Artist artist = artistService.findById(artistID);
 
         model.addAttribute("artist", artist);
-        model.addAttribute("isAdmin", true);
-        model.addAttribute("isLogged", true);
         return "admin/artists/create_artist";
     }
 
     @GetMapping("/admin/artists/create_artist")
     public String showCreateArtist(Model model) {
-        model.addAttribute("isAdmin", true);
-        model.addAttribute("isLogged", true);
         return "admin/artists/create_artist";
     }
 

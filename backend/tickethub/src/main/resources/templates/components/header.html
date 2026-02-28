@@ -28,22 +28,37 @@
       </ul>
 
       <div class="d-flex align-items-center gap-3">
-        
-        <a href="/public/login" class="btn btn-outline-primary btn-sm">
-          Iniciar sesión
-        </a>
-        <a href="/public/signup" class="btn btn-light btn-sm">
-          Registrarse
-        </a>
+        {{#isLogged}}
 
-        <!--The image must be here when the user is logged, if he is not logged then the login and signup buttons
-        <img
-          src="../../static/images/default-avatar.png"
-          alt="Perfil"
-          class="rounded-circle"
-          width="40"
-          height="40"
-        >-->
+          {{#isAdmin}}
+            <a href="/admin/admin" class="btn btn-outline-primary btn-sm">
+              Vista de admin
+            </a>        
+          {{/isAdmin}}
+
+          {{^isAdmin}}
+            <a href="/clients/profile">
+              <img src="/images/entities/users/{{loggedUserID}}" 
+                  alt="Avatar" 
+                  class="rounded-circle border border-1 border-white" 
+                  style="width: 35px; height: 35px; object-fit: cover;">
+            </a>
+            <a href="/clients/profile" class="btn btn-outline-primary btn-sm">
+              Mi perfil
+            </a>
+          {{/isAdmin}}
+
+        {{/isLogged}}
+
+        {{^isLogged}}
+          <a href="/public/login" class="btn btn-outline-primary btn-sm">
+            Iniciar sesión
+          </a>
+
+          <a href="/public/signup" class="btn btn-light btn-sm">
+            Registrarse
+          </a>
+        {{/isLogged}}
       </div>
     </div>
   </div>
