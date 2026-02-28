@@ -62,25 +62,35 @@ if (sessionsBody && addSessionBtn) {
           </button>`;
 
       row.querySelector('.save-edit').addEventListener('click', () => {
-
         const newDate = row.querySelector('.edit-date').value;
-
-        const data = new URLSearchParams();
-        data.append('newDate', newDate);
-        data.append('sessionID', sessionId);
         if (!newDate) {
           alert("Debes seleccionar una fecha");
           return;
         }
 
+        const data = new URLSearchParams();
+        data.append('newDate', newDate);
+        data.append('sessionID', sessionId);
+
+        // CSRF
+        const { token, header } = getCsrf();
+
         fetch('/admin/events/' + eventId + '/update_session', {
           method: 'POST',
-          body: data
+          body: data,
+          headers: { [header]: token }
         })
         .then(res => {
-          if (res.ok) location.reload();
-        });
+          if (!res.ok) throw new Error("No se pudo actualizar la sesión");
+          row.querySelector('.date-cell').textContent = newDate;
+          row.querySelector('.actions-cell').innerHTML = `
+            <button type="button" class="btn btn-sm btn-warning me-2 edit-session">Editar</button>
+            <a class="btn btn-sm btn-danger delete-item" data-id="${sessionId}" data-url="/admin/events/delete_session">Eliminar</a>
+          `;
 
+          Swal.fire("Éxito", "Sesión actualizada", "success");
+        })
+        .catch(err => Swal.fire("Error", err.message, "error"));
       });
 
     });
