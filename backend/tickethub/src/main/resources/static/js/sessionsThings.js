@@ -1,4 +1,4 @@
-import { getCsrf, deleteItem } from './confirmation.js';
+import { getCsrf, deleteItem, showSuccess, showError } from './confirmation.js';
 
 // ----------------- SESSIONS -----------------
 const sessionsBody = document.getElementById('sessions-body');
@@ -22,7 +22,7 @@ if (sessionsBody && addSessionBtn) {
 
     newRow.querySelector('.save-new').addEventListener('click', () => {
       const date = newRow.querySelector('.new-date').value;
-      if (!date) { alert("Debes seleccionar una fecha"); return; }
+      if (!date) { showError("Debes seleccionar una fecha"); return; }
 
       const data = new URLSearchParams();
       data.append('date', date);
@@ -37,10 +37,10 @@ if (sessionsBody && addSessionBtn) {
       })
       .then(res => {
         if (!res.ok) throw new Error("No se pudo crear la sesión");
-        Swal.fire("Éxito", "Sesión creada", "success");
+        showSuccess("Sesión creada");
         newRow.querySelector('.save-new').disabled = true;
       })
-      .catch(err => Swal.fire("Error", err.message, "error"));
+      .catch(err => showError(err.message));
     });
   });
 
@@ -64,7 +64,7 @@ if (sessionsBody && addSessionBtn) {
       row.querySelector('.save-edit').addEventListener('click', () => {
         const newDate = row.querySelector('.edit-date').value;
         if (!newDate) {
-          alert("Debes seleccionar una fecha");
+          showError("Debes seleccionar una fecha");
           return;
         }
 
@@ -88,9 +88,9 @@ if (sessionsBody && addSessionBtn) {
             <a class="btn btn-sm btn-danger delete-item" data-id="${sessionId}" data-url="/admin/events/delete_session">Eliminar</a>
           `;
 
-          Swal.fire("Éxito", "Sesión actualizada", "success");
+          showSuccess("Sesión actualizada");
         })
-        .catch(err => Swal.fire("Error", err.message, "error"));
+        .catch(err => showError(err.message));
       });
 
     });
