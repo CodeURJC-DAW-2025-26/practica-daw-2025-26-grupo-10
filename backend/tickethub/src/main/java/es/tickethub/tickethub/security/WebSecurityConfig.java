@@ -58,7 +58,7 @@ public class WebSecurityConfig {
 						.failureUrl("/public/login?error=true")
                         .usernameParameter("email")
                         .passwordParameter("password")
-						.defaultSuccessUrl("/clients/profile", true)
+						.defaultSuccessUrl("/public/selector", true)
 						.permitAll())
 				.logout(logout -> logout
 						.logoutUrl("/logout")//lo mismo que con el login, intercepta la señal de cerrar sesión

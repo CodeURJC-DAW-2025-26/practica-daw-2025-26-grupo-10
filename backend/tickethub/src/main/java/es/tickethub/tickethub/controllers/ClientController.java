@@ -38,6 +38,7 @@ public class ClientController {
         Client clientLogged = clientService.getClientByEmail(loggedEmail);
         model.addAttribute("useID", clientLogged.getUserID());
         model.addAttribute("clientLogged",clientLogged);
+        model.addAttribute("isLogged",true);
         return "user/profile";
     }
 
@@ -48,6 +49,7 @@ public class ClientController {
         Client clientLogged = clientService.getClientByEmail(loggedEmail);
         
         model.addAttribute("clientLogged",clientLogged);
+        model.addAttribute("isLogged",true);
         return "user/edit_profile";
     }
 
@@ -80,7 +82,8 @@ public class ClientController {
 
     //CHANGE PASSWORD
     @GetMapping("/profile/password")
-    public String getPasswordScreen() {
+    public String getPasswordScreen(Model model) {
+        model.addAttribute("isLogged",true);
         return "user/change_password";
     }
 

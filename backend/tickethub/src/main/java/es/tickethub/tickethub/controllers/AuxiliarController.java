@@ -27,6 +27,7 @@ import es.tickethub.tickethub.services.ClientService;
 import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.RecommendationService;
 import es.tickethub.tickethub.services.ServerRecommendationService;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 @Controller
@@ -51,12 +52,24 @@ public class AuxiliarController {
     @Autowired
     private ArtistService artistService;
 
-    /* THIS IS THE GETTER FOR CHARGE THE INDEX HTML (MUST BE FIXED WHEN THE PREFERENCES IS DONE, THE INFORMATION NOW IS ONLY TO CHARGE THE PAGE) */
+    @GetMapping("/selector")
+    public String selectTypeOfIndex(HttpServletRequest request) {
+        if (request.isUserInRole("ADMIN")) {
+            return "redirect:/admin/admin";
+        } else {
+            return "redirect:/public/index";
+        }
+    }
+
+    /*
+     * THIS IS THE GETTER FOR CHARGE THE INDEX HTML (MUST BE FIXED WHEN THE
+     * PREFERENCES IS DONE, THE INFORMATION NOW IS ONLY TO CHARGE THE PAGE)
+     */
     @GetMapping("/index")
     public String showIndex(Model model, Principal principal) {
-        List <Event> eventsTop = new ArrayList<>();
-        List <Event> eventsBottom = new ArrayList<>();
-        List <Map <String, Object> > artists = new ArrayList<>();
+        List<Event> eventsTop = new ArrayList<>();
+        List<Event> eventsBottom = new ArrayList<>();
+        List<Map<String, Object>> artists = new ArrayList<>();
 
         long i;
         for (i = 1; i <= 3; i++) {
@@ -76,7 +89,9 @@ public class AuxiliarController {
             
             artists.add(artistInfo);
         }
-        if (principal.getName() != null) {
+        boolean isLogged = (principal != null);
+        model.addAttribute("isLogged", isLogged);
+        if (isLogged) {
             Optional<Client> client = clientRepository.findByEmail(principal.getName());
             if (client.isPresent()) {
                 ClientRecommendationService clientService = new ClientRecommendationService(client.get());
@@ -95,7 +110,10 @@ public class AuxiliarController {
     }
 
     @GetMapping("/login")
-    public String showLogin(Model model, @RequestParam(required = false) String error) {
+    public String showLogin(Model model, @RequestParam(required = false) String error,Principal principal) {
+        if(principal != null){
+            return "redirect:/public/selector";
+        }
         if (error != null) {
             model.addAttribute("error", true);
         }
@@ -103,7 +121,10 @@ public class AuxiliarController {
     }
 
     @GetMapping("/signup")
-    public String showSignup() {
+    public String showSignup(Principal principal) {
+        if(principal != null){
+            return "redirect:/public/selector";
+        }
         return "public/signup";
     }
 
