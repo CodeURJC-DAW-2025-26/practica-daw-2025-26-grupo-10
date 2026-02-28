@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="_csrf" content="{{token}}">
+  <meta name="_csrf_header" content="X-CSRF-TOKEN">
   <title>
     {{#event}}Editar Evento{{/event}}
     {{^event}}Crear Evento{{/event}}
@@ -29,7 +31,7 @@
       {{^event}}Crear Evento{{/event}}
     </h2>
     <form method="post" enctype="multipart/form-data" action="/admin/events/{{#event}}edit_event/{{eventID}}{{/event}}{{^eventID}}create_event{{/eventID}}">
-
+      <input type="hidden" name="_csrf" value="{{token}}">
       {{#event}}
         <input type="hidden" name="eventID" value="{{eventID}}">
       {{/event}}
