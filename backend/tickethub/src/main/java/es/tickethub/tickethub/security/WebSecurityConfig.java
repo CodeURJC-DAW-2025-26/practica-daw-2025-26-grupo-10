@@ -48,10 +48,10 @@ public class WebSecurityConfig {
 						// USER (CLIENT OR ADMIN) ROUTES
 						.requestMatchers("/clients/**","/purchases/**").hasAnyRole("USER", "ADMIN")
                         //ONLY ADMIN ROUTES
-						.requestMatchers("/removebook/*").hasRole("ADMIN")
+						.requestMatchers("/admin/**").hasRole("ADMIN")
                         // OTHER ROUTES
                         .anyRequest().authenticated()
-                    )       
+                    )
 				.formLogin(formLogin -> formLogin
 						.loginPage("/public/login")
                         .loginProcessingUrl("/public/login")//intercepta cualquier post que venga de la pantalla login

@@ -26,9 +26,10 @@
         <a href="/public/index" class="btn btn-outline-primary btn-sm">
           Vista de cliente
         </a>
-        <button class="btn btn-outline-secondary btn-sm">
-            Cerrar sesión
-        </button>
+        <form action="/logout" method="post" class="m-0 p-0 d-grid">
+            <input type="hidden" name="_csrf" value="{{token}}">
+            <button type="submit" class="btn btn-danger">Cerrar sesión</button>
+        </form>
       </div>
     </div>
   </div>

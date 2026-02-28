@@ -1,9 +1,11 @@
 package es.tickethub.tickethub.controllers;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,15 +18,29 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import es.tickethub.tickethub.entities.Artist;
+import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Event;
+import es.tickethub.tickethub.repositories.ClientRepository;
 import es.tickethub.tickethub.services.ArtistService;
+import es.tickethub.tickethub.services.ClientRecommendationService;
 import es.tickethub.tickethub.services.ClientService;
 import es.tickethub.tickethub.services.EventService;
+import es.tickethub.tickethub.services.RecommendationService;
+import es.tickethub.tickethub.services.ServerRecommendationService;
 
 
 @Controller
 @RequestMapping("/public")
 public class AuxiliarController {
+
+    @Autowired
+    private RecommendationService recommendationService;
+
+    @Autowired
+    private ServerRecommendationService serverService;
+
+    @Autowired
+    private ClientRepository clientRepository;
 
     @Autowired
     private EventService eventService;
@@ -37,7 +53,7 @@ public class AuxiliarController {
 
     /* THIS IS THE GETTER FOR CHARGE THE INDEX HTML (MUST BE FIXED WHEN THE PREFERENCES IS DONE, THE INFORMATION NOW IS ONLY TO CHARGE THE PAGE) */
     @GetMapping("/index")
-    public String showIndex(Model model) {
+    public String showIndex(Model model, Principal principal) {
         List <Event> eventsTop = new ArrayList<>();
         List <Event> eventsBottom = new ArrayList<>();
         List <Map <String, Object> > artists = new ArrayList<>();
@@ -60,6 +76,16 @@ public class AuxiliarController {
             
             artists.add(artistInfo);
         }
+        if (principal.getName() != null) {
+            Optional<Client> client = clientRepository.findByEmail(principal.getName());
+            if (client.isPresent()) {
+                ClientRecommendationService clientService = new ClientRecommendationService(client.get());
+                List<Event> recommended = recommendationService.recommendEvents(
+                        clientService, serverService, 5, true
+                );
+                model.addAttribute("recommendedEvents", recommended);
+            }
+        }
 
         model.addAttribute("eventsTop", eventsTop);
         model.addAttribute("eventsBottom", eventsBottom);
@@ -76,9 +102,9 @@ public class AuxiliarController {
         return "public/login";
     }
 
-    @GetMapping("/singup")
+    @GetMapping("/signup")
     public String showSignup() {
-        return "public/singup";
+        return "public/signup";
     }
 
     @PostMapping("/registration")

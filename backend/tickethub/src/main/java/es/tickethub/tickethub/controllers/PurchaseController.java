@@ -145,7 +145,7 @@ public class PurchaseController {
         event.getSessions().stream()
             .filter(s -> s.getSessionID().equals(sessionId))
             .findFirst()
-            .ifPresent(purchase::setSession);
+            .ifPresent(purchase::setSession); //setSession is a setter
 
         // Create tickets and establish the bidirectional relationship
         for (Long zoneId : zoneIds) {
