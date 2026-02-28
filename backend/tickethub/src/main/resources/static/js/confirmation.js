@@ -37,7 +37,7 @@ export function showSuccess(msg) {
     Swal.fire("Éxito", msg, "success");
 }
 
-function getCsrf() {
+export function getCsrf() {
     const token = document.querySelector('meta[name="_csrf"]').content;
     const header = document.querySelector('meta[name="_csrf_header"]').content;
     return { token, header };

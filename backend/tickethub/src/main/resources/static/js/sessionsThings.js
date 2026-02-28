@@ -1,4 +1,4 @@
-import { deleteItem } from './confirmation.js';
+import { getCsrf, deleteItem } from './confirmation.js';
 
 // ----------------- SESSIONS -----------------
 const sessionsBody = document.getElementById('sessions-body');
@@ -21,17 +21,26 @@ if (sessionsBody && addSessionBtn) {
     sessionsBody.appendChild(newRow);
 
     newRow.querySelector('.save-new').addEventListener('click', () => {
-
       const date = newRow.querySelector('.new-date').value;
-
       if (!date) { alert("Debes seleccionar una fecha"); return; }
 
       const data = new URLSearchParams();
       data.append('date', date);
+
+      // CSRF
+      const { token, header } = getCsrf();
+
       fetch('/admin/events/' + eventId + '/add_session', {
         method: 'POST',
-        body: data
-      }).then(res => { if (res.ok) location.reload(); });
+        body: data,
+        headers: { [header]: token }
+      })
+      .then(res => {
+        if (!res.ok) throw new Error("No se pudo crear la sesión");
+        Swal.fire("Éxito", "Sesión creada", "success");
+        newRow.querySelector('.save-new').disabled = true;
+      })
+      .catch(err => Swal.fire("Error", err.message, "error"));
     });
   });
 
