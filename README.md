@@ -243,7 +243,7 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 |2| [Funcionalidad cargar más en las páginas events y artist desarrollada](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/d711f25500e7051bb9eb2b43874502ce9d684bff)  | [loadArtists.js](backend/tickethub/src/main/resources/static/js/loadArtists.js)   |
 |3| [Implementación del carrusel](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/17f723b54afa9b35ba5e8edbf1d521a0c893afe5)  | [carousel.js](backend/tickethub/src/main/resources/static/js/carousel.js)   |
 |4| [Implementación de la lógica de compra](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/03dfd03802e673838988569c899bdff393f6ee7b)  | [PurchaseService.java](backend/tickethub/src/main/java/es/tickethub/tickethub/services/PurchaseService.java)   |
-|5| [Formateo y lograr que funcione la creación de tickets]((https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/6675bd38690ef1aad4f505ef7e617dcc07dcc79c))  | [PurchaseController.java](backend/tickethub/src/main/java/es/tickethub/tickethub/controllers/PurchaseController.java)   |
+|5| [Formateo y lograr que funcione la creación de tickets](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/6675bd38690ef1aad4f505ef7e617dcc07dcc79c)  | [PurchaseController.java](backend/tickethub/src/main/java/es/tickethub/tickethub/controllers/PurchaseController.java)   |
 
 ---
 
