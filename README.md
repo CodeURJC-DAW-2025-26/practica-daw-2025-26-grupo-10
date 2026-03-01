@@ -221,7 +221,7 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 
 #### **Alumno 1 - [Rubén Alcojor Patilla]**
 
-[Desarrolo de archivos backend (controllers, services y repositories), creación de la base de datos, operaciones CRUD de objetos de la base de datos desde la web, creación de archivos javascript para dinamizar el frontend, maquetación de HTML e inicialización de la base de datos]
+[Desarrolo de archivos backend (controllers, services y repositories), creación de la base de datos, operaciones CRUD de objetos de la base de datos desde la web, creación de archivos javascript para dinamizar el frontend, maquetación de HTML e inicialización de la base de datos, desarrollo de ReadMe, ayuda en diagrama de clases y de pantallas y desarrollo de diagrama de base de datos]
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
@@ -277,7 +277,7 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 
 #### **Alumno 5 - [Alejandro Valor González]**
 
-[Desarrolo de archivos backend (controllers, services y repositories), desarrollo de tecnología complementaria (generación de PDF y QR), creación de archivos javascript para dinamizar el frontend, maquetación de HTML e inicialización de la base de datos]
+[Desarrolo de archivos backend (controllers, services y repositories), desarrollo de tecnología complementaria (generación de PDF y QR), creación de archivos javascript para dinamizar el frontend, maquetación de HTML e inicialización de la base de datos, readme, diagrama de clases y de pantallas]
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
