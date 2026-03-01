@@ -164,8 +164,22 @@ public class DataBaseInitializer {
             new Event("Metal Legends Live", artists.get(11), null, null, "Auditorio Miguel Ríos", "Metal", null,3)
         );
 
+        for (Event event : events) {
+            if (event.getEventImages() != null && !event.getEventImages().isEmpty()) {
+                event.getEventImages().get(0).setFirst(true);
+                event.setMainImage(event.getEventImages().get(0));
+            }
+        }
+
         artists.get(0).getLastEvents().add(events.get(0));
         artists.get(0).getEventsIncoming().add(events.get(9));
+        for (int i = 1; i < events.size(); i++) {
+            if (i < 9) {
+                artists.get(i).getEventsIncoming().add(events.get(i));
+            } else if (i > 9) {
+                artists.get(i - 1).getEventsIncoming().add(events.get(i));
+            }
+        }
 
         for (Zone zone : zones) {
             zone.setEvent(events.get(0));

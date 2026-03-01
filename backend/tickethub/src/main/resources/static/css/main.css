@@ -229,8 +229,14 @@ footer .social-icons a:hover {
 ========================================================================== */
 .carousel-item {
     height: 500px;
-    background-color: #000;
-    border-radius: 15px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.carousel-control-prev i,
+.carousel-control-next i {
+    font-size: 2rem;
+    color: white;
 }
 
 /* Artist Card */

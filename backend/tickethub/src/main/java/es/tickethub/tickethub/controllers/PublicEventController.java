@@ -1,8 +1,9 @@
 package es.tickethub.tickethub.controllers;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,9 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import es.tickethub.tickethub.entities.Discount;
 import es.tickethub.tickethub.entities.Event;
-import es.tickethub.tickethub.entities.Image;
 import es.tickethub.tickethub.entities.Zone;
 import es.tickethub.tickethub.services.DiscountService;
 import es.tickethub.tickethub.services.EventService;
@@ -44,12 +45,6 @@ public class PublicEventController {
     @GetMapping("/public/event/{id}")
     public String showEventDetails(@PathVariable Long id, Model model) {
         Event event = eventService.findById(id);
-        List<Image> images = event.getEventImages();
-        
-        if (images != null && !images.isEmpty()) {
-            images.get(0).setFirst(true);
-        }
-        
         model.addAttribute("event", event);
         return "public/event";
     }

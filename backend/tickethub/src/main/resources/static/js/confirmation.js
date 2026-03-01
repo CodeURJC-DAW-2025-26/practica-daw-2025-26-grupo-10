@@ -66,11 +66,11 @@ export function deleteItem(url, element) {
 
 
 //To show the error message in the create/edit_event and create/edit artist pages
-const form = document.querySelector('form[action*="edit_event"], form[action*="create_event"]');
+const form = document.querySelector('form[action*="edit_event"], form[action*="create_event"], form[action*="edit_artist"], form[action*="create_artist"]');
 
 if (form) {
   form.addEventListener('submit', e => {
-    const files = form.querySelector('[name="images"]').files;
+    const files = form.querySelector('input[type="file"]').files;
 
     for (const file of files) {
       if (!/\.(jpg|jpeg|png|webp)$/i.test(file.name)) {
