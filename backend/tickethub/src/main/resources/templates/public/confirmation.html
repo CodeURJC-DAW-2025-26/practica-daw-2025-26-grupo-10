@@ -4,6 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="_csrf" content="{{token}}" />
+    <meta name="_csrf_header" content="X-CSRF-TOKEN" />
     <title>Confirmación de Compra</title>
 
     <link rel="icon" type="image/png" href="/images/TicketHub_icon.png">
@@ -26,7 +28,9 @@
             <div class="alert alert-success">Compra realizada con éxito</div>
             {{#purchase}}
             <li class="list-group-item"><strong>ID de Pedido:</strong> #{{purchaseID}}</li>
-            <li class="list-group-item"><strong>Evento:</strong> {{name}}</li>
+            {{#event}}
+                <li class="list-group-item"><strong>Evento:</strong> {{name}}</li>
+            {{/event}}
             <li class="list-group-item"><strong>Total Pagado:</strong> {{totalPrice}} €</li>
 
             {{#session}}
