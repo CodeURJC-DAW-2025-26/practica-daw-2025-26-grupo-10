@@ -26,11 +26,10 @@ public class ImageController {
     @Autowired
     private ClientService clientService;
 
-
     @GetMapping("/users/{userID}")
     public ResponseEntity<byte[]> getClientImage(@PathVariable Long userID) {
         Client client = clientService.getClientById(userID);
-        
+
         // Client exists and has photo
         if (client != null && client.getProfileImage() != null) {
             try {
@@ -53,16 +52,17 @@ public class ImageController {
              */
             Resource defaultImage = new ClassPathResource("static/images/default-avatar.png");
             /**
-             * defaultBytes: The actual image content converted into binary data when it's not Blob
+             * defaultBytes: The actual image content converted into binary data when it's
+             * not Blob
              */
             byte[] defaultBytes = StreamUtils.copyToByteArray(defaultImage.getInputStream());
 
             return ResponseEntity.ok()
                     .contentType(MediaType.IMAGE_PNG)
                     .body(defaultBytes);
-                    
+
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-}
+    }
 }

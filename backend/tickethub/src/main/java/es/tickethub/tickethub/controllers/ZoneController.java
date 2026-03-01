@@ -45,7 +45,7 @@ public class ZoneController {
         Event event = eventService.findById(eventID);
 
         model.addAttribute("event", event);
-        
+
         return "/admin/events/create_zone";
     }
 
@@ -81,14 +81,14 @@ public class ZoneController {
         Zone zone = event.getZones().stream().filter(z -> z.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Zone not found"));
-        
+
         model.addAttribute("event", event);
         model.addAttribute("zone", zone);
 
         return "/admin/events/create_zone";
     }
 
-    //To save the edited zone
+    // To save the edited zone
     @PostMapping("/edit_event/{eventID}/edit_zone/{id}")
     public String editZone(@Valid Zone zone, @PathVariable Long eventID, BindingResult result, Model model) {
 

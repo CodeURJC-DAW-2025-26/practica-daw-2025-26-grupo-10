@@ -10,7 +10,6 @@ import es.tickethub.tickethub.repositories.UserRepository;
 import java.security.Principal;
 import java.util.Optional;
 
-
 /**
  * Alert for all controllers -> before loading any page, execute this code
  */
@@ -21,8 +20,8 @@ public class GlobalControllerAdvice {
     private UserRepository userRepository;
 
     /**
-     *  Any method inside @ControllerAdvice that is @ModelAttribute will be executed 
-     *  before loading any page
+     * Any method inside @ControllerAdvice that is @ModelAttribute will be executed
+     * before loading any page
      */
     @ModelAttribute
     public void addAttributes(Model model, Principal principal) {
@@ -31,7 +30,7 @@ public class GlobalControllerAdvice {
             model.addAttribute("isLogged", true);
 
             String email = principal.getName();
-            
+
             Optional<User> userOptional = userRepository.findByEmail(email);
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
@@ -40,7 +39,7 @@ public class GlobalControllerAdvice {
                 boolean admin = (user.getAdmin() != null && user.getAdmin());
                 model.addAttribute("isAdmin", admin);
             }
-        // Is NOT logged    
+            // Is NOT logged
         } else {
             model.addAttribute("isLogged", false);
             model.addAttribute("isAdmin", false);

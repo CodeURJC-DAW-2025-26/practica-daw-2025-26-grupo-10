@@ -1,6 +1,5 @@
 package es.tickethub.tickethub.controllers;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Controller;
@@ -22,84 +21,80 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.PostMapping;
 import java.security.Principal;
 
-
 @Controller
 @RequestMapping("/clients")
 public class ClientController {
 
     @Autowired
     private ClientService clientService;
-    
+
+    // Principal → represents the currently authenticated user
     @GetMapping("/profile")
     public String getClientOverview(Model model, Principal principal) {
         String loggedEmail = principal.getName();
         Client clientLogged = clientService.getClientByEmail(loggedEmail);
         model.addAttribute("useID", clientLogged.getUserID());
-        model.addAttribute("clientLogged",clientLogged);
+        model.addAttribute("clientLogged", clientLogged);
         return "user/profile";
     }
 
     // EDIT CLIENT INFORMATION
     @GetMapping("/profile/edit")
-    public String getClientData(Principal principal,Model model) {
+    public String getClientData(Principal principal, Model model) {
         String loggedEmail = principal.getName();
         Client clientLogged = clientService.getClientByEmail(loggedEmail);
-        
-        model.addAttribute("clientLogged",clientLogged);
+
+        model.addAttribute("clientLogged", clientLogged);
         return "user/edit_profile";
     }
 
     @PostMapping("/profile/edit")
-    //TODO: with react we'll use @RequestBody
+    // TODO: with react we'll use @RequestBody
     public String uptadeClientData(@Valid @ModelAttribute Client client,
-        //BindingResult bindingResult,
-        RedirectAttributes redirectAttributes,@RequestParam MultipartFile imageFile,
-        Principal principal, BindingResult bindingResult){
-        
+            RedirectAttributes redirectAttributes, @RequestParam MultipartFile imageFile,
+            Principal principal, BindingResult bindingResult) {
+
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("error", "Datos inválidos. Comprueba que la edad sea positiva y los campos correctos.");
+            redirectAttributes.addFlashAttribute("error",
+                    "Datos inválidos. Comprueba que la edad sea positiva y los campos correctos.");
             return "redirect:/clients/profile/edit";
         }
         try {
             String loggedEmail = principal.getName();
-            clientService.updateClient(loggedEmail, client,imageFile);
-            redirectAttributes.addFlashAttribute("success","Perfil actualizado correctamente");
+            clientService.updateClient(loggedEmail, client, imageFile);
+            redirectAttributes.addFlashAttribute("success", "Perfil actualizado correctamente");
             return "redirect:/clients/profile/edit";
         } catch (ObjectOptimisticLockingFailureException e) {
-            redirectAttributes.addFlashAttribute("error","Alguien ha modificado el perfil mientras lo editaba");
+            redirectAttributes.addFlashAttribute("error", "Alguien ha modificado el perfil mientras lo editaba");
             return "redirect:/clients/profile/edit";
-        }catch(Exception e){
+        } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al procesar la solicitud");
             return "redirect:/clients/profile/edit";
         }
-        
     }
-    
 
-    //CHANGE PASSWORD
+    // CHANGE PASSWORD
     @GetMapping("/profile/password")
     public String getPasswordScreen(Model model) {
         return "user/change_password";
     }
 
     @PostMapping("/profile/password")
-    public String changePassword(@RequestParam String oldPassword,@RequestParam String newPassword,
-        @RequestParam String newPasswordConfirmation,RedirectAttributes redirectAttributes,
-        Principal principal) {
+    public String changePassword(@RequestParam String oldPassword, @RequestParam String newPassword,
+            @RequestParam String newPasswordConfirmation, RedirectAttributes redirectAttributes,
+            Principal principal) {
         try {
             String loggedEmail = principal.getName();
             clientService.changePassword(loggedEmail, oldPassword, newPassword, newPasswordConfirmation);
-            redirectAttributes.addFlashAttribute("success","Contraseña actualizada correctamente");
-            return "redirect:/clients/profile/password";    
-        }catch(ObjectOptimisticLockingFailureException e){
-            redirectAttributes.addFlashAttribute("error","Hubo un conflicto procesando su solicitud. Por favor intente de nuevo.");
+            redirectAttributes.addFlashAttribute("success", "Contraseña actualizada correctamente");
             return "redirect:/clients/profile/password";
-        }catch(ResponseStatusException e){
-            redirectAttributes.addFlashAttribute("error",e.getReason());
+        } catch (ObjectOptimisticLockingFailureException e) {
+            redirectAttributes.addFlashAttribute("error", "Hubo un conflicto procesando su solicitud. Por favor intente de nuevo.");
+            return "redirect:/clients/profile/password";
+        } catch (ResponseStatusException e) {
+            redirectAttributes.addFlashAttribute("error", e.getReason());
             return "redirect:/clients/profile/password";
         }
     }
-    
-    
 
 }

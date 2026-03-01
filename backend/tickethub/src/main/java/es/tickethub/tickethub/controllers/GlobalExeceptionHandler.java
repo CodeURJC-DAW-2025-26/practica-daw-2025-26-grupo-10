@@ -9,12 +9,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @ControllerAdvice
 public class GlobalExeceptionHandler {
-    
+
     @ExceptionHandler(ResponseStatusException.class)
-    public String handleResponseStatusException(ResponseStatusException ex, Model model,HttpServletResponse response) {
-    
+    public String handleResponseStatusException(ResponseStatusException ex, Model model, HttpServletResponse response) {
+
         model.addAttribute("messageError", ex.getReason());
-        model.addAttribute("status",ex.getStatusCode().value());
+        model.addAttribute("status", ex.getStatusCode().value());
         response.setStatus(ex.getStatusCode().value());
         if (ex.getStatusCode() == HttpStatus.NOT_FOUND) {
             return "error/404";

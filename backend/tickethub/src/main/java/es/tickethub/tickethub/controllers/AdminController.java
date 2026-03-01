@@ -22,23 +22,27 @@ public class AdminController {
     public String getAdmin(Model model) {
         return "admin/admin";
     }
-    
+
     @GetMapping("/statistics")
     public String getStatistics(Model model) {
-        // Data Graph 1 (Matrix Month/Event/Quantity)
+        // Graph 1: Matrix of tickets sold by month and event
         model.addAttribute("monthEventData", purchaseRepository.getTicketsByMonthAndEvent());
 
-        // Data Graph 2 (Ranking)
+        // Graph 2: Event ranking
         List<Object[]> ranking = purchaseRepository.getRankingByEvent();
+
+        // .map(d -> d[0]) → transforms each element to the event name
+        // .collect(Collectors.toList()) → gathers the results into a List
         model.addAttribute("rankingLabels", ranking.stream().map(d -> d[0]).collect(Collectors.toList()));
         model.addAttribute("rankingValues", ranking.stream().map(d -> d[1]).collect(Collectors.toList()));
 
-        // Data Graph 3 (Evolution)
+        // Graph 3: Total tickets evolution
         List<Object[]> evolution = purchaseRepository.getTotalTicketsEvolution();
+
+        // Same logic as above for evolution data
         model.addAttribute("evolutionLabels", evolution.stream().map(d -> d[0]).collect(Collectors.toList()));
         model.addAttribute("evolutionValues", evolution.stream().map(d -> d[1]).collect(Collectors.toList()));
-
         return "admin/statistics";
     }
-    
+
 }

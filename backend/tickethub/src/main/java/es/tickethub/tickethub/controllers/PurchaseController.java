@@ -82,7 +82,7 @@ public class PurchaseController {
     public String loadMorePurchases(Principal principal, @RequestParam int pageNumber, Model model) {
         String loggedEmail = principal.getName();
         Slice<Purchase> purchasesSlice = purchaseService.getPurchasesByClientEmail(loggedEmail, pageNumber);
-        
+
         model.addAttribute("purchases", purchasesSlice.getContent());
         model.addAttribute("hasNext", purchasesSlice.hasNext());
         model.addAttribute("nextPage", pageNumber + 1);
@@ -93,9 +93,9 @@ public class PurchaseController {
      * Loads a fragment containing ticket details for a specific purchase.
      */
     @GetMapping("/{purchaseId}/tickets")
-    public String getPurchaseTickets(@PathVariable Long purchaseId, Model model,Principal principal) {
+    public String getPurchaseTickets(@PathVariable Long purchaseId, Model model, Principal principal) {
         String loggedEmail = principal.getName();
-        List<Ticket> tickets = purchaseService.getTicketsByPurchase(purchaseId,loggedEmail);
+        List<Ticket> tickets = purchaseService.getTicketsByPurchase(purchaseId, loggedEmail);
         model.addAttribute("tickets", tickets);
         return "user/purchase_details_fragment";
     }
@@ -126,8 +126,9 @@ public class PurchaseController {
      * Uses CascadeType.ALL to save tickets along with the purchase.
      */
     @PostMapping("/save")
-    public String savePurchase(@RequestParam Long eventId, @RequestParam Long sessionId, @RequestParam String totalPrice, @RequestParam List<Long> zoneIds, Principal principal, Model model) {
-        
+    public String savePurchase(@RequestParam Long eventId, @RequestParam Long sessionId,
+            @RequestParam String totalPrice, @RequestParam List<Long> zoneIds, Principal principal, Model model) {
+
         Event event = eventService.findById(eventId);
         String email = principal.getName();
         Client client = clientRepository.findByEmail(email)
@@ -142,9 +143,9 @@ public class PurchaseController {
 
         // Assign the selected session using Java Streams
         event.getSessions().stream()
-            .filter(s -> s.getSessionID().equals(sessionId))
-            .findFirst()
-            .ifPresent(purchase::setSession); //setSession is a setter
+                .filter(s -> s.getSessionID().equals(sessionId))
+                .findFirst()
+                .ifPresent(purchase::setSession); // setSession is a setter
 
         // Create tickets and establish the bidirectional relationship
         for (Long zoneId : zoneIds) {
@@ -171,9 +172,10 @@ public class PurchaseController {
      * Generates a PDF file containing all tickets and their corresponding QR codes.
      */
     @GetMapping("/download/{purchaseId}")
-    public void downloadTickets(@PathVariable Long purchaseId, HttpServletResponse response, Principal principal) throws Exception {
+    public void downloadTickets(@PathVariable Long purchaseId, HttpServletResponse response, Principal principal)
+            throws Exception {
         Purchase purchase = purchaseService.getPurchaseById(purchaseId);
-        
+
         // Security check: only the owner of the purchase can download the PDF
         if (!purchase.getClient().getEmail().equals(principal.getName())) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -206,7 +208,7 @@ public class PurchaseController {
             byte[] qrBytes = qrService.generateQR(ticket.getCode());
             Image qrImage = new Image(ImageDataFactory.create(qrBytes));
             qrImage.setWidth(200);
-            
+
             document.add(new Paragraph("Show this QR code at the entrance:"));
             document.add(qrImage);
             i++;

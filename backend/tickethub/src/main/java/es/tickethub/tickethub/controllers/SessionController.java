@@ -42,9 +42,7 @@ public class SessionController {
     // Filter by day
     @GetMapping("/date/{date}")
     public String getSessionsByDate(
-            @PathVariable
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            LocalDate date,
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
             Model model) {
 
         model.addAttribute("sessions", sessionService.getSessionsByFullDay(date));
@@ -57,11 +55,11 @@ public class SessionController {
     public String getSessionsByEvent(@PathVariable Long eventID, Model model) {
         model.addAttribute("sessions", sessionService.getSessionByEvent(eventID));
         model.addAttribute("eventID", eventID);
-        return "sessions"; 
+        return "sessions";
     }
 
     @PostMapping("/{eventID}/add_session")
-    @ResponseBody   //To return a simple status without redirecting
+    @ResponseBody // To return a simple status without redirecting
     public ResponseEntity<?> addSession(@RequestParam String date, @PathVariable Long eventID) {
         Event event = eventService.findById(eventID);
 
@@ -76,8 +74,9 @@ public class SessionController {
     }
 
     @PostMapping("/{eventID}/update_session")
-    @ResponseBody   //To return a simple status without redirecting
-    public ResponseEntity<?> editSession(@RequestParam("newDate") String date, @PathVariable Long eventID, @RequestParam Long sessionID) {
+    @ResponseBody // To return a simple status without redirecting
+    public ResponseEntity<?> editSession(@RequestParam("newDate") String date, @PathVariable Long eventID,
+            @RequestParam Long sessionID) {
 
         Session session = sessionService.findById(sessionID);
         if (session == null) {

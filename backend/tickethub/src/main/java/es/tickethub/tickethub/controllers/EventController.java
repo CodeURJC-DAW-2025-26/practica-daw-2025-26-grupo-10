@@ -2,7 +2,6 @@ package es.tickethub.tickethub.controllers;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +35,6 @@ import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.ZoneService;
 import jakarta.validation.Valid;
 
-
 @Controller
 public class EventController {
 
@@ -58,7 +56,7 @@ public class EventController {
         model.addAttribute("events", eventService.findPaginated(0, 5));
         return "/public/events";
     }
-    
+
     @GetMapping("/public/event/{id}")
     public String showEventDetails(@PathVariable Long id, Model model) {
         Event event = eventService.findById(id);
@@ -99,7 +97,7 @@ public class EventController {
         return "fragments/eventsFragments";
     }
 
-    /* To see the purchase page*/
+    /* To see the purchase page */
     @GetMapping("/public/purchase/{eventID}")
     public String showPurchaseFromEvent(@PathVariable Long eventID, Model model) {
         Event event = eventService.findById(eventID);
@@ -109,24 +107,24 @@ public class EventController {
         model.addAttribute("event", event);
         model.addAttribute("zones", zones);
         model.addAttribute("discounts", discounts);
-        model.addAttribute("ticketCounts", List.of(1, 2, 3, 4, 5));
+        model.addAttribute("ticketCounts", List.of(1, 2, 3, 4, 5)); // the user can buy up to 5 tickets
         model.addAttribute("tickets", List.of());
         model.addAttribute("totalPrice", BigDecimal.ZERO);
 
         return "public/purchase";
     }
 
-    /* To see the confirmation page*/
+    /* To see the confirmation page */
     @GetMapping("/public/confirmation/{eventID}")
     public String showConfirmation(@PathVariable Long eventID, Model model) {
         Event event = eventService.findById(eventID);
-        
+
         model.addAttribute("event", event);
         return "public/confirmation";
     }
 
     /*------------------------------------- FUNCTIONS FOR THE ADMIN FOLDER ---------------------------------*/
-    //To show the manage_events view
+    // To show the manage_events view
     @GetMapping("/admin/events/manage_events")
     public String showManageEvents(Model model) {
         model.addAttribute("events", eventService.findAll());
@@ -141,10 +139,10 @@ public class EventController {
         return "/admin/events/manage_sessions";
     }
 
-    //To show the create_event view
+    // To show the create_event view
     @GetMapping("/admin/events/create_event")
     public String showCreateForm(Model model) {
-        List <Artist> allArtists = artistService.findAll();
+        List<Artist> allArtists = artistService.findAll();
         List<Zone> allZones = zoneService.findAll();
         List<Discount> allDiscounts = discountService.getAllDiscounts();
         model.addAttribute("allArtists", allArtists);
@@ -153,10 +151,10 @@ public class EventController {
         return "/admin/events/create_event";
     }
 
-    //To create a new event
+    // To create a new event
     @PostMapping("/admin/events/create_event")
     public String createEvent(@Valid Event event, BindingResult result, @RequestParam("artistID") Long artistID,
-                                @RequestParam("images") MultipartFile[] files, Model model) {
+            @RequestParam("images") MultipartFile[] files, Model model) {
 
         if (result.hasErrors()) {
             return "/admin/events/create_event";
@@ -166,20 +164,14 @@ public class EventController {
             Artist artist = artistService.findById(artistID);
             event.setArtist(artist);
             artist.getEventsIncoming().add(event);
-
-            List<Image> images = new ArrayList<>();
+            // checks if any file was uploaded
             if (files != null && files.length > 0) {
-                for (MultipartFile file : files) {
-                    if (!file.isEmpty()) {
-                        Blob blob = new SerialBlob(file.getBytes());
-                        Image image = new Image(file.getOriginalFilename(), blob);
-                        images.add(image);
-                    }
-                }
+                event.getEventImages().addAll(convertFilesToImages(files));
             }
-            event.setCapacity(event.getZones().stream().mapToInt(Zone::getCapacity).sum());   //This adds the capacity of all the zones to set the total capacity of the event
-
-            event.setEventImages(images);
+            // Calculate total capacity of the event by summing capacities of all zones
+            // stream() to iterate over the zones
+            event.setCapacity(calculateTotalCapacity(event.getZones()));
+            //event.setEventImages(images);
             eventService.save(event);
         } catch (IOException | SQLException e) {
             model.addAttribute("errorMessage", e.getMessage());
@@ -188,18 +180,18 @@ public class EventController {
         return "redirect:/admin/events/manage_events";
     }
 
-    //To show the edit event view
+    // To show the edit event view
     @GetMapping("/admin/events/edit_event/{eventID}")
     public String editEvent(@PathVariable Long eventID, Model model) {
         Event event = eventService.findById(eventID);
-        List <Artist> allArtists = artistService.findAll();
+        List<Artist> allArtists = artistService.findAll();
         List<Zone> allZones = event.getZones();
         List<Discount> allDiscounts = discountService.getAllDiscounts();
 
-        //To mark the correct artist as selected in the edit view
+        // To mark the correct artist as selected in the edit view
         for (Artist artist : allArtists) {
             if (event.getArtist() != null &&
-                artist.getArtistID().equals(event.getArtist().getArtistID())) {
+                    artist.getArtistID().equals(event.getArtist().getArtistID())) {
                 artist.setSelected(true);
             } else {
                 artist.setSelected(false);
@@ -212,40 +204,37 @@ public class EventController {
         return "admin/events/create_event";
     }
 
-    public void addingAttributesCreateEvent(Model model, Event event, List<Artist> allArtists, List<Zone> allZones, List<Discount> allDiscounts) {
+    public void addingAttributesCreateEvent(Model model, Event event, List<Artist> allArtists, List<Zone> allZones,
+            List<Discount> allDiscounts) {
         model.addAttribute("event", event);
         model.addAttribute("allArtists", allArtists);
         model.addAttribute("allZones", allZones);
         model.addAttribute("allDiscounts", allDiscounts);
 
-        //This is to mark the correct target age when editing an event
-        model.addAttribute("targetAge0", event.getTargetAge() == 0);
-        model.addAttribute("targetAge1", event.getTargetAge() == 1);
-        model.addAttribute("targetAge2", event.getTargetAge() == 2);
-        model.addAttribute("targetAge3", event.getTargetAge() == 3);
-        model.addAttribute("targetAge4", event.getTargetAge() == 4);
-        model.addAttribute("targetAge5", event.getTargetAge() == 5);
-        model.addAttribute("targetAge6", event.getTargetAge() == 6);
+        // This is to mark the correct target age when editing an event
+        for (int i = 0; i <= 6; i++) {
+            model.addAttribute("targetAge" + i, event.getTargetAge() == i);
+        }
     }
 
     public void addingZonesAndDiscounts(Model model, Event event, List<Discount> allDiscounts) {
-        
-        List<Map<String,Object>> eventDiscountsForTemplate = new ArrayList<>();
+
+        List<Map<String, Object>> eventDiscountsForTemplate = new ArrayList<>();
 
         for (Discount d : event.getDiscounts()) {
             d.setSelected(true);
 
-            List<Map<String,Object>> allDiscountsCopy = new ArrayList<>();
+            List<Map<String, Object>> allDiscountsCopy = new ArrayList<>();
 
             for (Discount discount : allDiscounts) {
-                Map<String,Object> map = new HashMap<>();
+                Map<String, Object> map = new HashMap<>();
                 map.put("id", discount.getDiscountID());
                 map.put("name", discount.getDiscountName());
                 map.put("selected", discount.isSelected());
                 allDiscountsCopy.add(map);
             }
 
-            Map<String,Object> row = new HashMap<>();
+            Map<String, Object> row = new HashMap<>();
             row.put("value", d.getAmmount());
             row.put("isPercent", d.getPercentage().equals(true));
             row.put("isAmmount", d.getPercentage().equals(false));
@@ -257,19 +246,20 @@ public class EventController {
         model.addAttribute("eventDiscounts", eventDiscountsForTemplate);
     }
 
-    //To edit a event saved in the database
+    // To edit a event saved in the database
     @PostMapping("/admin/events/edit_event/{eventID}")
-    public String updateEvent(@Valid Event event, BindingResult result, @RequestParam("artistID") Long artistID, @RequestParam("images") MultipartFile[] files, Model model) {
+    public String updateEvent(@Valid Event event, BindingResult result, @RequestParam("artistID") Long artistID,
+            @RequestParam("images") MultipartFile[] files, Model model) {
 
         if (result.hasErrors()) {
             return "/admin/events/create_event";
         }
-        
+
         try {
             Event existing = eventService.findById(event.getEventID());
 
             existing.setName(event.getName());
-            existing.setCapacity(event.getZones().stream().mapToInt(Zone::getCapacity).sum());  //This adds the capacity of all the zones to set the total capacity of the event
+            existing.setCapacity(calculateTotalCapacity(event.getZones()));
             existing.setTargetAge(event.getTargetAge());
 
             Artist oldArtist = existing.getArtist();
@@ -295,13 +285,7 @@ public class EventController {
             existing.setCategory(event.getCategory());
 
             if (files != null && files.length > 0) {
-                for (MultipartFile file : files) {
-                    if (!file.isEmpty()) {
-                        Blob blob = new SerialBlob(file.getBytes());
-                        Image image = new Image(file.getOriginalFilename(), blob);
-                        existing.getEventImages().add(image);
-                    }
-                }
+                existing.getEventImages().addAll(convertFilesToImages(files));
             }
 
             eventService.save(existing);
@@ -313,7 +297,7 @@ public class EventController {
         return "redirect:/admin/events/manage_events";
     }
 
-    //To delete a saved event
+    // To delete a saved event
     @DeleteMapping("/admin/events/delete_event/{eventID}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteEvent(@PathVariable Long eventID) {
@@ -322,7 +306,7 @@ public class EventController {
 
         artist.getLastEvents().remove(event);
         artist.getEventsIncoming().remove(event);
-            
+
         event.setArtist(null);
         event.setZones(null);
         event.setDiscounts(null);
@@ -330,4 +314,16 @@ public class EventController {
         eventService.deleteById(eventID);
     }
 
+    private List<Image> convertFilesToImages(MultipartFile[] files) throws SQLException, IOException {
+        List<Image> images = new ArrayList<>();
+        for (MultipartFile file : files) {
+            if (!file.isEmpty()) {
+                images.add(new Image(file.getOriginalFilename(), new SerialBlob(file.getBytes())));
+            }
+        }
+        return images;
+    }
+    private int calculateTotalCapacity(List<Zone> zones) {
+    return zones.stream().mapToInt(Zone::getCapacity).sum();
+}
 }

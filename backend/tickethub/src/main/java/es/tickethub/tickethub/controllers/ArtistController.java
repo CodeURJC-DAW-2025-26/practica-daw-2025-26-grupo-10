@@ -25,7 +25,6 @@ import es.tickethub.tickethub.entities.Image;
 import es.tickethub.tickethub.services.ArtistService;
 import jakarta.validation.Valid;
 
-
 @Controller
 public class ArtistController {
 
@@ -48,20 +47,18 @@ public class ArtistController {
 
     @GetMapping("/public/artists/fragments")
     public String getMoreArtists(
-        @RequestParam int page,
-        @RequestParam(required = false) String search,
-        Model model) {
+            @RequestParam int page,
+            @RequestParam(required = false) String search,
+            Model model) {
 
         Page<Artist> artistPage = artistService.searchArtists(search, page, 5);
-
         model.addAttribute("artists", artistPage.getContent());
-
         return "fragments/artistsFragments";
     }
 
     /*------------------------------------- FUNCTIONS FOR THE ADMIN FOLDER ---------------------------------*/
 
-    /* Charge the admin view artists*/
+    /* Charge the admin view artists */
     @GetMapping("/admin/artists/manage_artists")
     public String showAdminViewArtists(Model model) {
 
@@ -69,7 +66,7 @@ public class ArtistController {
         return "admin/artists/manage_artists";
     }
 
-    /* Show the edit_artist page*/
+    /* Show the edit_artist page */
     @GetMapping("/admin/artists/edit_artist/{artistID}")
     public String showEditArtist(@PathVariable Long artistID, Model model) {
         Artist artist = artistService.findById(artistID);
@@ -83,10 +80,12 @@ public class ArtistController {
         return "admin/artists/create_artist";
     }
 
-    //BindingResult --> where spring keep validation errors
+    // BindingResult --> where spring keep validation errors
+    // MultipartFile file → represents a file uploaded in the form
     @PostMapping("/admin/artists/create_artist")
-    public String createArtist(@Valid Artist artist, BindingResult result, @RequestParam("image") MultipartFile file, Model model) {
-        
+    public String createArtist(@Valid Artist artist, BindingResult result, @RequestParam("image") MultipartFile file,
+            Model model) {
+
         if (result.hasErrors()) {
             return "create_artist";
         }
@@ -106,8 +105,9 @@ public class ArtistController {
     }
 
     @PostMapping("/admin/artists/edit_artist/{artistID}")
-    public String editArtist(@Valid Artist artist, BindingResult result, @RequestParam("image") MultipartFile file, Model model) {
-        
+    public String editArtist(@Valid Artist artist, BindingResult result, @RequestParam("image") MultipartFile file,
+            Model model) {
+
         if (result.hasErrors()) {
             return "/admin/artists/create_artist";
         }
@@ -115,7 +115,7 @@ public class ArtistController {
         try {
             Artist existing = artistService.findById(artist.getArtistID());
 
-            //each setter to update the info
+            // each setter to update the info
             existing.setArtistName(artist.getArtistName());
             existing.setInfo(artist.getInfo());
 
@@ -133,7 +133,7 @@ public class ArtistController {
             existing.setInstagram(artist.getInstagram());
             existing.setTwitter(artist.getTwitter());
             artistService.saveArtist(artist);
-            
+
         } catch (IOException | SQLException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "/admin/artists/create_artist";
