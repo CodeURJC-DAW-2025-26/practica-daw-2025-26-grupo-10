@@ -149,66 +149,6 @@
       </div>
       {{/event}}
 
-      <p class="fw-bold mb-1">Descuentos asociados</p>
-      <div id="discounts-container">
-        {{#event.discounts}}
-        <div class="row g-2 mb-2 discount-row align-items-center">
-
-          <div class="col-auto">
-            <select name="existingDiscountId" class="form-select">
-              <option value="">Seleccionar descuento</option>
-              {{#allDiscounts}}
-              <option value="{{discountID}}" {{#selected}}selected{{/selected}}>
-                {{discountName}} ({{ammount}} {{#isPercentage}}%{{/isPercentage}}{{^isPercentage}}€{{/isPercentage}} de
-                descuento)
-              </option>
-              {{/allDiscounts}}
-            </select>
-          </div>
-
-          <div class="col-auto">
-            <button type="button" class="btn btn-danger btn-sm remove-discount">
-              Eliminar
-            </button>
-          </div>
-
-        </div>
-        {{/event.discounts}}
-
-        {{#event}}
-        {{^event.discounts}}
-        <div class="row g-2 mb-2 discount-row align-items-center">
-          <div class="col" id="no-discounts-associated">
-            <p>Aún no hay descuentos asociados a este evento</p>
-          </div>
-
-          <div class="col-auto d-none">
-            <select name="discounts" class="form-select">
-              {{#allDiscounts}}
-              <option value="{{discountID}}">
-                {{discountName}} ({{ammount}} {{#percentage}}%{{/percentage}}{{^percentage}}€{{/percentage}} de
-                descuento)
-              </option>
-              {{/allDiscounts}}
-            </select>
-          </div>
-        </div>
-        {{/event.discounts}}
-        {{/event}}
-
-        {{^event}}
-        <div class="mb-3">
-          <label class="form-label">
-            Primero guarda el evento para poder gestionar descuentos
-          </label>
-        </div>
-        {{/event}}
-
-      </div>
-      {{#event}}
-      <button type="button" class="btn btn-primary mb-3" id="add-discount">Agregar descuento</button>
-      {{/event}}
-
       <p class="fw-bold mb-1">Imágenes</p>
       <input type="file" name="images" class="form-control mb-3" multiple>
 
@@ -227,7 +167,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script type="module" src="/js/confirmation.js"></script>
-  <script type="module" src="/js/discountsThings.js"></script>
 
   <!--LOCATION OF THE FOOTER OF THE WEB-->
 

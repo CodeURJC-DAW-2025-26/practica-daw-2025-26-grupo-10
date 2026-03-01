@@ -70,10 +70,6 @@ public class Event {
      * Here we don't have to put orphanRemoval because the discounts can be
      * associated to more events
      */
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id")
-
-    private List<Discount> discounts = new ArrayList<>();
 
     @Column(nullable = false)
     @NotBlank(message = "El lugar del evento es obligatorio")

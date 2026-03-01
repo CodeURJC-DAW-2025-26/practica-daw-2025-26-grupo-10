@@ -20,12 +20,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.tickethub.tickethub.entities.Artist;
-import es.tickethub.tickethub.entities.Discount;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Image;
 import es.tickethub.tickethub.entities.Zone;
 import es.tickethub.tickethub.services.ArtistService;
-import es.tickethub.tickethub.services.DiscountService;
 import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.ZoneService;
 import jakarta.validation.Valid;
@@ -37,9 +35,6 @@ public class AdminEventController {
 
     @Autowired
     private ZoneService zoneService;
-
-    @Autowired
-    private DiscountService discountService;
 
     @Autowired
     private ArtistService artistService;
@@ -57,10 +52,8 @@ public class AdminEventController {
     public String showCreateForm(Model model) {
         List<Artist> allArtists = artistService.findAll();
         List<Zone> allZones = zoneService.findAll();
-        List<Discount> allDiscounts = discountService.getAllDiscounts();
         model.addAttribute("allArtists", allArtists);
         model.addAttribute("allZones", allZones);
-        model.addAttribute("allDiscounts", allDiscounts);
         return "admin/events/create_event";
     }
 
@@ -98,7 +91,6 @@ public class AdminEventController {
         Event event = eventService.findById(eventID);
         List<Artist> allArtists = artistService.findAll();
         List<Zone> allZones = event.getZones();
-        List<Discount> allDiscounts = discountService.getAllDiscounts();
 
         // To mark the correct artist as selected in the edit view
         for (Artist artist : allArtists) {
@@ -109,9 +101,7 @@ public class AdminEventController {
                 artist.setSelected(false);
             }
         }
-
-        AdminControllerHelper.addingZonesAndDiscounts(model, event, allDiscounts);
-        AdminControllerHelper.addingAttributesCreateEvent(model, event, allArtists, allZones, allDiscounts);
+        AdminControllerHelper.addingAttributesCreateEvent(model, event, allArtists, allZones);
         return "admin/events/create_event";
     }
 
@@ -147,9 +137,6 @@ public class AdminEventController {
                 existing.getZones().add(zone);
             }
 
-            existing.getDiscounts().clear();
-            existing.getDiscounts().addAll(event.getDiscounts());
-
             existing.setPlace(event.getPlace());
             existing.setCategory(event.getCategory());
 
@@ -178,7 +165,6 @@ public class AdminEventController {
 
         event.setArtist(null);
         event.setZones(null);
-        event.setDiscounts(null);
 
         eventService.deleteById(eventID);
     }
