@@ -23,28 +23,30 @@ import lombok.Setter;
 public class Artist {
 
     /* The artist columns can be nullable except the ID and the artistName */
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long artistID;
 
     @Column(nullable = false)
-    @NotBlank(message="El nombre del artista es necesario")
+    @NotBlank(message = "El nombre del artista es necesario")
     @Size(max = 100, message = "El nombre del artista no puede tener más de 100 caracteres")
     private String artistName;
 
     @Column(nullable = true)
     private String info;
-    
-    //Orphan removal -->   every child deleted in the collection of the father is deleted auto. in the DB
-  
+
+    // Orphan removal --> every child deleted in the collection of the father is
+    // deleted auto. in the DB
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Event> eventsIncoming = new ArrayList<>();
-    
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Event> lastEvents = new ArrayList<>();
 
-    //the cascade thing means that the object associated to this column will be saved and deleted with the artist
+    // the cascade thing means that the object associated to this column will be
+    // saved and deleted with the artist
     @OneToOne(cascade = CascadeType.ALL)
     private Image artistImage;
 
@@ -56,7 +58,7 @@ public class Artist {
     private boolean selected;
 
     public Artist() {
-        /* The constructor for the database*/
+        /* The constructor for the database */
     }
 
     // Constructor of the class

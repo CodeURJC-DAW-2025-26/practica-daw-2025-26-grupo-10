@@ -23,16 +23,19 @@ import lombok.Setter;
 @Setter
 public class Event {
 
-    /* All the columns of the entity Event cannot be nullable except discounts*/
-    
-    /* For autogenerate the id we have to use GenerationType.IDENTITY instead GenerationType.AUTO*/
+    /* All the columns of the entity Event cannot be nullable except discounts */
+
+    /*
+     * For autogenerate the id we have to use GenerationType.IDENTITY instead
+     * GenerationType.AUTO
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long eventID;
 
     @Column(nullable = false)
     @NotBlank(message = "El nombre del evento es necesario")
-    //if you want to change the size... I do not mind
+    // if you want to change the size... I do not mind
     @Size(max = 100, message = "El nombre del evento no puede tener más de 100 caracteres")
     private String name;
 
@@ -41,14 +44,20 @@ public class Event {
 
     @Column(nullable = false)
     private Integer targetAge;
-    /* This represents that the entity Artist is related with Event in a way that one Artist can have many Events associated to him*/
+    /*
+     * This represents that the entity Artist is related with Event in a way that
+     * one Artist can have many Events associated to him
+     */
     @ManyToOne
     @JoinColumn(name = "artist_id", nullable = false)
     private Artist artist;
 
-    /* This represents that the entity Session is related with Event in a way that one Event can have many Sessions associated*/
+    /*
+     * This represents that the entity Session is related with Event in a way that
+     * one Event can have many Sessions associated
+     */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "event", orphanRemoval = true, fetch = FetchType.LAZY)
-    @Column(nullable = false) //I think this make no sense
+    @Column(nullable = false) // I think this make no sense
     private List<Session> sessions = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -56,7 +65,10 @@ public class Event {
 
     private List<Zone> zones = new ArrayList<>();
 
-    /* Here we don't have to put orphanRemoval because the discounts can be associated to more events*/
+    /*
+     * Here we don't have to put orphanRemoval because the discounts can be
+     * associated to more events
+     */
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
 
@@ -70,19 +82,20 @@ public class Event {
     @NotBlank(message = "La categoría del evento es obligatoria")
     private String category;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", nullable = true)
 
     private List<Image> eventImages = new ArrayList<>();
 
     public Event() {
-        /* The constructor for the database*/
+        /* The constructor for the database */
     }
 
-    // Constructor of the class (we have to put all the parameters that can not be null in the database)
+    // Constructor of the class (we have to put all the parameters that can not be
+    // null in the database)
     public Event(String name, Artist artist,
-        List<Session> sessions, List<Zone> zones, String place,
-        String category, List<Image> eventImages, Integer targetAge) {
+            List<Session> sessions, List<Zone> zones, String place,
+            String category, List<Image> eventImages, Integer targetAge) {
 
         this.name = name;
         this.targetAge = targetAge;
@@ -92,7 +105,8 @@ public class Event {
         }
         if (zones != null) {
             this.zones = zones;
-            this.capacity = zones.stream().mapToInt(Zone::getCapacity).sum();   //This adds the capacity of all the zones to set the total capacity of the event
+            this.capacity = zones.stream().mapToInt(Zone::getCapacity).sum(); // This adds the capacity of all the zones
+                                                                              // to set the total capacity of the event
         }
         this.place = place;
         this.category = category;
@@ -109,7 +123,8 @@ public class Event {
     }
 
     public double getAveragePrice() {
-        if (zones == null || zones.isEmpty()) return 0.0;
+        if (zones == null || zones.isEmpty())
+            return 0.0;
 
         double sum = 0.0;
         int count = 0;
@@ -121,7 +136,8 @@ public class Event {
             }
         }
 
-        if (count == 0) return 0.0;
+        if (count == 0)
+            return 0.0;
 
         return sum / count;
     }
