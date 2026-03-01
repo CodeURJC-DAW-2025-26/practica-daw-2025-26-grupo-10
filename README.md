@@ -177,7 +177,77 @@ Solo si ha cambiado.
 
 #### **Capturas de Pantalla Actualizadas**
 
-Solo si han cambiado.
+**Nota general (páginas públicas)**  
+Todas las páginas públicas comparten el mismo header (marca TicketHub, navegación Inicio/Eventos/Artistas, botones Iniciar sesión y Registrarse) y el mismo footer (texto, Sobre nosotros, enlaces rápidos y redes sociales).
+
+#### **1. Página Principal / Home**
+![Main Page](backend/tickethub/src/main/resources/static/images/pages/public/index.png)
+La página de inicio muestra el título ‘Próximos eventos’, tres filtros (fecha, categoría y artista) y una cuadrícula de tarjetas de evento con imagen, nombre, fecha y hora, artista y un botón para ver el detalle
+
+#### **2. Página Eventos**
+![Event Page](backend/tickethub/src/main/resources/static/images/pages/public/event.png)
+Ficha de evento con fecha, hora y lugar destacados, texto descriptivo, enlace para ver al artista y bloque de compra con precio y botón “Comprar entrada”
+
+#### **3. Página de Confirmación**
+![Confirmation Page](backend/tickethub/src/main/resources/static/images/pages/public/confirmation.png)
+Mensaje de compra exitosa con alerta de confirmación, lista de resumen (evento, tipo de entrada, total) y botones para descargar PDF o volver al inicio
+
+#### **4. Página Artista**
+![Artist Page](backend/tickethub/src/main/resources/static/images/pages/public/artist.png)
+Perfil del artista con foto circular, biografía corta, lista de próximos eventos y botones hacia redes sociales (Instagram/Twitter).
+
+#### **5. Página de Inicio de Sesión**
+![Login Page](backend/tickethub/src/main/resources/static/images/pages/public/login.png)
+Formulario centrado de inicio de sesión con campos de correo y contraseña y botón “Entrar”.
+
+#### **6. Página de Compra**
+![Purchase Page](backend/tickethub/src/main/resources/static/images/pages/public/purchase.png)
+Formulario de compra con selector de tipo de entrada, cantidad, cálculo de total y sección de pago (número de tarjeta, titular) más botón “Confirmar compra”.
+
+#### **7. Página Registro**
+![SignUp Page](backend/tickethub/src/main/resources/static/images/pages/public/sign-up.png)
+Formulario de registro con campos de nombre, correo, contraseña y confirmación, botón “Registrarse”.
+
+#### **8. Página Error 403**
+![Error403 Page](backend/tickethub/src/main/resources/static/images/pages/errors/403.png)
+Pantalla de acceso no autorizado con código 403, mensaje “Acceso no autorizado” y botón para volver al inicio.
+
+#### **9. Página Error 404**
+![Error404 Page](backend/tickethub/src/main/resources/static/images/pages/errors/404.png)
+Pantalla de página no encontrada con código 404, mensaje “Página no encontrada” y botón para volver al inicio.
+
+#### **10. Página Administrador**
+![Admin Page](backend/tickethub/src/main/resources/static/images/pages/admin/admin.png)
+Panel con KPIs en tarjetas (entradas vendidas, eventos activos, usuarios, próximos eventos) y botones para crear/gestionar eventos y artistas o ver estadísticas.
+
+#### **11. Página Crear Artista**
+![Create_artist Page](backend/tickethub/src/main/resources/static/images/pages/admin/create_artist.png)
+Formulario para crear artista con campos de nombre, biografía, Instagram y Twitter, y botón “Crear Artista”.
+
+#### **12. Página Crear Evento**
+![Create_event Page](backend/tickethub/src/main/resources/static/images/pages/admin/create_event.png)
+Formulario de alta de evento con campos de nombre, descripción, fecha, hora, lugar y precio, botón “Crear Evento”
+
+#### **13. Página Editar Artista**
+![Edit_Artist Page](backend/tickethub/src/main/resources/static/images/pages/admin/edit_artist.png)
+Formulario de edición de artista con campos precargados de nombre, biografía e identificadores de redes, botón “Guardar cambios”.
+
+#### **14. Página Editar Evento**
+![Edit_Event Page](backend/tickethub/src/main/resources/static/images/pages/admin/edit_event.png)
+Formulario de edición de evento con datos cargados (nombre, descripción, fecha, hora, lugar, precio) y botón “Guardar Cambios”.
+
+#### **15. Página Administrar Artistas**
+![Manage_artists Page](backend/tickethub/src/main/resources/static/images/pages/admin/manage_artists.png)
+Tabla de artistas con acciones de editar y eliminar, dentro del panel admin.
+
+#### **16. Página Administrar Eventos**
+![Manage_Events Page](backend/tickethub/src/main/resources/static/images/pages/admin/manage_events.png)
+Tabla de eventos con acciones de editar y eliminar, dentro del panel admin.mocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."
+
+#### **17. Página de Estadísticas Administrador**
+![Statistics Page](backend/tickethub/src/main/resources/static/images/pages/admin/statistics.png)
+Vista de estadísticas con dos gráficos (placeholders) para ventas y usuarios, accesible desde el panel admin.
+---
 
 ### **Instrucciones de Ejecución**
 
