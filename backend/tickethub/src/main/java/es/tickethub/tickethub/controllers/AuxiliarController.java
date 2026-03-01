@@ -171,4 +171,9 @@ public class AuxiliarController {
         return "error/404";
     }
 
+    @GetMapping("/error/500")
+    public String show500Error() {
+        return "error/500";
+    }
+
 }
