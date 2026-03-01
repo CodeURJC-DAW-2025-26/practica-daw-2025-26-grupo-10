@@ -41,11 +41,14 @@
           {{#eventsTop}}
           <div class="col-md-4">
             <div class="card h-100">
+              {{#key.mainImage}}
+                <img src="/images/entities/events/{{key.eventID}}/image/{{imageID}}" class="card-img-top" alt="Imagen del evento">
+              {{/key.mainImage}}
               <div class="card-body">
-                <h5 class="card-title">{{name}}</h5>
-                <p class="mb-1">{{category}}</p>
-                <p class="text-muted">{{place}}</p>
-                <a href="/public/event/{{eventID}}" class="btn btn-primary btn-sm">Ver evento</a>
+                <h5 class="card-title">{{key.name}}</h5>
+                <p class="mb-1">{{key.category}}</p>
+                <p class="text-muted">{{key.place}}</p>
+                <a href="/public/event/{{key.eventID}}" class="btn btn-primary btn-sm">Ver evento</a>
               </div>
             </div>
           </div>
@@ -64,6 +67,9 @@
           {{#recommendedEvents}}
           <div class="col-md-4">
             <div class="card h-100">
+              {{#eventImages}}
+              <img src="/public/image/{{recommendedEvent.mainImage.imageName}}" class="card-img-top" alt="Evento recomendado">
+              {{/eventImages}}
               <div class="card-body">
                 <h5 class="card-title">{{name}}</h5>
                 <p class="mb-1">{{category}}</p>
@@ -74,7 +80,6 @@
             </div>
           </div>
           {{/recommendedEvents}}
-
           {{^recommendedEvents}}
           <p>No tenemos información suficiente para recomendarte un evento</p>
           {{/recommendedEvents}}
@@ -91,18 +96,11 @@
           {{#artists}}
           <div class="col-md-3">
             <div class="card text-center h-100">
-              {{#artist.artistImage}}
-              <img src="/public/image/{{imageName}}" class="card-img-top" alt="...">
-              {{/artist.artistImage}}
-
-              {{^artist.artistImage}}
-              <img src="/images/TicketHub_icon.png" class="card-img-top" alt="Sin imagen">
-              {{/artist.artistImage}}
-              
+              <img src="/images/entities/artists/{{key.artistID}}" class="card-img-top rounded-circle mx-auto" alt="Imagen del artista">
               <div class="card-body">
-                <h6 class="card-title">{{artist.artistName}}</h6>
-                <p class="text-muted">{{eventsIncoming}} eventos disponibles</p>
-                <a href="/public/artist/{{artist.artistID}}" class="btn btn-primary btn-sm">Ver artista</a>
+                <h6 class="card-title">{{key.artistName}}</h6>
+                <p class="text-muted">{{value}} eventos en la página</p>
+                <a href="/public/artist/{{key.artistID}}" class="btn btn-primary btn-sm">Ver artista</a>
               </div>
             </div>
           </div>
@@ -136,7 +134,7 @@
     </div>
   </main>
 
-  {{>/components/footer}}
+{{>/components/footer}}
 
 </body>
 

@@ -1,10 +1,13 @@
 package es.tickethub.tickethub.controllers;
 
 import java.security.Principal;
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,8 +20,8 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import es.tickethub.tickethub.entities.Artist;
+import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Event;
-import es.tickethub.tickethub.repositories.ClientRepository;
 import es.tickethub.tickethub.services.ArtistService;
 import es.tickethub.tickethub.services.ClientRecommendationService;
 import es.tickethub.tickethub.services.ClientService;
@@ -39,9 +42,6 @@ public class AuxiliarController {
     private ServerRecommendationService serverService;
 
     @Autowired
-    private ClientRepository clientRepository;
-
-    @Autowired
     private EventService eventService;
 
     @Autowired
@@ -60,54 +60,67 @@ public class AuxiliarController {
     }
 
     /*
-     * THIS IS THE GETTER FOR CHARGE THE INDEX HTML (MUST BE FIXED WHEN THE
-     * PREFERENCES IS DONE, THE INFORMATION NOW IS ONLY TO CHARGE THE PAGE)
+     * THIS IS THE GETTER FOR CHARGE THE INDEX HTML.
+     * WE DECLARE TWO MAPS, ONE TO ORDER THE ARTISTS BY THEIR NUMBER OF EVENTS AND OTHER TO ORDER THE EVENTS BY THEIR POPULARITY.
+     * WE ALSO DECLARE A LIST OF EVENTS ORDERED BY THEIR DATE TO SHOW THE TWO MOST PROXIMITY EVENTS.
+     * IF THE USER IS LOGGED, WE ALSO GET A LIST OF RECOMMENDED EVENTS FOR HIM.
      */
     @GetMapping("/index")
     public String showIndex(Model model, Principal principal) {
-        // Load events
-        List<Event> allEvents = eventService.findPaginated(0, 3);
-        List<Event> eventsTop = new ArrayList<>();
-        List<Event> eventsBottom = new ArrayList<>();
+        Map<Artist , Integer> artistWithMoreEvents = new LinkedHashMap<>();
+        Map<Event, Integer> eventPopularity = new LinkedHashMap<>();
 
-        for (Event e : allEvents) {
-            if (e != null) {
-                eventsTop.add(e);
-                eventsBottom.add(e);
+        List<Event> events = eventService.findAll();
+
+        List<Event> eventsBottom = new ArrayList<>(events);
+        eventsBottom.sort(Comparator.comparing(event ->
+            event.getSessions().stream().map(session -> session.getDate().toInstant())
+                .filter(date -> !date.isBefore(Instant.now()))
+                .min(Instant::compareTo)
+                .orElse(Instant.MAX)
+        ));
+
+        events.sort((e1, e2) -> Integer.compare(
+                e2.getSessions().stream().flatMap(session -> session.getPurchases().stream())
+                .mapToInt(purchase -> purchase.getTickets().size()).sum(),
+                e1.getSessions().stream().flatMap(session -> session.getPurchases().stream())
+                .mapToInt(purchase -> purchase.getTickets().size()).sum()
+            ));
+
+        for (Event event : events) {
+            if (event.getEventImages() != null && !event.getEventImages().isEmpty()) {
+                event.setMainImage(event.getEventImages().get(0));
             }
+            
+            Integer popularity = event.getSessions().stream().flatMap(session -> session.getPurchases().stream())
+                    .mapToInt(purchase -> purchase.getTickets().size()).sum();
+            
+            eventPopularity.put(event, popularity);
         }
 
-        // Load artist
-        List<Map<String, Object>> artists = new ArrayList<>();
-        for (long i = 1; i < 5; i++) {
-            Artist artist = artistService.findById(i);
-            if (artist != null) { // If artist does not exist we don't insert it
-                Map<String, Object> artistInfo = new HashMap<>();
-                artistInfo.put("artist", artist);
-                // Check if it has events
-                int incoming = (artist.getEventsIncoming() != null) ? artist.getEventsIncoming().size() : 0;
-                artistInfo.put("eventsIncoming", incoming);
-                artists.add(artistInfo);
-            }
+        /* To sort the artists by their number of events*/
+        List<Artist> artists = artistService.findAll();
+        artists.sort((a1, a2) -> Integer.compare(a2.getEventsIncoming().size() + a2.getLastEvents().size(), a1.getEventsIncoming().size() + a1.getLastEvents().size()));
+        
+        for (Artist artist : artists) {
+            int numEvents = artist.getEventsIncoming().size() + artist.getLastEvents().size();
+            artistWithMoreEvents.put(artist, numEvents);
         }
-
-        // Recommendation (only if Principal exists)
+        
         if (principal != null) {
-            clientRepository.findByEmail(principal.getName()).ifPresent(c -> {
-                try {
-                    ClientRecommendationService crs = new ClientRecommendationService(c);
-                    List<Event> recommended = recommendationService.recommendEvents(crs, serverService, 5, true);
-                    model.addAttribute("recommendedEvents", recommended);
-                } catch (Exception e) {
-                    // If it does not work anonymous user still sees index
-                    System.out.println("Error en algoritmo: " + e.getMessage());
-                }
-            });
+            Optional <Client> client = clientService.getClientRepository().findByEmail(principal.getName());
+            if (client.isPresent()) {
+                ClientRecommendationService clientService = new ClientRecommendationService(client.get());
+                List<Event> recommended = recommendationService.recommendEvents(
+                        clientService, serverService, 5, true
+                );
+                model.addAttribute("recommendedEvents", recommended);
+            }
         }
 
-        model.addAttribute("eventsTop", eventsTop);
-        model.addAttribute("eventsBottom", eventsBottom);
-        model.addAttribute("artists", artists);
+        model.addAttribute("eventsTop", eventPopularity.entrySet().stream().limit(3).toList());
+        model.addAttribute("eventsBottom", eventsBottom.stream().limit(2).toList());
+        model.addAttribute("artists", artistWithMoreEvents.entrySet().stream().limit(4).toList());
 
         return "public/index";
     }
@@ -131,6 +144,9 @@ public class AuxiliarController {
         return "public/signup";
     }
 
+    /*
+     * THIS IS THE METHOD TO REGISTER A NEW CLIENT.
+     */
     @PostMapping("/registration")
     public String registeClient(@RequestParam String name,@RequestParam String email,@RequestParam String surname,
             @RequestParam String password,@RequestParam String passWordConfirmation,RedirectAttributes redirectAttributes,
