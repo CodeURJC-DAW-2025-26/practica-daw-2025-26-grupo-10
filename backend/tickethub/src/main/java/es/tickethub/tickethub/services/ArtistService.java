@@ -18,11 +18,11 @@ public class ArtistService {
 
     private final ArtistRepository artistRepository;
 
-    public ArtistService (ArtistRepository artistRepository){
+    public ArtistService(ArtistRepository artistRepository) {
         this.artistRepository = artistRepository;
     }
 
-    public List<Artist> findAll(){
+    public List<Artist> findAll() {
         List<Artist> artists = artistRepository.findAll();
         if (artists.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No hay artistas");
@@ -30,33 +30,34 @@ public class ArtistService {
         return artists;
     }
 
-    public Artist findById(Long id){
-        Optional <Artist> optionalArtist = artistRepository.findById(id);
-        if (optionalArtist.isPresent()){
+    public Artist findById(Long id) {
+        Optional<Artist> optionalArtist = artistRepository.findById(id);
+        if (optionalArtist.isPresent()) {
             return optionalArtist.get();
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artista no encontrado");
     }
-    public Artist findByName (String name){
-        Optional <Artist> optionalArtist = artistRepository.findByArtistName(name);
-        if (optionalArtist.isPresent()){
+
+    public Artist findByName(String name) {
+        Optional<Artist> optionalArtist = artistRepository.findByArtistName(name);
+        if (optionalArtist.isPresent()) {
             return optionalArtist.get();
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artista no encontrado");
     }
 
     public Artist saveArtist(Artist artist) {
-        
+
         return artistRepository.save(artist);
     }
 
     public void deleteById(Long id) {
         Optional<Artist> optionalArtist = artistRepository.findById(id);
-        if (!optionalArtist.isPresent()){
+        if (!optionalArtist.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artist not found");
         }
         Artist artist = optionalArtist.get();
-        artistRepository.deleteById(artist.getArtistID()); 
+        artistRepository.deleteById(artist.getArtistID());
     }
 
     public List<Artist> findPaginated(int page, int size) {
@@ -73,9 +74,6 @@ public class ArtistService {
         }
 
         return artistRepository.findByArtistNameContainingIgnoreCase(name, pageable);
-    } 
+    }
 
 }
-
-
-

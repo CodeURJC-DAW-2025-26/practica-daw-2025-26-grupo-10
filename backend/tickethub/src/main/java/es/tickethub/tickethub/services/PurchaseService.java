@@ -21,12 +21,14 @@ import es.tickethub.tickethub.repositories.PurchaseRepository;
 @Service
 public class PurchaseService {
 
-    @Autowired PurchaseRepository purchaseRepository;
+    @Autowired
+    PurchaseRepository purchaseRepository;
 
     @Autowired
     ClientService clientService;
 
-    @Autowired ClientRepository clientRepository;
+    @Autowired
+    ClientRepository clientRepository;
 
     @Autowired
     TicketService ticketService;
@@ -53,36 +55,37 @@ public class PurchaseService {
      * Useful for displaying the client's purchase history
      */
     @Transactional(readOnly = true)
-    public Slice<Purchase> getPurchasesByClientEmail(String loggedEmail,int pageNumber) {
-        if(!clientRepository.existsByEmail(loggedEmail)){
+    public Slice<Purchase> getPurchasesByClientEmail(String loggedEmail, int pageNumber) {
+        if (!clientRepository.existsByEmail(loggedEmail)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado");
         }
-        PageRequest pageRequest =  PageRequest.of(pageNumber,10,Sort.by(Sort.Direction.DESC,"session.date"));
-        return purchaseRepository.findByClient_Email(loggedEmail,pageRequest);
+        PageRequest pageRequest = PageRequest.of(pageNumber, 10, Sort.by(Sort.Direction.DESC, "session.date"));
+        return purchaseRepository.findByClient_Email(loggedEmail, pageRequest);
     }
 
     @Transactional(readOnly = true)
-    public List<Ticket> getTicketsByPurchase(Long purchaseID,String loggedEmail){
-        Purchase purchase = purchaseRepository.findById(purchaseID).orElseThrow(()->new  ResponseStatusException(HttpStatus.NOT_FOUND, "Compra no encontrada") );
-        if(!purchase.getClient().getEmail().equals(loggedEmail)){
+    public List<Ticket> getTicketsByPurchase(Long purchaseID, String loggedEmail) {
+        Purchase purchase = purchaseRepository.findById(purchaseID)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Compra no encontrada"));
+        if (!purchase.getClient().getEmail().equals(loggedEmail)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permiso para ver esta información");
         }
         return purchase.getTickets();
     }
 
     /**
-     * Retrieves a specific purchase by its ID and ensures it belongs to the given client
-     * Throws a NOT_FOUND exception if the purchase does not exist or does not belong to the client
+     * Retrieves a specific purchase by its ID and ensures it belongs to the given
+     * client
+     * Throws a NOT_FOUND exception if the purchase does not exist or does not
+     * belong to the client
      */
     public Purchase getPurchaseByIdAndClient(Long purchaseId, Client client) {
         Optional<Purchase> optionalPurchase = purchaseRepository.findByPurchaseIDAndClient(purchaseId, client);
-        if (!optionalPurchase.isPresent()){
+        if (!optionalPurchase.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Compra no encontrada");
         }
         return optionalPurchase.get();
     }
-
-
 
     /**
      * Deletes a purchase by its ID
@@ -99,7 +102,7 @@ public class PurchaseService {
 
     public Purchase getPurchaseById(Long purchaseId) {
         Optional<Purchase> optionalPurchase = purchaseRepository.findById(purchaseId);
-        if (!optionalPurchase.isPresent()){
+        if (!optionalPurchase.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Compra no encontrada");
         }
         return optionalPurchase.get();

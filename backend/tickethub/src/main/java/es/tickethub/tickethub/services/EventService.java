@@ -15,44 +15,44 @@ import es.tickethub.tickethub.repositories.EventRepository;
 
 @Service
 public class EventService {
-    
+
     private final EventRepository eventRepository;
-    
-    public EventService (EventRepository eventRepository){
+
+    public EventService(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
     }
 
-    public List<Event> findAll(){
+    public List<Event> findAll() {
         List<Event> events = eventRepository.findAll();
-        if (events.isEmpty()){
+        if (events.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No hay eventos");
         }
         return events;
     }
 
-    public Event findById(Long id){
-        Optional <Event> optionalEvent = eventRepository.findById(id);
-        if (optionalEvent.isPresent()){
+    public Event findById(Long id) {
+        Optional<Event> optionalEvent = eventRepository.findById(id);
+        if (optionalEvent.isPresent()) {
             return optionalEvent.get();
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado");
     }
 
-    public Event findByName(String name){
-        Optional <Event> optionalEvent = eventRepository.findByName(name);
-        if (optionalEvent.isPresent()){
+    public Event findByName(String name) {
+        Optional<Event> optionalEvent = eventRepository.findByName(name);
+        if (optionalEvent.isPresent()) {
             return optionalEvent.get();
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado");
     }
 
-    public Event save(Event event){
-        
+    public Event save(Event event) {
+
         return eventRepository.save(event);
     }
-    
-    public void deleteById(Long id){
-        
+
+    public void deleteById(Long id) {
+
         eventRepository.deleteById(id);
     }
 
@@ -62,12 +62,13 @@ public class EventService {
         // repo returns a Page object -> we use getContent to extract the list of events
         return eventRepository.findAll(pageable).getContent();
     }
+
     public Page<Event> searchEvents(String artist, String category, int page, int size) {
 
-    Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size);
 
         if ((artist == null || artist.isBlank()) &&
-            (category == null || category.isBlank())) {
+                (category == null || category.isBlank())) {
             return eventRepository.findAll(pageable);
         }
 

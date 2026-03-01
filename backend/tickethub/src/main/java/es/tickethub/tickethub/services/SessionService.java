@@ -22,8 +22,8 @@ public class SessionService {
     @Autowired
     private SessionRepository sessionRepository;
 
-    //Retrieves all sessions for a given event.
-    public List<Session> getSessionByEvent(Long eventID){
+    // Retrieves all sessions for a given event.
+    public List<Session> getSessionByEvent(Long eventID) {
         return validateList(sessionRepository.findByEvent_EventID(eventID));
     }
 
@@ -35,7 +35,7 @@ public class SessionService {
         return optionalSession.get();
     }
 
-    //Retrieves all active sessions from the current timestamp onwards.
+    // Retrieves all active sessions from the current timestamp onwards.
     public List<Session> getSessionsFromNow() {
         Timestamp now = new Timestamp(System.currentTimeMillis());
         return validateList(sessionRepository.findByDateAfter(now));
@@ -47,7 +47,7 @@ public class SessionService {
      */
     public List<Session> getSessionsByFullDay(LocalDate date) {
         Timestamp end = Timestamp.valueOf(date.atTime(LocalTime.MAX));
-        if (date.isEqual(LocalDate.now())){
+        if (date.isEqual(LocalDate.now())) {
             Timestamp startNow = Timestamp.valueOf(LocalDateTime.now());
             return validateList(sessionRepository.findByDateBetween(startNow, end));
         } else {
@@ -78,8 +78,7 @@ public class SessionService {
         return session.getPurchases();
     }
 
-
-    //Counts the total number of tickets sold in a session.
+    // Counts the total number of tickets sold in a session.
     public int countTicketsSold(Session session) {
         return session.getPurchases().stream().mapToInt(p -> p.getTickets().size()).sum();
     }
@@ -94,9 +93,9 @@ public class SessionService {
         return ticketsSold < capacity;
     }
 
-    public void deleteSession(Long sessionID){
-        Optional <Session> optionalSession = sessionRepository.findById(sessionID);
-        if (!optionalSession.isPresent()){
+    public void deleteSession(Long sessionID) {
+        Optional<Session> optionalSession = sessionRepository.findById(sessionID);
+        if (!optionalSession.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sesión no encontrada");
         }
         Session session = optionalSession.get();

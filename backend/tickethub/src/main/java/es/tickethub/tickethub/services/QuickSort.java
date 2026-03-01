@@ -11,7 +11,7 @@ public class QuickSort {
     public QuickSort(List<Event> events, List<Double> similarities) {
         this.events = events;
         this.similarities = similarities;
-        //this comprobation is just in case, I think it could be erased
+        // this comprobation is just in case, I think it could be erased
         if (events != null && similarities != null && !events.isEmpty() && !similarities.isEmpty()) {
             quickSortEvents(0, events.size() - 1);
         }
@@ -25,7 +25,6 @@ public class QuickSort {
         return similarities;
     }
 
-
     private void quickSortEvents(int low, int high) {
         if (low < high) {
             int pi = partition(low, high);
@@ -35,7 +34,7 @@ public class QuickSort {
     }
 
     private int partition(int low, int high) {
-        double pivot = similarities.get(high); 
+        double pivot = similarities.get(high);
         int i = low - 1;
 
         for (int j = low; j < high; j++) {
