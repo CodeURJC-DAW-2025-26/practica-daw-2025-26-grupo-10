@@ -29,11 +29,10 @@
 
         <div class="col-md-4">
           <select id="filterCategory" class="form-select">
-            <option value="">Categoría</option>
-            <option value="concert">Concierto</option>
-            <option value="festival">Festival</option>
-            <option value="theatre">Teatro</option>
-            <option value="music">Musica</option>
+            <option value="">Todos</option>
+            {{#categories}}
+            <option value="{{.}}">{{.}}</option>
+            {{/categories}}
           </select>
         </div>
 
