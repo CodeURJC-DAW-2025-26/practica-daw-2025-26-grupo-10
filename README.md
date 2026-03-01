@@ -183,7 +183,7 @@ Solo si han cambiado.
 
 #### **Requisitos Previos**
 - **Java**: versión 21 o superior
-- **Maven**: versión 3.8 o superior
+- **Maven**: versión 4.0.0 o superior
 - **MySQL**: versión 8.0 o superior
 - **Git**: para clonar el repositorio
 
