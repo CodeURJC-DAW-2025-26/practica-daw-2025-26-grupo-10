@@ -198,8 +198,8 @@ Solo si han cambiado.
 2. **AQUÍ INDICAR LO SIGUIENTES PASOS**
 
 #### **Credenciales de prueba**
-- **Usuario Admin**: usuario: `admin`, contraseña: `admin`
-- **Usuario Registrado**: usuario: `user`, contraseña: `user`
+- **Usuario Admin**: usuario: `adminEmail@gmail.com `, contraseña: `admin`
+- **Usuario Registrado**: usuario: `pepe@gmail.com`, contraseña: `pepe123`
 
 ### **Diagrama de Entidades de Base de Datos**
 
@@ -219,23 +219,9 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 
 ### **Participación de Miembros en la Práctica 1**
 
-#### **Alumno 1 - [Nombre Completo]**
+#### **Alumno 1 - [Rubén Alcojor Patilla]**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
-
-| Nº    | Commits      | Files      |
-|:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-
----
-
-#### **Alumno 2 - [Nombre Completo]**
-
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+[Desarrolo de archivos backend (controllers, services y repositories), creación de la base de datos, operaciones CRUD de objetos de la base de datos desde la web, creación de archivos javascript para dinamizar el frontend, maquetación de HTML e inicialización de la base de datos]
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
@@ -247,9 +233,9 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 
 ---
 
-#### **Alumno 3 - [Nombre Completo]**
+#### **Alumno 2 - [Shania Manso García]**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+[Desarrolo de archivos backend(controllers, entities, repositories), desarrollo de la lógica para comprar, ayuda en la parte de frontend y en la generación de PDF y QR]
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
@@ -261,9 +247,37 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 
 ---
 
-#### **Alumno 4 - [Nombre Completo]**
+#### **Alumno 3 - [Daniel Bonachela Martínez]**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+[Desarrolo de archivos backend (Controllers, services y repositories), desarrolo del algoritmo avanzado (recomendaciones personalizadas), ayuda en frontend, limpieza y revisión del código]
+
+| Nº    | Commits      | Files      |
+|:------------: |:------------:| :------------:|
+|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
+|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
+|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
+|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
+|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+
+---
+
+#### **Alumno 4 - [Ronald Sebastián Silvera Llimpe]**
+
+[Desarrolo de archivos backend (Controllers, services y repositories), desarrollo para que le aparezca a cada cliente su compra en su perfil, desarrollo de la lógica iniciar sesión,  desarrollo de security]
+
+| Nº    | Commits      | Files      |
+|:------------: |:------------:| :------------:|
+|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
+|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
+|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
+|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
+|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+
+---
+
+#### **Alumno 5 - [Alejandro Valor González]**
+
+[Desarrolo de archivos backend (controllers, services y repositories), desarrollo de tecnología complementaria (generación de PDF y QR), creación de archivos javascript para dinamizar el frontend, maquetación de HTML e inicialización de la base de datos]
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
