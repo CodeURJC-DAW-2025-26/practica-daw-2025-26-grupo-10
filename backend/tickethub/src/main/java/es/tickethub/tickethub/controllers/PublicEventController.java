@@ -13,7 +13,6 @@ import es.tickethub.tickethub.entities.Discount;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Image;
 import es.tickethub.tickethub.entities.Zone;
-import es.tickethub.tickethub.services.ArtistService;
 import es.tickethub.tickethub.services.DiscountService;
 import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.ZoneService;
@@ -29,9 +28,6 @@ public class PublicEventController {
 
     @Autowired
     private DiscountService discountService;
-
-    @Autowired
-    private ArtistService artistService;
 
     @GetMapping("/public/events")
     public String events(Model model) {

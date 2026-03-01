@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +17,6 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import es.tickethub.tickethub.entities.Artist;
-import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.repositories.ClientRepository;
 import es.tickethub.tickethub.services.ArtistService;
@@ -67,33 +65,33 @@ public class AuxiliarController {
      */
     @GetMapping("/index")
     public String showIndex(Model model, Principal principal) {
-        // 1. Carga de eventos de forma segura
+        // Load events
         List<Event> allEvents = eventService.findPaginated(0, 3);
         List<Event> eventsTop = new ArrayList<>();
         List<Event> eventsBottom = new ArrayList<>();
 
         for (Event e : allEvents) {
-            if (e != null) { // Seguridad ante todo
+            if (e != null) {
                 eventsTop.add(e);
-                eventsBottom.add(e); // Simplificado para pruebas
+                eventsBottom.add(e);
             }
         }
 
-        // 2. Carga de artistas (SOLUCIÓN AL ERROR 500)
+        // Load artist
         List<Map<String, Object>> artists = new ArrayList<>();
         for (long i = 1; i < 5; i++) {
             Artist artist = artistService.findById(i);
-            if (artist != null) { // SI EL ARTISTA NO EXISTE, NO LO METEMOS
+            if (artist != null) { // If artist does not exist we don't insert it
                 Map<String, Object> artistInfo = new HashMap<>();
                 artistInfo.put("artist", artist);
-                // Comprobamos si tiene eventos para no romper al hacer .size()
+                // Check if it has events
                 int incoming = (artist.getEventsIncoming() != null) ? artist.getEventsIncoming().size() : 0;
                 artistInfo.put("eventsIncoming", incoming);
                 artists.add(artistInfo);
             }
         }
 
-        // 3. Recomendaciones (Solo si el Principal existe)
+        // Recommendation (only if Principal exists)
         if (principal != null) {
             clientRepository.findByEmail(principal.getName()).ifPresent(c -> {
                 try {
@@ -101,7 +99,7 @@ public class AuxiliarController {
                     List<Event> recommended = recommendationService.recommendEvents(crs, serverService, 5, true);
                     model.addAttribute("recommendedEvents", recommended);
                 } catch (Exception e) {
-                    // Si el algoritmo falla, el usuario logueado sigue viendo el index sin romper
+                    // If it does not work anonymous user still sees index
                     System.out.println("Error en algoritmo: " + e.getMessage());
                 }
             });

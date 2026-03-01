@@ -24,7 +24,6 @@ import es.tickethub.tickethub.services.DiscountService;
 import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.PurchaseService;
 import es.tickethub.tickethub.services.QrService;
-import es.tickethub.tickethub.services.TicketService;
 import es.tickethub.tickethub.services.ZoneService;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -40,9 +39,6 @@ import com.itextpdf.io.image.ImageDataFactory;
 @Controller
 @RequestMapping("/purchases")
 public class PurchaseController {
-
-    @Autowired
-    private TicketService ticketService;
 
     @Autowired
     private PurchaseService purchaseService;
