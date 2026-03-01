@@ -6,7 +6,10 @@
   <title>
     {{#discount.discountID}}Editar Descuento{{/discount.discountID}}
     {{^discount.discountID}}Crear Descuento{{/discount.discountID}}
-</title>
+  </title>
+
+  <link rel="icon" type="image/png" href="/images/TicketHub_icon.png">
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/main.css">
 </head>
@@ -16,7 +19,7 @@
   {{>components/header_admin}}
 
   <div class="container my-5">
-    <h2>
+    <h2 class="text-center">
       {{#discount.discountID}}Editar Descuento{{/discount.discountID}}
       {{^discount.discountID}}Crear Descuento{{/discount.discountID}}
     </h2>
@@ -24,7 +27,7 @@
     <form method="post" action="/admin/discounts/{{#discount}}edit_discount/{{discount.discountID}}{{/discount}}{{^discount}}create_discount{{/discount}}">
 
       {{#discount.discountID}}
-        <input type="hidden" name="id" value="{{discountID}}">
+        <input type="hidden" name="id" value="{{discountID}}" required>
       {{/discount.discountID}}
 
       <div class="mb-3">
@@ -72,17 +75,18 @@
         </select>
       </div>
 
-      <button type="submit" class="btn btn-primary">
-        {{#discount.discountID}}Actualizar{{/discount.discountID}}
-        {{^discount.discountID}}Crear{{/discount.discountID}}
-      </button>
+      <div class="d-flex justify-content-between mt-3 gap-2">
+        <a href="/admin/discounts/manage_discounts" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-primary">
+          {{#discount.discountID}}Actualizar{{/discount.discountID}}
+          {{^discount.discountID}}Crear{{/discount.discountID}}
+        </button>
 
-      <a href="/admin/admin" class="btn btn-secondary">Cancelar</a>
-
+      </div>
     </form>
   </div>
 
   {{>components/footer_admin}}
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

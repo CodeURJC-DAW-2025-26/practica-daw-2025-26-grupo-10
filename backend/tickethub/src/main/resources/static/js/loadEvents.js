@@ -11,7 +11,7 @@ let category = "";
 async function loadEvents(reset = false) {
 
   if (reset) {
-    container.innerHTML = "";
+    container.replaceChildren();
     page = 0;
   }
 
@@ -22,12 +22,12 @@ async function loadEvents(reset = false) {
   const html = await res.text();
 
   if (html.trim() === "") {
-    button.style.display = "none";
+    button.classList.add("d-none");
     return;
   }
 
   container.insertAdjacentHTML("beforeend", html);
-  button.style.display = "inline-block";
+  button.classList.remove("d-none");
   page++;
 }
 

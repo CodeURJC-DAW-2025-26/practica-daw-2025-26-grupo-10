@@ -24,7 +24,7 @@ import jakarta.servlet.http.HttpSession;
 public class UserController {
     @Autowired
     private ClientService clientService;
-    
+
     @GetMapping("/change_password")
     public String changePassword() {
 
@@ -50,22 +50,25 @@ public class UserController {
 
     @GetMapping("/tickets")
     public String showTickets(HttpSession clientSession, Model model) {
-        /* This must get the clientID from the clientSession information.
-        *  When we have the client we get the purchases from the client and for each purchase we get the tickets
-        *  and the session. With the session we get the event and the date of the ticket to show it at the html view
-        */
+        /*
+         * This must get the clientID from the clientSession information.
+         * When we have the client we get the purchases from the client and for each
+         * purchase we get the tickets
+         * and the session. With the session we get the event and the date of the ticket
+         * to show it at the html view
+         */
         Long clientID = (Long) clientSession.getAttribute("clientId");
         Client client = clientService.getClientById(clientID);
-        List <Purchase> purchases = client.getPurchases();
-        List <Ticket> tickets = new ArrayList<>();
+        List<Purchase> purchases = client.getPurchases();
+        List<Ticket> tickets = new ArrayList<>();
 
-        List <Map <String, Object>> events = new ArrayList<>();
+        List<Map<String, Object>> events = new ArrayList<>();
 
         for (Purchase purchase : purchases) {
             tickets.addAll(purchase.getTickets());
             Session eventSession = purchase.getSession();
-            
-            Map <String, Object> eventsInfo = new HashMap<>();
+
+            Map<String, Object> eventsInfo = new HashMap<>();
 
             eventsInfo.put("event", eventSession.getEvent().getName());
             eventsInfo.put("sessionDate", eventSession.getDate());

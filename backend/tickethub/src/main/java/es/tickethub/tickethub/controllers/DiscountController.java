@@ -20,7 +20,8 @@ import jakarta.validation.Valid;
 @RequestMapping("/admin/discounts")
 public class DiscountController {
 
-    @Autowired DiscountService discountService;
+    @Autowired
+    DiscountService discountService;
 
     // Show all discounts
     @GetMapping("/manage_discounts")
@@ -32,8 +33,7 @@ public class DiscountController {
     // New discount form
     @GetMapping("/create_discount")
     public String showCreateForm(Model model) {
-        
-        return "/admin/discounts/create_discount"; 
+        return "/admin/discounts/create_discount";
     }
 
     // Creation of new discount
@@ -54,7 +54,7 @@ public class DiscountController {
         return "redirect:/admin/discounts/manage_discounts";
     }
 
-    //To get the info of the saved discount and show it at the form
+    // To get the info of the saved discount and show it at the form
     @GetMapping("/edit_discount/{discountID}")
     public String showDiscount(@PathVariable Long discountID, Model model) {
         Discount discount = discountService.findById(discountID);
@@ -62,7 +62,7 @@ public class DiscountController {
         return "/admin/discounts/create_discount";
     }
 
-    //To save the edited discount
+    // To save the edited discount
     @PostMapping("/edit_discount/{discountID}")
     public String editDiscount(@Valid Discount discount, BindingResult result, Model model) {
         Discount editedDiscount = discount;

@@ -3,6 +3,7 @@ package es.tickethub.tickethub.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,13 +17,14 @@ import es.tickethub.tickethub.repositories.ArtistRepository;
 @Service
 public class ArtistService {
 
+    @Autowired
     private final ArtistRepository artistRepository;
 
-    public ArtistService (ArtistRepository artistRepository){
+    public ArtistService(ArtistRepository artistRepository) {
         this.artistRepository = artistRepository;
     }
 
-    public List<Artist> findAll(){
+    public List<Artist> findAll() {
         List<Artist> artists = artistRepository.findAll();
         if (artists.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No hay artistas");
@@ -30,32 +32,34 @@ public class ArtistService {
         return artists;
     }
 
-    public Artist findById(Long id){
-        Optional <Artist> optionalArtist = artistRepository.findById(id);
-        if (optionalArtist.isPresent()){
+    public Artist findById(Long id) {
+        Optional<Artist> optionalArtist = artistRepository.findById(id);
+        if (optionalArtist.isPresent()) {
             return optionalArtist.get();
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artista no encontrado");
     }
-    public Artist findByName (String name){
-        Optional <Artist> optionalArtist = artistRepository.findByArtistName(name);
-        if (optionalArtist.isPresent()){
+
+    public Artist findByName(String name) {
+        Optional<Artist> optionalArtist = artistRepository.findByArtistName(name);
+        if (optionalArtist.isPresent()) {
             return optionalArtist.get();
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artista no encontrado");
     }
-    public Artist save(Artist artist) {
-        // Duplicate validation
-        if (artist.getArtistID() == null && artistRepository.findByArtistName(artist.getArtistName()).isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ya existe un artista con ese nombre");
-        }
+
+    public Artist saveArtist(Artist artist) {
+
         return artistRepository.save(artist);
     }
+
     public void deleteById(Long id) {
-            if (!artistRepository.existsById(id)) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artista no encontrado");
-            }
-            artistRepository.deleteById(id);
+        Optional<Artist> optionalArtist = artistRepository.findById(id);
+        if (!optionalArtist.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artist not found");
+        }
+        Artist artist = optionalArtist.get();
+        artistRepository.deleteById(artist.getArtistID());
     }
 
     public List<Artist> findPaginated(int page, int size) {
@@ -72,9 +76,6 @@ public class ArtistService {
         }
 
         return artistRepository.findByArtistNameContainingIgnoreCase(name, pageable);
-    } 
+    }
 
 }
-
-
-

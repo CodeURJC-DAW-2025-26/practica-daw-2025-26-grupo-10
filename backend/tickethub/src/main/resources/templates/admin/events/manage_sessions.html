@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="_csrf" content="{{token}}">
+  <meta name="_csrf_header" content="X-CSRF-TOKEN">
+  <title>Gestión de Sesiones</title>
+
+  <link rel="icon" type="image/png" href="/images/TicketHub_icon.png">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+  {{>components/header_admin}}
+
+  <div class="container my-5">
+    <h3 class="mb-4">{{#event}}Gestión de Sesiones {{event.name}}{{/event}}</h3>
+
+    <table class="table table-bordered align-middle" id="sessions-table">
+      <thead class="table-dark">
+        <tr>
+          <th>Fecha y hora</th>
+          <th class="text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="sessions-body">
+        {{#event.sessions}}
+        <tr class="session-row" data-id="{{sessionID}}" data-eventid="{{event.eventID}}">
+          <td class="date-cell">
+            {{formattedDate}}
+          </td>
+          <td class="text-center actions-cell">
+            <button type="button" class="btn btn-sm btn-warning me-2 edit-session">
+              Editar
+            </button>
+
+            <a class="btn btn-sm btn-danger delete-item" data-id="{{sessionID}}"
+              data-url="/admin/events/delete_session">
+              Eliminar
+            </a>
+          </td>
+        </tr>
+        {{/event.sessions}}
+
+        {{^event.sessions}}
+        <tr id="no-sessions-row">
+          <td colspan="2" class="text-center text-muted">
+            No hay sesiones creadas para este evento.
+          </td>
+        </tr>
+        {{/event.sessions}}
+      </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between">
+      <a class="btn btn-primary mt-3" id="add-session" data-eventid="{{event.eventID}}">
+        Agregar sesión
+      </a>
+
+      <a href="/admin/events/edit_event/{{event.eventID}}" class="btn btn-secondary mt-3 ms-2">
+        Guardar cambios
+      </a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script type="module" src="/js/sessionsThings.js"></script>
+  <script type="module" src="/js/confirmation.js"></script>
+
+  {{>components/footer_admin}}
+</body>
+
+</html>

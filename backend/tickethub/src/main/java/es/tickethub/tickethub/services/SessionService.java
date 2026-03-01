@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,16 +22,24 @@ public class SessionService {
     @Autowired
     private SessionRepository sessionRepository;
 
-    //Retrieves all sessions for a given event.
-    public List<Session> getSessionByEvent(Long eventID){
+    // Retrieves all sessions for a given event.
+    public List<Session> getSessionByEvent(Long eventID) {
         return validateList(sessionRepository.findByEvent_EventID(eventID));
     }
 
-    //Retrieves all active sessions from the current timestamp onwards.
+    public Session findById(Long sessionID) {
+        Optional<Session> optionalSession = sessionRepository.findById(sessionID);
+        if (!optionalSession.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sesión no encontrada");
+        }
+        return optionalSession.get();
+    }
+
+    // Retrieves all active sessions from the current timestamp onwards.
     public List<Session> getSessionsFromNow() {
         Timestamp now = new Timestamp(System.currentTimeMillis());
         return validateList(sessionRepository.findByDateAfter(now));
-    } 
+    }
 
     /**
      * Retrieves all sessions within a full day (00:00 to 23:59:59.999).
@@ -38,7 +47,7 @@ public class SessionService {
      */
     public List<Session> getSessionsByFullDay(LocalDate date) {
         Timestamp end = Timestamp.valueOf(date.atTime(LocalTime.MAX));
-        if (date.isEqual(LocalDate.now())){
+        if (date.isEqual(LocalDate.now())) {
             Timestamp startNow = Timestamp.valueOf(LocalDateTime.now());
             return validateList(sessionRepository.findByDateBetween(startNow, end));
         } else {
@@ -69,8 +78,7 @@ public class SessionService {
         return session.getPurchases();
     }
 
-
-    //Counts the total number of tickets sold in a session.
+    // Counts the total number of tickets sold in a session.
     public int countTicketsSold(Session session) {
         return session.getPurchases().stream().mapToInt(p -> p.getTickets().size()).sum();
     }
@@ -84,4 +92,18 @@ public class SessionService {
         int capacity = session.getEvent().getCapacity();
         return ticketsSold < capacity;
     }
+
+    public void deleteSession(Long sessionID) {
+        Optional<Session> optionalSession = sessionRepository.findById(sessionID);
+        if (!optionalSession.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sesión no encontrada");
+        }
+        Session session = optionalSession.get();
+        sessionRepository.deleteById(session.getSessionID());
+    }
+
+    public void save(Session session) {
+        sessionRepository.save(session);
+    }
+
 }

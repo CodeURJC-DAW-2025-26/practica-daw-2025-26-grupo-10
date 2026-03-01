@@ -2,86 +2,48 @@
 <html lang="es">
 
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Perfil</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="/css/main.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Perfil</title>
+
+  <link rel="icon" type="image/png" href="/images/TicketHub_icon.png">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.css">
 </head>
 
 <body class="d-flex flex-column min-vh-100">
 
-<!--LOCATION OF THE HEADER OF THE WEB-->
+  {{>components/header}}
 
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarMain"
-      aria-controls="navbarMain"
-      aria-expanded="false"
-      aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <main class="flex-fill">
+    <div class="container my-5" style="max-width:600px">
+      {{#clientLogged}}
+      <div class="card text-center p-4">
+        {{#profileImage}}
+        <img src="/images/entities/users/{{userID}}" class="rounded-circle mx-auto mb-3">
+        {{/profileImage}}
 
-    <div class="collapse navbar-collapse" id="navbarMain">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" href="../public/index.html">Inicio</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="../public/events.html">Eventos</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="../public/artists.html">Artistas</a>
-        </li>
-      </ul>
-
-      <div class="d-flex align-items-center gap-3">
-        <!--<a href="../public/login.html" class="btn btn-outline-primary btn-sm">
-          Iniciar sesión
-        </a>
-        <a href="../public/signup.html" class="btn btn-light btn-sm">
-          Registrarse
-        </a>-->
-
-        <img
-          src="/images/default-avatar.png"
-          alt="Perfil"
-          class="rounded-circle"
-          width="40"
-          height="40"
-        >
-      </div>
-    </div>
-  </div>
-</nav>
-
-<main class="flex-fill">
-  <div class="container my-5" style="max-width:600px">
-    {{#clientLogged}}
-    <div class="card text-center p-4">
-      {{#profileImage}}
-      <img src="/images/entities/users/{{userID}}" class="rounded-circle mx-auto mb-3">
-      {{/profileImage}}
-
-      {{^profileImage}}
+        {{^profileImage}}
         <img src="/images/default-avatar.png" class="rounded-circle mx-auto mb-3">
-      {{/profileImage}}
-      <h4>{{username}}</h4>
-      <p class="text-muted">{{email}}</p>
-      <div class="d-grid gap-2">
-        <a href="/clients/profile/{{userID}}/edit" class="btn btn-outline-primary">Editar perfil</a>
-        <a href="/purchases/me/{{userID}}" class="btn btn-primary">Mis compras</a>
-        <a href="/clients/profile/{{userID}}/password" class="btn btn-outline-secondary">Cambiar contraseña</a>
+        {{/profileImage}}
+        <h4>{{username}}</h4>
+        <p class="text-muted">{{email}}</p>
+        <div class="d-grid gap-2">
+          <a href="/clients/profile/edit" class="btn btn-outline-primary">Editar perfil</a>
+          <a href="/purchases/me" class="btn btn-primary">Mis compras</a>
+          <a href="/clients/profile/password" class="btn btn-outline-secondary">Cambiar contraseña</a>
+          <form action="/logout" method="post" class="m-0 p-0 d-grid">
+            <input type="hidden" name="_csrf" value="{{token}}">
+            <button type="submit" class="btn btn-danger">Cerrar sesión</button>
+          </form>
+        </div>
       </div>
+      {{/clientLogged}}
     </div>
-    {{/clientLogged}}
-  </div>
-</main>
+  </main>
 
-{{>/components/footer}}
+  {{>/components/footer}}
 </body>
+
 </html>

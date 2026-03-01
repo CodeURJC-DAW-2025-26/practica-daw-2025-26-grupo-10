@@ -2,7 +2,13 @@
   <div class="container-fluid">
     <a class="navbar-brand" href="/admin/admin">TicketHub Admin</a>
 
-    <div class="collapse navbar-collapse">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbarContent"
+      aria-controls="adminNavbarContent" aria-expanded="false" aria-label="Toggle navigation"
+      style="border-color: var(--vivid-tangerine);">
+      <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="adminNavbarContent">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
           <a class="nav-link" href="/admin/events/manage_events">Gestionar Eventos</a>
@@ -19,11 +25,10 @@
         <a href="/public/index" class="btn btn-outline-primary btn-sm">
           Vista de cliente
         </a>
-        <!-- when JS is active, we will use onclick="logout()" for the admin to log out-->
-        <button class="btn btn-outline-secondary btn-sm">
-            Cerrar sesión
-        </button>
-
+        <form action="/logout" method="post" class="m-0 p-0 d-grid">
+          <input type="hidden" name="_csrf" value="{{token}}">
+          <button type="submit" class="btn btn-danger">Cerrar sesión</button>
+        </form>
       </div>
     </div>
   </div>

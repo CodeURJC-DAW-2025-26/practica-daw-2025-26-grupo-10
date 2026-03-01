@@ -9,6 +9,7 @@ import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,13 +18,14 @@ import lombok.Setter;
 @Setter
 public class Client extends User {
 
-    @OneToMany(mappedBy = "client")//Fetchtype.LAZY by default in OneToMany
+    @OneToMany(mappedBy = "client") // Fetchtype.LAZY by default in OneToMany
     private List<Purchase> purchases = new ArrayList<>();
 
     private String name;
 
     private String surname;
 
+    @Min(0)
     private Integer age;
 
     private Integer phone;
@@ -52,9 +54,8 @@ public class Client extends User {
             BigDecimal coins,
             List<String> subjects,
             List<Purchase> purchases,
-            Image profileImage
-    ) {
-        super(email, username, password, false); // cliente ≠ admin
+            Image profileImage) {
+        super(email, username, password, false);
         this.name = name;
         this.surname = surname;
         this.age = age;

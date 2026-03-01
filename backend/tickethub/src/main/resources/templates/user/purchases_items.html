@@ -4,11 +4,11 @@
     <td>{{session.date}}</td>
     <td>Comprado</td>
     <td>
-        <button class="btn btn-sm btn-outline-primary" 
-                onclick="toggleTickets({{purchaseID}}, this)">
+        <button class="btn btn-sm btn-outline-primary" onclick="toggleTickets('{{purchaseID}}', this)">
+            <!--Verify that I did not broke nothing-->
             Ver detalles
         </button>
-        <button class="btn btn-sm btn-primary">Descargar</button>
+        <a href="/purchases/download/{{purchaseID}}" class="btn btn-outline-primary">Descargar</a>
     </td>
 </tr>
 {{/purchases}}

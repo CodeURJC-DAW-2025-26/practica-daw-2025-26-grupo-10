@@ -1,125 +1,76 @@
 <!doctype html>
 <html lang="es">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Editar perfil</title>
+
+  <link rel="icon" type="image/png" href="/images/TicketHub_icon.png">
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/main.css">
 </head>
+
 <body class="d-flex flex-column min-vh-100">
 
-<!--LOCATION OF THE HEADER OF THE WEB-->
+  {{>components/header}}
 
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarMain"
-      aria-controls="navbarMain"
-      aria-expanded="false"
-      aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <main class="flex-fill">
+    <div class="container my-5" style="max-width:600px">
+      {{#clientLogged}}
+      <h2 class="mb-4">Editar perfil</h2>
+      <form method="post" action="/clients/profile/edit" enctype="multipart/form-data">
+        <input type="hidden" name="_csrf" value="{{token}}">
+        <div class="mb-3">
+          <input type="hidden" name="version" value="{{version}}">
+          <label class="form-label">Nombre</label>
+          <input type="text" class="form-control" name="name" value="{{name}}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Apellidos</label>
+          <input type="text" class="form-control" name="surname" value="{{surname}}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Nombre de usuario</label>
+          <input type="text" class="form-control" name="username" value="{{username}}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Correo electrónico</label>
+          <input type="email" class="form-control" name="email" value="{{email}}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Teléfono</label>
+          <input type="text" class="form-control" name="phone" {{#phone}} value="{{phone}}" {{/phone}}>
+        </div>
 
-    <!--There must be an alert to warn if he can't save the changes FOR ALL THE BUTTONS OF THE NAV-BAR INCLUDING THE PROFILE PHOTO-->
-    <div class="collapse navbar-collapse" id="navbarMain">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" href="../public/index.html">Inicio</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="../public/events.html">Eventos</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="../public/artists.html">Artistas</a>
-        </li>
-      </ul>
-
-      <div class="d-flex align-items-center gap-3">
-        <!--<a href="../public/login.html" class="btn btn-outline-primary btn-sm">
-          Iniciar sesión
-        </a>
-        <a href="../public/signup.html" class="btn btn-light btn-sm">
-          Registrarse
-        </a>-->
-
-        <a href="profile.html">
-        <img
-          src="/images/default-avatar.png"
-          alt="Perfil"
-          class="rounded-circle"
-          width="40"
-          height="40"
-        >
-        </a>
-      </div>
+        <div class="mb-3">
+          <label class="form-label">Edad</label>
+          <input type="number" class="form-control" name="age" {{#age}}value="{{age}}" {{/age}}>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Foto de perfil</label>
+          <input type="file" class="form-control" name="imageFile" accept=".jpg, .jpeg, .png">
+        </div>
+        {{#error}}
+        <div class="alert alert-danger" role="alert">
+          {{error}}
+        </div>
+        {{/error}}
+        {{#success}}
+        <div class="alert alert-success" role="alert">
+          {{success}}
+        </div>
+        {{/success}}
+        <div class="d-flex gap-2">
+          <button class="btn btn-primary equal-btn" type="submit">Guardar</button>
+          <a href="/clients/profile" class="btn btn-primary equal-btn">Volver</a>
+        </div>
+      </form>
+      {{/clientLogged}}
     </div>
-  </div>
-</nav>
-
-<!-- CONTENIDO -->
-<main class="flex-fill">
-  <div class="container my-5" style="max-width:600px">
-    {{#clientLogged}}
-    <h2 class="mb-4">Editar perfil</h2>
-    <form method="post" action="/clients/profile/{{userID}}/edit" enctype="multipart/form-data">
-      <div class="mb-3">
-        <input type="hidden" name="version" value="{{version}}">
-        <label class="form-label">Nombre</label>
-        <input type="text" class="form-control" name="name"  value="{{name}}">
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Apellidos</label>
-        <input type="text" class="form-control" name="surname" value="{{surname}}">
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Nombre de usuario</label>
-        <input type="text" class="form-control" name="username"  value="{{username}}">
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Correo electrónico</label>
-        <input type="email" class="form-control" name="email"  value="{{email}}">
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Teléfono</label>
-        <input type="text" class="form-control" name="phone"  value="{{phone}}">
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Edad</label>
-        <input type="number" class="form-control" name="age"  value="{{age}}">
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Foto de perfil</label>
-        <input type="file" class="form-control" name="imageFile" accept=".jpg, .jpeg">
-      </div>
-      <div class="mb-3" style="text-align: right">
-        <a href="change_password" class="btn btn-outline-primary">Cambiar contraseña</a>
-      {{#error}}
-      <div class="alert alert-danger" role="alert">
-        {{error}}
-      </div>
-      {{/error}}
-      {{#success}}
-      <div class="alert alert-success" role="alert">
-        {{success}}
-      </div>
-      {{/success}}
-      <div class="d-flex gap-2">
-        <button class="btn btn-primary equal-btn" type="submit">Guardar</button>
-        <a href="/clients/profile/{{userID}}" class="btn btn-primary equal-btn">Volver</a>
-      </div>
-    </form>
-    {{/clientLogged}}
-  </div>
-</main>
-{{>components/footer}}
+  </main>
+  {{>components/footer}}
 </body>
+
 </html>
-
-
-
-
-

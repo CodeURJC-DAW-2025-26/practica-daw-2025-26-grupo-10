@@ -12,6 +12,7 @@ import java.util.List;
 import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import es.tickethub.tickethub.entities.Admin;
@@ -24,15 +25,12 @@ import es.tickethub.tickethub.entities.Purchase;
 import es.tickethub.tickethub.entities.Session;
 import es.tickethub.tickethub.entities.Ticket;
 import es.tickethub.tickethub.entities.Zone;
-
 import es.tickethub.tickethub.repositories.ArtistRepository;
 import es.tickethub.tickethub.repositories.DiscountRepository;
 import es.tickethub.tickethub.repositories.EventRepository;
 import es.tickethub.tickethub.repositories.PurchaseRepository;
 import es.tickethub.tickethub.repositories.SessionRepository;
 import es.tickethub.tickethub.repositories.UserRepository;
-import es.tickethub.tickethub.repositories.ZoneRepository;
-
 import jakarta.annotation.PostConstruct;
 
 @Service
@@ -54,10 +52,10 @@ public class DataBaseInitializer {
     private ArtistRepository artistRepository;
 
     @Autowired
-    private ZoneRepository zoneRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
     private byte[] loadImage(String imageName) {
         try (InputStream inputStream = getClass().getClassLoader()
@@ -141,33 +139,39 @@ public class DataBaseInitializer {
         return artists;
     }
 
-    public List<Event>  initializeEvents(List<Artist> artists, List<Image> eventImages) {
+    public List<Event>  initializeEvents(List<Artist> artists, List<Image> eventImages, List<Zone> zones) {
 
         /* This is for the initializeZones function. If u want to add zones to any event do it a set/list/array and pass it here
         To add anything (zones, sessions or discounts) u have to do events.get().getzones/getSessions/getDiscounts().add(zone/session/discount)
 
-        Zone zonaVip = new Zone("Zona VIP", 500, new BigDecimal(74.99));
-        zoneRepository.save(zonaVip);
+        Zone zoneVip = new Zone("Zone VIP", 500, new BigDecimal(74.99));
+        zoneRepository.save(zoneVip);
         */
 
         List<Event> events = Arrays.asList(
-            new Event("Concierto Duki Wizink Center", 20000, artists.get(0), null, null, "Wizink Center", "Música", eventImages, 3),
-            new Event("Film Symphony Orchestra Wizink Center", 20000, artists.get(1), null, null, "Wizink Center", "Música", null,4),
-            new Event("Concierto Aitana Wizink Center", 20000, artists.get(2), null, null, "Wizink Center", "Música", null,2),
-            new Event("El show de Juan Dávila", 15000, artists.get(3), null, null, "Palacio Vistalegre", "Comedia", null,6),
-            new Event("Riendo con Galder Varas", 15000, artists.get(4), null, null, "Palacio Vistalegre", "Comedia", null,2),
-            new Event("Noche de Rock Urbano", 12000, artists.get(5), null, null, "WiZink Center", "Rock", null,3),
-            new Event("Festival Indie Madrid", 18000, artists.get(6), null, null, "IFEMA", "Indie", null,3),
-            new Event("Electro Night Experience", 22000, artists.get(7), null, null, "La Riviera", "Electrónica", null,4),
-            new Event("Jazz & Soul Sessions", 8000, artists.get(8), null, null, "Teatro Real", "Jazz", null,4),
-            new Event("Trap Revolution Tour", 16000, artists.get(0), null, null, "Palacio Vistalegre", "Trap", null,5),
-            new Event("Clásicos del Pop Español", 14000, artists.get(9), null, null, "Movistar Arena", "Pop", null,1),
-            new Event("Festival Flamenco Fusión", 9000, artists.get(10), null, null, "Teatro Circo Price", "Flamenco", null,2),
-            new Event("Metal Legends Live", 20000, artists.get(11), null, null, "Auditorio Miguel Ríos", "Metal", null,3)
+            new Event("Concierto Duki Wizink Center", artists.get(0), null, null, "Wizink Center", "Música", eventImages, 3),
+            new Event("Film Symphony Orchestra Wizink Center", artists.get(1), null, null, "Wizink Center", "Música", null,4),
+            new Event("Concierto Aitana Wizink Center", artists.get(2), null, null, "Wizink Center", "Música", null,2),
+            new Event("El show de Juan Dávila", artists.get(3), null, null, "Palacio Vistalegre", "Comedia", null,6),
+            new Event("Riendo con Galder Varas", artists.get(4), null, null, "Palacio Vistalegre", "Comedia", null,2),
+            new Event("Noche de Rock Urbano", artists.get(5), null, null, "WiZink Center", "Rock", null,3),
+            new Event("Festival Indie Madrid", artists.get(6), null, null, "IFEMA", "Indie", null,3),
+            new Event("Electro Night Experience", artists.get(7), null, null, "La Riviera", "Electrónica", null,4),
+            new Event("Jazz & Soul Sessions", artists.get(8), null, null, "Teatro Real", "Jazz", null,4),
+            new Event("Trap Revolution T", artists.get(0), null, null, "Palacio Vistalegre", "Trap", null,5),
+            new Event("Clásicos del Pop Español", artists.get(9), null, null, "Movistar Arena", "Pop", null,1),
+            new Event("Festival Flamenco Fusión", artists.get(10), null, null, "Teatro Circo Price", "Flamenco", null,2),
+            new Event("Metal Legends Live", artists.get(11), null, null, "Auditorio Miguel Ríos", "Metal", null,3)
         );
 
         artists.get(0).getLastEvents().add(events.get(0));
         artists.get(0).getEventsIncoming().add(events.get(9));
+
+        for (Zone zone : zones) {
+            zone.setEvent(events.get(0));
+        }
+        events.get(0).getZones().addAll(zones);
+        events.get(0).setCapacity(zones.stream().mapToInt(Zone::getCapacity).sum());
 
         eventRepository.saveAll(events);
         artistRepository.saveAll(artists);
@@ -177,8 +181,8 @@ public class DataBaseInitializer {
 
     public Client initializeUsers(List <Image> clientImages) {
 
-        Client defaultClient = new Client("pepe@gmail.com", "PepeG", "pepe123", "Pepe", "Garcia", 33, 666666666, BigDecimal.ZERO, null, null, clientImages.get(0));
-        Admin defaultAdmin = new Admin("adminEmail@gmail.com", "newAdmin", "admin");
+        Client defaultClient = new Client("pepe@gmail.com", "PepeG", passwordEncoder.encode("pepe123"), "Pepe", "Garcia", 33, 666666666, BigDecimal.ZERO, null, null, clientImages.get(0));
+        Admin defaultAdmin = new Admin("adminEmail@gmail.com", "newAdmin", passwordEncoder.encode("admin"));
 
         userRepository.save(defaultClient);
         userRepository.save(defaultAdmin);
@@ -206,7 +210,6 @@ public class DataBaseInitializer {
             new Zone("Front Stage", 800, new BigDecimal("80.00"))
         );
 
-        zoneRepository.saveAll(zones);
         return zones;
     }
 
@@ -215,42 +218,58 @@ public class DataBaseInitializer {
         List<Session> sessions = Arrays.asList(
             new Session(events.get(0), null, Timestamp.valueOf("2026-06-10 21:00:00")),
             new Session(events.get(1), null, Timestamp.valueOf("2026-06-11 21:00:00")),
-            new Session(events.get(2), null, Timestamp.valueOf("2026-06-12 21:00:00"))
+            new Session(events.get(0), null, Timestamp.valueOf("2026-06-12 21:00:00")),
+            new Session(events.get(1), null, Timestamp.valueOf("2026-06-13 21:00:00"))
         );
 
         sessionRepository.saveAll(sessions);
         return sessions;
     }
 
-    public void initializePurchases(Client client, Session session, List <Zone> zones) {
+    public void initializePurchases(Client client, Session session, List<Zone> zones) {
+        Purchase purchase = new Purchase();
+        purchase.setClient(client);
+        purchase.setSession(session);
+        
+        Ticket t1 = new Ticket();
+        t1.setZone(zones.get(0));
+        t1.setTicketPrice(zones.get(0).getPrice());
+        t1.setPurchase(purchase); //
+        t1.setIsActive(true);
+        t1.setCode("QR-INIT-001");
 
-            List<Ticket> tickets = Arrays.asList(
-            new Ticket("QR1", zones.get(0), true),
-            new Ticket("QR2", zones.get(0), true),
-            new Ticket("QR3", zones.get(0), true),
-            new Ticket("QR4", zones.get(0), true)
-        );
+        Ticket t2 = new Ticket();
+        t2.setZone(zones.get(1));
+        t2.setTicketPrice(zones.get(1).getPrice());
+        t2.setPurchase(purchase);
+        t2.setIsActive(true);
+        t2.setCode("QR-INIT-002");
 
-        Purchase purchase = new Purchase(tickets, session, client);
+        List<Ticket> tickets = new ArrayList<>();
+        tickets.add(t1);
+        tickets.add(t2);
+        purchase.setTickets(tickets);
+
+        BigDecimal total = t1.getTicketPrice().add(t2.getTicketPrice());
+        purchase.setTotalPrice(total);
 
         purchaseRepository.save(purchase);
-    }
+        }
 
     /* This function will be executed after the database tables are created and will put the default data that will be at the website */
     @PostConstruct
     public void initializeDataBase() {
-
         List <List <Image> > images = initializeImages();
 
-        Client defaultClient = initializeUsers(images.get(1));
+        List<Zone> zones = initializeZones();
 
+        Client defaultClient = initializeUsers(images.get(1));
+ 
         List <Artist> artists = initializeArtists(images.get(0));
 
-        List<Event> events = initializeEvents(artists, images.get(2));
+        List<Event> events = initializeEvents(artists, images.get(2), zones);
 
         initializeDiscounts();
-
-        List<Zone> zones = initializeZones();
 
         List<Session> sessions = initializeSessions(events);
 

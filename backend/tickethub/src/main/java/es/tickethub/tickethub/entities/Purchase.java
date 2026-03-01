@@ -21,22 +21,26 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Purchase {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long purchaseID;
 
-    /* 
-    It references the Ticket entity to ensure that if a Purchase is deleted, its associated Tickets are also deleted.
-    The @JoinColumn annotation is used to define a One-to-Many relationship. You must specify the name of the ID field of the related entity.
-    The orphanRemoval attribute ensures that when an entity instance is removed, all associated child entities are automatically deleted as well.*/
+    /*
+     * It references the Ticket entity to ensure that if a Purchase is deleted, its
+     * associated Tickets are also deleted.
+     * The @JoinColumn annotation is used to define a One-to-Many relationship. You
+     * must specify the name of the ID field of the related entity.
+     * The orphanRemoval attribute ensures that when an entity instance is removed,
+     * all associated child entities are automatically deleted as well.
+     */
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
-    @JoinColumn(name = "purchase_id", nullable = false)
+    @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Ticket> tickets = new ArrayList<>();
 
     // Needed to associate many purchases to one session
-    @ManyToOne //TODO: (fetch = FetchType.LAZY)//for not to load all the session, only its ID, this is for DTOS
+    @ManyToOne // TODO: (fetch = FetchType.LAZY)//for not to load all the session, only its ID,
+               // this is for DTOS
     @JoinColumn(name = "session_id", nullable = false)
     private Session session;
 
@@ -50,11 +54,13 @@ public class Purchase {
     private BigDecimal totalPrice = BigDecimal.ZERO;
 
     // The constructor for the database
-    public Purchase() {}
+    public Purchase() {
+    }
 
     // Constructor of the class
     public Purchase(List<Ticket> tickets, Session session, Client client) {
-        if (tickets != null) {      // If there are tickets we associate them to the attribute and for each ticket the price is added to the purchase total price
+        if (tickets != null) { // If there are tickets we associate them to the attribute and for each ticket
+                               // the price is added to the purchase total price
             this.tickets = tickets;
             for (Ticket ticket : tickets) {
                 this.totalPrice = this.totalPrice.add(ticket.getTicketPrice());

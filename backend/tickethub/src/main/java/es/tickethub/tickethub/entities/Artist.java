@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -22,49 +23,51 @@ import lombok.Setter;
 public class Artist {
 
     /* The artist columns can be nullable except the ID and the artistName */
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long artistID;
 
     @Column(nullable = false)
-    @NotBlank(message="El nombre del artista es necesario")
+    @NotBlank(message = "El nombre del artista es necesario")
     @Size(max = 100, message = "El nombre del artista no puede tener más de 100 caracteres")
     private String artistName;
 
     @Column(nullable = true)
     private String info;
-    
-    //Orphan removal -->   every child deleted in the collection of the father is deleted auto. in the DB
-  
+
+    // Orphan removal --> every child deleted in the collection of the father is
+    // deleted auto. in the DB
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Event> eventsIncoming = new ArrayList<>();
-    
-    @OneToMany
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Event> lastEvents = new ArrayList<>();
 
-    //the cascade thing means that the object associated to this column will be saved and deleted with the artist
+    // the cascade thing means that the object associated to this column will be
+    // saved and deleted with the artist
     @OneToOne(cascade = CascadeType.ALL)
-    private Image artistImage = new Image();
+    private Image artistImage;
 
     private String instagram = "";
 
     private String twitter = "";
 
+    @Transient
+    private boolean selected;
+
     public Artist() {
-        /* The constructor for the database*/
+        /* The constructor for the database */
     }
 
     // Constructor of the class
     public Artist(String artistName, String info, Image artistImage, String instagram, String twitter) {
         this.artistName = artistName;
         this.info = info;
-        if (artistImage != null) {
-            this.artistImage = artistImage;
-        }
+        this.artistImage = artistImage;
         this.instagram = instagram;
         this.twitter = twitter;
     }
-
 
 }

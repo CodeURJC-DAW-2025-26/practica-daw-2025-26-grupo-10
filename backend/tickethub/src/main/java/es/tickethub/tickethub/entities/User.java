@@ -23,7 +23,10 @@ public class User {
 
     private String email;
 
-    /* The username and password can be null because when a User is created for a purchase he only has the email*/
+    /*
+     * The username and password can be null because when a User is created for a
+     * purchase he only has the email
+     */
     @Column(unique = true)
     private String username;
 
@@ -36,7 +39,7 @@ public class User {
     @Version
     private Long version;
 
-    /* Constructor for the Database*/
+    /* Constructor for the Database */
     public User() {
     }
 
@@ -45,6 +48,6 @@ public class User {
         this.email = email;
         this.username = username;
         this.password = password;
-        this.admin = admin; 
+        this.admin = admin;
     }
 }

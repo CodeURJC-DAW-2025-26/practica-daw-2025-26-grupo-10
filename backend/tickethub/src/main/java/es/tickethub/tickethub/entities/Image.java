@@ -16,22 +16,22 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Image {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long imageID;
 
     private String imageName;
-    
+
     @Column(nullable = false)
     @Lob
-    private Blob imageCode;     /* This type is a Binary Large Object for the SQL Database*/
+    private Blob imageCode; /* This type is a Binary Large Object for the SQL Database */
 
     @Transient
     private boolean first;
 
     public Image() {
-        /* The constructor for the database*/
+        /* The constructor for the database */
     }
 
     // Constructor of the class

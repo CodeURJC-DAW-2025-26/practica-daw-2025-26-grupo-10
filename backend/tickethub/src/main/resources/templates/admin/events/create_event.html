@@ -1,108 +1,238 @@
 <!doctype html>
 <html lang="es">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Crear Evento</title>
+  <meta name="_csrf" content="{{token}}">
+  <meta name="_csrf_header" content="X-CSRF-TOKEN">
+  <title>
+    {{#event}}Editar Evento{{/event}}
+    {{^event}}Crear Evento{{/event}}
+  </title>
 
-  <!-- Bootstrap CSS -->
+  <link rel="icon" type="image/png" href="/images/TicketHub_icon.png">
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-  <!-- TU CSS PERSONALIZADO -->
   <link rel="stylesheet" href="/css/main.css">
 </head>
+
 <body class="d-flex flex-column min-vh-100">
 
-  <!--LOCATION OF THE HEADER OF THE WEB-->
-
   {{>components/header_admin}}
+  <main class="container my-5 flex-grow-1">
 
-  <div class="container my-5">
-  <h2>Crear Evento</h2>
-  <form action="/events/save" method="post" enctype="multipart/form-data">
+    <h2 class="text-center">
+      {{#event}}Editar Evento{{/event}}
+      {{^event}}Crear Evento{{/event}}
+    </h2>
+    <form method="post" enctype="multipart/form-data"
+      action="/admin/events/{{#event}}edit_event/{{eventID}}{{/event}}{{^eventID}}create_event{{/eventID}}">
+      <input type="hidden" name="_csrf" value="{{token}}">
+      {{#event}}
+      <input type="hidden" name="eventID" value="{{eventID}}">
+      {{/event}}
 
-    <input type="hidden" name="eventID" value="{{eventID}}">
+      <p class="fw-bold mb-1">Nombre del evento</p>
+      {{#event}}
+      <input name="name" class="form-control mb-3" value="{{event.name}}" required>
+      {{/event}}
+      {{^event}}
+      <input name="name" class="form-control mb-3" required>
+      {{/event}}
 
-    <p class="fw-bold mb-1">Nombre del evento</p>
-    <input name="name" class="form-control mb-3"
-          value="{{event.name}}" required>
+      {{#event}}
+      <p class="fw-bold mb-1">Capacidad total: {{event.capacity}}</p>
+      {{/event}}
 
-    <p class="fw-bold mb-1">Capacidad total</p>
-    <input name="capacity" type="number" class="form-control mb-3"
-          value="{{event.capacity}}">
+      <p class="fw-bold mb-1">Categoría</p>
+      {{#event}}
+      <input name="category" type="text" class="form-control mb-3" value="{{event.category}}">
+      {{/event}}
+      {{^event}}
+      <input name="category" type="text" class="form-control mb-3">
+      {{/event}}
 
-    <p class="fw-bold mb-1">Categoría</p>
-    <input name="category" type="text" class="form-control mb-3"
-          value="{{event.category}}">
+      <p class="fw-bold mb-1">Lugar</p>
+      {{#event}}
+      <input name="place" type="text" class="form-control mb-3" value="{{event.place}}">
+      {{/event}}
+      {{^event}}
+      <input name="place" type="text" class="form-control mb-3">
+      {{/event}}
 
-    <p class="fw-bold mb-1">Artista principal</p>
-    <input name="artist" type="text" class="form-control mb-3"
-          value="{{event.artist.artistName}}">
+      <p class="fw-bold mb-1">Artista principal</p>
 
-    <p class="fw-bold mb-1">Edad objetivo</p>
-    <select name="targetAge" class="form-select mb-3">
-      <option value="0" {{#event.targetAge0}}selected{{/event.targetAge0}}>Niños pequeños</option>
-      <option value="1" {{#event.targetAge1}}selected{{/event.targetAge1}}>Niños</option>
-      <option value="2" {{#event.targetAge2}}selected{{/event.targetAge2}}>Adolescentes</option>
-      <option value="3" {{#event.targetAge3}}selected{{/event.targetAge3}}>Adultos jóvenes</option>
-      <option value="4" {{#event.targetAge4}}selected{{/event.targetAge4}}>Adultos</option>
-      <option value="5" {{#event.targetAge5}}selected{{/event.targetAge5}}>Adultos sénior</option>
-      <option value="6" {{#event.targetAge6}}selected{{/event.targetAge6}}>Ancianos</option>
-    </select>
+      <select name="artistID" class="form-select" required>
 
-    <p class="fw-bold mb-1">Sesiones</p>
-    {{#event.sessions}}
-    <input type="datetime-local" name="sessions"
-          value="{{date}}" class="form-control mb-2">
-    {{/event.sessions}}
+        <option disabled>
+          Selecciona un artista
+        </option>
 
-    {{^event.sessions}}
-    <input type="datetime-local" name="sessions" class="form-control mb-2">
-    {{/event.sessions}}
+        {{#allArtists}}
+        <option value="{{artistID}}" {{#selected}}selected{{/selected}}>
+          {{artistName}}
+        </option>
+        {{/allArtists}}
 
-    <p class="fw-bold mb-1">Zonas y precios</p>
+      </select>
 
-    {{#event.zones}}
-    <div class="row g-2 mb-2">
-      <div class="col">
-        <input name="zoneName" value="{{name}}" class="form-control">
+      <p class="fw-bold mb-1">Edad objetivo</p>
+      <select name="targetAge" class="form-select mb-3">
+        <option value="0" {{#targetAge0}}selected{{/targetAge0}}>Niños pequeños</option>
+        <option value="1" {{#targetAge1}}selected{{/targetAge1}}>Niños</option>
+        <option value="2" {{#targetAge2}}selected{{/targetAge2}}>Adolescentes</option>
+        <option value="3" {{#targetAge3}}selected{{/targetAge3}}>Adultos jóvenes</option>
+        <option value="4" {{#targetAge4}}selected{{/targetAge4}}>Adultos</option>
+        <option value="5" {{#targetAge5}}selected{{/targetAge5}}>Adultos sénior</option>
+        <option value="6" {{#targetAge6}}selected{{/targetAge6}}>Ancianos</option>
+      </select>
+
+      <p class="fw-bold mb-1">Sesiones</p>
+      {{#event}}
+      <a href="/admin/events/{{eventID}}/manage_sessions" class="btn btn-info mb-3">
+        Gestionar Sesiones
+      </a>
+      {{/event}}
+
+      {{^event}}
+      <div class="mb-3">
+        <label class="form-label">Primero guarda el evento para gestionar sesiones</label>
       </div>
-      <div class="col">
-        <input name="zonePrice" value="{{price}}" class="form-control">
+      {{/event}}
+
+      <p class="fw-bold mb-1">Zonas del evento</p>
+      <div id="zones-container">
+        {{#event}}
+        <div class="row g-2 mb-2 zone-row align-items-center">
+          <div class="col d-flex align-items-center justify-content-between">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Zona</th>
+                  <th>Capacidad</th>
+                  <th>Precio</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {{#event.zones}}
+                <tr>
+                  <td>{{name}}</td>
+                  <td>{{capacity}}</td>
+                  <td>{{price}} €</td>
+                </tr>
+                {{/event.zones}}
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+
+        {{^event.Zones}}
+        <div class="row g-2 mb-2 zone-row align-items-center">
+          <div class="col" id="no-zones-associated">
+            <p>Aún no hay ninguna zona asociada a este evento</p>
+          </div>
+        </div>
+        {{/event.Zones}}
       </div>
-      <div class="col">
-        <input name="zoneCapacity" value="{{capacity}}" class="form-control">
+      <a class="btn btn-secondary mb-3" href="/admin/events/edit_event/{{event.eventID}}/manage_zones">Gestionar
+        zonas</a>
+      {{/event}}
+
+      {{^event}}
+      <div class="mb-3">
+        <label class="form-label">Primero guarda el evento para gestionar sus zonas</label>
       </div>
-    </div>
-    {{/event.zones}}
+      {{/event}}
 
-    {{^event.zones}}
-    <div class="row g-2 mb-2">
-      <div class="col"><input name="zoneName" class="form-control"></div>
-      <div class="col"><input name="zonePrice" class="form-control"></div>
-      <div class="col"><input name="zoneCapacity" class="form-control"></div>
-    </div>
-    {{/event.zones}}
+      <p class="fw-bold mb-1">Descuentos asociados</p>
+      <div id="discounts-container">
+        {{#event.discounts}}
+        <div class="row g-2 mb-2 discount-row align-items-center">
 
-    <p class="fw-bold mb-1">Imágenes</p>
-    <input type="file" name="images" class="form-control mb-3" multiple>
+          <div class="col-auto">
+            <select name="existingDiscountId" class="form-select">
+              <option value="">Seleccionar descuento</option>
+              {{#allDiscounts}}
+              <option value="{{discountID}}" {{#selected}}selected{{/selected}}>
+                {{discountName}} ({{ammount}} {{#isPercentage}}%{{/isPercentage}}{{^isPercentage}}€{{/isPercentage}} de
+                descuento)
+              </option>
+              {{/allDiscounts}}
+            </select>
+          </div>
 
-    <button type="submit" class="btn btn-success">
-      {{#eventFound}}Guardar cambios{{/eventFound}}
-      {{^eventFound}}Crear evento{{/eventFound}}
-    </button>
+          <div class="col-auto">
+            <button type="button" class="btn btn-danger btn-sm remove-discount">
+              Eliminar
+            </button>
+          </div>
 
-    <a href="/admin/events/manage_events" class="btn btn-secondary">Cancelar</a>
+        </div>
+        {{/event.discounts}}
+
+        {{#event}}
+        {{^event.discounts}}
+        <div class="row g-2 mb-2 discount-row align-items-center">
+          <div class="col" id="no-discounts-associated">
+            <p>Aún no hay descuentos asociados a este evento</p>
+          </div>
+
+          <div class="col-auto d-none">
+            <select name="discounts" class="form-select">
+              {{#allDiscounts}}
+              <option value="{{discountID}}">
+                {{discountName}} ({{ammount}} {{#percentage}}%{{/percentage}}{{^percentage}}€{{/percentage}} de
+                descuento)
+              </option>
+              {{/allDiscounts}}
+            </select>
+          </div>
+        </div>
+        {{/event.discounts}}
+        {{/event}}
+
+        {{^event}}
+        <div class="mb-3">
+          <label class="form-label">
+            Primero guarda el evento para poder gestionar descuentos
+          </label>
+        </div>
+        {{/event}}
+
+      </div>
+      {{#event}}
+      <button type="button" class="btn btn-primary mb-3" id="add-discount">Agregar descuento</button>
+      {{/event}}
+
+      <p class="fw-bold mb-1">Imágenes</p>
+      <input type="file" name="images" class="form-control mb-3" multiple>
+
+      <div class="d-flex justify-content-between mt-3">
+        <a href="/admin/events/manage_events" class="btn btn-secondary">Cancelar</a>
+
+        <button type="submit" class="btn btn-success">
+          {{#event}}Guardar cambios{{/event}}
+          {{^event}}Crear evento{{/event}}
+        </button>
+
+      </div>
 
     </form>
-  </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script type="module" src="/js/confirmation.js"></script>
+  <script type="module" src="/js/discountsThings.js"></script>
 
   <!--LOCATION OF THE FOOTER OF THE WEB-->
 
   {{>components/footer_admin}}
-  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

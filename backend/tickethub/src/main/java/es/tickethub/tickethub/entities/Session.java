@@ -21,8 +21,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Session {
-    
-    /* None of the columns can be null*/
+
+    /* None of the columns can be null */
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,15 +32,14 @@ public class Session {
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-
-    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Purchase> purchases = new ArrayList<>();
 
     @Column(nullable = false)
     private Timestamp date;
 
     public Session() {
-        /* Constructor for the database*/
+        /* Constructor for the database */
     }
 
     // Constructor of the class
@@ -53,7 +52,8 @@ public class Session {
     }
 
     /**
-     * Returns the session date formatted for display on the UI (e.g. "dd/MM/yyyy HH:mm").
+     * Returns the session date formatted for display on the UI (e.g. "dd/MM/yyyy
+     * HH:mm").
      * Mustache templates can reference this property as {{formattedDate}}.
      */
     public String getFormattedDate() {
@@ -64,9 +64,17 @@ public class Session {
         return fmt.format(this.date);
     }
 
-    public void addPurchase(Purchase purchase){
-        this.purchases.add(purchase);
-        purchase.setSession(this);
+    public Timestamp getTimestampedDate(String formattedDate) {
+        try {
+            formattedDate = formattedDate.replace("T", " ");
+            formattedDate = formattedDate.replace("-", "/");
+            java.text.SimpleDateFormat fmt = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm");
+            java.util.Date parsedDate = fmt.parse(formattedDate);
+            return new Timestamp(parsedDate.getTime());
+        } catch (java.text.ParseException e) {
+            throw new IllegalArgumentException("Fecha con formato incorrecto. Se esperaba 'yyyy/MM/dd HH:mm'.", e);
+        }
+
     }
 
 }

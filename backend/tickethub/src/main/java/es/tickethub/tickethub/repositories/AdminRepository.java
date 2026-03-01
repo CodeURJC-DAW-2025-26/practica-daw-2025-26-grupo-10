@@ -1,5 +1,8 @@
 package es.tickethub.tickethub.repositories;
 
-public class AdminRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import es.tickethub.tickethub.entities.Admin;
+
+public interface AdminRepository extends JpaRepository<Admin, Long> {
     
 }
