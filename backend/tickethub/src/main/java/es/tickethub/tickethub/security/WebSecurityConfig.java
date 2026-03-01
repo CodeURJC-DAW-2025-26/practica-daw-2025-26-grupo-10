@@ -39,12 +39,7 @@ public class WebSecurityConfig {
 		http
 				.authorizeHttpRequests(authorize -> authorize
 						// PUBLIC Routes
-						.requestMatchers("/").permitAll()
-						.requestMatchers("/css/**").permitAll()
-                        .requestMatchers("/js/**").permitAll()
-                        .requestMatchers("/images/**").permitAll()
-						.requestMatchers("/favicon.ico").permitAll()
-                        .requestMatchers("/public/**","/images/entities/**").permitAll()
+						.requestMatchers("/", "/css/**", "/js/**", "/images/**", "/public/**","/images/entities/**").permitAll()
 						// USER (CLIENT OR ADMIN) ROUTES
 						.requestMatchers("/clients/**","/purchases/**").hasAnyRole("USER", "ADMIN")
                         //ONLY ADMIN ROUTES
