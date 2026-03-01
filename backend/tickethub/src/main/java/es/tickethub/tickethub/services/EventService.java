@@ -1,6 +1,7 @@
 package es.tickethub.tickethub.services;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,7 @@ public class EventService {
     public List<Event> findAll() {
         List<Event> events = eventRepository.findAll();
         if (events.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No hay eventos");
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No events found");
         }
         return events;
     }
@@ -37,7 +38,7 @@ public class EventService {
         if (optionalEvent.isPresent()) {
             return optionalEvent.get();
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado");
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
     }
 
     public Event findByName(String name) {
@@ -45,58 +46,64 @@ public class EventService {
         if (optionalEvent.isPresent()) {
             return optionalEvent.get();
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado");
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
     }
 
     public Event save(Event event) {
-
         return eventRepository.save(event);
     }
 
     public void deleteById(Long id) {
-
         eventRepository.deleteById(id);
     }
 
     public List<Event> findPaginated(int page, int size) {
-        // request for "give page X, size Y"
+        // Request for "give page X, size Y"
         Pageable pageable = PageRequest.of(page, size);
-        // repo returns a Page object -> we use getContent to extract the list of events
+        // Repository returns a Page object; we use getContent to extract the list
         return eventRepository.findAll(pageable).getContent();
     }
 
-    public Page<Event> searchEvents(String artist, String category, int page, int size) {
-
+    /**
+     * Unified search method that supports optional filters for artist, category, and date.
+     * Uses a Timestamp range to ensure full-day coverage for session searches.
+     */
+    public Page<Event> searchEvents(String artist, String category, LocalDate date, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
-        if ((artist == null || artist.isBlank()) &&
-                (category == null || category.isBlank())) {
-            return eventRepository.findAll(pageable);
+        Timestamp start = null;
+        Timestamp end = null;
+
+        // If a date is provided, create a range from 00:00:00 to 23:59:59
+        if (date != null) {
+            start = Timestamp.valueOf(date.atStartOfDay());
+            end = Timestamp.valueOf(date.atTime(23, 59, 59, 999999999));
         }
 
-        if (artist != null && !artist.isBlank()) {
-            return eventRepository
-                    .findByArtist_ArtistNameContainingIgnoreCase(artist, pageable);
-        }
+        // Convert empty strings to null so the SQL query ignores them
+        String artParam = (artist != null && !artist.isBlank()) ? artist : null;
+        String catParam = (category != null && !category.isBlank()) ? category : null;
 
-        return eventRepository
-                .findByCategoryContainingIgnoreCase(category, pageable);
+        return eventRepository.findByFilters(artParam, catParam, start, end, pageable);
     }
 
     public boolean isEventActive(Long eventID) {
         Timestamp today = new Timestamp(System.currentTimeMillis());
         Optional<Event> eventOptional = eventRepository.findById(eventID);
-        
+
         if (eventOptional.isPresent()) {
-            Event event = eventOptional.get();            
+            Event event = eventOptional.get();
             for (Session session : event.getSessions()) {
-                
-                if (session.getDate().after(today)){
+                if (session.getDate().after(today)) {
                     return true;
                 }
             }
             return false;
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El evento con ID " + eventID + " no existe.");
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event with ID " + eventID + " does not exist.");
+    }
+
+    public List<String> getUniqueCategories () {
+        return eventRepository.findAllUniqueCategories();
     }
 }

@@ -2,8 +2,10 @@ package es.tickethub.tickethub.controllers;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,18 +33,23 @@ public class PublicEventController {
 
     @GetMapping("/public/events")
     public String events(Model model) {
-        model.addAttribute("events", eventService.findPaginated(0, 5));
+        // Load the first page using the general search without filters
+        List<String> categories = eventService.getUniqueCategories();
+    
+        model.addAttribute("categories", categories);
+        model.addAttribute("events", eventService.searchEvents(null, null, null, 0, 5).getContent());
         return "/public/events";
     }
 
     @GetMapping("/public/event/{id}")
     public String showEventDetails(@PathVariable Long id, Model model) {
         Event event = eventService.findById(id);
-
         List<Image> images = event.getEventImages();
+        
         if (images != null && !images.isEmpty()) {
             images.get(0).setFirst(true);
         }
+        
         model.addAttribute("event", event);
         return "public/event";
     }
@@ -52,25 +59,17 @@ public class PublicEventController {
             @RequestParam int page,
             @RequestParam(required = false) String artist,
             @RequestParam(required = false) String category,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
             Model model) {
 
+        System.out.println("DEBUG: Date received on server -> " + date);
         int size = 5;
-        List<Event> events;
-        boolean hasMore;
 
-        // filter
-        if ((artist != null && !artist.isEmpty()) || (category != null && !category.isEmpty())) {
-            Page<Event> eventPage = eventService.searchEvents(artist, category, page, size);
-            events = eventPage.getContent();
-            hasMore = eventPage.hasNext();
-        } else {
-            // paginated
-            events = eventService.findPaginated(page, size);
-            hasMore = events.size() == size;
-        }
+        // This call handles artist, category, and date simultaneously
+        Page<Event> eventPage = eventService.searchEvents(artist, category, date, page, size);
 
-        model.addAttribute("events", events);
-        model.addAttribute("hasMore", hasMore);
+        model.addAttribute("events", eventPage.getContent());
+        model.addAttribute("hasMore", eventPage.hasNext());
 
         return "fragments/eventsFragments";
     }
@@ -85,7 +84,7 @@ public class PublicEventController {
         model.addAttribute("event", event);
         model.addAttribute("zones", zones);
         model.addAttribute("discounts", discounts);
-        model.addAttribute("ticketCounts", List.of(1, 2, 3, 4, 5)); // the user can buy up to 5 tickets
+        model.addAttribute("ticketCounts", List.of(1, 2, 3, 4, 5)); // User can buy up to 5 tickets
         model.addAttribute("tickets", List.of());
         model.addAttribute("totalPrice", BigDecimal.ZERO);
 
@@ -96,7 +95,6 @@ public class PublicEventController {
     @GetMapping("/public/confirmation/{eventID}")
     public String showConfirmation(@PathVariable Long eventID, Model model) {
         Event event = eventService.findById(eventID);
-
         model.addAttribute("event", event);
         return "public/confirmation";
     }
