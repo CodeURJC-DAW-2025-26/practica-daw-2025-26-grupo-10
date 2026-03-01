@@ -225,11 +225,11 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Cambiamos controllers, entities, services y repositories para poder unirlo al frontend](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/f44e798c742781b07b95058cfa8d46d60e447ade)  | [UserController.java](backend/tickethub/src/main/java/es/tickethub/tickethub/controllers/UserController.java)   |
+|2| [Editando los html para poder unirlos al backend](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/4367031c45d867c37a255c8571b9880d6542d3b2)  | [create_event.html](backend/tickethub/src/main/resources/templates/admin/events/create_event.html)   |
+|3| [Operaciones CRUD de sesion, crear y editar eventos](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/1155991c9485fea5d49be65f116ffec42500f38c)  | [SessionController.java](backend/tickethub/src/main/java/es/tickethub/tickethub/controllers/SessionController.java)   |
+|4| [Entities y base de datos funcionando](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/5b4f0c77923954db8747a3f522b41e025a6cca52)  | [Event.java](backend/tickethub/src/main/java/es/tickethub/tickethub/entities/Event.java)   |
+|5| [Aplicar mustache en todos los html de la carpeta public y cambios en el database initializer](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/7357f654bd8168b119dce9639be50bf4ee12b5f1)  | [DataBaseInitializer.java](backend/tickethub/src/main/java/es/tickethub/tickethub/services/DataBaseInitializer.java)   |
 
 ---
 
@@ -239,11 +239,11 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Implementación de gráficos dinámicos](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/2395b4b5cf4957eaa4ea4625ed8df63e3c3e666d#diff-cf92a01b3294c38598fff05cacb7247c15c1a6eed87f161d2410cdc7cb23357f)  | [stats-charts.js](backend/tickethub/src/main/resources/static/js/stats-charts.js)   |
+|2| [Funcionalidad cargar más en las páginas events y artist desarrollada](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/d711f25500e7051bb9eb2b43874502ce9d684bff)  | [loadArtists.js](backend/tickethub/src/main/resources/static/js/loadArtists.js)   |
+|3| [Implementación del carrusel](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/17f723b54afa9b35ba5e8edbf1d521a0c893afe5)  | [carousel.js](backend/tickethub/src/main/resources/static/js/carousel.js)   |
+|4| [Implementación de la lógica de compra](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/03dfd03802e673838988569c899bdff393f6ee7b)  | [PurchaseService.java](backend/tickethub/src/main/java/es/tickethub/tickethub/services/PurchaseService.java)   |
+|5| [Formateo y lograr que funcione la creación de tickets](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/6675bd38690ef1aad4f505ef7e617dcc07dcc79c)  | [PurchaseController.java](backend/tickethub/src/main/java/es/tickethub/tickethub/controllers/PurchaseController.java)   |
 
 ---
 
@@ -253,11 +253,11 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Implementación de la consulta avanzada de recomendación de eventos](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/5ba4850b250124de1fed15f30d2395555b099632)  | [ClientRecommendationService.java](backend/tickethub/src/main/java/es/tickethub/tickethub/services/ClientRecommendationService.java)   |
+|2| [Desarrollo de controller, service y repository de Event y controller de Artist](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/63dbfee6e857f89393a252fd4e95f86c2b0f4ece)  | [EventController.java](backend/tickethub/src/main/java/es/tickethub/tickethub/controllers/EventController.java)   |
+|3| [Desarrollo de controller, entitie, service y repository de Artist](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/8705554d070bb785714e9e122c8c8b33bfa8a6b0)  | [ArtistController.java](backend/tickethub/src/main/java/es/tickethub/tickethub/controllers/ArtistController.java)   |
+|4| [Cargar elementos e imágenes con AJAX de purchase, tickets y profile](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/c6322ba0dade7f9627eb529623506d6adb83d976)  | [funcionesAjax.js](backend/tickethub/src/main/resources/static/js/funcionesAjax.js)   |
+|5| [Solucionar un conflicto de versiones](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/0b3b10826f378f71577b8e9e4e9038dec3895ee4)  | [DiscountController.java](backend/tickethub/src/main/java/es/tickethub/tickethub/controllers/DiscountController.java)   |
 
 ---
 
@@ -267,11 +267,11 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Implementar toda la seguridad de compras, login, logout y register](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/6014a5288eeb98e669b8cb37abc8bf56ebd592ef)  | [WebSecurityConfig.java](backend/tickethub/src/main/java/es/tickethub/tickethub/security/WebSecurityConfig.java)   |
+|2| [Cargar elementos e imágenes con AJAX de purchase, tickets y profile](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/c6322ba0dade7f9627eb529623506d6adb83d976)  | [funcionesAjax.js](backend/tickethub/src/main/resources/static/js/funcionesAjax.js)   |
+|3| [Purchase y Exception Handler con AJAX](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/d446176c2bb7506c0bf3b94bf9a687f5df072499)  | [funcionesAjax.js](backend/tickethub/src/main/resources/static/js/funcionesAjax.js)   |
+|4| [Cargar elementos e imágenes con AJAX de purchase, tickets y profile](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/e9110ee1f4c6175c86d0ec731a539a7736cd8cfd)  | [ClientController.java](backend/tickethub/src/main/java/es/tickethub/tickethub/controllers/ClientController.java)   |
+|5| [Carga de profile con AJAX](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/13a171209fb1967c8f3247eeb1e9658184855aac#diff-3707431fb18a9eb0835f3153f604150adb6e50095ebe8fc6cf8c42a0b2fdf3fa)  | [ClientService.java](backend/tickethub/src/main/java/es/tickethub/tickethub/services/ClientService.java)   |
 
 ---
 
@@ -281,11 +281,11 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Añadir entradas y botón descuento de manera dinámica]((https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/435b43504555ee56ef2de19cab641d9a46a7724f))  | [purchase.js](backend/tickethub/src/main/resources/static/js/purchase.js)   |
+|2| [Cambiamos controllers, entities, services y repositories para poder unirlo al frontend](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/f44e798c742781b07b95058cfa8d46d60e447ade)  | [UserController.java](backend/tickethub/src/main/java/es/tickethub/tickethub/controllers/UserController.java)   |
+|3| [Editando los html para poder unirlos al backend](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/4367031c45d867c37a255c8571b9880d6542d3b2)  | [create_event.html](backend/tickethub/src/main/resources/templates/admin/events/create_event.html)   |
+|4| [QR y PDF generados QR service y html](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/1e179130443a6954e0c3e12de84323836cdf1c2e#diff-25bd1200897cfcad796f39fb91f473000f0c95085635e1db9fdaed7fcf2d86b8)  | [QRService.java](backend/tickethub/src/main/java/es/tickethub/tickethub/services/QrService.java)   |
+|5| [QR y PDF generados controller y service](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/78854b3461344fb3269c4b3e8a378f9f8f00548e)  | [TicketService.java](backend/tickethub/src/main/java/es/tickethub/tickethub/services/TicketService.java)   |
 
 ---
 
