@@ -2,15 +2,15 @@
 <html lang="es">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Panel Admin</title>
 
-  <link rel="icon" type="image/png" href="/images/TicketHub_icon.png">
+  <link rel="icon" type="image/png" href="/images/TicketHub_icon.png" />
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="/css/main.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/css/main.css" />
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -19,13 +19,32 @@
   <div class="container my-5">
     <h2 class="mb-4">Panel de Administración</h2>
     <div class="row g-4 mb-4">
-      <div class="col-md-3"><div class="card text-center p-3"><h5>Entradas Vendidas</h5><p class="h4">{{numberTickets}}</p></div></div>
-      <div class="col-md-3"><div class="card text-center p-3"><h5>Eventos Activos</h5><p class="h4">{{activeEvents}}</p></div></div>
-      <div class="col-md-3"><div class="card text-center p-3"><h5>Usuarios</h5><p class="h4">{{numberUsers}}</p></div></div>
-      <div class="col-md-3"><div class="card text-center p-3"><h5>Admins</h5><p class="h4">{{numberAdmins}}</p></div></div>
+      <div class="col-md-3">
+        <div class="card text-center p-3">
+          <h5>Entradas Vendidas</h5>
+          <p class="h4">{{numberTickets}}</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center p-3">
+          <h5>Eventos Activos</h5>
+          <p class="h4">{{activeEvents}}</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center p-3">
+          <h5>Usuarios</h5>
+          <p class="h4">{{numberUsers}}</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center p-3">
+          <h5>Admins</h5>
+          <p class="h4">{{numberAdmins}}</p>
+        </div>
+      </div>
     </div>
     <div class="d-flex flex-wrap gap-4 mt-4">
-
       <div class="btn-group shadow-sm" role="group">
         <a href="/admin/events/create_event" class="btn btn-primary btn-admin-pair">Crear evento</a>
         <a href="/admin/events/manage_events" class="btn btn-outline-primary btn-admin-pair">Gestionar eventos</a>

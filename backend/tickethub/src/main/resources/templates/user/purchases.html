@@ -1,64 +1,67 @@
 <!doctype html>
 <html lang="es">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mis Entradas</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mis Entradas</title>
 
-<link rel="icon" type="image/png" href="/images/TicketHub_icon.png">
+  <link rel="icon" type="image/png" href="/images/TicketHub_icon.png">
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="/css/main.css">
-<script src="/js/purchaseLoader.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="/js/purchaseLoader.js"></script>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
 
-<!--LOCATION OF THE HEADER OF THE WEB-->
-{{>components/header}}
+  <!--LOCATION OF THE HEADER OF THE WEB-->
+  {{>components/header}}
 
-<main class="flex-fill">
-  
+  <main class="flex-fill">
+
     <div class="container my-5">
-        <h2 class="mb-4">
-          <div>Mis entradas</div>
-          <div style="text-align: end">
-            <a href="/clients/profile" class="btn btn-outline-primary">Regresar al perfil</a>
-          </div>
-        </h2>
-        <table class="table">
+      <h2 class="mb-4">
+        <div>Mis entradas</div>
         <div style="text-align: end">
-            <thead>
-              <tr>
-                <th>Evento</th>
-                <th>Fecha</th>
-                <th>Estado</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="purchase-table-body">
-              {{> /user/purchases_items}}
-            </tbody>
-        </table>
-        {{#hasNext}}
-        <div class="text-center mt-3">
-          <button id="btn-load-more" class="btn btn-primary" data-next-page="{{nextPage}}" onclick="loadMorePurchases(this, '{{userID}}')">
-              Cargar más
-          </button>
+          <a href="/clients/profile" class="btn btn-outline-primary">Regresar al perfil</a>
         </div>
-        {{/hasNext}}
+      </h2>
+      <table class="table">
+        <div style="text-align: end">
+          <thead>
+            <tr>
+              <th>Evento</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="purchase-table-body">
+            {{> /user/purchases_items}}
+          </tbody>
+      </table>
+      {{#hasNext}}
+      <div class="text-center mt-3">
+        <button id="btn-load-more" class="btn btn-primary" data-next-page="{{nextPage}}"
+          onclick="loadMorePurchases(this, '{{userID}}')">
+          Cargar más
+        </button>
+      </div>
+      {{/hasNext}}
 
-        <div id="no-more-msg" class="text-center mt-3" style="{{#hasNext}}display: none;{{/hasNext}}">
-            <p class="text-muted">No dispone de más compras</p>
-        </div>
+      <div id="no-more-msg" class="text-center mt-3" style="{{#hasNext}}display: none;{{/hasNext}}">
+        <p class="text-muted">No dispone de más compras</p>
+      </div>
 
-        <tr class="table-success">
-    <td></td>
-    
-</tr>
+      <tr class="table-success">
+        <td></td>
+
+      </tr>
     </div>
-</main>
+  </main>
 
-{{>/components/footer}}
+  {{>/components/footer}}
 </body>
+
 </html>
