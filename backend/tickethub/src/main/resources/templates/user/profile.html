@@ -2,44 +2,45 @@
 <html lang="es">
 
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Perfil</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="/css/main.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Perfil</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.css">
 </head>
 
 <body class="d-flex flex-column min-vh-100">
 
-{{>components/header}}
+  {{>components/header}}
 
-<main class="flex-fill">
-  <div class="container my-5" style="max-width:600px">
-    {{#clientLogged}}
-    <div class="card text-center p-4">
-      {{#profileImage}}
-      <img src="/images/entities/users/{{userID}}" class="rounded-circle mx-auto mb-3">
-      {{/profileImage}}
+  <main class="flex-fill">
+    <div class="container my-5" style="max-width:600px">
+      {{#clientLogged}}
+      <div class="card text-center p-4">
+        {{#profileImage}}
+        <img src="/images/entities/users/{{userID}}" class="rounded-circle mx-auto mb-3">
+        {{/profileImage}}
 
-      {{^profileImage}}
+        {{^profileImage}}
         <img src="/images/default-avatar.png" class="rounded-circle mx-auto mb-3">
-      {{/profileImage}}
-      <h4>{{username}}</h4>
-      <p class="text-muted">{{email}}</p>
-      <div class="d-grid gap-2">
-        <a href="/clients/profile/edit" class="btn btn-outline-primary">Editar perfil</a>
-        <a href="/purchases/me" class="btn btn-primary">Mis compras</a>
-        <a href="/clients/profile/password" class="btn btn-outline-secondary">Cambiar contraseña</a>
-        <form action="/logout" method="post" class="m-0 p-0 d-grid">
+        {{/profileImage}}
+        <h4>{{username}}</h4>
+        <p class="text-muted">{{email}}</p>
+        <div class="d-grid gap-2">
+          <a href="/clients/profile/edit" class="btn btn-outline-primary">Editar perfil</a>
+          <a href="/purchases/me" class="btn btn-primary">Mis compras</a>
+          <a href="/clients/profile/password" class="btn btn-outline-secondary">Cambiar contraseña</a>
+          <form action="/logout" method="post" class="m-0 p-0 d-grid">
             <input type="hidden" name="_csrf" value="{{token}}">
             <button type="submit" class="btn btn-danger">Cerrar sesión</button>
-        </form>
+          </form>
+        </div>
       </div>
+      {{/clientLogged}}
     </div>
-    {{/clientLogged}}
-  </div>
-</main>
+  </main>
 
-{{>/components/footer}}
+  {{>/components/footer}}
 </body>
+
 </html>

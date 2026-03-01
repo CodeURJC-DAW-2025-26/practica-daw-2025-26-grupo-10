@@ -2,8 +2,8 @@ import { cloneRow } from './confirmation.js';
 
 const discountsContainer = document.getElementById('discounts-container');
 let discountTemplate = Array.from(
-    discountsContainer.querySelectorAll('.discount-row')
-  ).find(row => row.querySelector('.remove-discount')) || null;
+  discountsContainer.querySelectorAll('.discount-row')
+).find(row => row.querySelector('.remove-discount')) || null;
 
 // if there is no discounts associated, there's only the row with the message
 if (!discountTemplate) {
@@ -47,7 +47,7 @@ function attachDiscountRemove(row) {
 discountsContainer.querySelectorAll('.discount-row').forEach(r => attachDiscountRemove(r, '.remove-discount'));
 
 document.getElementById('add-discount').addEventListener('click', () => {
-  
+
   const emptyMsg = document.getElementById('no-discounts-associated');
   if (emptyMsg) {
     emptyMsg.closest('.discount-row').remove();

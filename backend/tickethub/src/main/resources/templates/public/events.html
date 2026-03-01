@@ -1,63 +1,65 @@
 <!doctype html>
 <html lang="es">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Eventos</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="/css/main.css">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eventos</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.css">
 </head>
 
 <body class="d-flex flex-column min-vh-100">
 
-{{>components/header}}
+  {{>components/header}}
 
-<main class="flex-fill">
+  <main class="flex-fill">
 
-  <div class="container my-5">
-    <h2 class="mb-4">Próximos eventos</h2>
+    <div class="container my-5">
+      <h2 class="mb-4">Próximos eventos</h2>
 
-    <div class="row mb-4">
+      <div class="row mb-4">
 
-      <div class="col-md-4">
-        <input id="filterDate" type="date" class="form-control">
+        <div class="col-md-4">
+          <input id="filterDate" type="date" class="form-control">
+        </div>
+
+        <div class="col-md-4">
+          <select id="filterCategory" class="form-select">
+            <option value="">Categoría</option>
+            <option value="concert">Concierto</option>
+            <option value="festival">Festival</option>
+            <option value="theatre">Teatro</option>
+            <option value="music">Musica</option>
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <input id="filterArtist" type="text" class="form-control" placeholder="Artista">
+        </div>
+
       </div>
 
-      <div class="col-md-4">
-        <select id="filterCategory" class="form-select">
-          <option value="">Categoría</option>
-          <option value="concert">Concierto</option>
-          <option value="festival">Festival</option>
-          <option value="theatre">Teatro</option>
-          <option value="music">Musica</option>
-        </select>
+      <div class="row g-4" id="event-container">
       </div>
 
-      <div class="col-md-4">
-        <input id="filterArtist" type="text" class="form-control" placeholder="Artista">
+      <div class="row mt-4">
+        <div class="col-12 text-end">
+          <button id="load-button" class="btn btn-outline-secondary">
+            Cargar más
+          </button>
+        </div>
       </div>
 
     </div>
 
-    <div class="row g-4" id="event-container">
-    </div>
+    <script src="/js/loadEvents.js"></script>
 
-    <div class="row mt-4">
-      <div class="col-12 text-end">
-        <button id="load-button" class="btn btn-outline-secondary">
-          Cargar más
-        </button>
-      </div>
-    </div>
+  </main>
 
-  </div>
-
-  <script src="/js/loadEvents.js"></script>
-
-</main>
-
-{{>components/footer}}
+  {{>components/footer}}
 
 </body>
+
 </html>

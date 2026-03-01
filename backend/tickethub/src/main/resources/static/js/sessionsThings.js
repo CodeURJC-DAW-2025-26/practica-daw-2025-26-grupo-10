@@ -35,12 +35,12 @@ if (sessionsBody && addSessionBtn) {
         body: data,
         headers: { [header]: token }
       })
-      .then(res => {
-        if (!res.ok) throw new Error("No se pudo crear la sesión");
-        showSuccess("Sesión creada");
-        newRow.querySelector('.save-new').disabled = true;
-      })
-      .catch(err => showError(err.message));
+        .then(res => {
+          if (!res.ok) throw new Error("No se pudo crear la sesión");
+          showSuccess("Sesión creada");
+          newRow.querySelector('.save-new').disabled = true;
+        })
+        .catch(err => showError(err.message));
     });
   });
 
@@ -80,17 +80,17 @@ if (sessionsBody && addSessionBtn) {
           body: data,
           headers: { [header]: token }
         })
-        .then(res => {
-          if (!res.ok) throw new Error("No se pudo actualizar la sesión");
-          row.querySelector('.date-cell').textContent = newDate;
-          row.querySelector('.actions-cell').innerHTML = `
+          .then(res => {
+            if (!res.ok) throw new Error("No se pudo actualizar la sesión");
+            row.querySelector('.date-cell').textContent = newDate;
+            row.querySelector('.actions-cell').innerHTML = `
             <button type="button" class="btn btn-sm btn-warning me-2 edit-session">Editar</button>
             <a class="btn btn-sm btn-danger delete-item" data-id="${sessionId}" data-url="/admin/events/delete_session">Eliminar</a>
           `;
 
-          showSuccess("Sesión actualizada");
-        })
-        .catch(err => showError(err.message));
+            showSuccess("Sesión actualizada");
+          })
+          .catch(err => showError(err.message));
       });
 
     });

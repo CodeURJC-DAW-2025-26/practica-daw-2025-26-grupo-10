@@ -1,6 +1,6 @@
-async function loadMorePurchases(button,userId) {
+async function loadMorePurchases(button, userId) {
     try {
-        let nextPage = button.getAttribute("data-next-page");l
+        let nextPage = button.getAttribute("data-next-page"); l
         button.innerText = "Cargando...";
         button.disabled = true;
 
@@ -62,7 +62,7 @@ async function toggleTickets(purchaseId, button) {
 
         const htmlFragment = await response.text();
         parentRow.insertAdjacentHTML('afterend', htmlFragment);
-        
+
         button.innerText = "Ocultar detalles";
         button.disabled = false;
 

@@ -1,36 +1,39 @@
 <!doctype html>
 <html lang="es">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Login</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="/css/main.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.css">
 </head>
+
 <body class="d-flex flex-column min-vh-100">
 
-{{>components/header}}
+  {{>components/header}}
 
-<main class="flex-fill">
-  <div class="container my-5" style="max-width:400px">
-    <h3 class="mb-4 text-center">Iniciar sesión</h3>
+  <main class="flex-fill">
+    <div class="container my-5" style="max-width:400px">
+      <h3 class="mb-4 text-center">Iniciar sesión</h3>
 
-    <form action="/public/login" method="post">
-      <input type="hidden" name="_csrf" value="{{token}}" required>
-      <input class="form-control mb-3" placeholder="Correo electrónico" name="email" required>
-      <input type="password" class="form-control mb-3" placeholder="Contraseña" name="password" required>
-      <button class="btn btn-primary w-100">Entrar</button>
-    </form>
-    {{#success}}
+      <form action="/public/login" method="post">
+        <input type="hidden" name="_csrf" value="{{token}}" required>
+        <input class="form-control mb-3" placeholder="Correo electrónico" name="email" required>
+        <input type="password" class="form-control mb-3" placeholder="Contraseña" name="password" required>
+        <button class="btn btn-primary w-100">Entrar</button>
+      </form>
+      {{#success}}
       <div class="alert alert-success">{{success}}</div>
-    {{/success}}
-    {{#error}}
+      {{/success}}
+      {{#error}}
       <div class="alert alert-danger">Email o contraseña incorrectos</div>
-    {{/error}}
-  </div>
-</main>
+      {{/error}}
+    </div>
+  </main>
 
-{{>/components/footer}}
+  {{>/components/footer}}
 
 </body>
+
 </html>
