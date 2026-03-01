@@ -18,26 +18,16 @@
         </div>
 
         <div class="container my-5 text-center">
-        <div class="alert alert-success">Compra realizada con éxito</div>
-        <ul class="list-group mb-3">
-            {{#event}}
-            <li class="list-group-item">Evento: {{name}}</li>
-            <li class="list-group-item">Categoría del evento: {{category}}</li>
-            <li class="list-group-item">Total: 30€</li>
-            {{/event}}
-        </ul>
-        <a href="/purchase/download/{{purchase.purchaseID}}" class="btn btn-outline-primary">Descargar PDF</a>
-        <a href="/public/index" class="btn btn-primary">Volver al inicio</a>
-        </div>
-
-                {{#purchase}}
+            <div class="alert alert-success">Compra realizada con éxito</div>
+            {{#purchase}}
                 <li class="list-group-item"><strong>ID de Pedido:</strong> #{{purchaseID}}</li>
+                <li class="list-group-item"><strong>Evento:</strong> {{name}}</li>
                 <li class="list-group-item"><strong>Total Pagado:</strong> {{totalPrice}} €</li>
-                
+                    
                 {{#session}}
-                <li class="list-group-item"><strong>Fecha:</strong> {{formattedDate}}</li>
+                    <li class="list-group-item"><strong>Fecha:</strong> {{formattedDate}}</li>
                 {{/session}}
-                {{/purchase}}
+            {{/purchase}}
             </ul>
         </div>
 
