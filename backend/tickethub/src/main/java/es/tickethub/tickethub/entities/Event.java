@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -87,6 +88,9 @@ public class Event {
 
     private List<Image> eventImages = new ArrayList<>();
 
+    @Transient
+    private Image mainImage;
+
     public Event() {
         /* The constructor for the database */
     }
@@ -112,14 +116,8 @@ public class Event {
         this.category = category;
         if (eventImages != null) {
             this.eventImages = eventImages;
+            this.mainImage = eventImages.get(0);
         }
-    }
-
-    public Image getMainImage() {
-        if (this.eventImages != null && !this.eventImages.isEmpty()) {
-            return this.eventImages.get(0);
-        }
-        return null;
     }
 
     public double getAveragePrice() {
