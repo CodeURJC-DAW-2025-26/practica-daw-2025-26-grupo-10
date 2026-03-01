@@ -243,7 +243,7 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 |2| [Funcionalidad cargar más en las páginas events y artist desarrollada](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/d711f25500e7051bb9eb2b43874502ce9d684bff)  | [loadArtists.js](backend/tickethub/src/main/resources/static/js/loadArtists.js)   |
 |3| [Implementación del carrusel](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/17f723b54afa9b35ba5e8edbf1d521a0c893afe5)  | [carousel.js](backend/tickethub/src/main/resources/static/js/carousel.js)   |
 |4| [Implementación de la lógica de compra](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/03dfd03802e673838988569c899bdff393f6ee7b)  | [PurchaseService.java](backend/tickethub/src/main/java/es/tickethub/tickethub/services/PurchaseService.java)   |
-|5| [Formateo y lograr que funcione la creación de tickets]([https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/fa3018d376d5c87f0ac40fd5c98391c3e77990ae#diff-a9a437af0eb4a2f911cfd12b019fd22f96353977a2698cdfd81da421d4925989](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/6675bd38690ef1aad4f505ef7e617dcc07dcc79c))  | [PurchaseController.java](backend/tickethub/src/main/java/es/tickethub/tickethub/controllers/PurchaseController.java)   |
+|5| [Formateo y lograr que funcione la creación de tickets]((https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/6675bd38690ef1aad4f505ef7e617dcc07dcc79c))  | [PurchaseController.java](backend/tickethub/src/main/java/es/tickethub/tickethub/controllers/PurchaseController.java)   |
 
 ---
 
@@ -281,7 +281,7 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Añadir entradas y botón descuento de manera dinámica]([URL_commit_1](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/435b43504555ee56ef2de19cab641d9a46a7724f))  | [purchase.js](backend/tickethub/src/main/resources/static/js/purchase.js)   |
+|1| [Añadir entradas y botón descuento de manera dinámica]((https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/435b43504555ee56ef2de19cab641d9a46a7724f))  | [purchase.js](backend/tickethub/src/main/resources/static/js/purchase.js)   |
 |2| [Cambiamos controllers, entities, services y repositories para poder unirlo al frontend](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/f44e798c742781b07b95058cfa8d46d60e447ade)  | [UserController.java](backend/tickethub/src/main/java/es/tickethub/tickethub/controllers/UserController.java)   |
 |3| [Editando los html para poder unirlos al backend](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/4367031c45d867c37a255c8571b9880d6542d3b2)  | [create_event.html](backend/tickethub/src/main/resources/templates/admin/events/create_event.html)   |
 |4| [QR y PDF generados QR service y html](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/1e179130443a6954e0c3e12de84323836cdf1c2e#diff-25bd1200897cfcad796f39fb91f473000f0c95085635e1db9fdaed7fcf2d86b8)  | [QRService.java](backend/tickethub/src/main/java/es/tickethub/tickethub/services/QrService.java)   |
