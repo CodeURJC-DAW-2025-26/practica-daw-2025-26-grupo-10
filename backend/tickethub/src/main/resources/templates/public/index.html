@@ -41,40 +41,30 @@
           {{#eventsTop}}
           <div class="col-md-4">
             <div class="card h-100">
-              {{#key.mainImage}}
-                <img src="/images/entities/events/{{key.eventID}}/image/{{imageID}}" class="card-img-top" alt="Imagen del evento">
-              {{/key.mainImage}}
+              {{#mainImage}}
+              <img src="/images/entities/events/{{eventID}}/image/{{imageID}}" class="card-img-top" alt="Imagen">
+              {{/mainImage}}
               <div class="card-body">
-                <h5 class="card-title">{{key.name}}</h5>
-                <p class="mb-1">{{key.category}}</p>
-                <p class="text-muted">{{key.place}}</p>
-                <a href="/public/event/{{key.eventID}}" class="btn btn-primary btn-sm">Ver evento</a>
+                <h5 class="card-title">{{name}}</h5>
+                <p class="mb-1">{{category}}</p>
+                <p class="text-muted">{{place}}</p>
+                <a href="/public/event/{{eventID}}" class="btn btn-primary btn-sm">Ver evento</a>
               </div>
             </div>
           </div>
           {{/eventsTop}}
-        </div>
-      </section>
-
-      <!-- RECOMMENDED EVENTS -->
-      <section class="mb-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h2>Recomendaciones para ti</h2>
-          <a href="/public/events" class="btn btn-outline-primary btn-sm">Ver todos</a>
         </div>
 
         <div class="row g-4">
           {{#recommendedEvents}}
           <div class="col-md-4">
             <div class="card h-100">
-              {{#eventImages}}
-              <img src="/public/image/{{recommendedEvent.mainImage.imageName}}" class="card-img-top" alt="Evento recomendado">
-              {{/eventImages}}
+              {{#mainImage}}
+              <img src="/images/entities/events/{{eventID}}/image/{{imageID}}" class="card-img-top" alt="Recomendado">
+              {{/mainImage}}
               <div class="card-body">
                 <h5 class="card-title">{{name}}</h5>
-                <p class="mb-1">{{category}}</p>
                 <p class="text-muted">{{place}}</p>
-                <p class="text-muted">Precio medio: ${{averagePrice}}</p>
                 <a href="/public/event/{{eventID}}" class="btn btn-primary btn-sm">Ver evento</a>
               </div>
             </div>
@@ -84,23 +74,16 @@
           <p>No tenemos información suficiente para recomendarte un evento</p>
           {{/recommendedEvents}}
         </div>
-      </section>
-      <!-- ARTISTS WITH MORE EVENTS IN THE SITE -->
-      <section class="mb-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h2>Artistas destacados</h2>
-          <a href="/public/artists" class="btn btn-outline-primary btn-sm">Ver todos</a>
-        </div>
 
         <div class="row g-4">
           {{#artists}}
           <div class="col-md-3">
             <div class="card text-center h-100">
-              <img src="/images/entities/artists/{{key.artistID}}" class="card-img-top rounded-circle mx-auto" alt="Imagen del artista">
+              <img src="/images/entities/artists/{{artistID}}" class="card-img-top rounded-circle mx-auto"
+                alt="{{artistName}}">
               <div class="card-body">
-                <h6 class="card-title">{{key.artistName}}</h6>
-                <p class="text-muted">{{value}} eventos en la página</p>
-                <a href="/public/artist/{{key.artistID}}" class="btn btn-primary btn-sm">Ver artista</a>
+                <h6 class="card-title">{{artistName}}</h6>
+                <a href="/public/artist/{{artistID}}" class="btn btn-primary btn-sm">Ver artista</a>
               </div>
             </div>
           </div>
@@ -134,7 +117,7 @@
     </div>
   </main>
 
-{{>/components/footer}}
+  {{>/components/footer}}
 
 </body>
 
