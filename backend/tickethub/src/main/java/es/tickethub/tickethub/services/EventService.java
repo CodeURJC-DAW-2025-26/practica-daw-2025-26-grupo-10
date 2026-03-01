@@ -1,5 +1,7 @@
 package es.tickethub.tickethub.services;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import es.tickethub.tickethub.entities.Event;
+import es.tickethub.tickethub.entities.Session;
 import es.tickethub.tickethub.repositories.EventRepository;
 
 @Service
@@ -78,5 +81,22 @@ public class EventService {
 
         return eventRepository
                 .findByCategoryContainingIgnoreCase(category, pageable);
+    }
+
+    public boolean isEventActive(Long eventID) {
+        Timestamp today = new Timestamp(System.currentTimeMillis());
+        Optional<Event> eventOptional = eventRepository.findById(eventID);
+        
+        if (eventOptional.isPresent()) {
+            Event event = eventOptional.get();            
+            for (Session session : event.getSessions()) {
+                
+                if (session.getDate().after(today)){
+                    return true;
+                }
+            }
+            return false;
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El evento con ID " + eventID + " no existe.");
     }
 }

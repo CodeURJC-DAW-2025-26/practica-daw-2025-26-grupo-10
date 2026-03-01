@@ -3,6 +3,7 @@ package es.tickethub.tickethub.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ import es.tickethub.tickethub.repositories.ArtistRepository;
 @Service
 public class ArtistService {
 
+    @Autowired
     private final ArtistRepository artistRepository;
 
     public ArtistService (ArtistRepository artistRepository){

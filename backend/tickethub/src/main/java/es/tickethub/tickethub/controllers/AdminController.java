@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import es.tickethub.tickethub.repositories.PurchaseRepository;
+import es.tickethub.tickethub.services.AdminService;
+
 
 @Controller
 @RequestMapping("/admin")
@@ -18,8 +20,16 @@ public class AdminController {
     @Autowired
     private PurchaseRepository purchaseRepository;
 
+    @Autowired
+    private AdminService adminService;
+
     @GetMapping("/admin")
     public String getAdmin(Model model) {
+        model.addAttribute("activeEvents", adminService.eventsActive());
+        model.addAttribute("numberTickets", adminService.getNumberTickets());
+        model.addAttribute("numberUsers", adminService.getNumberUsers());
+        model.addAttribute("numberAdmins", adminService.getNumberAdmins());
+
         return "admin/admin";
     }
 
