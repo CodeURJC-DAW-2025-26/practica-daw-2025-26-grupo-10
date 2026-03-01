@@ -4,43 +4,43 @@
  * @param {string} message
  */
 function showConfirmation(onConfirm, message = "Esta acción no se puede deshacer") {
-    Swal.fire({
-        title: "¿Eliminar?",
-        text: message,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Eliminar",
-        cancelButtonText: "Cancelar"
-    }).then(result => {
-        if (result.isConfirmed) onConfirm();
-    });
+  Swal.fire({
+    title: "¿Eliminar?",
+    text: message,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Eliminar",
+    cancelButtonText: "Cancelar"
+  }).then(result => {
+    if (result.isConfirmed) onConfirm();
+  });
 }
 
 /**
  * @param {string} msg
  */
-export function showMsg(msg){
-    Swal.fire( 'Información', msg, 'info');
+export function showMsg(msg) {
+  Swal.fire('Información', msg, 'info');
 }
 
 /**
  * @param {string} msg
  */
 export function showError(msg) {
-    Swal.fire("Error", msg, "error");
+  Swal.fire("Error", msg, "error");
 }
 
 /**
  * @param {string} msg
  */
 export function showSuccess(msg) {
-    Swal.fire("Éxito", msg, "success");
+  Swal.fire("Éxito", msg, "success");
 }
 
 export function getCsrf() {
-    const token = document.querySelector('meta[name="_csrf"]').content;
-    const header = document.querySelector('meta[name="_csrf_header"]').content;
-    return { token, header };
+  const token = document.querySelector('meta[name="_csrf"]').content;
+  const header = document.querySelector('meta[name="_csrf_header"]').content;
+  return { token, header };
 }
 
 /**
@@ -50,15 +50,15 @@ export function getCsrf() {
 export function deleteItem(url, element) {
   const { token, header } = getCsrf();
   fetch(url, {
-        method: "DELETE",
-        headers: {
-            [header]: token
-        }
-    })
+    method: "DELETE",
+    headers: {
+      [header]: token
+    }
+  })
     .then(res => {
-        if (!res.ok) throw new Error("No se pudo eliminar");
-        element.closest("tr")?.remove();
-        Swal.fire("Eliminado", "El elemento ha sido eliminado.", "success");
+      if (!res.ok) throw new Error("No se pudo eliminar");
+      element.closest("tr")?.remove();
+      Swal.fire("Eliminado", "El elemento ha sido eliminado.", "success");
     })
     .catch(err => Swal.fire("Error", err.message, "error"));
 }

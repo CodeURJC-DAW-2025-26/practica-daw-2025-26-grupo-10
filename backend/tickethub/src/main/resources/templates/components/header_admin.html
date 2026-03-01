@@ -2,10 +2,9 @@
   <div class="container-fluid">
     <a class="navbar-brand" href="/admin/admin">TicketHub Admin</a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-            data-bs-target="#adminNavbarContent" aria-controls="adminNavbarContent" 
-            aria-expanded="false" aria-label="Toggle navigation"
-            style="border-color: var(--vivid-tangerine);">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbarContent"
+      aria-controls="adminNavbarContent" aria-expanded="false" aria-label="Toggle navigation"
+      style="border-color: var(--vivid-tangerine);">
       <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
     </button>
 
@@ -27,8 +26,8 @@
           Vista de cliente
         </a>
         <form action="/logout" method="post" class="m-0 p-0 d-grid">
-            <input type="hidden" name="_csrf" value="{{token}}">
-            <button type="submit" class="btn btn-danger">Cerrar sesión</button>
+          <input type="hidden" name="_csrf" value="{{token}}">
+          <button type="submit" class="btn btn-danger">Cerrar sesión</button>
         </form>
       </div>
     </div>

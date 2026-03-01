@@ -1,4 +1,5 @@
 package es.tickethub.tickethub.services;
+
 import org.springframework.stereotype.Service;
 
 import com.google.zxing.BarcodeFormat;
@@ -8,7 +9,6 @@ import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.io.image.ImageDataFactory;
-
 
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Purchase;

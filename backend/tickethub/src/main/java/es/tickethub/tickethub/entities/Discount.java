@@ -24,19 +24,25 @@ public class Discount {
     @Column(unique = true)
     private String discountName;
 
-    /* To indicate the if ammount to be discounted is a percentage or a specific money ammount */
+    /*
+     * To indicate the if ammount to be discounted is a percentage or a specific
+     * money ammount
+     */
     @Column(nullable = false)
     private Boolean percentage;
 
-    /* precision is for the total of the numbers, scale for the number of decimals*/
+    /*
+     * precision is for the total of the numbers, scale for the number of decimals
+     */
     @Column(nullable = false, precision = 5, scale = 2)
-    @DecimalMin(value="0.00")
+    @DecimalMin(value = "0.00")
     private BigDecimal ammount;
 
     @Transient
     private boolean selected;
 
-    public Discount() {}    //Constructor for the Database
+    public Discount() {
+    } // Constructor for the Database
 
     // Constructor of the class
     public Discount(String discountName, BigDecimal ammount, Boolean percentage) {

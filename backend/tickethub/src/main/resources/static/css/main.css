@@ -23,7 +23,12 @@ body {
     font-weight: 400;
 }
 
-h1, h2, h3, h4, h5, .navbar-brand {
+h1,
+h2,
+h3,
+h4,
+h5,
+.navbar-brand {
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     letter-spacing: -0.5px;
@@ -38,7 +43,7 @@ main .container,
 .container form,
 .card.text-center {
     background-color: var(--card-white) !important;
-    border: 1px solid rgba(0,0,0,0.05) !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
     border-radius: 20px !important;
     box-shadow: 0 10px 30px rgba(35, 28, 7, 0.08) !important;
     padding: 25px;
@@ -69,7 +74,9 @@ main .container,
     border-color: var(--vivid-tangerine) !important;
 }
 
-.btn-primary, .btn-success, .btn-light {
+.btn-primary,
+.btn-success,
+.btn-light {
     background-color: var(--vivid-tangerine) !important;
     border: none !important;
     color: var(--pitch-black) !important;
@@ -80,7 +87,9 @@ main .container,
     box-shadow: 0 8px 15px rgba(247, 127, 0, 0.3) !important;
 }
 
-.btn-primary:hover, .btn-success:hover, .navbar .btn-outline-primary:hover {
+.btn-primary:hover,
+.btn-success:hover,
+.navbar .btn-outline-primary:hover {
     background-color: var(--vivid-tangerine) !important;
     color: white !important;
     transform: translateY(-3px);
@@ -122,17 +131,17 @@ main .container,
     margin: 0 !important;
 }
 
-.btn-group > .btn-admin-pair {
+.btn-group>.btn-admin-pair {
     border-radius: 0 !important;
 }
 
-.btn-group > .btn-admin-pair:first-child {
+.btn-group>.btn-admin-pair:first-child {
     border-top-left-radius: 10px !important;
     border-bottom-left-radius: 10px !important;
-    border-right: none !important; 
+    border-right: none !important;
 }
 
-.btn-group > .btn-admin-pair:last-child {
+.btn-group>.btn-admin-pair:last-child {
     border-top-right-radius: 10px !important;
     border-bottom-right-radius: 10px !important;
 }
@@ -151,7 +160,7 @@ main .container,
 }
 
 .navbar-brand {
-    color: var(--vivid-tangerine) !important; 
+    color: var(--vivid-tangerine) !important;
     font-size: 1.6rem;
     opacity: 1 !important;
 }
@@ -180,7 +189,7 @@ footer {
     background-color: #231c07;
     color: var(--footer-text) !important;
     padding: 4rem 0;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 footer p,
@@ -229,7 +238,7 @@ footer .social-icons a:hover {
     background-color: var(--beige);
     border: none;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     max-width: 500px;
     margin: auto;
 }
@@ -324,15 +333,17 @@ footer .social-icons a:hover {
     background-color: #ff9500;
     color: var(--pitch-black);
 }
+
 /* Event Card */
 .card {
     border: none;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     background-color: var(--beige);
 }
 
-.card h2, .card h4 {
+.card h2,
+.card h4 {
     color: var(--pitch-black);
 }
 
@@ -377,7 +388,7 @@ main .container {
     background-color: var(--beige);
     padding: 2rem;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* title */
@@ -393,7 +404,7 @@ main input.form-control {
 
 main input.form-control:focus {
     border-color: var(--vivid-tangerine);
-    box-shadow: 0 0 0 0.2rem rgba(247,127,0,0.25);
+    box-shadow: 0 0 0 0.2rem rgba(247, 127, 0, 0.25);
 }
 
 /* button */
@@ -408,12 +419,13 @@ main button.btn-primary:hover {
     background-color: #ff9500;
     color: var(--pitch-black);
 }
+
 /* purchase form */
 .container form {
     background-color: var(--beige);
     padding: 2rem;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     max-width: 500px;
     margin: auto;
 }
@@ -429,7 +441,7 @@ main button.btn-primary:hover {
 .container form input.form-control:focus,
 .container form select.form-control:focus {
     border-color: var(--vivid-tangerine);
-    box-shadow: 0 0 0 0.2rem rgba(247,127,0,0.25);
+    box-shadow: 0 0 0 0.2rem rgba(247, 127, 0, 0.25);
 }
 
 /* buttons */
@@ -451,8 +463,8 @@ main button.btn-primary:hover {
 }
 
 main .hero-section .container {
-    background-color: rgba(255, 255, 255, 0.253) !important; 
-    backdrop-filter: blur(12px) saturate(180%); 
+    background-color: rgba(255, 255, 255, 0.253) !important;
+    backdrop-filter: blur(12px) saturate(180%);
     -webkit-backdrop-filter: blur(12px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.3) !important;
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1) !important;
@@ -467,7 +479,7 @@ main .hero-section .container {
         width: 100%;
         display: block;
     }
-    
+
     .table td {
         vertical-align: middle;
     }

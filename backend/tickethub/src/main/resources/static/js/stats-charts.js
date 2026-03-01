@@ -1,6 +1,6 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const dataStore = document.getElementById('data-store');
-    
+
     const getList = (attr) => dataStore.getAttribute(attr).split(',').filter(x => x !== "");
 
     const rankingLabels = getList('data-ranking-labels');

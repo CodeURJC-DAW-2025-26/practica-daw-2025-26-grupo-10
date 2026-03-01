@@ -1,6 +1,5 @@
 package es.tickethub.tickethub.security;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,22 +22,22 @@ public class RepositoryUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
-
+		// Retrieve the user by email from the database
 		User user = userRepository.findByEmail(userEmail)
 				.orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
-
+		// Prepare the list of roles/authorities for the authenticated user
 		List<GrantedAuthority> roles = new ArrayList<>();
-
+		// Assign role
 		if (user.getAdmin() != null && user.getAdmin()) {
 			roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-		}else{
-            roles.add(new SimpleGrantedAuthority("ROLE_USER"));
-        }
+		} else {
+			roles.add(new SimpleGrantedAuthority("ROLE_USER"));
+		}
 
 		return new org.springframework.security.core.userdetails.User(
-            user.getEmail(),
-			user.getPassword(),
-            roles);
+				user.getEmail(),
+				user.getPassword(),
+				roles);
 
 	}
 }

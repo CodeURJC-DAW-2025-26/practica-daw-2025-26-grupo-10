@@ -18,7 +18,7 @@ import lombok.Setter;
 @Setter
 public class Client extends User {
 
-    @OneToMany(mappedBy = "client")//Fetchtype.LAZY by default in OneToMany
+    @OneToMany(mappedBy = "client") // Fetchtype.LAZY by default in OneToMany
     private List<Purchase> purchases = new ArrayList<>();
 
     private String name;
@@ -54,8 +54,7 @@ public class Client extends User {
             BigDecimal coins,
             List<String> subjects,
             List<Purchase> purchases,
-            Image profileImage
-    ) {
+            Image profileImage) {
         super(email, username, password, false);
         this.name = name;
         this.surname = surname;

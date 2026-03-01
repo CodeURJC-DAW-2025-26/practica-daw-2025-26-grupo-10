@@ -10,7 +10,6 @@ import es.tickethub.tickethub.entities.Zone;
 @Service
 public class ServerRecommendationService {
 
-
     private final EventService eventService;
     private List<Event> events = new ArrayList<>();
     private final List<double[]> eventVectors = new ArrayList<>();
@@ -31,12 +30,13 @@ public class ServerRecommendationService {
 
     private double normalizeTargetAge(Event e) {
         Integer target = e.getTargetAge();
-        if (target == null) return 0.0;
-        return RecommendationLogic.normalize(target, 0, 120);
+        if (target == null)
+            return 0.0;
+        return RecommendationLogic.normalize(target, 0, RecommendationLogic.MAX_AGE);
     }
 
     private double normalizePrice(Event e) {
-        if (e.getZones() == null || e.getZones().isEmpty()){
+        if (e.getZones() == null || e.getZones().isEmpty()) {
             return 0.0;
         }
 
@@ -51,10 +51,10 @@ public class ServerRecommendationService {
         if (count == 0) {
             return 0.0;
         }
-        return RecommendationLogic.normalize(sum / count, 0, 500); // max hardcoded as in Client
+        return RecommendationLogic.normalize(sum / count, 0, RecommendationLogic.MAX_PRICE);
     }
 
-/* THIS WILL BE USED IN RECOMMENDATIONSERVICE */
+    /* THIS WILL BE USED IN RECOMMENDATIONSERVICE */
     public List<Event> getEvents() {
         if (events.isEmpty()) {
             events = eventService.findAll();

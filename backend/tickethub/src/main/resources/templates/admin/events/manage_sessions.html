@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="_csrf" content="{{token}}">
@@ -11,6 +12,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/main.css">
 </head>
+
 <body class="d-flex flex-column min-vh-100">
 
   {{>components/header_admin}}
@@ -32,13 +34,12 @@
             {{formattedDate}}
           </td>
           <td class="text-center actions-cell">
-            <button type="button"
-                    class="btn btn-sm btn-warning me-2 edit-session">
+            <button type="button" class="btn btn-sm btn-warning me-2 edit-session">
               Editar
             </button>
 
-            <a class="btn btn-sm btn-danger delete-item"
-              data-id="{{sessionID}}" data-url="/admin/events/delete_session">
+            <a class="btn btn-sm btn-danger delete-item" data-id="{{sessionID}}"
+              data-url="/admin/events/delete_session">
               Eliminar
             </a>
           </td>
@@ -56,10 +57,10 @@
     </table>
 
     <div class="d-flex justify-content-between">
-      <a class="btn btn-primary mt-3" id = "add-session" data-eventid ="{{event.eventID}}">
+      <a class="btn btn-primary mt-3" id="add-session" data-eventid="{{event.eventID}}">
         Agregar sesión
       </a>
-      
+
       <a href="/admin/events/edit_event/{{event.eventID}}" class="btn btn-secondary mt-3 ms-2">
         Guardar cambios
       </a>
@@ -69,7 +70,8 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script type="module" src="/js/sessionsThings.js"></script>
   <script type="module" src="/js/confirmation.js"></script>
-  
+
   {{>components/footer_admin}}
 </body>
+
 </html>

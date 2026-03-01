@@ -21,16 +21,16 @@ public class ZoneService {
     }
 
     public List<Zone> findAll() {
-        List <Zone> zone = zoneRepository.findAll();
-        if (!(zone.isEmpty())){
+        List<Zone> zone = zoneRepository.findAll();
+        if (!(zone.isEmpty())) {
             return zone;
         }
         throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No hay zonas registradas");
     }
 
     public Zone findById(Long id) {
-        Optional <Zone> zoneOptional = zoneRepository.findById(id);
-        if (zoneOptional.isPresent()){
+        Optional<Zone> zoneOptional = zoneRepository.findById(id);
+        if (zoneOptional.isPresent()) {
             return zoneOptional.get();
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Zona no encontrada");
@@ -55,7 +55,7 @@ public class ZoneService {
 
     public void deleteById(Long id) {
         Optional<Zone> optionalZone = zoneRepository.findById(id);
-        if (!optionalZone.isPresent()){
+        if (!optionalZone.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Zone not found");
         }
         Zone zone = optionalZone.get();
@@ -63,4 +63,3 @@ public class ZoneService {
         zoneRepository.deleteById(zone.getId());
     }
 }
-

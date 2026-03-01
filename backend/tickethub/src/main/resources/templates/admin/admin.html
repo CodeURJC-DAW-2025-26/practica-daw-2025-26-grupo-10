@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="es">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,7 +14,7 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-{{>components/header_admin}}
+  {{>components/header_admin}}
 
   <div class="container my-5">
     <h2 class="mb-4">Panel de Administración</h2>
@@ -37,18 +38,20 @@
 
       <div class="btn-group shadow-sm" role="group">
         <a href="/admin/discounts/create_discount" class="btn btn-primary btn-admin-pair">Crear descuento</a>
-        <a href="/admin/discounts/manage_discounts" class="btn btn-outline-primary btn-admin-pair">Gestionar descuentos</a>
+        <a href="/admin/discounts/manage_discounts" class="btn btn-outline-primary btn-admin-pair">Gestionar
+          descuentos</a>
       </div>
 
       <div>
         <a href="/admin/statistics" class="btn btn-outline-primary">
-            <i class="bi bi-bar-chart-line me-1"></i> Ver Estadísticas
+          <i class="bi bi-bar-chart-line me-1"></i> Ver Estadísticas
         </a>
       </div>
     </div>
-    </div>
+  </div>
 
-{{>components/footer_admin}}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  {{>components/footer_admin}}
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

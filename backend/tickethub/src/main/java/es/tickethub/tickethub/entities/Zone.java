@@ -33,11 +33,11 @@ public class Zone {
     private String name;
 
     @Column(nullable = false)
-    @Min(1) //zone must allow at least 1 seat
+    @Min(1) // zone must allow at least 1 seat
     private Integer capacity;
 
     @Column(nullable = false, precision = 8, scale = 2)
-    @DecimalMin(value = "0.00", inclusive = true) //not 0,1 due to discounts (possible -20 $ discount)
+    @DecimalMin(value = "0.00", inclusive = true) // not 0,1 due to discounts (possible -20 $ discount)
     private BigDecimal price;
 
     @OneToMany(mappedBy = "zone", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -50,7 +50,8 @@ public class Zone {
     @Transient
     private boolean selected;
 
-    public Zone() {} /* Constructor for the Database*/
+    public Zone() {
+    } /* Constructor for the Database */
 
     // Constructor of the class
     public Zone(String name, Integer capacity, BigDecimal price) {

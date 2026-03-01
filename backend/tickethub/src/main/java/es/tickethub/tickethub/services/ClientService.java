@@ -1,6 +1,5 @@
 package es.tickethub.tickethub.services;
 
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -15,6 +14,7 @@ import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Image;
 import es.tickethub.tickethub.repositories.ClientRepository;
 import org.springframework.web.multipart.MultipartFile;
+
 @Service
 public class ClientService {
     @Autowired
@@ -24,16 +24,17 @@ public class ClientService {
     private PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void registeClient( String name, String email, String surname,String password, String passWordConfirmation,String username){
-        if(!password.equals(passWordConfirmation)){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Las contraseñas no coinciden");
+    public void registeClient(String name, String email, String surname, String password, String passWordConfirmation,
+            String username) {
+        if (!password.equals(passWordConfirmation)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Las contraseñas no coinciden");
         }
-        boolean existClient =  clientRepository.existsByEmail(email);
-        if(existClient){
+        boolean existClient = clientRepository.existsByEmail(email);
+        if (existClient) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Este correo electrónico ya está en uso");
         }
         existClient = clientRepository.existsByUsername(username);
-        if(existClient){
+        if (existClient) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Este nombre de usuario ya está en uso");
         }
 
@@ -50,18 +51,18 @@ public class ClientService {
     }
 
     @Transactional(readOnly = true)
-    public Client getClientById(Long clientID){
+    public Client getClientById(Long clientID) {
         Optional<Client> clientOptional = clientRepository.findById(clientID);
-        if(clientOptional.isPresent()){
+        if (clientOptional.isPresent()) {
             return clientOptional.get();
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado");
     }
 
     @Transactional(readOnly = true)
-    public Client getClientByEmail(String email){
+    public Client getClientByEmail(String email) {
         Optional<Client> clientOptional = clientRepository.findByEmail(email);
-        if(clientOptional.isPresent()){
+        if (clientOptional.isPresent()) {
             return clientOptional.get();
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado");
@@ -71,7 +72,7 @@ public class ClientService {
     public void updateClient(String loggedEmail, Client clientUpdated, MultipartFile imageFile) throws IOException {
         Client client = clientRepository.findByEmail(loggedEmail)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado"));
-        
+
         String nuevoEmail = clientUpdated.getEmail();
         if (!client.getEmail().equals(nuevoEmail)) {
             if (clientRepository.existsByEmail(nuevoEmail)) {
@@ -98,16 +99,17 @@ public class ClientService {
     }
 
     @Transactional
-    public void changePassword(String loggedEmail, String oldPassword, String newPassword, String newPasswordConfirmation) {
+    public void changePassword(String loggedEmail, String oldPassword, String newPassword,
+            String newPasswordConfirmation) {
         Client client = clientRepository.findByEmail(loggedEmail)
-                        .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado"));
 
-        if(!passwordEncoder.matches(oldPassword, client.getPassword())){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"La contraseña actual es incorrecta");
+        if (!passwordEncoder.matches(oldPassword, client.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La contraseña actual es incorrecta");
         }
 
-        if(!newPassword.equals(newPasswordConfirmation)){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Las contraseñas nuevas no coinciden");
+        if (!newPassword.equals(newPasswordConfirmation)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Las contraseñas nuevas no coinciden");
         }
 
         client.setPassword(passwordEncoder.encode(newPassword));
