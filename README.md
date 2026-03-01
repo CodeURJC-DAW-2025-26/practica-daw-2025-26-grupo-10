@@ -208,6 +208,22 @@ Formulario de compra con selector de tipo de entrada, cantidad, cálculo de tota
 ![SignUp Page](backend/tickethub/src/main/resources/static/images/pages/public/sign-up.png)
 Formulario de registro con campos de nombre, correo, contraseña y confirmación, botón “Registrarse”.
 
+#### **7. Perfil Usuario**
+![Profile Page](backend/tickethub/src/main/resources/static/images/images_part1/cliente/Captura de pantalla 2026-03-01 221246.png)
+Página en la que se muesta la informacion general del usuario.
+
+#### **7. Editar Perfil**
+![Edit Profile](backend/tickethub/src/main/resources/static/images/images_part1/cliente/Captura de pantalla 2026-03-01 221301.png)
+Página en la que se muesta un formulario para editar la información del usuario.
+
+#### **7. Cambiar Contraseñas**
+![Change Password](backend/tickethub/src/main/resources/static/images/images_part1/cliente/Captura de pantalla 2026-03-01 221326.png)
+Página en la que se muesta un formulario para editar la contraseña del usuario.
+
+#### **7. Ver Compras del Cliente**
+![Purchase page](backend/tickethub/src/main/resources/static/images/images_part1/cliente/Captura de pantalla 2026-03-01 221313.png)
+Página en la que se muesta las compras paginadas y los tickets de cada compra.
+
 #### **8. Página Error 403**
 ![Error403 Page](backend/tickethub/src/main/resources/static/images/pages/errors/403.png)
 Pantalla de acceso no autorizado con código 403, mensaje “Acceso no autorizado” y botón para volver al inicio.
