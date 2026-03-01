@@ -41,9 +41,6 @@
           {{#eventsTop}}
           <div class="col-md-4">
             <div class="card h-100">
-              {{#event.eventImages}}
-              <img src="/public/image/{{imageName}}" class="card-img-top {{#first}}active{{/first}}" alt="Evento 1">
-              {{/event.eventImages}}
               <div class="card-body">
                 <h5 class="card-title">{{name}}</h5>
                 <p class="mb-1">{{category}}</p>
@@ -67,10 +64,6 @@
           {{#recommendedEvents}}
           <div class="col-md-4">
             <div class="card h-100">
-              {{#eventImages}}
-              <img src="/public/image/{{recommendedEvent.mainImage.imageName}}" class="card-img-top"
-                alt="Evento recomendado">
-              {{/eventImages}}
               <div class="card-body">
                 <h5 class="card-title">{{name}}</h5>
                 <p class="mb-1">{{category}}</p>
@@ -81,6 +74,7 @@
             </div>
           </div>
           {{/recommendedEvents}}
+
           {{^recommendedEvents}}
           <p>No tenemos información suficiente para recomendarte un evento</p>
           {{/recommendedEvents}}
@@ -97,7 +91,14 @@
           {{#artists}}
           <div class="col-md-3">
             <div class="card text-center h-100">
-              <img src="/public/image/{{artist.artistImage.imageName}}" class="card-img-top" alt="Artista 1">
+              {{#artist.artistImage}}
+              <img src="/public/image/{{imageName}}" class="card-img-top" alt="...">
+              {{/artist.artistImage}}
+
+              {{^artist.artistImage}}
+              <img src="/images/TicketHub_icon.png" class="card-img-top" alt="Sin imagen">
+              {{/artist.artistImage}}
+              
               <div class="card-body">
                 <h6 class="card-title">{{artist.artistName}}</h6>
                 <p class="text-muted">{{eventsIncoming}} eventos disponibles</p>

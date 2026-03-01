@@ -67,38 +67,44 @@ public class AuxiliarController {
      */
     @GetMapping("/index")
     public String showIndex(Model model, Principal principal) {
+        // 1. Carga de eventos de forma segura
+        List<Event> allEvents = eventService.findPaginated(0, 3);
         List<Event> eventsTop = new ArrayList<>();
         List<Event> eventsBottom = new ArrayList<>();
+
+        for (Event e : allEvents) {
+            if (e != null) { // Seguridad ante todo
+                eventsTop.add(e);
+                eventsBottom.add(e); // Simplificado para pruebas
+            }
+        }
+
+        // 2. Carga de artistas (SOLUCIÓN AL ERROR 500)
         List<Map<String, Object>> artists = new ArrayList<>();
-
-        long i;
-        for (i = 1; i <= 3; i++) {
-            Event event = eventService.findById(i);
-            eventsTop.add(event);
-            if (i != 3) {
-                eventsBottom.add(event);
-            }
-        }
-
-        for (i = 1; i < 5; i++) {
+        for (long i = 1; i < 5; i++) {
             Artist artist = artistService.findById(i);
-            
-            Map<String, Object> artistInfo = new HashMap<>();
-            artistInfo.put("artist", artist);
-            artistInfo.put("eventsIncoming", artist.getEventsIncoming() != null ? artist.getEventsIncoming().size(): 0);
-            
-            artists.add(artistInfo);
-        }
-        
-        if (principal != null) {
-            Optional<Client> client = clientRepository.findByEmail(principal.getName());
-            if (client.isPresent()) {
-                ClientRecommendationService clientService = new ClientRecommendationService(client.get());
-                List<Event> recommended = recommendationService.recommendEvents(
-                        clientService, serverService, 5, true
-                );
-                model.addAttribute("recommendedEvents", recommended);
+            if (artist != null) { // SI EL ARTISTA NO EXISTE, NO LO METEMOS
+                Map<String, Object> artistInfo = new HashMap<>();
+                artistInfo.put("artist", artist);
+                // Comprobamos si tiene eventos para no romper al hacer .size()
+                int incoming = (artist.getEventsIncoming() != null) ? artist.getEventsIncoming().size() : 0;
+                artistInfo.put("eventsIncoming", incoming);
+                artists.add(artistInfo);
             }
+        }
+
+        // 3. Recomendaciones (Solo si el Principal existe)
+        if (principal != null) {
+            clientRepository.findByEmail(principal.getName()).ifPresent(c -> {
+                try {
+                    ClientRecommendationService crs = new ClientRecommendationService(c);
+                    List<Event> recommended = recommendationService.recommendEvents(crs, serverService, 5, true);
+                    model.addAttribute("recommendedEvents", recommended);
+                } catch (Exception e) {
+                    // Si el algoritmo falla, el usuario logueado sigue viendo el index sin romper
+                    System.out.println("Error en algoritmo: " + e.getMessage());
+                }
+            });
         }
 
         model.addAttribute("eventsTop", eventsTop);
