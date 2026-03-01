@@ -1,6 +1,5 @@
 package es.tickethub.tickethub.security;
 
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -13,13 +12,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class CSRFHandlerConfiguration implements WebMvcConfigurer {
-
+	// Register a custom interceptor for handling CSRF tokens
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new CSRFHandlerInterceptor());
 	}
 }
 
+// Custom interceptor to automatically add CSRF tokens to the model
 class CSRFHandlerInterceptor implements HandlerInterceptor {
 
 	@Override
@@ -27,7 +27,7 @@ class CSRFHandlerInterceptor implements HandlerInterceptor {
 			final ModelAndView modelAndView) throws Exception {
 
 		if (modelAndView != null) {
-
+			// token generation
 			CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
 			if (token != null) {
 				modelAndView.addObject("token", token.getToken());
