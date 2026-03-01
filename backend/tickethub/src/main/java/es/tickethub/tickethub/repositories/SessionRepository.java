@@ -6,8 +6,9 @@ import es.tickethub.tickethub.entities.Session;
 import java.sql.Timestamp;
 import java.util.List;
 
-public interface SessionRepository extends JpaRepository<Session, Long>{
-    // It searches an attribute Event in Session then enters Event and picks the EventID
+public interface SessionRepository extends JpaRepository<Session, Long> {
+    // It searches an attribute Event in Session then enters Event and picks the
+    // EventID
     List<Session> findByEvent_EventID(Long eventID);
 
     // Search for a session starting now or on a specific day and time

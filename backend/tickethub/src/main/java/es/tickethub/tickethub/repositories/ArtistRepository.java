@@ -8,7 +8,7 @@ import java.util.Optional;
 
 //Id = Artist, type = Long
 
-public interface ArtistRepository extends JpaRepository<Artist, Long>{
+public interface ArtistRepository extends JpaRepository<Artist, Long> {
 
     Optional<Artist> findByArtistName(String name);
 
