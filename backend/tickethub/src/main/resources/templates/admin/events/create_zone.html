@@ -28,7 +28,7 @@
     <!--This is needed to make a difference between the form that will be to create a new zone and the form to edit one-->
     <form method="post"
       action="/admin/events/edit_event/{{eventID}}/{{#zone}}edit_zone/{{id}}{{/zone}}{{^zone}}create_zone{{/zone}}">
-
+      <input type="hidden" name="_csrf" value="{{token}}">
       {{#zone}}
       <input type="hidden" name="id" value="{{zone.id}}" required>
       {{/zone}}

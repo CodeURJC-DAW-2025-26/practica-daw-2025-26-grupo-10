@@ -25,7 +25,7 @@
     </h2>
 
     <form method="post" action="/admin/discounts/{{#discount}}edit_discount/{{discount.discountID}}{{/discount}}{{^discount}}create_discount{{/discount}}">
-
+      <input type="hidden" name="_csrf" value="{{token}}">
       {{#discount.discountID}}
         <input type="hidden" name="id" value="{{discountID}}" required>
       {{/discount.discountID}}

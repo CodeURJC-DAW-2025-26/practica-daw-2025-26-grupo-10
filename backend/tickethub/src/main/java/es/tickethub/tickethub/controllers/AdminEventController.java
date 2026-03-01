@@ -49,7 +49,7 @@ public class AdminEventController {
     public String showManageEvents(Model model) {
         model.addAttribute("events", eventService.findAll());
 
-        return "/admin/events/manage_events";
+        return "admin/events/manage_events";
     }
 
     // To show the create_event view
@@ -61,7 +61,7 @@ public class AdminEventController {
         model.addAttribute("allArtists", allArtists);
         model.addAttribute("allZones", allZones);
         model.addAttribute("allDiscounts", allDiscounts);
-        return "/admin/events/create_event";
+        return "admin/events/create_event";
     }
 
     // To create a new event

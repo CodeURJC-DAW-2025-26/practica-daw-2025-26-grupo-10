@@ -20,6 +20,6 @@ public class AdminSessionController {
     public String manageSessions(@PathVariable Long id, Model model) {
         Event event = eventService.findById(id);
         model.addAttribute("event", event);
-        return "/admin/events/manage_sessions";
+        return "admin/events/manage_sessions";
     }
 }

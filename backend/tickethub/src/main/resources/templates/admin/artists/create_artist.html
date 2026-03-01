@@ -30,7 +30,7 @@
 
     <form method="post" enctype="multipart/form-data"
       action="/admin/artists/{{#artist}}edit_artist/{{artistID}}{{/artist}}{{^artist}}create_artist{{/artist}}">
-
+      <input type="hidden" name="_csrf" value="{{token}}">
 
       {{#artist.artistID}}
       <input type="hidden" name="artistID" value="{{artist.artistID}}">
