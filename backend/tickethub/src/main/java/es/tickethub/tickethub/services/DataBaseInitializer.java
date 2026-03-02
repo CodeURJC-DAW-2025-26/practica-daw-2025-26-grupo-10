@@ -86,18 +86,18 @@ public class DataBaseInitializer {
         List <List <Image>> allImages = new ArrayList<>();
 
         List <Image> artistImages = Arrays.asList(
-            new Image("imagen1", convertToBlob(loadImage("database-diagram.png"))),
-            new Image("imagen2", convertToBlob(loadImage("database-diagram.png"))),
-            new Image("imagen3", convertToBlob(loadImage("database-diagram.png"))),
-            new Image("imagen4", convertToBlob(loadImage("database-diagram.png"))),
-            new Image("imagen5", convertToBlob(loadImage("database-diagram.png"))),
-            new Image("imagen6", convertToBlob(loadImage("database-diagram.png"))),
-            new Image("imagen7", convertToBlob(loadImage("database-diagram.png"))),
-            new Image("imagen8", convertToBlob(loadImage("database-diagram.png"))),
-            new Image("imagen9", convertToBlob(loadImage("database-diagram.png"))),
-            new Image("imagen10", convertToBlob(loadImage("database-diagram.png"))),
-            new Image("imagen11", convertToBlob(loadImage("database-diagram.png"))),
-            new Image("imagen12", convertToBlob(loadImage("database-diagram.png")))
+            new Image("imagen1", convertToBlob(loadImage("duki.jpg"))),
+            new Image("imagen2", convertToBlob(loadImage("default-avatar.png"))),
+            new Image("imagen3", convertToBlob(loadImage("default-avatar.png"))),
+            new Image("imagen4", convertToBlob(loadImage("default-avatar.png"))),
+            new Image("imagen5", convertToBlob(loadImage("default-avatar.png"))),
+            new Image("imagen6", convertToBlob(loadImage("default-avatar.png"))),
+            new Image("imagen7", convertToBlob(loadImage("default-avatar.png"))),
+            new Image("imagen8", convertToBlob(loadImage("default-avatar.png"))),
+            new Image("imagen9", convertToBlob(loadImage("default-avatar.png"))),
+            new Image("imagen10", convertToBlob(loadImage("default-avatar.png"))),
+            new Image("imagen11", convertToBlob(loadImage("default-avatar.png"))),
+            new Image("imagen12", convertToBlob(loadImage("default-avatar.png")))
         );
 
         List <Image> clientImages = Arrays.asList(
@@ -108,8 +108,12 @@ public class DataBaseInitializer {
 
         List <Image> eventImages = Arrays.asList(
             // adding .png to the name
-            new Image("eventImage1.png", convertToBlob(loadImage("classes-diagram.png"))),
-            new Image("eventImage2.png", convertToBlob(loadImage("database-diagram.png")))
+            new Image("eventImage1.jpg", convertToBlob(loadImage("concierto.jpg"))),
+            new Image("eventImage2.jpg", convertToBlob(loadImage("images.jpg"))),
+            new Image("eventImage3.png", convertToBlob(loadImage("concert_background.png"))),
+            new Image("eventImage4.jpg", convertToBlob(loadImage("concierto.jpg"))),
+            new Image("eventImage5.jpg", convertToBlob(loadImage("images.jpg"))),
+            new Image("eventImage6.png", convertToBlob(loadImage("concert_background.png")))
         );
 
         allImages.addFirst(artistImages);   //We add the artistImages list to the big list
@@ -151,19 +155,19 @@ public class DataBaseInitializer {
         */
 
         List<Event> events = Arrays.asList(
-            new Event("Concierto Duki Wizink Center", artists.get(0), null, null, "Wizink Center", "Música", eventImages, 3),
+            new Event("Concierto Duki Wizink Center", artists.get(0), null, null, "Wizink Center", "Música", eventImages.subList(0, 3) , 3),
             new Event("Film Symphony Orchestra Wizink Center", artists.get(1), null, null, "Wizink Center", "Música", null,4),
             new Event("Concierto Aitana Wizink Center", artists.get(2), null, null, "Wizink Center", "Música", null,2),
             new Event("El show de Juan Dávila", artists.get(3), null, null, "Palacio Vistalegre", "Comedia", null,6),
             new Event("Riendo con Galder Varas", artists.get(4), null, null, "Palacio Vistalegre", "Comedia", null,2),
-            new Event("Noche de Rock Urbano", artists.get(5), null, null, "WiZink Center", "Rock", null,3),
-            new Event("Festival Indie Madrid", artists.get(6), null, null, "IFEMA", "Indie", null,3),
-            new Event("Electro Night Experience", artists.get(7), null, null, "La Riviera", "Electrónica", null,4),
-            new Event("Jazz & Soul Sessions", artists.get(8), null, null, "Teatro Real", "Jazz", null,4),
-            new Event("Trap Revolution T", artists.get(0), null, null, "Palacio Vistalegre", "Trap", null,5),
-            new Event("Clásicos del Pop Español", artists.get(9), null, null, "Movistar Arena", "Pop", null,1),
-            new Event("Festival Flamenco Fusión", artists.get(10), null, null, "Teatro Circo Price", "Flamenco", null,2),
-            new Event("Metal Legends Live", artists.get(11), null, null, "Auditorio Miguel Ríos", "Metal", null,3)
+            new Event("Noche de Rock Urbano", artists.get(5), null, null, "WiZink Center", "Música", null,3),
+            new Event("Festival Indie Madrid", artists.get(6), null, null, "IFEMA", "Música", null,3),
+            new Event("Electro Night Experience", artists.get(7), null, null, "La Riviera", "Música", null,4),
+            new Event("Jazz & Soul Sessions", artists.get(8), null, null, "Teatro Real", "Música", null,4),
+            new Event("Trap Revolution T", artists.get(0), null, null, "Palacio Vistalegre", "Música", eventImages.subList(3, 6),5),
+            new Event("Clásicos del Pop Español", artists.get(9), null, null, "Movistar Arena", "Música", null,1),
+            new Event("Festival Flamenco Fusión", artists.get(10), null, null, "Teatro Circo Price", "Música", null,2),
+            new Event("Metal Legends Live", artists.get(11), null, null, "Auditorio Miguel Ríos", "Música", null,3)
         );
 
         for (Event event : events) {
