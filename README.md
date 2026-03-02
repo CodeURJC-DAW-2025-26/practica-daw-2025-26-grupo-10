@@ -308,7 +308,7 @@ Página la cual muestras los usuarios presentes en el sistema con la capacidad d
 
 Diagrama mostrando las entidades, sus campos y relaciones:
 
-![Diagrama Entidad-Relación](backend/tickethub/src/main/resources/static/images/database-diagram.jpg)
+![Diagrama Entidad-Relación](backend/tickethub/src/main/resources/static/images/database-diagram.png)
 
 > [Descripción opcional: Ej: "El diagrama muestra las 4 entidades principales: Usuario, Producto, Pedido y Categoría, con sus respectivos atributos y relaciones 1:N y N:M."]
 
@@ -316,7 +316,7 @@ Diagrama mostrando las entidades, sus campos y relaciones:
 
 Diagrama de clases de la aplicación con diferenciación por colores o secciones:
 
-![Diagrama de Clases](backend/tickethub/src/main/resources/static/images/classes-diagram.png)
+![Diagrama de Clases](backend/tickethub/src/main/resources/static/images/classes-diagram.jpg)
 
 > [Descripción opcional del diagrama y relaciones principales]
 
