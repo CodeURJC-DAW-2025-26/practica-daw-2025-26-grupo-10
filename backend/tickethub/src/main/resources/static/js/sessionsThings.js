@@ -96,19 +96,4 @@ if (sessionsBody && addSessionBtn) {
     });
 
   });
-
-  // DELETE SESSION
-  document.addEventListener('click', function (e) {
-
-    const btn = e.target.closest('.delete-item');
-    if (!btn) return;
-
-    const id = btn.dataset.id;
-    const baseUrl = btn.dataset.url;
-
-    if (!id || !baseUrl) return;
-
-    deleteItem(baseUrl, btn);
-
-  });
 }

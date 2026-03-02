@@ -99,6 +99,7 @@ public class SessionService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sesión no encontrada");
         }
         Session session = optionalSession.get();
+        session.setEvent(null);
         sessionRepository.deleteById(session.getSessionID());
     }
 
