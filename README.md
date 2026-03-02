@@ -181,88 +181,105 @@ Solo si ha cambiado.
 Todas las páginas públicas comparten el mismo header (marca TicketHub, navegación Inicio/Eventos/Artistas, botones Iniciar sesión y Registrarse) y el mismo footer (texto, Sobre nosotros, enlaces rápidos y redes sociales).
 
 #### **1. Página Principal / Home**
-![Main Page](backend/tickethub/src/main/resources/static/images/pages/public/index.png)
-La página de inicio muestra el título ‘Próximos eventos’, tres filtros (fecha, categoría y artista) y una cuadrícula de tarjetas de evento con imagen, nombre, fecha y hora, artista y un botón para ver el detalle
+![Main Page](backend/tickethub/src/main/resources/static/images/images_part1/cliente/Capturadepantalla2026-03-01221029.png)
+La página de inicio muestra el título ‘Disponibles próximamente’, "Eventos más vendidos" y "Artistas" esto para cuando no se inicia sesión, con la sesión iniciada como cliente aparece el campo "Recomendaciones para ti".
 
 #### **2. Página Eventos**
-![Event Page](backend/tickethub/src/main/resources/static/images/pages/public/event.png)
-Ficha de evento con fecha, hora y lugar destacados, texto descriptivo, enlace para ver al artista y bloque de compra con precio y botón “Comprar entrada”
+![Events Page](backend/tickethub/src/main/resources/static/images/images_part1/cliente/Capturadepantalla2026-03-01221058.png)
+Ficha de evento con fecha, hora, tipo y artistas y se muestran los elementos filtrados
 
-#### **3. Página de Confirmación**
-![Confirmation Page](backend/tickethub/src/main/resources/static/images/pages/public/confirmation.png)
+#### **3. Página de Artistas**
+![Confirmation Page](backend/tickethub/src/main/resources/static/images/images_part1/cliente/Capturadepantalla2026-03-01221130.png)
 Mensaje de compra exitosa con alerta de confirmación, lista de resumen (evento, tipo de entrada, total) y botones para descargar PDF o volver al inicio
 
 #### **4. Página Artista**
-![Artist Page](backend/tickethub/src/main/resources/static/images/pages/public/artist.png)
+![Artist Page](backend/tickethub/src/main/resources/static/images/images_part1/cliente/Capturadepantalla2026-03-01221407.png)
 Perfil del artista con foto circular, biografía corta, lista de próximos eventos y botones hacia redes sociales (Instagram/Twitter).
 
-#### **5. Página de Inicio de Sesión**
-![Login Page](backend/tickethub/src/main/resources/static/images/pages/public/login.png)
+#### **5. Página evento**
+![Event Page](backend/tickethub/src/main/resources/static/images/images_part1/cliente/Capturadepantalla2026-03-01221348.png)
+Perfil del evento seleccionado con a información correspondiente.
+
+#### **6. Página comprar entradas**
+![Purchase Page](backend/tickethub/src/main/resources/static/images/images_part1/cliente/Capturadepantalla2026-03-01221434.png)
+Pagina con un formulario para realizar la compra de entradas para el evento y sesión seleccionado
+
+#### **7. Página comprar finalizada**
+![Purchase confirmation](backend/tickethub/src/main/resources/static/images/images_part1/cliente/Capturadepantalla2026-03-01221454.png)
+Pagina que indica la confirmación de la compra realizada por el usuario
+
+#### **8. Página de Inicio de Sesión**
+![Login Page](backend/tickethub/src/main/resources/static/images/images_part1/cliente/Capturadepantalla2026-03-01220842.png)
 Formulario centrado de inicio de sesión con campos de correo y contraseña y botón “Entrar”.
 
-#### **6. Página de Compra**
-![Purchase Page](backend/tickethub/src/main/resources/static/images/pages/public/purchase.png)
-Formulario de compra con selector de tipo de entrada, cantidad, cálculo de total y sección de pago (número de tarjeta, titular) más botón “Confirmar compra”.
+#### **9. Página Registro**
+![SignUp Page](backend/tickethub/src/main/resources/static/images/images_part1/cliente/Capturadepantalla2026-03-01220640.png)
+Formulario de registro con campos de nombre, apellidos, correo, contraseña y confirmación de contraseña, botón “Registrarse”.
 
-#### **7. Página Registro**
-![SignUp Page](backend/tickethub/src/main/resources/static/images/pages/public/sign-up.png)
-Formulario de registro con campos de nombre, correo, contraseña y confirmación, botón “Registrarse”.
-
-#### **7. Perfil Usuario**
-![Profile Page](backend/tickethub/src/main/resources/static/images/images_part1/cliente/Captura de pantalla 2026-03-01 221246.png)
+#### **10. Perfil Usuario**
+![profile Page](backend/tickethub/src/main/resources/static/images/images_part1/cliente/Capturadepantalla2026-03-01221246.png)
 Página en la que se muesta la informacion general del usuario.
 
-#### **7. Editar Perfil**
-![Edit Profile](backend/tickethub/src/main/resources/static/images/images_part1/cliente/Captura de pantalla 2026-03-01 221301.png)
+#### **11. Editar Perfil**
+![Edit Profile](backend/tickethub/src/main/resources/static/images/images_part1/cliente/Capturadepantalla2026-03-01221301.png)
 Página en la que se muesta un formulario para editar la información del usuario.
 
-#### **7. Cambiar Contraseñas**
-![Change Password](backend/tickethub/src/main/resources/static/images/images_part1/cliente/Captura de pantalla 2026-03-01 221326.png)
+#### **12. Cambiar Contraseñas**
+![Change Password](backend/tickethub/src/main/resources/static/images/images_part1/cliente/Capturadepantalla2026-03-01221326.png)
 Página en la que se muesta un formulario para editar la contraseña del usuario.
 
-#### **7. Ver Compras del Cliente**
-![Purchase page](backend/tickethub/src/main/resources/static/images/images_part1/cliente/Captura de pantalla 2026-03-01 221313.png)
+#### **13. Ver Compras del Cliente**
+![Purchase Client page](backend/tickethub/src/main/resources/static/images/images_part1/cliente/Capturadepantalla2026-03-01221313.png)
 Página en la que se muesta las compras paginadas y los tickets de cada compra.
 
-#### **8. Página Error 403**
+#### **14. Página Error 403**
 ![Error403 Page](backend/tickethub/src/main/resources/static/images/pages/errors/403.png)
 Pantalla de acceso no autorizado con código 403, mensaje “Acceso no autorizado” y botón para volver al inicio.
 
-#### **9. Página Error 404**
+#### **15. Página Error 404**
 ![Error404 Page](backend/tickethub/src/main/resources/static/images/pages/errors/404.png)
 Pantalla de página no encontrada con código 404, mensaje “Página no encontrada” y botón para volver al inicio.
 
-#### **10. Página Administrador**
-![Admin Page](backend/tickethub/src/main/resources/static/images/pages/admin/admin.png)
-Panel con KPIs en tarjetas (entradas vendidas, eventos activos, usuarios, próximos eventos) y botones para crear/gestionar eventos y artistas o ver estadísticas.
+#### **16. Página Administrador**
+![Admin Page](backend/tickethub/src/main/resources/static/images/images_part1/admin/Capturadepantalla2026-03-01221829.png)
+Panel con KPIs en tarjetas (entradas vendidas, eventos activos, usuarios) y botones para crear/gestionar eventos, artistas y descuentos o ver estadísticas.
 
-#### **11. Página Crear Artista**
-![Create_artist Page](backend/tickethub/src/main/resources/static/images/pages/admin/create_artist.png)
-Formulario para crear artista con campos de nombre, biografía, Instagram y Twitter, y botón “Crear Artista”.
+#### **17. Página Crear/Editar Artista**
+![Create_artist Page](backend/tickethub/src/main/resources/static/images/images_part1/admin/Capturadepantalla2026-0301222527.png)
+Formulario para crear artista con campos de nombre, informacion, Instagram, Twitter e imagen, finalmente el botón “Crear Artista”, para el caso de editar simplemente se precarga la información.
 
-#### **12. Página Crear Evento**
-![Create_event Page](backend/tickethub/src/main/resources/static/images/pages/admin/create_event.png)
+#### **18. Página Crear Evento**
+![Create_event Page](backend/tickethub/src/main/resources/static/images/images_part1/admin/Capturadepantalla2026-03-01221853.png)
 Formulario de alta de evento con campos de nombre, descripción, fecha, hora, lugar y precio, botón “Crear Evento”
 
-#### **13. Página Editar Artista**
-![Edit_Artist Page](backend/tickethub/src/main/resources/static/images/pages/admin/edit_artist.png)
-Formulario de edición de artista con campos precargados de nombre, biografía e identificadores de redes, botón “Guardar cambios”.
+#### **19. Página Editar Evento**
+![Edit_event Page](backend/tickethub/src/main/resources/static/images/images_part1/admin/Capturadepantalla2026-03-01222508.png)
+Formulario de alta de evento con campos de nombre, descripción, fecha, hora, lugar y precio, botón “Crear Evento”
 
-#### **14. Página Editar Evento**
-![Edit_Event Page](backend/tickethub/src/main/resources/static/images/pages/admin/edit_event.png)
-Formulario de edición de evento con datos cargados (nombre, descripción, fecha, hora, lugar, precio) y botón “Guardar Cambios”.
+#### **20. Página Crear/Editar Descuento**
+![Edit_discount Page](backend/tickethub/src/main/resources/static/images/images_part1/admin/Capturadepantalla2026-03-01223118.png)
+Formulario de alta de descuento con campos de nombre, cantidad y el tipo de descuento que es, finalmente el boton de crear. Para el caso de editar se precargan los datos.
 
-#### **15. Página Administrar Artistas**
-![Manage_artists Page](backend/tickethub/src/main/resources/static/images/pages/admin/manage_artists.png)
-Tabla de artistas con acciones de editar y eliminar, dentro del panel admin.
+#### **21. Página Gestionar Artistas**
+![Manage_artist Page](backend/tickethub/src/main/resources/static/images/images_part1/admin/Capturadepantalla2026-03-01223016.png)
+Tabla en la que se encuentran todos los artistas con las opciones de editarlo o de eliminarlo.
 
-#### **16. Página Administrar Eventos**
-![Manage_Events Page](backend/tickethub/src/main/resources/static/images/pages/admin/manage_events.png)
-Tabla de eventos con acciones de editar y eliminar, dentro del panel admin.mocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."
+#### **22. Página Gestionar Eventos**
+![Manage_event Page](backend/tickethub/src/main/resources/static/images/images_part1/admin/Capturadepantalla2026-03-01221948.png)
+Tabla en la que se encuentran todos los eventos con las opciones de editarlo o de eliminarlo.
 
-#### **17. Página de Estadísticas Administrador**
-![Statistics Page](backend/tickethub/src/main/resources/static/images/pages/admin/statistics.png)
-Vista de estadísticas con dos gráficos (placeholders) para ventas y usuarios, accesible desde el panel admin.
+#### **23. Página Gestionar Descuentos**
+![Manage_discount Page](backend/tickethub/src/main/resources/static/images/images_part1/admin/Capturadepantalla2026-03-01223128.png)
+Tabla en la que se encuentran todos los descuentos con las opciones de editarlo o de eliminarlo.
+
+#### **24. Página Estadisticas**
+![Estadistics Page](backend/tickethub/src/main/resources/static/images/images_part1/admin/Capturadepantalla2026-03-01223037.png)
+Página la cual muestras las estadísticas del sistema
+
+#### **25. Página Usuarios registrados**
+![Users_sistem Page](backend/tickethub/src/main/resources/static/images/images_part1/admin/pagina_usuarios_admin.png)
+Página la cual muestras los usuarios presentes en el sistema con la capacidad de editarlos
+
 ---
 
 ### **Instrucciones de Ejecución**
@@ -291,7 +308,7 @@ Vista de estadísticas con dos gráficos (placeholders) para ventas y usuarios, 
 
 Diagrama mostrando las entidades, sus campos y relaciones:
 
-![Diagrama Entidad-Relación](backend/tickethub/src/main/resources/static/images/database-diagram.png)
+![Diagrama Entidad-Relación](backend/tickethub/src/main/resources/static/images/database-diagram.jpg)
 
 > [Descripción opcional: Ej: "El diagrama muestra las 4 entidades principales: Usuario, Producto, Pedido y Categoría, con sus respectivos atributos y relaciones 1:N y N:M."]
 
