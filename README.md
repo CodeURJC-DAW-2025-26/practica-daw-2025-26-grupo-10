@@ -173,7 +173,7 @@ Vista de estadísticas con dos gráficos (placeholders) para ventas y usuarios, 
 
 #### **Diagrama de Navegación**
 
-Solo si ha cambiado.
+![Navigation-diagram](backend/tickethub/src/main/resources/static/images/navigation-diagram.png)
 
 #### **Capturas de Pantalla Actualizadas**
 
