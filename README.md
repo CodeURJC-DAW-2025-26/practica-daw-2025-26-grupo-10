@@ -166,7 +166,7 @@ Vista de estadísticas con dos gráficos (placeholders) para ventas y usuarios, 
 ## 🛠 **Práctica 1: Web con HTML generado en servidor y AJAX**
 
 ### **Vídeo de Demostración**
-📹 **[Enlace al vídeo en YouTube](https://www.youtube.com/watch?v=x91MPoITQ3I)**
+📹 **[Enlace al vídeo en YouTube](https://youtu.be/l-IrK3KxkAc)**
 > Vídeo mostrando las principales funcionalidades de la aplicación web.
 
 ### **Navegación y Capturas de Pantalla**
