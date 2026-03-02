@@ -50,4 +50,8 @@ public class User {
         this.password = password;
         this.admin = admin;
     }
+
+    public Long getId() {
+        return this.userID;
+    }
 }

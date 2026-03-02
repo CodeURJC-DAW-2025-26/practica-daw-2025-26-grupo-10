@@ -101,7 +101,9 @@ public class DataBaseInitializer {
         );
 
         List <Image> clientImages = Arrays.asList(
-            new Image("clientImage1", convertToBlob(loadImage("default-avatar.png")))
+            new Image("clientImage1", convertToBlob(loadImage("default-avatar.png"))),
+            new Image("clientImage2", convertToBlob(loadImage("default-avatar.png")))
+
         );
 
         List <Image> eventImages = Arrays.asList(
@@ -194,11 +196,14 @@ public class DataBaseInitializer {
     }
 
     public Client initializeUsers(List <Image> clientImages) {
-
         Client defaultClient = new Client("pepe@gmail.com", "PepeG", passwordEncoder.encode("pepe123"), "Pepe", "Garcia", 33, 666666666, BigDecimal.ZERO, null, null, clientImages.get(0));
+        Client defaultClient1 = new Client("manolo@gmail.com", "Manolin", passwordEncoder.encode("manolo123"), "Manolo", "Pérez", 19, 777777777, BigDecimal.ZERO, null, null, clientImages.get(1));
+
         Admin defaultAdmin = new Admin("adminEmail@gmail.com", "newAdmin", passwordEncoder.encode("admin"));
 
         userRepository.save(defaultClient);
+        userRepository.save(defaultClient1);
+
         userRepository.save(defaultAdmin);
 
         return defaultClient;

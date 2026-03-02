@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gestión de Usuarios</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+</head>
+
+<body>
+    {{>components/header_admin}}
+
+    <body class="d-flex flex-column min-vh-100">
+        <h2>Lista de Usuarios</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Email</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            {{#clients}}
+            <tbody>
+                <tr>
+                    <td>{{name}}</td>
+                    <td>{{surname}}</td>
+                    <td>{{email}}</td>
+                    <td>
+                        <a href="/admin/users/edit/{{id}}" class="btn btn-sm btn-primary">Editar</a>
+                    </td>
+                </tr>
+            </tbody>
+            {{/clients}}
+        </table>
+
+        <div class="d-flex justify-content-end">
+            <a href="/admin/admin" class="btn btn-success">Volver a vista de admin</a>
+        </div>
+        </div>
+
+        {{>components/footer_admin}}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+
+</html>
