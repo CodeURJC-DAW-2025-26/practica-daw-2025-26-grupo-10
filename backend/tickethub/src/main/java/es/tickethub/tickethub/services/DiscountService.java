@@ -11,12 +11,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import es.tickethub.tickethub.entities.Discount;
+import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.repositories.DiscountRepository;
+import es.tickethub.tickethub.repositories.EventRepository;
 
 @Service
 public class DiscountService {
     @Autowired
     DiscountRepository discountRepository;
+
+    @Autowired
+    EventRepository eventRepository;
 
     public Discount findById(Long discountID) {
         Optional<Discount> discountOptional = discountRepository.findById(discountID);
@@ -31,6 +36,14 @@ public class DiscountService {
         List<Discount> discounts = discountRepository.findAll();
         if (discounts.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No hay descuentos registrados");
+        }
+        return discounts;
+    }
+
+    public List<Discount> getDiscountsByEvent(Long eventID) {
+        List<Discount> discounts = eventRepository.findById(eventID).get().getDiscounts();
+        if (discounts.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No hay descuentos registrados para este evento");
         }
         return discounts;
     }
@@ -60,6 +73,10 @@ public class DiscountService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Descuento no encontrado");
         }
         Discount discount = optionalDiscount.get();
+        for (Event event : discount.getEvents()) {
+            event.getDiscounts().remove(discount);
+            eventRepository.save(event);
+        }
         discountRepository.deleteById(discount.getDiscountID());
     }
 

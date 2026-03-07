@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
@@ -71,6 +72,9 @@ public class Event {
      * associated to more events
      */
 
+    @ManyToMany
+    private List<Discount> discounts = new ArrayList<>();
+
     @Column(nullable = false)
     @NotBlank(message = "El lugar del evento es obligatorio")
     private String place;
@@ -94,7 +98,7 @@ public class Event {
     // Constructor of the class (we have to put all the parameters that can not be
     // null in the database)
     public Event(String name, Artist artist,
-            List<Session> sessions, List<Zone> zones, String place,
+            List<Session> sessions, List<Zone> zones, List<Discount> discounts, String place,
             String category, List<Image> eventImages, Integer targetAge) {
 
         this.name = name;
@@ -107,6 +111,9 @@ public class Event {
             this.zones = zones;
             this.capacity = zones.stream().mapToInt(Zone::getCapacity).sum(); // This adds the capacity of all the zones
                                                                               // to set the total capacity of the event
+        }
+        if (discounts != null) {
+            this.discounts = discounts;
         }
         this.place = place;
         this.category = category;

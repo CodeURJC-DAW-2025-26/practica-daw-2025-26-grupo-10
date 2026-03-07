@@ -74,7 +74,7 @@ public class PublicEventController {
     public String showPurchaseFromEvent(@PathVariable Long eventID, Model model) {
         Event event = eventService.findById(eventID);
         List<Zone> zones = zoneService.findAll();
-        List<Discount> discounts = discountService.getAllDiscounts();
+        List<Discount> discounts = event.getDiscounts();
 
         model.addAttribute("event", event);
         model.addAttribute("zones", zones);

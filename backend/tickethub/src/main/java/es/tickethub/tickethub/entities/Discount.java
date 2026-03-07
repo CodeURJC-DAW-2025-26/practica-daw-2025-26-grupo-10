@@ -1,12 +1,15 @@
 package es.tickethub.tickethub.entities;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.DecimalMin;
 import lombok.Getter;
@@ -37,6 +40,9 @@ public class Discount {
     @Column(nullable = false, precision = 5, scale = 2)
     @DecimalMin(value = "0.00")
     private BigDecimal ammount;
+
+    @ManyToMany
+    private List<Event> events = new ArrayList<>();
 
     @Transient
     private boolean selected;

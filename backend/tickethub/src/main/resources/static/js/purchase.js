@@ -96,6 +96,34 @@ function updateTotalPrice() {
     if (priceDisplay) priceDisplay.innerText = total.toFixed(2);
 }
 
+/** 
+ * Changes the available options in discount dropdowns to prevent selecting the same discount multiple times.
+ * This must be changed to delete the option from the select instead of disabling it
+*/
+function updateAvailableDiscounts() {
+    const selects = document.querySelectorAll(".discount-select");
+
+    const selectedValues = [...selects]
+        .map(s => s.value)
+        .filter(v => v !== "");
+
+    selects.forEach(select => {
+        const currentValue = select.value;
+
+        [...select.options].forEach(option => {
+
+            if (option.value === "") return;
+
+            if (selectedValues.includes(option.value) && option.value !== currentValue) {
+                option.disabled = true;
+            } else {
+                option.disabled = false;
+            }
+
+        });
+    });
+}
+
 /**
  * Generates ticket rows dynamically based on the selected count.
  */
@@ -135,14 +163,15 @@ function addDiscountSelect() {
         </div>
     `);
     updateTotalPrice();
+    updateAvailableDiscounts();
 }
 
-addDiscountSelect();
 document.addEventListener("change", e => {
     if (e.target.classList.contains("zone-select") ||
         e.target.classList.contains("discount-select") ||
         e.target.id === "sessionSelect") {
         updateTotalPrice();
+        updateAvailableDiscounts();
     }
 });
 
@@ -160,6 +189,7 @@ if (discountContainer) {
         if (e.target.classList.contains("remove-discount")) {
             e.target.closest(".discount-item").remove();
             updateTotalPrice();
+            updateAvailableDiscounts();
         }
     });
 }
