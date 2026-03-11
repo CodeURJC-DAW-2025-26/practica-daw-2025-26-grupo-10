@@ -92,7 +92,7 @@
 
       <p class="fw-bold mb-1">Sesiones</p>
       {{#event}}
-      <a href="/admin/events/{{eventID}}/manage_sessions" class="btn btn-info mb-3">
+      <a href="/admin/events/{{eventID}}/manage_sessions" class="btn btn-manage mb-3">
         Gestionar Sesiones
       </a>
       {{/event}}
@@ -139,7 +139,7 @@
         </div>
         {{/event.Zones}}
       </div>
-      <a class="btn btn-secondary mb-3" href="/admin/events/edit_event/{{event.eventID}}/manage_zones">Gestionar
+      <a class="btn btn-manage mb-3" href="/admin/events/edit_event/{{event.eventID}}/manage_zones">Gestionar
         zonas</a>
       {{/event}}
 
@@ -205,14 +205,14 @@
 
       </div>
       {{#event}}
-      <button type="button" class="btn btn-primary mb-3" id="add-discount">Agregar descuento</button>
+      <button type="button" class="btn btn-add mb-3" id="add-discount">Agregar descuento</button>
       {{/event}}
 
       <p class="fw-bold mb-1">Imágenes</p>
       <input type="file" name="images" class="form-control mb-3" multiple>
 
       <div class="d-flex justify-content-between mt-3">
-        <a href="/admin/admin" class="btn btn-secondary">Cancelar</a>
+        <a href="/admin/admin" class="btn btn-outline-primary">Cancelar</a>
 
         <button type="submit" class="btn btn-success">
           {{#event}}Guardar cambios{{/event}}

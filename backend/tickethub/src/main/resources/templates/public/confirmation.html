@@ -25,7 +25,6 @@
         </div>
 
         <div class="container my-5 text-center">
-            <div class="alert alert-success">Compra realizada con éxito</div>
             {{#purchase}}
             <li class="list-group-item"><strong>ID de Pedido:</strong> #{{purchaseID}}</li>
             {{#event}}
@@ -41,10 +40,10 @@
         </div>
 
         <div class="mt-4 gap-2">
+            <a href="/public/index" class="btn btn-primary">Volver al inicio</a>
             <a href="/purchases/download/{{purchase.purchaseID}}" class="btn btn-outline-primary">
                 Descargar entradas (PDF)
-            </a>
-            <a href="/public/index" class="btn btn-primary">Volver al inicio</a>
+            </a>        
         </div>
     </div>
 

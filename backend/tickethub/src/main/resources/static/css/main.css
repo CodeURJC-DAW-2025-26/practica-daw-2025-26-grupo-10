@@ -131,6 +131,17 @@ main .container,
     margin: 0 !important;
 }
 
+.btn-admin-pair:hover {
+    transform: none !important;
+}
+
+.btn-admin-action {
+    min-width: 150px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .btn-group>.btn-admin-pair {
     border-radius: 0 !important;
 }
@@ -149,6 +160,25 @@ main .container,
 .btn-group.shadow-sm {
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(35, 28, 7, 0.1) !important;
+}
+
+.btn-manage {
+    background-color: transparent !important;
+    border: 1px solid var(--text-muted) !important;
+    color: var(--text-muted) !important;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.btn-manage:hover {
+    background-color: var(--text-muted) !important;
+    color: var(--beige) !important;
+}
+
+.btn-add {
+    background-color: transparent !important;
+    border: 1px dashed var(--vivid-tangerine) !important;
+    color: var(--vivid-tangerine) !important;
 }
 
 /* ==========================================================================
@@ -259,19 +289,6 @@ footer .social-icons a:hover {
 }
 
 /* Socials Buttons */
-.btn-outline-primary {
-    border-color: var(--vivid-tangerine);
-    color: var(--pitch-black);
-    background-color: var(--beige);
-    font-weight: bold;
-    margin: 0.2rem;
-}
-
-.btn-outline-primary:hover {
-    background-color: var(--vivid-tangerine);
-    color: var(--pitch-black);
-    border-color: var(--vivid-tangerine);
-}
 
 .btn-outline-info {
     border-color: var(--vivid-tangerine);
@@ -310,33 +327,6 @@ footer .social-icons a:hover {
 .list-group-item {
     background-color: var(--beige);
     border: 1px solid #ccc;
-    color: var(--pitch-black);
-}
-
-/* Buttons */
-.btn-outline-primary {
-    border-color: var(--vivid-tangerine);
-    color: var(--pitch-black);
-    background-color: var(--beige);
-    font-weight: bold;
-    margin: 0.2rem;
-}
-
-.btn-outline-primary:hover {
-    background-color: var(--vivid-tangerine);
-    color: var(--pitch-black);
-    border-color: var(--vivid-tangerine);
-}
-
-.btn-primary {
-    background-color: var(--vivid-tangerine);
-    border: none;
-    color: var(--pitch-black);
-    font-weight: bold;
-}
-
-.btn-primary:hover {
-    background-color: #ff9500;
     color: var(--pitch-black);
 }
 

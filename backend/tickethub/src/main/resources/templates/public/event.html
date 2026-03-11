@@ -49,22 +49,22 @@
           <div class="card-body">
             <h2>{{event.name}}</h2>
             <!-- example: sessions should be a list inside event if you later add them -->
+            <strong>
+              <p>Sesiones disponibles:</p>
+            </strong>             
             <div class="d-flex align-items-center gap-2 mb-3">
-              <strong>
-                <p>Sesiones disponibles:</p>
-              </strong>
-              <select id="sessionSelect" class="form-select form-control-sm w-auto">
-                <option value="">Seleccionar sesión</option>
+              <ul>
                 {{#event.sessions}}
-                <option value="{{sessionID}}">{{formattedDate}}</option>
+                  <li>
+                    <p>{{formattedDate}}</p>
+                  </li>
                 {{/event.sessions}}
-              </select>
+              </ul>  
             </div>
             <p><strong>Lugar:</strong> {{event.place}}</p>
             <p><strong>Categoría:</strong> {{event.category}}</p>
             <p><strong>Artista:</strong> {{event.artist.artistName}}</p>
             <p><strong>Capacidad:</strong> {{event.capacity}}</p>
-            <p><strong>Precios:</strong> {{event.category}}</p>
             <a href="/public/artist/{{event.artist.artistID}}" class="btn btn-outline-secondary">Ver artista</a>
           </div>
         </div>
@@ -73,8 +73,8 @@
       <div class="row mb-3">
         <div id="event-purchase-index-buttons" class="col d-flex justify-content-between">
 
-          <a href="/public/purchase/{{event.eventID}}" class="btn btn-success">Comprar entradas</a>
           <a href="/public/events" class="btn btn-success">Volver a eventos</a>
+          <a href="/public/purchase/{{event.eventID}}" class="btn btn-success">Comprar entradas</a>
 
         </div>
       </div>
