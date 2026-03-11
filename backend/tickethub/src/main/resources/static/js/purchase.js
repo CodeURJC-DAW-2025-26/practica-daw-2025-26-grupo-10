@@ -67,6 +67,20 @@ function executeSubmit(currentEventId) {
 }
 
 /**
+ * Re-indexes tickets and updates de ticketCount dropdown
+ */
+function reindexTickets() {
+    const cards = document.querySelectorAll(".ticket-card");
+    cards.forEach((card, index) => {
+        card.querySelector("strong").innerText = `Ticket ${index + 1}`;
+    });
+
+    if (ticketSelect) {
+        ticketSelect.value = cards.length;
+    }
+}
+
+/**
  * Calculates the total price based on selected zones and active discounts.
  */
 function updateTotalPrice() {
@@ -111,15 +125,8 @@ function updateAvailableDiscounts() {
         const currentValue = select.value;
 
         [...select.options].forEach(option => {
-
             if (option.value === "") return;
-
-            if (selectedValues.includes(option.value) && option.value !== currentValue) {
-                option.disabled = true;
-            } else {
-                option.disabled = false;
-            }
-
+            option.disabled = (selectedValues.includes(option.value) && option.value !== currentValue);
         });
     });
 }
@@ -179,6 +186,7 @@ if (ticketsContainer) {
     ticketsContainer.addEventListener("click", e => {
         if (e.target.classList.contains("remove-ticket")) {
             e.target.closest(".ticket-card").remove();
+            reindexTickets();
             updateTotalPrice();
         }
     });
