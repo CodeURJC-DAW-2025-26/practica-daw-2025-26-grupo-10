@@ -1,32 +1,20 @@
 package es.tickethub.tickethub.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Slice;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
-import es.tickethub.tickethub.entities.Client;
-import es.tickethub.tickethub.entities.Discount;
-import es.tickethub.tickethub.entities.Purchase;
-import es.tickethub.tickethub.entities.Ticket;
-import es.tickethub.tickethub.entities.Zone;
-import es.tickethub.tickethub.repositories.ClientRepository;
-import es.tickethub.tickethub.entities.Event;
-
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
 
-import es.tickethub.tickethub.services.DiscountService;
-import es.tickethub.tickethub.services.EventService;
-import es.tickethub.tickethub.services.PurchaseService;
-import es.tickethub.tickethub.services.QrService;
-import es.tickethub.tickethub.services.ZoneService;
-import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Slice;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
@@ -34,7 +22,20 @@ import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.properties.AreaBreakType;
-import com.itextpdf.io.image.ImageDataFactory;
+
+import es.tickethub.tickethub.entities.Client;
+import es.tickethub.tickethub.entities.Discount;
+import es.tickethub.tickethub.entities.Event;
+import es.tickethub.tickethub.entities.Purchase;
+import es.tickethub.tickethub.entities.Ticket;
+import es.tickethub.tickethub.entities.Zone;
+import es.tickethub.tickethub.services.ClientService;
+import es.tickethub.tickethub.services.DiscountService;
+import es.tickethub.tickethub.services.EventService;
+import es.tickethub.tickethub.services.PurchaseService;
+import es.tickethub.tickethub.services.QrService;
+import es.tickethub.tickethub.services.ZoneService;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/purchases")
@@ -53,7 +54,7 @@ public class PurchaseController {
     private DiscountService discountService;
 
     @Autowired
-    private ClientRepository clientRepository;
+    private ClientService clientService;
 
     @Autowired
     private QrService qrService;
@@ -122,13 +123,14 @@ public class PurchaseController {
      * Uses CascadeType.ALL to save tickets along with the purchase.
      */
     @PostMapping("/save")
-    public String savePurchase(@RequestParam Long eventId, @RequestParam Long sessionId,
-            @RequestParam String totalPrice, @RequestParam List<Long> zoneIds, Principal principal, Model model) {
+    public String savePurchase(@RequestParam Long eventId, @RequestParam String totalPrice,
+        @RequestParam List<Long> zoneIds, @RequestParam Long sessionId, @RequestParam String email, Model model) {
 
         Event event = eventService.findById(eventId);
-        String email = principal.getName();
-        Client client = clientRepository.findByEmail(email)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
+        Client client = clientService.getClientRepository().findByEmail(email)
+            .orElse(new Client(email, "", "", "", "", 0, 0, BigDecimal.ZERO, null, null, null));
+        
+        clientService.getClientRepository().save(client); // Save the client if it was newly created
 
         Purchase purchase = new Purchase();
         purchase.setClient(client);
@@ -161,7 +163,7 @@ public class PurchaseController {
         model.addAttribute("event", event);
         model.addAttribute("purchase", savedPurchase);
 
-        return "public/confirmation";
+        return "/public/confirmation";
     }
 
     /**

@@ -145,12 +145,12 @@ public class AuxiliarController {
      * THIS IS THE METHOD TO REGISTER A NEW CLIENT.
      */
     @PostMapping("/registration")
-    public String registeClient(@RequestParam String name, @RequestParam String email, @RequestParam String surname,
+    public String registerClient(@RequestParam String name, @RequestParam String email, @RequestParam String surname,
             @RequestParam String password, @RequestParam String passWordConfirmation,
             RedirectAttributes redirectAttributes,
             @RequestParam String username) {
         try {
-            clientService.registeClient(name, email, surname, password, passWordConfirmation, username);
+            clientService.registerClient(name, email, surname, password, passWordConfirmation, username);
             redirectAttributes.addFlashAttribute("success", "¡Cuenta creada! Ya puedes iniciar sesión.");
             return "redirect:/public/login";
 

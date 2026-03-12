@@ -28,30 +28,37 @@ public class ClientService {
     private PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void registeClient(String name, String email, String surname, String password, String passWordConfirmation,
+    public void registerClient(String name, String email, String surname, String password, String passWordConfirmation,
             String username) {
         if (!password.equals(passWordConfirmation)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Las contraseñas no coinciden");
         }
-        boolean existClient = clientRepository.existsByEmail(email);
-        if (existClient) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Este correo electrónico ya está en uso");
-        }
-        existClient = clientRepository.existsByUsername(username);
+        boolean existClient = clientRepository.existsByUsername(username);
         if (existClient) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Este nombre de usuario ya está en uso");
         }
 
-        Client client = new Client();
-        client.setName(name);
-        client.setEmail(email);
-        client.setSurname(surname);
-        client.setUsername(username);
+        Optional <Client> client = clientRepository.findByEmail(email);
+        Client getClient;
+        if (client.isPresent()) {
+            getClient = client.get();
+
+            if (!getClient.getPassword().equals("")) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Este correo electrónico ya pertenece a una cuenta");
+            }
+        } else {
+            getClient = new Client();
+            getClient.setEmail(email);
+        }
+
+        getClient.setName(name);
+        getClient.setSurname(surname);
+        getClient.setUsername(username);
         String encodedPassword = passwordEncoder.encode(password);
-        client.setPassword(encodedPassword);
-        client.setAdmin(false);
-        client.setCoins(BigDecimal.ZERO);
-        clientRepository.save(client);
+        getClient.setPassword(encodedPassword);
+        getClient.setAdmin(false);
+        getClient.setCoins(BigDecimal.ZERO);
+        clientRepository.save(getClient);
     }
 
     @Transactional(readOnly = true)

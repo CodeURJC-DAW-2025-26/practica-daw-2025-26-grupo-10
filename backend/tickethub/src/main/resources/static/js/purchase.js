@@ -1,3 +1,5 @@
+import { showMsg } from "./confirmation.js";
+
 /**
  * Global elements selection
  */
@@ -5,12 +7,13 @@ const ticketSelect = document.getElementById("ticketCount");
 const ticketsContainer = document.getElementById("ticketsContainer");
 const discountContainer = document.getElementById("discountContainer");
 const addDiscountBtn = document.getElementById("addDiscount");
+const goToConfirmationBtn = document.getElementById("goToConfirmation");
 
 /**
  * Validates purchase data and handles authentication checks before submitting.
  * Submits the purchase via a dynamically created POST form to avoid Error 999.
  */
-function goToConfirmation() {
+export function goToConfirmation() {
     const eventIdInput = document.getElementById('currentEventId');
     const currentEventId = eventIdInput ? eventIdInput.value : window.currentEventId;
 
@@ -22,18 +25,37 @@ function goToConfirmation() {
     executeSubmit(currentEventId);
 }
 
+// This allows the function to be called from an HTML
+if (goToConfirmationBtn) {
+    goToConfirmationBtn.addEventListener("click", goToConfirmation);
+}
+
 /**
  * Creates a dynamic form and submits it via POST
  */
 function executeSubmit(currentEventId) {
     const totalPriceElement = document.getElementById('totalPrice');
-    const sessionElement = document.getElementById('sessionSelect');
+    const sessionId = parseInt(document.getElementById('sessionSelect').value) || null;
+    const ticketCount = parseInt(document.getElementById('ticketCount').value) || 0;
+    const ticketZones = [];
+    for (let i = 1; i <= ticketCount; i++) {
+        ticketZones.push(parseInt(document.getElementById(`zone-select-${i}`)?.value) || null);
+    }
 
     const totalRaw = totalPriceElement ? totalPriceElement.innerText : "0";
     const totalClean = totalRaw.replace('€', '').replace(',', '.').trim();
 
-    const sessionId = sessionElement ? sessionElement.value : null;
     const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
+
+    const email = document.querySelector('input[name="email"]').value;
+    const emailConfirm = document.querySelector('input[name="emailConfirm"]').value;
+
+    const cardNumber = parseInt(document.getElementById('cardNumber').value) || null;
+    const cvv = parseInt(document.getElementById('CVV').value) || null;
+
+    if (!htmlConfirmations(sessionId, ticketCount, ticketZones, email, emailConfirm, cardNumber, cvv)) {
+        return;
+    }
 
     const form = document.createElement('form');
     form.method = 'POST';
@@ -42,9 +64,13 @@ function executeSubmit(currentEventId) {
     const fields = {
         'eventId': currentEventId,
         'totalPrice': totalClean,
-        '_csrf': csrfToken,
-        'sessionId': sessionId
+        'sessionId': sessionId,
+        'email': email,
     };
+
+    if (csrfToken) {
+        fields['_csrf'] = csrfToken;
+    }
 
     for (let key in fields) {
         const input = document.createElement('input');
@@ -63,13 +89,34 @@ function executeSubmit(currentEventId) {
     });
 
     document.body.appendChild(form);
+
     form.submit();
+}
+
+function htmlConfirmations(sessionElement, ticketCount, ticketZones, email, emailConfirm, cardNumber, cvv) {
+    // Basic validation checks
+    if (sessionElement === null) {
+        showMsg("Debes seleccionar una sesión.", "error");
+    } else if (ticketCount <= 0) {
+        showMsg("Debes seleccionar al menos una entrada.", "error");
+    } else if (ticketZones.includes(null)) {
+        showMsg("Debes seleccionar una zona para cada entrada.", "error");
+    } else if (!email || !emailConfirm) {
+        showMsg("Debes introducir un correo electrónico", "error");
+    } else if (email !== emailConfirm) {
+        showMsg("Los correos electrónicos no coinciden.", "error");
+    } else if (cardNumber === null || cvv === null) {
+        showMsg("Debes introducir los datos de la tarjeta.", "error");
+    } else if (cardNumber.toString().length !== 16 || cvv.toString().length !== 3) {
+        showMsg("Los datos de la tarjeta no son válidos.", "error");
+    }
+    return true;
 }
 
 /**
  * Re-indexes tickets and updates de ticketCount dropdown
  */
-function reindexTickets() {
+export function reindexTickets() {
     const cards = document.querySelectorAll(".ticket-card");
     cards.forEach((card, index) => {
         card.querySelector("strong").innerText = `Ticket ${index + 1}`;
@@ -83,7 +130,7 @@ function reindexTickets() {
 /**
  * Calculates the total price based on selected zones and active discounts.
  */
-function updateTotalPrice() {
+export function updateTotalPrice() {
     let total = 0;
 
     const zoneSelectors = document.querySelectorAll('.zone-select');
@@ -98,10 +145,13 @@ function updateTotalPrice() {
         const opt = select.options[select.selectedIndex];
         if (opt && opt.value !== "") {
             const amount = parseFloat(opt.getAttribute('data-amount')) || 0;
-            const percent = parseFloat(opt.getAttribute('data-percent')) || 0;
+            const isPercent = (opt.getAttribute('data-percent')) === "true";
 
-            if (amount > 0) total -= amount;
-            if (percent > 0) total -= (total * (percent / 100));
+            if (isPercent) {
+                total -= (total * (amount / 100));
+            } else {
+                total -= amount;
+            }
         }
     });
 
@@ -114,7 +164,7 @@ function updateTotalPrice() {
  * Changes the available options in discount dropdowns to prevent selecting the same discount multiple times.
  * This must be changed to delete the option from the select instead of disabling it
 */
-function updateAvailableDiscounts() {
+export function updateAvailableDiscounts() {
     const selects = document.querySelectorAll(".discount-select");
 
     const selectedValues = [...selects]
@@ -131,10 +181,12 @@ function updateAvailableDiscounts() {
     });
 }
 
+// To charge the zones options in the generate tickets function
+const zonesHTML = document.getElementById("zones-template")?.innerHTML || "";
 /**
  * Generates ticket rows dynamically based on the selected count.
  */
-function generateTickets(count) {
+export function generateTickets(count) {
     if (!ticketsContainer) return;
     ticketsContainer.innerHTML = "";
     for (let i = 0; i < count; i++) {
@@ -143,8 +195,8 @@ function generateTickets(count) {
                 <div class="d-flex justify-content-between align-items-center">
                     <strong>Ticket ${i + 1}</strong>
                     <div class="d-flex gap-2 align-items-center">
-                        <span>Zone:</span>
-                        <select name="zone" class="form-select zone-select">
+                        <span>Zona:</span>
+                        <select name="zone" class="form-select zone-select" id= "zone-select-${i + 1}">
                             ${zonesHTML}
                         </select>
                     </div>
@@ -156,10 +208,12 @@ function generateTickets(count) {
     updateTotalPrice();
 }
 
+//To charge the discounts options in the add discount button
+const discountsHTML = document.getElementById("discounts-template")?.innerHTML || "";
 /**
  * Adds a new discount dropdown to the UI.
  */
-function addDiscountSelect() {
+export function addDiscountSelect() {
     if (!discountContainer) return;
     discountContainer.insertAdjacentHTML("beforeend", `
         <div class="mb-2 discount-item d-flex gap-2 align-items-center">
@@ -214,4 +268,3 @@ if (addDiscountBtn) {
 
 // Initial setup on page load
 if (ticketSelect) generateTickets(ticketSelect.value);
-addDiscountSelect();
