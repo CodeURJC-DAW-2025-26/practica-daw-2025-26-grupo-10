@@ -15,8 +15,6 @@ public record EventDTO (
     Integer capacity,
     Integer targetAge,
     Artist artist,
-    String description,
-    String location,
     List<Session> sessions,
     List<Zone> zones,
     List<Discount> discounts,
