@@ -1,11 +1,8 @@
-package es.tickethub.tickethub.controllers;
+package es.tickethub.tickethub.rest_controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import es.tickethub.tickethub.entities.Artist;
 import es.tickethub.tickethub.entities.Client;
@@ -16,9 +13,9 @@ import es.tickethub.tickethub.services.ClientService;
 import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.ImageService;
 
-@Controller
-@RequestMapping("/images/entities")
-public class ImageController {
+@RestController
+@RequestMapping("/api/v1/images")
+public class ImageRestController {
 
     @Autowired
     private ClientService clientService;
@@ -43,6 +40,17 @@ public class ImageController {
         return imageService.buildPngResponse(imageService.loadDefaultAvatar());
     }
 
+    @GetMapping("/artists/{artistID}")
+    public ResponseEntity<byte[]> getArtistImage(@PathVariable Long artistID) {
+        Artist artist = artistService.findById(artistID);
+
+        if (artist.getArtistImage() != null && artist.getArtistImage().getImageCode() != null) {
+            return imageService.buildJpegResponse(artist.getArtistImage().getImageCode());
+        }
+
+        return imageService.buildNotFoundResponse();
+    }
+
     @GetMapping("/events/{eventID}/image/{imageID}")
     public ResponseEntity<byte[]> getEventImage(@PathVariable Long eventID, @PathVariable Long imageID) {
         Event event = eventService.findById(eventID);
@@ -53,17 +61,6 @@ public class ImageController {
                     return imageService.buildJpegResponse(image.getImageCode());
                 }
             }
-        }
-
-        return imageService.buildNotFoundResponse();
-    }
-
-    @GetMapping("/artists/{artistID}")
-    public ResponseEntity<byte[]> getArtistImage(@PathVariable Long artistID) {
-        Artist artist = artistService.findById(artistID);
-
-        if (artist.getArtistImage() != null && artist.getArtistImage().getImageCode() != null) {
-            return imageService.buildJpegResponse(artist.getArtistImage().getImageCode());
         }
 
         return imageService.buildNotFoundResponse();

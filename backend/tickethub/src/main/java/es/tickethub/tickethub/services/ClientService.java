@@ -13,19 +13,25 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import es.tickethub.tickethub.dto.ClientDTO;
 import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Image;
+import es.tickethub.tickethub.mappers.ClientMapper;
 import es.tickethub.tickethub.repositories.ClientRepository;
 import lombok.Getter;
 
 @Service
 @Getter
 public class ClientService {
+
     @Autowired
     private ClientRepository clientRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ClientMapper clientMapper;
 
     @Transactional
     public void registerClient(String name, String email, String surname, String password, String passWordConfirmation,
@@ -33,13 +39,15 @@ public class ClientService {
         if (!password.equals(passWordConfirmation)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Las contraseñas no coinciden");
         }
+
         boolean existClient = clientRepository.existsByUsername(username);
         if (existClient) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Este nombre de usuario ya está en uso");
         }
 
-        Optional <Client> client = clientRepository.findByEmail(email);
+        Optional<Client> client = clientRepository.findByEmail(email);
         Client getClient;
+
         if (client.isPresent()) {
             getClient = client.get();
 
@@ -79,6 +87,11 @@ public class ClientService {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado");
     }
 
+    @Transactional(readOnly = true)
+    public Client getLoggedClient(String loggedEmail) {
+        return getClientByEmail(loggedEmail);
+    }
+
     @Transactional
     public void updateClient(String loggedEmail, Client clientUpdated, MultipartFile imageFile) throws IOException {
         Client client = clientRepository.findByEmail(loggedEmail)
@@ -90,6 +103,7 @@ public class ClientService {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Ese correo electrónico ya está en uso");
             }
         }
+
         client.setName(clientUpdated.getName());
         client.setSurname(clientUpdated.getSurname());
         client.setUsername(clientUpdated.getUsername());
@@ -97,6 +111,7 @@ public class ClientService {
         client.setPhone(clientUpdated.getPhone());
         client.setAge(clientUpdated.getAge());
         client.setVersion(clientUpdated.getVersion());
+
         if (imageFile != null && !imageFile.isEmpty()) {
             try {
                 Image newImage = new Image();
@@ -106,6 +121,7 @@ public class ClientService {
                 throw new IOException("Error al procesar los bytes de la imagen");
             }
         }
+
         clientRepository.save(client);
     }
 
@@ -127,4 +143,34 @@ public class ClientService {
         clientRepository.save(client);
     }
 
+    // ======================
+    // REST METHODS
+    // ======================
+
+    @Transactional(readOnly = true)
+    public ClientDTO getClientDTOById(Long clientID) {
+        return clientMapper.toDTO(getClientById(clientID));
+    }
+
+    @Transactional(readOnly = true)
+    public ClientDTO getLoggedClientDTO(String email) {
+        return clientMapper.toDTO(getClientByEmail(email));
+    }
+
+    @Transactional
+    public ClientDTO updateClientREST(String loggedEmail, ClientDTO dto) {
+
+        Client client = getClientByEmail(loggedEmail);
+
+        client.setName(dto.name());
+        client.setSurname(dto.surname());
+        client.setUsername(dto.username());
+        client.setEmail(dto.email());
+        client.setPhone(dto.phone());
+        client.setAge(dto.age());
+
+        clientRepository.save(client);
+
+        return clientMapper.toDTO(client);
+    }
 }

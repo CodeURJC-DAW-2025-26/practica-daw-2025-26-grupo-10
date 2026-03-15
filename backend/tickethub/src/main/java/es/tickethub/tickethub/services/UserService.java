@@ -1,8 +1,76 @@
 package es.tickethub.tickethub.services;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import es.tickethub.tickethub.dto.TicketDTO;
+import es.tickethub.tickethub.entities.Client;
+import es.tickethub.tickethub.entities.Purchase;
+import es.tickethub.tickethub.entities.Session;
+import es.tickethub.tickethub.entities.Ticket;
+
+import es.tickethub.tickethub.mappers.TicketMapper;
+
 
 @Service
 public class UserService {
+
+    @Autowired
+    private TicketMapper ticketMapper;
+
+    @Autowired
+    private ClientService clientService;
+
+    public Client getClientFromSession(Long clientId) {
+        return clientService.getClientById(clientId);
+    }
+
+    public List<Ticket> getTicketsByClientId(Long clientId) {
+        Client client = clientService.getClientById(clientId);
+        List<Ticket> tickets = new ArrayList<>();
+
+        for (Purchase purchase : client.getPurchases()) {
+            tickets.addAll(purchase.getTickets());
+        }
+
+        return tickets;
+    }
+
+    public List<Map<String, Object>> getEventsInfoByClientId(Long clientId) {
+        Client client = clientService.getClientById(clientId);
+        List<Map<String, Object>> events = new ArrayList<>();
+
+        for (Purchase purchase : client.getPurchases()) {
+            Session eventSession = purchase.getSession();
+
+            Map<String, Object> eventsInfo = new HashMap<>();
+            eventsInfo.put("event", eventSession.getEvent().getName());
+            eventsInfo.put("sessionDate", eventSession.getDate());
+
+            events.add(eventsInfo);
+        }
+
+        return events;
+    }
+
+    // ======================
+    // REST METHODS
+    // ======================
+
+    public List<TicketDTO> getTicketsDTOByClientId(Long clientId) {
+
+        List<TicketDTO> ticketDTOs = new ArrayList<>();
+
+        for (Ticket ticket : getTicketsByClientId(clientId)) {
+            ticketDTOs.add(ticketMapper.toDTO(ticket));
+        }
+
+        return ticketDTOs;
+    }
 
 }
