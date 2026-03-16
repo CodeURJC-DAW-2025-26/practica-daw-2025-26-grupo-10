@@ -1,6 +1,6 @@
 package es.tickethub.tickethub.dto;
 
-public record AdminDTO(
+public record UserDTO(
 
     Long userID,
     String email,

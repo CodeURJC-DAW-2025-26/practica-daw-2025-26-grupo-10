@@ -1,8 +1,13 @@
 package es.tickethub.tickethub.rest_controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import es.tickethub.tickethub.entities.Artist;
 import es.tickethub.tickethub.entities.Client;
@@ -53,12 +58,15 @@ public class ImageRestController {
 
     @GetMapping("/events/{eventID}/image/{imageID}")
     public ResponseEntity<byte[]> getEventImage(@PathVariable Long eventID, @PathVariable Long imageID) {
-        Event event = eventService.findById(eventID);
+        Optional <Event> optionalEvent = eventService.findById(eventID);
 
-        if (event.getEventImages() != null) {
-            for (Image image : event.getEventImages()) {
-                if (image.getImageID().equals(imageID) && image.getImageCode() != null) {
-                    return imageService.buildJpegResponse(image.getImageCode());
+        if (optionalEvent.isPresent()) {
+            Event event = optionalEvent.get();
+            if (event.getEventImages() != null) {
+                for (Image image : event.getEventImages()) {
+                    if (image.getImageID().equals(imageID) && image.getImageCode() != null) {
+                        return imageService.buildJpegResponse(image.getImageCode());
+                    }
                 }
             }
         }
