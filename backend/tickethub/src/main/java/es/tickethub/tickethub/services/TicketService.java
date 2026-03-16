@@ -1,5 +1,6 @@
 package es.tickethub.tickethub.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.zxing.BarcodeFormat;
@@ -10,9 +11,12 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.io.image.ImageDataFactory;
 
+import es.tickethub.tickethub.dto.TicketDTO;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Purchase;
 import es.tickethub.tickethub.entities.Ticket;
+import es.tickethub.tickethub.mappers.TicketMapper;
+import es.tickethub.tickethub.repositories.TicketRepository;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -21,6 +25,13 @@ import java.io.ByteArrayOutputStream;
 @Service
 public class TicketService {
 
+    @Autowired private TicketRepository ticketRepository;
+    @Autowired private TicketMapper ticketMapper;
+    
+    /**
+     * Internal helper to generate a PNG QR code as a byte array.
+     * Uses ZXing to encode the input text into a BitMatrix.
+     */
     private byte[] generateQR(String text) throws Exception {
 
         QRCodeWriter writer = new QRCodeWriter();
@@ -40,6 +51,10 @@ public class TicketService {
         return baos.toByteArray();
     }
 
+    /**
+     * Generates a multi-page PDF document for all tickets in a purchase.
+     * Each page contains event details, ticket metadata, and a unique QR code.
+     */
     public byte[] generateTicketsPdf(Purchase purchase) throws Exception {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -72,5 +87,20 @@ public class TicketService {
 
         document.close();
         return baos.toByteArray();
+    }
+
+    /**
+     * Retrieves and maps a ticket entity to a TicketDTO.
+     */
+    public TicketDTO findById(Long id) {
+        return ticketRepository.findById(id).map(ticketMapper::toDTO).orElseThrow();
+    }
+
+    /**
+     * Persists a TicketDTO into the database.
+     */
+    public TicketDTO save(TicketDTO ticketDTO){
+        Ticket ticket = ticketMapper.toDomain(ticketDTO);
+        return ticketMapper.toDTO(ticketRepository.save(ticket));
     }
 }
