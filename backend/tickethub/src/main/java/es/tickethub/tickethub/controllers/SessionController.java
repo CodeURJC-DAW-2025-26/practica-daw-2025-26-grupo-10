@@ -1,6 +1,7 @@
 package es.tickethub.tickethub.controllers;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -61,7 +62,11 @@ public class SessionController {
     @PostMapping("/{eventID}/add_session")
     @ResponseBody // To return a simple status without redirecting
     public ResponseEntity<?> addSession(@RequestParam String date, @PathVariable Long eventID) {
-        Event event = eventService.findById(eventID);
+        Optional <Event> optionalEvent = eventService.findById(eventID);
+        if (optionalEvent.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Event event = optionalEvent.get();
 
         Session session = new Session();
         session.setEvent(event);

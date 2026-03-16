@@ -13,11 +13,13 @@ import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Purchase;
 import es.tickethub.tickethub.entities.Session;
 import es.tickethub.tickethub.entities.Ticket;
-
 import es.tickethub.tickethub.mappers.TicketMapper;
+import es.tickethub.tickethub.repositories.UserRepository;
+import lombok.Getter;
 
 
 @Service
+@Getter
 public class UserService {
 
     @Autowired
@@ -25,6 +27,9 @@ public class UserService {
 
     @Autowired
     private ClientService clientService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public Client getClientFromSession(Long clientId) {
         return clientService.getClientById(clientId);

@@ -1,5 +1,7 @@
 package es.tickethub.tickethub.controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -32,7 +34,11 @@ public class ZoneController {
     // Show all zones of an event
     @GetMapping("/edit_event/{eventID}/manage_zones")
     public String listZones(@PathVariable Long eventID, Model model) {
-        Event event = eventService.findById(eventID);
+        Optional <Event> optionalEvent = eventService.findById(eventID);
+        if (optionalEvent.isEmpty()) {
+            return "redirect:/admin/events";
+        }
+        Event event = optionalEvent.get();
 
         model.addAttribute("zones", event.getZones());
 
@@ -42,7 +48,11 @@ public class ZoneController {
     // New zone form
     @GetMapping("/edit_event/{eventID}/create_zone")
     public String showCreateForm(@PathVariable Long eventID, Model model) {
-        Event event = eventService.findById(eventID);
+        Optional <Event> optionalEvent = eventService.findById(eventID);
+        if (optionalEvent.isEmpty()) {
+            return "redirect:/admin/events";
+        }
+        Event event = optionalEvent.get();
 
         model.addAttribute("event", event);
 
@@ -58,7 +68,12 @@ public class ZoneController {
         }
 
         try {
-            Event event = eventService.findById(eventID);
+            Optional <Event> optionalEvent = eventService.findById(eventID);
+            if (optionalEvent.isEmpty()) {
+                return "redirect:/admin/events";
+            }
+
+            Event event = optionalEvent.get();
             Zone newZone = new Zone(zone.getName(), zone.getCapacity(), zone.getPrice());
             newZone.setEvent(event);
             event.getZones().add(newZone);
@@ -76,7 +91,11 @@ public class ZoneController {
 
     @GetMapping("/edit_event/{eventID}/edit_zone/{id}")
     public String showZone(@PathVariable Long id, @PathVariable Long eventID, Model model) {
-        Event event = eventService.findById(eventID);
+        Optional <Event> optionalEvent = eventService.findById(eventID);
+        if (optionalEvent.isEmpty()) {
+            return "redirect:/admin/events";
+        }
+        Event event = optionalEvent.get();
 
         Zone zone = event.getZones().stream().filter(z -> z.getId().equals(id))
                 .findFirst()
@@ -97,7 +116,11 @@ public class ZoneController {
                 return "admin/events/edit_event/{eventID}/create_zone";
             }
 
-            Event event = eventService.findById(eventID);
+            Optional <Event> optionalEvent = eventService.findById(eventID);
+            if (optionalEvent.isEmpty()) {
+                return "redirect:/admin/events";
+            }
+            Event event = optionalEvent.get();
 
             Zone existing = event.getZones().stream()
                     .filter(z -> z.getId().equals(zone.getId()))
@@ -125,7 +148,11 @@ public class ZoneController {
     @DeleteMapping("/edit_event/{eventID}/delete_zone/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteZone(@PathVariable Long eventID, @PathVariable Long id) {
-        Event event = eventService.findById(eventID);
+        Optional <Event> optionalEvent = eventService.findById(eventID);
+        if (optionalEvent.isEmpty()) {
+            return;
+        }
+        Event event = optionalEvent.get();
         event.getZones().removeIf(z -> z.getId().equals(id));
         zoneService.deleteById(id);
     }

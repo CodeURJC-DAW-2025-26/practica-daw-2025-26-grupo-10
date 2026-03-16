@@ -3,6 +3,7 @@ package es.tickethub.tickethub.controllers;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import es.tickethub.tickethub.entities.Discount;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Zone;
-import es.tickethub.tickethub.services.DiscountService;
 import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.ZoneService;
 
@@ -28,9 +28,6 @@ public class PublicEventController {
 
     @Autowired
     private ZoneService zoneService;
-
-    @Autowired
-    private DiscountService discountService;
 
     @GetMapping("/public/events")
     public String events(Model model) {
@@ -44,9 +41,13 @@ public class PublicEventController {
 
     @GetMapping("/public/event/{id}")
     public String showEventDetails(@PathVariable Long id, Model model) {
-        Event event = eventService.findById(id);
-        model.addAttribute("event", event);
-        return "public/event";
+        Optional <Event> event = eventService.findById(id);
+        if (event.isPresent()) {
+            model.addAttribute("event", event.get());
+            return "public/event";
+        } else {
+            return "redirect:/public/events";
+        }
     }
 
     @GetMapping("/public/events/fragments")
@@ -72,25 +73,34 @@ public class PublicEventController {
     /* To see the purchase page */
     @GetMapping("/public/purchase/{eventID}")
     public String showPurchaseFromEvent(@PathVariable Long eventID, Model model) {
-        Event event = eventService.findById(eventID);
-        List<Zone> zones = zoneService.findAll();
-        List<Discount> discounts = event.getDiscounts();
+        Optional <Event> optionalEvent = eventService.findById(eventID);
+        if (optionalEvent.isEmpty()) {
+            return "redirect:/public/events";
+        } else {
+            Event event = optionalEvent.get();
+            List<Zone> zones = zoneService.findAll();
+            List<Discount> discounts = event.getDiscounts();
 
-        model.addAttribute("event", event);
-        model.addAttribute("zones", zones);
-        model.addAttribute("discounts", discounts);
-        model.addAttribute("ticketCounts", List.of(1, 2, 3, 4, 5)); // User can buy up to 5 tickets
-        model.addAttribute("tickets", List.of());
-        model.addAttribute("totalPrice", BigDecimal.ZERO);
+            model.addAttribute("event", event);
+            model.addAttribute("zones", zones);
+            model.addAttribute("discounts", discounts);
+            model.addAttribute("ticketCounts", List.of(1, 2, 3, 4, 5)); // User can buy up to 5 tickets
+            model.addAttribute("tickets", List.of());
+            model.addAttribute("totalPrice", BigDecimal.ZERO);
 
-        return "public/purchase";
+            return "public/purchase";
+        }
     }
 
     /* To see the confirmation page */
     @GetMapping("/public/confirmation/{eventID}")
     public String showConfirmation(@PathVariable Long eventID, Model model) {
-        Event event = eventService.findById(eventID);
-        model.addAttribute("event", event);
-        return "public/confirmation";
+        Optional<Event> optionalEvent = eventService.findById(eventID);
+        if (optionalEvent.isPresent()) {
+            model.addAttribute("event", optionalEvent.get());
+            return "public/confirmation";
+        } else {
+            return "redirect:/public/events";
+        }
     }
 }

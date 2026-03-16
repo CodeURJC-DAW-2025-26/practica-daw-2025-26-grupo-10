@@ -3,6 +3,7 @@ package es.tickethub.tickethub.controllers;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Slice;
@@ -103,7 +104,11 @@ public class PurchaseController {
      */
     @GetMapping("/select/{eventID}")
     public String showPurchaseFromEvent(@PathVariable Long eventID, Model model, Principal principal) {
-        Event event = eventService.findById(eventID);
+        Optional <Event> optionalEvent = eventService.findById(eventID);
+        if (optionalEvent.isEmpty()) {
+            return "redirect:/public/events";
+        }
+        Event event = optionalEvent.get();
         List<Zone> zones = zoneService.findAll();
         List<Discount> discounts = discountService.getAllDiscounts();
 
@@ -126,7 +131,11 @@ public class PurchaseController {
     public String savePurchase(@RequestParam Long eventId, @RequestParam String totalPrice,
         @RequestParam List<Long> zoneIds, @RequestParam Long sessionId, @RequestParam String email, Model model) {
 
-        Event event = eventService.findById(eventId);
+        Optional <Event> optionalEvent = eventService.findById(eventId);
+        if (optionalEvent.isEmpty()) {
+            return "redirect:/public/events";
+        }
+        Event event = optionalEvent.get();
         Client client = clientService.getClientRepository().findByEmail(email)
             .orElse(new Client(email, "", "", "", "", 0, 0, BigDecimal.ZERO, null, null, null));
         

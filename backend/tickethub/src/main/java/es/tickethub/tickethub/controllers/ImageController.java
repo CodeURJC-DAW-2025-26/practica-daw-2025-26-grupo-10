@@ -1,5 +1,7 @@
 package es.tickethub.tickethub.controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -45,12 +47,16 @@ public class ImageController {
 
     @GetMapping("/events/{eventID}/image/{imageID}")
     public ResponseEntity<byte[]> getEventImage(@PathVariable Long eventID, @PathVariable Long imageID) {
-        Event event = eventService.findById(eventID);
+        Optional <Event> eventOptional = eventService.findById(eventID);
 
-        if (event.getEventImages() != null) {
-            for (Image image : event.getEventImages()) {
-                if (image.getImageID().equals(imageID) && image.getImageCode() != null) {
-                    return imageService.buildJpegResponse(image.getImageCode());
+        if (eventOptional.isPresent()) {
+            Event event = eventOptional.get();
+
+            if (event.getEventImages() != null) {
+                for (Image image : event.getEventImages()) {
+                    if (image.getImageID().equals(imageID) && image.getImageCode() != null) {
+                        return imageService.buildJpegResponse(image.getImageCode());
+                    }
                 }
             }
         }

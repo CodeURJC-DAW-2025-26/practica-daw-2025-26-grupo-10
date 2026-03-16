@@ -143,6 +143,16 @@ public class ClientService {
         clientRepository.save(client);
     }
 
+    @Transactional
+    public void updateUser(Long id, Client formClient) {
+        Client client = clientRepository.findById(id).orElseThrow();
+        client.setName(formClient.getName());
+        client.setSurname(formClient.getSurname());
+        client.setEmail(formClient.getEmail());
+
+        clientRepository.save(client);
+    }
+
     // ======================
     // REST METHODS
     // ======================
