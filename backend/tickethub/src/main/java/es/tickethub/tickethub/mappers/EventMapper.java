@@ -9,8 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Mapper(componentModel = "spring", 
-        unmappedTargetPolicy = ReportingPolicy.IGNORE, 
-        uses = {ArtistMapper.class, SessionMapper.class, ZoneMapper.class, DiscountMapper.class, ImageMapper.class})
+        unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface EventMapper {
 
     EventDTO toDTO(Event event);

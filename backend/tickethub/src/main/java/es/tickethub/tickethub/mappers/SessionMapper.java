@@ -10,8 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Mapper(componentModel = "spring", 
-        unmappedTargetPolicy = ReportingPolicy.IGNORE, 
-        uses = {EventMapper.class, PurchaseMapper.class})
+        unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface SessionMapper {
 
     @Mapping(target = "event", source = "event") 

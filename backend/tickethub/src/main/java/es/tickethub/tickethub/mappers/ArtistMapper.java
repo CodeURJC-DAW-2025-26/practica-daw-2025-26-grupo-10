@@ -12,8 +12,7 @@ import es.tickethub.tickethub.dto.ArtistDTO;
 import es.tickethub.tickethub.entities.Artist;
 
 @Mapper(componentModel = "spring", 
-        unmappedTargetPolicy = ReportingPolicy.IGNORE, 
-        uses = {EventMapper.class, ImageMapper.class})
+        unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ArtistMapper {
 
     ArtistDTO toDTO(Artist artist);

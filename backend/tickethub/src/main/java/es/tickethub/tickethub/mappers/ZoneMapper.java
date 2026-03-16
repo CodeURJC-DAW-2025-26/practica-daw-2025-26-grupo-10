@@ -9,8 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Mapper(componentModel = "spring", 
-        unmappedTargetPolicy = ReportingPolicy.IGNORE, 
-        uses = {TicketMapper.class, EventMapper.class})
+        unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ZoneMapper {
 
     ZoneDTO toDTO(Zone zone);

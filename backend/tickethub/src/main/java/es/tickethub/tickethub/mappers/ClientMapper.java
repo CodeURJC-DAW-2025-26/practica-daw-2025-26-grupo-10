@@ -11,8 +11,7 @@ import es.tickethub.tickethub.dto.ClientDTO;
 import es.tickethub.tickethub.entities.Client;
 
 @Mapper(componentModel = "spring", 
-        unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        uses = { PurchaseMapper.class }) 
+        unmappedTargetPolicy = ReportingPolicy.IGNORE) 
 public interface ClientMapper {
     
     ClientDTO toDTO(Client client);
