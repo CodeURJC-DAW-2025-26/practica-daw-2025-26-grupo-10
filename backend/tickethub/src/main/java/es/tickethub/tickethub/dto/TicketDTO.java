@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 public record TicketDTO(
     Long ticketID,
     String code,
-    Long zone,
-    Long purchase,
+    ZoneBasicDTO zone,
+    PurchaseBasicDTO purchase,
     BigDecimal ticketPrice,
-    Boolean isActive)
-{}
+    Boolean isActive
+) {}

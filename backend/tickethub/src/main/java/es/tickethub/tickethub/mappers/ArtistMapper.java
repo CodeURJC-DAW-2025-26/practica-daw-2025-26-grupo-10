@@ -5,32 +5,30 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
+import es.tickethub.tickethub.dto.ArtistBasicDTO;
 import es.tickethub.tickethub.dto.ArtistDTO;
 import es.tickethub.tickethub.entities.Artist;
-import es.tickethub.tickethub.entities.Image;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", 
+        unmappedTargetPolicy = ReportingPolicy.IGNORE, 
+        uses = {EventMapper.class, ImageMapper.class})
 public interface ArtistMapper {
-    
-    ArtistDTO toDTO(Artist artist);
 
-    List <ArtistDTO> toDTOs(Collection <Artist> artists);
+    ArtistDTO toDTO(Artist artist);
+    
+    ArtistBasicDTO toBasicDTO(Artist artist);
+
+    List<ArtistDTO> toDTOs(Collection<Artist> artists);
 
     @Mapping(target = "artistID", ignore = true)
     Artist toDomain(ArtistDTO artistDTO);
 
-    default Long imageToLong(Image image) {
-        return image == null ? null : image.getImageID();
+    default Artist fromBasic(ArtistBasicDTO basic) {
+        if (basic == null) return null;
+        Artist artist = new Artist();
+        artist.setArtistID(basic.artistID());
+        return artist;
     }
-
-    default Image longToImage(Long id) {
-        if (id == null) {
-            return null;
-        }
-        Image img = new Image();
-        img.setImageID(id);
-        return img;
-    }
-
 }

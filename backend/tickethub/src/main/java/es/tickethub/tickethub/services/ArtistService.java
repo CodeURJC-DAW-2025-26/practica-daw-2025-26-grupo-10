@@ -18,7 +18,7 @@ import es.tickethub.tickethub.repositories.ArtistRepository;
 public class ArtistService {
 
     @Autowired
-    private final ArtistRepository artistRepository;
+    private ArtistRepository artistRepository;
 
     public ArtistService(ArtistRepository artistRepository) {
         this.artistRepository = artistRepository;
