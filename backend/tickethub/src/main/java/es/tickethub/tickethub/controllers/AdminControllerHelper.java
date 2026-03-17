@@ -38,7 +38,7 @@ public class AdminControllerHelper {
                 Map<String, Object> option = new HashMap<>();
                 option.put("discountID", discount.getDiscountID());
                 option.put("discountName", discount.getDiscountName());
-                option.put("ammount", discount.getAmmount());
+                option.put("ammount", discount.getAmount());
                 option.put("isPercentage", discount.getPercentage());
                 option.put("selected", discount.getDiscountID().equals(d.getDiscountID()));
 

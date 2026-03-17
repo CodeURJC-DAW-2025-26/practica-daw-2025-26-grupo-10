@@ -60,7 +60,7 @@ public class DiscountService {
         } else {
             Optional<Discount> existing = discountRepository.findById(discount.getDiscountID());
 
-            existing.get().setAmmount(discount.getAmmount());
+            existing.get().setAmount(discount.getAmount());
             existing.get().setDiscountName(discount.getDiscountName());
             existing.get().setPercentage(discount.getPercentage());
             return discountRepository.save(existing.get());
@@ -85,13 +85,13 @@ public class DiscountService {
         Discount discount = findById(discountID);
 
         if (discount.getPercentage()) {
-            BigDecimal discountAmmount = discount.getAmmount().divide(new BigDecimal("100"), 4, RoundingMode.HALF_UP);
+            BigDecimal discountAmmount = discount.getAmount().divide(new BigDecimal("100"), 4, RoundingMode.HALF_UP);
             BigDecimal totalDiscounted = originalTicketPrice.multiply(discountAmmount);
             BigDecimal finalPricePercentage = originalTicketPrice.subtract(totalDiscounted).setScale(2,
                     RoundingMode.HALF_UP);
             return finalPricePercentage;
         } else {
-            BigDecimal discountAmmount = discount.getAmmount();
+            BigDecimal discountAmmount = discount.getAmount();
             BigDecimal finalPrice = originalTicketPrice.subtract(discountAmmount);
             if (finalPrice.compareTo(BigDecimal.ZERO) < 0) {
                 return BigDecimal.ZERO;

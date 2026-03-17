@@ -8,21 +8,20 @@ import org.mapstruct.ReportingPolicy;
 import java.util.Collection;
 import java.util.List;
 
-@Mapper(componentModel = "spring", 
-        unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface DiscountMapper {
-
-    DiscountDTO toDTO(Discount discount);
+    @Mapping(source = "amount", target = "amount")
     DiscountBasicDTO toBasicDTO(Discount discount);
+
+    @Mapping(source = "amount", target = "amount")
+    @Mapping(target = "events", ignore = true)
+    DiscountDTO toDTO(Discount discount);
+    
+    @Mapping(source = "amount", target = "amount")
+    @Mapping(target = "events", ignore = true)
     List<DiscountDTO> toDTOs(Collection<Discount> discounts);
 
-    @Mapping(target = "discountID", ignore = true)
-    Discount toDomain(DiscountDTO discountDTO);
+    @Mapping(source = "amount", target = "amount")
+    Discount toEntity(DiscountDTO discountDTO);
 
-    default Discount fromBasic(DiscountBasicDTO basic) {
-        if (basic == null) return null;
-        Discount discount = new Discount();
-        discount.setDiscountID(basic.discountID());
-        return discount;
-    }
 }

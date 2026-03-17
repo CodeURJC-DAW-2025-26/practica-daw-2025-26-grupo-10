@@ -8,8 +8,7 @@ import org.mapstruct.ReportingPolicy;
 import java.util.Collection;
 import java.util.List;
 
-@Mapper(componentModel = "spring", 
-        unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ImageMapper {
 
     ImageDTO toDTO(Image image);
@@ -18,11 +17,4 @@ public interface ImageMapper {
 
     @Mapping(target = "imageID", ignore = true)
     Image toDomain(ImageDTO imageDTO);
-
-    default Image fromBasic(ImageBasicDTO basic) {
-        if (basic == null) return null;
-        Image image = new Image();
-        image.setImageID(basic.imageID());
-        return image;
-    }
 }

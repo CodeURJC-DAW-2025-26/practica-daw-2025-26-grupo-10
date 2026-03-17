@@ -39,7 +39,7 @@ public class Discount {
      */
     @Column(nullable = false, precision = 5, scale = 2)
     @DecimalMin(value = "0.00")
-    private BigDecimal ammount;
+    private BigDecimal amount;
 
     @ManyToMany
     private List<Event> events = new ArrayList<>();
@@ -53,7 +53,7 @@ public class Discount {
     // Constructor of the class
     public Discount(String discountName, BigDecimal ammount, Boolean percentage) {
         this.discountName = discountName;
-        this.ammount = ammount;
+        this.amount = ammount;
         this.percentage = percentage;
     }
 }
