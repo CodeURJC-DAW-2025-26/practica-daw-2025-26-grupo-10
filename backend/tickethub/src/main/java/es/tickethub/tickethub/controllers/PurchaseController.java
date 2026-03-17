@@ -24,6 +24,13 @@ import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.PurchaseService;
 import es.tickethub.tickethub.services.ZoneService;
 
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.server.ResponseStatusException;
+
 @Controller
 @RequestMapping("/purchases")
 public class PurchaseController {
@@ -39,6 +46,40 @@ public class PurchaseController {
 
     @Autowired
     private DiscountService discountService;
+
+
+    /**
+     * Processes the purchase submitted from the form and redirects to the user's history.
+     */
+    @PostMapping("/save")
+    public String savePurchase(
+            @RequestParam Long eventId, 
+            @RequestParam String totalPrice,
+            @RequestParam List<Long> zoneIds, 
+            @RequestParam Long sessionId, 
+            @RequestParam String email) {
+        
+        purchaseService.processPurchase(eventId, totalPrice, zoneIds, sessionId, email);
+        
+        return "redirect:/purchases/me";
+    }
+
+    /**
+     * Allows downloading the PDF directly from the web interface.
+     */
+    @GetMapping("/download/{purchaseId}")
+    public ResponseEntity<byte[]> downloadTickets(@PathVariable Long purchaseId, Principal principal) {
+        try {
+            byte[] pdfBytes = purchaseService.generateTicketsPdf(purchaseId, principal.getName());
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=TicketHub_Order_" + purchaseId + ".pdf")
+                    .body(pdfBytes);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error generating the PDF");
+        }
+    }
 
     /**
      * Fetches the initial page of user purchase history.
