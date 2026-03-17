@@ -85,14 +85,14 @@ public class DiscountService {
         Discount discount = findById(discountID);
 
         if (discount.getPercentage()) {
-            BigDecimal discountAmmount = discount.getAmount().divide(new BigDecimal("100"), 4, RoundingMode.HALF_UP);
-            BigDecimal totalDiscounted = originalTicketPrice.multiply(discountAmmount);
+            BigDecimal discountamount = discount.getAmount().divide(new BigDecimal("100"), 4, RoundingMode.HALF_UP);
+            BigDecimal totalDiscounted = originalTicketPrice.multiply(discountamount);
             BigDecimal finalPricePercentage = originalTicketPrice.subtract(totalDiscounted).setScale(2,
                     RoundingMode.HALF_UP);
             return finalPricePercentage;
         } else {
-            BigDecimal discountAmmount = discount.getAmount();
-            BigDecimal finalPrice = originalTicketPrice.subtract(discountAmmount);
+            BigDecimal discountamount = discount.getAmount();
+            BigDecimal finalPrice = originalTicketPrice.subtract(discountamount);
             if (finalPrice.compareTo(BigDecimal.ZERO) < 0) {
                 return BigDecimal.ZERO;
             }

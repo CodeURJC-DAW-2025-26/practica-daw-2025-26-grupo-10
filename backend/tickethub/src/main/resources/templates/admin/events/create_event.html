@@ -159,7 +159,7 @@
               <option value="">Seleccionar descuento</option>
               {{#eventDiscounts}}
               <option value="{{discountID}}" {{#selected}}selected{{/selected}}>
-                {{discountName}} (-{{ammount}} {{#isPercentage}}%{{/isPercentage}}{{^isPercentage}}€{{/isPercentage}})
+                {{discountName}} (-{{amount}} {{#isPercentage}}%{{/isPercentage}}{{^isPercentage}}€{{/isPercentage}})
               </option>
               {{/eventDiscounts}}
             </select>
@@ -185,7 +185,7 @@
             <select name="discounts" class="form-select">
               {{#allDiscounts}}
               <option value="{{discountID}}">
-                {{discountName}} ({{ammount}} {{#percentage}}%{{/percentage}}{{^percentage}}€{{/percentage}} de
+                {{discountName}} ({{amount}} {{#percentage}}%{{/percentage}}{{^percentage}}€{{/percentage}} de
                 descuento)
               </option>
               {{/allDiscounts}}

@@ -28,8 +28,8 @@ public class Discount {
     private String discountName;
 
     /*
-     * To indicate the if ammount to be discounted is a percentage or a specific
-     * money ammount
+     * To indicate the if amount to be discounted is a percentage or a specific
+     * money amount
      */
     @Column(nullable = false)
     private Boolean percentage;
@@ -51,9 +51,9 @@ public class Discount {
     } // Constructor for the Database
 
     // Constructor of the class
-    public Discount(String discountName, BigDecimal ammount, Boolean percentage) {
+    public Discount(String discountName, BigDecimal amount, Boolean percentage) {
         this.discountName = discountName;
-        this.amount = ammount;
+        this.amount = amount;
         this.percentage = percentage;
     }
 }
