@@ -3,6 +3,8 @@ package es.tickethub.tickethub.rest_controllers;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,9 +25,10 @@ public class AdminUserRestController {
     private UserMapper userMapper;
 
     @GetMapping("/")
-    public Collection <UserDTO> getUsers() {
+    public Collection <UserDTO> getUsers(@RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "5") int size) {
         
-        return userMapper.toDTOs(userService.getUserRepository().findAll());
+        return userMapper.toDTOs(userService.getUserRepository().findAll(PageRequest.of(page, size)).getContent());
     }
     
 }
