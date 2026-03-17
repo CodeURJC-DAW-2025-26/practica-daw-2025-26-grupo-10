@@ -14,15 +14,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import es.tickethub.tickethub.entities.Discount;
+import es.tickethub.tickethub.dto.PurchaseBasicDTO;
+import es.tickethub.tickethub.dto.TicketBasicDTO;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Purchase;
 import es.tickethub.tickethub.entities.Ticket;
-import es.tickethub.tickethub.entities.Zone;
+import es.tickethub.tickethub.mappers.DiscountMapper;
+import es.tickethub.tickethub.mappers.EventMapper;
+import es.tickethub.tickethub.mappers.PurchaseMapper;
+import es.tickethub.tickethub.mappers.TicketMapper;
+import es.tickethub.tickethub.mappers.ZoneMapper;
 import es.tickethub.tickethub.services.DiscountService;
 import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.PurchaseService;
-import es.tickethub.tickethub.services.ZoneService;
 
 @Controller
 @RequestMapping("/purchases")
@@ -30,15 +34,16 @@ public class PurchaseController {
 
     @Autowired
     private PurchaseService purchaseService;
-
     @Autowired
     private EventService eventService;
-
-    @Autowired
-    private ZoneService zoneService;
-
     @Autowired
     private DiscountService discountService;
+
+    @Autowired private EventMapper eventMapper;
+    @Autowired private ZoneMapper zoneMapper;
+    @Autowired private DiscountMapper discountMapper;
+    @Autowired private PurchaseMapper purchaseMapper;   
+    @Autowired private TicketMapper ticketMapper;    
 
     /**
      * Fetches the initial page of user purchase history.
@@ -47,7 +52,12 @@ public class PurchaseController {
     public String getPurchasesByClientEmail(Principal principal, Model model) {
         String loggedEmail = principal.getName();
         Slice<Purchase> purchasesSlice = purchaseService.getPurchasesByClientEmail(loggedEmail, 0);
-        model.addAttribute("purchases", purchasesSlice.getContent());
+        
+        List<PurchaseBasicDTO> dtos = purchasesSlice.getContent().stream()
+                .map(purchaseMapper::toBasicDTO)
+                .toList();
+
+        model.addAttribute("purchases", dtos);
         model.addAttribute("hasNext", purchasesSlice.hasNext());
         model.addAttribute("nextPage", 1);
         return "user/purchases";
@@ -73,8 +83,14 @@ public class PurchaseController {
     @GetMapping("/{purchaseId}/tickets")
     public String getPurchaseTickets(@PathVariable Long purchaseId, Model model, Principal principal) {
         String loggedEmail = principal.getName();
+        
         List<Ticket> tickets = purchaseService.getTicketsByPurchase(purchaseId, loggedEmail);
-        model.addAttribute("tickets", tickets);
+        List<TicketBasicDTO> ticketDTOs = tickets.stream()
+                .map(ticketMapper::toBasicDTO)
+                .toList();
+        
+        model.addAttribute("tickets", ticketDTOs);
+        
         return "user/purchase_details_fragment";
     }
 
@@ -83,20 +99,25 @@ public class PurchaseController {
      */
     @GetMapping("/select/{eventID}")
     public String showPurchaseFromEvent(@PathVariable Long eventID, Model model, Principal principal) {
-        Optional <Event> optionalEvent = eventService.findById(eventID);
+        Optional<Event> optionalEvent = eventService.findById(eventID);
+        
         if (optionalEvent.isEmpty()) {
             return "redirect:/public/events";
         }
+
         Event event = optionalEvent.get();
-        List<Zone> zones = zoneService.findAll();
-        List<Discount> discounts = discountService.getAllDiscounts();
 
-        // Inform the JS if the user is authenticated to handle redirects manually
+        model.addAttribute("event", eventMapper.toDTO(event));
+
+        model.addAttribute("zones", event.getZones().stream()
+                .map(zoneMapper::toDTO)
+                .toList());
+
+        model.addAttribute("discounts", discountService.getAllDiscounts().stream()
+                .map(discountMapper::toDTO)
+                .toList());
+
         model.addAttribute("logged", principal != null);
-
-        model.addAttribute("event", event);
-        model.addAttribute("zones", zones);
-        model.addAttribute("discounts", discounts);
         model.addAttribute("totalPrice", BigDecimal.ZERO);
 
         return "public/purchase";
