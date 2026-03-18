@@ -85,7 +85,8 @@ public class EventService {
         return save(event);
     }
 
-    public Event edit(Event oldEvent, Event editedEvent, Long artistID, List<Long> discountIDs, MultipartFile[] files) throws SQLException, IOException {
+    public Event edit(Event oldEvent, Event editedEvent, Long artistID, List<Long> discountIDs, MultipartFile[] files)
+            throws SQLException, IOException {
 
         oldEvent.setName(editedEvent.getName());
         oldEvent.setCapacity(calculateTotalCapacity(editedEvent.getZones()));
@@ -148,7 +149,8 @@ public class EventService {
     }
 
     /**
-     * Unified search method that supports optional filters for artist, category, and date.
+     * Unified search method that supports optional filters for artist, category,
+     * and date.
      * Uses a Timestamp range to ensure full-day coverage for session searches.
      */
     public Page<Event> searchEvents(String artist, String category, LocalDate date, int page, int size) {
@@ -186,7 +188,7 @@ public class EventService {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event with ID " + eventID + " does not exist.");
     }
 
-    public List<String> getUniqueCategories () {
+    public List<String> getUniqueCategories() {
         return eventRepository.findAllUniqueCategories();
     }
 
@@ -211,5 +213,14 @@ public class EventService {
     public EventDTO createEventREST(Event event) {
         Event createdEvent = save(event);
         return eventMapper.toDTO(createdEvent);
+    }
+
+    public Event findByIdOrThrow(Long id) {
+        return eventRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado"));
+    }
+
+    public Page<Event> getFirstPageOfEvents() {
+        return searchEvents(null, null, null, 0, 5);
     }
 }
