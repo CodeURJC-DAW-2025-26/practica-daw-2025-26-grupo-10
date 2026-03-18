@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,17 +30,16 @@ public class AdminEventRestController {
     @Autowired
     private EventService eventService;
 
-    
+
+
     @Autowired
     private EventMapper eventMapper;
 
     @GetMapping("/")
-    public Page <EventDTO> getEvents(@RequestParam(defaultValue = "0") int page,
-                                     @RequestParam(defaultValue = "5") int size) {
-        
-        return eventService.getEventRepository()
-            .findAll(PageRequest.of(page, size))
-            .map(event -> eventMapper.toDTO(event));
+    public Page<EventDTO> getEvents(@RequestParam(defaultValue = "0") int page,
+                                    @RequestParam(defaultValue = "5") int size) {
+        return eventService.getEventsPage(page, size)
+                        .map(eventMapper::toDTO);
     }
     
 
@@ -57,7 +55,7 @@ public class AdminEventRestController {
 
     @PutMapping("/{eventID}")
     public EventDTO updateEvent(@PathVariable Long eventID, @RequestBody EventDTO updatedEventDTO) {
-        if (eventService.getEventRepository().existsById(eventID)) {
+        if (eventService.existsById(eventID)) {
             
             Event updatedEvent = eventMapper.toEntity(updatedEventDTO);
             

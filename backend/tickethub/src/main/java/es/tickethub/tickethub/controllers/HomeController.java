@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import es.tickethub.tickethub.services.ArtistService;
 import es.tickethub.tickethub.services.ClientService;
+import es.tickethub.tickethub.services.EventRankingService;
+import es.tickethub.tickethub.services.EventRecommendationService;
 import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.ServerRecommendationService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,6 +26,12 @@ public class HomeController {
     @Autowired
     private EventService eventService;
 
+    @Autowired
+    private EventRankingService eventRankingService;
+
+    @Autowired
+    private EventRecommendationService eventRecommendationService;
+    
     @Autowired
     private ClientService clientService;
 
@@ -41,8 +49,8 @@ public class HomeController {
     @GetMapping("/index")
     public String showIndex(Model model, Principal principal) {
 
-        model.addAttribute("eventsTop", eventService.getTopSellingEvents(3));
-        model.addAttribute("eventsBottom", eventService.getNextUpcomingEvents(2));
+        model.addAttribute("eventsTop", eventRankingService.getTopSellingEvents(3));
+        model.addAttribute("eventsBottom", eventRankingService.getNextUpcomingEvents(2));
 
         model.addAttribute("artists", artistService.getPopularArtists(4));
 
@@ -50,7 +58,7 @@ public class HomeController {
             clientService.findByEmail(principal.getName())
                 .ifPresent(client -> model.addAttribute(
                         "recommendedEvents",
-                        eventService.getRecommendedEvents(client, serverService, 5)
+                        eventRecommendationService.getRecommendedEvents(client,  5)
                 ));
         }
 
