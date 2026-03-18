@@ -68,21 +68,28 @@ public class PurchaseService {
         Event event = eventService.findById(eventId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado"));
 
-        Client client = clientService.getClientRepository().findByEmail(email)
-                .orElse(new Client(email, "", "", "", "", 0, 0, BigDecimal.ZERO, null, null, null));
-        clientService.getClientRepository().save(client);
+        Client client = clientService.findByEmail(email)
+                .orElseGet(() -> {
+                    Client newClient = new Client();
+                    newClient.setEmail(email);
+                    newClient.setName("");
+                    newClient.setSurname("");
+                    newClient.setUsername("");
+                    newClient.setPassword("");
+                    newClient.setCoins(BigDecimal.ZERO);
+                    clientService.saveClient(newClient);
+                    return newClient;
+                });
 
         Purchase purchase = new Purchase();
         purchase.setClient(client);
 
         String cleanPrice = totalPrice.replace("€", "").replace(",", ".").trim();
         purchase.setTotalPrice(new BigDecimal(cleanPrice));
-
         event.getSessions().stream()
                 .filter(s -> s.getSessionID().equals(sessionId))
                 .findFirst()
                 .ifPresent(purchase::setSession);
-
         for (Long zoneId : zoneIds) {
             Zone zone = zoneService.findById(zoneId);
             Ticket ticket = new Ticket();
@@ -91,7 +98,6 @@ public class PurchaseService {
             ticket.setPurchase(purchase);
             purchase.getTickets().add(ticket);
         }
-
         return purchaseRepository.save(purchase);
     }
     

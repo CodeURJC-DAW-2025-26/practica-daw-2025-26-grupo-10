@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import javax.sql.rowset.serial.SerialBlob;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,10 +21,8 @@ import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Image;
 import es.tickethub.tickethub.mappers.ClientMapper;
 import es.tickethub.tickethub.repositories.ClientRepository;
-import lombok.Getter;
 
 @Service
-@Getter
 public class ClientService {
 
     @Autowired
@@ -34,103 +34,39 @@ public class ClientService {
     @Autowired
     private ClientMapper clientMapper;
 
+
     @Transactional
     public void registerClient(String name, String email, String surname, String password, String passWordConfirmation,
             String username) {
+
         if (!password.equals(passWordConfirmation)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Las contraseñas no coinciden");
         }
 
-        boolean existClient = clientRepository.existsByUsername(username);
-        if (existClient) {
+        if (clientRepository.existsByUsername(username)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Este nombre de usuario ya está en uso");
         }
 
-        Optional<Client> client = clientRepository.findByEmail(email);
-        Client getClient;
+        Client client = clientRepository.findByEmail(email).orElse(new Client());
+        client.setEmail(email);
 
-        if (client.isPresent()) {
-            getClient = client.get();
-
-            if (!getClient.getPassword().equals("")) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "Este correo electrónico ya pertenece a una cuenta");
-            }
-        } else {
-            getClient = new Client();
-            getClient.setEmail(email);
+        if (!client.getPassword().equals("")) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Este correo electrónico ya pertenece a una cuenta");
         }
 
-        getClient.setName(name);
-        getClient.setSurname(surname);
-        getClient.setUsername(username);
-        String encodedPassword = passwordEncoder.encode(password);
-        getClient.setPassword(encodedPassword);
-        getClient.setAdmin(false);
-        getClient.setCoins(BigDecimal.ZERO);
-        clientRepository.save(getClient);
-    }
+        client.setName(name);
+        client.setSurname(surname);
+        client.setUsername(username);
+        client.setPassword(passwordEncoder.encode(password));
+        client.setAdmin(false);
+        client.setCoins(BigDecimal.ZERO);
 
-    @Transactional(readOnly = true)
-    public Client getClientById(Long clientID) {
-        Optional<Client> clientOptional = clientRepository.findById(clientID);
-        if (clientOptional.isPresent()) {
-            return clientOptional.get();
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado");
-    }
-
-    @Transactional(readOnly = true)
-    public Client getClientByEmail(String email) {
-        Optional<Client> clientOptional = clientRepository.findByEmail(email);
-        if (clientOptional.isPresent()) {
-            return clientOptional.get();
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado");
-    }
-
-    @Transactional(readOnly = true)
-    public Client getLoggedClient(String loggedEmail) {
-        return getClientByEmail(loggedEmail);
+        saveClient(client);
     }
 
     @Transactional
-    public void updateClient(String loggedEmail, Client clientUpdated, MultipartFile imageFile) throws IOException {
-        Client client = clientRepository.findByEmail(loggedEmail)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado"));
-
-        String nuevoEmail = clientUpdated.getEmail();
-        if (!client.getEmail().equals(nuevoEmail)) {
-            if (clientRepository.existsByEmail(nuevoEmail)) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "Ese correo electrónico ya está en uso");
-            }
-        }
-
-        client.setName(clientUpdated.getName());
-        client.setSurname(clientUpdated.getSurname());
-        client.setUsername(clientUpdated.getUsername());
-        client.setEmail(clientUpdated.getEmail());
-        client.setPhone(clientUpdated.getPhone());
-        client.setAge(clientUpdated.getAge());
-        client.setVersion(clientUpdated.getVersion());
-
-        if (imageFile != null && !imageFile.isEmpty()) {
-            try {
-                Image newImage = new Image();
-                newImage.setImageCode(new javax.sql.rowset.serial.SerialBlob(imageFile.getBytes()));
-                client.setProfileImage(newImage);
-            } catch (SQLException e) {
-                throw new IOException("Error al procesar los bytes de la imagen");
-            }
-        }
-
-        clientRepository.save(client);
-    }
-
-    @Transactional
-    public void changePassword(String loggedEmail, String oldPassword, String newPassword,
-            String newPasswordConfirmation) {
-        Client client = clientRepository.findByEmail(loggedEmail)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado"));
+    public void changePassword(String email, String oldPassword, String newPassword, String newPasswordConfirmation) {
+        Client client = findClientOrThrowByEmail(email);
 
         if (!passwordEncoder.matches(oldPassword, client.getPassword())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La contraseña actual es incorrecta");
@@ -141,17 +77,66 @@ public class ClientService {
         }
 
         client.setPassword(passwordEncoder.encode(newPassword));
-        clientRepository.save(client);
+        saveClient(client);
+    }
+
+    @Transactional
+    public void updateClient(String loggedEmail, Client updatedClient, MultipartFile imageFile) throws IOException {
+        Client client = findClientOrThrowByEmail(loggedEmail);
+
+        if (!client.getEmail().equals(updatedClient.getEmail()) &&
+            clientRepository.existsByEmail(updatedClient.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ese correo electrónico ya está en uso");
+        }
+
+        copyClientFields(client, updatedClient);
+
+        if (imageFile != null && !imageFile.isEmpty()) {
+            try {
+                Image newImage = new Image();
+                newImage.setImageCode(new SerialBlob(imageFile.getBytes()));
+                client.setProfileImage(newImage);
+            } catch (SQLException e) {
+                throw new IOException("Error al procesar los bytes de la imagen");
+            }
+        }
+
+        saveClient(client);
     }
 
     @Transactional
     public void updateUser(Long id, Client formClient) {
-        Client client = clientRepository.findById(id).orElseThrow();
-        client.setName(formClient.getName());
-        client.setSurname(formClient.getSurname());
-        client.setEmail(formClient.getEmail());
+        Client client = findClientOrThrowById(id);
+        copyClientFields(client, formClient);
+        saveClient(client);
+    }
 
-        clientRepository.save(client);
+
+    @Transactional(readOnly = true)
+    public Client getClientById(Long id) {
+        return findClientOrThrowById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Client getClientByEmail(String email) {
+        return findClientOrThrowByEmail(email);
+    }
+
+    @Transactional(readOnly = true)
+    public Client getLoggedClient(String email) {
+        return findClientOrThrowByEmail(email);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Client> findByEmail(String email) {
+        return clientRepository.findByEmail(email);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Client> getNonAdminClients() {
+        return clientRepository.findAll().stream()
+                .filter(c -> !c.getAdmin())
+                .toList();
     }
 
     // ======================
@@ -159,42 +144,49 @@ public class ClientService {
     // ======================
 
     @Transactional(readOnly = true)
-    public ClientDTO getClientDTOById(Long clientID) {
-        return clientMapper.toDTO(getClientById(clientID));
+    public ClientDTO getClientDTOById(Long id) {
+        return clientMapper.toDTO(findClientOrThrowById(id));
     }
 
     @Transactional(readOnly = true)
     public ClientDTO getLoggedClientDTO(String email) {
-        return clientMapper.toDTO(getClientByEmail(email));
+        return clientMapper.toDTO(findClientOrThrowByEmail(email));
     }
 
     @Transactional
-    public ClientDTO updateClientREST(String loggedEmail, ClientDTO dto) {
-
-        Client client = getClientByEmail(loggedEmail);
-
+    public ClientDTO updateClientREST(String email, ClientDTO dto) {
+        Client client = findClientOrThrowByEmail(email);
         client.setName(dto.name());
         client.setSurname(dto.surname());
         client.setUsername(dto.username());
         client.setEmail(dto.email());
         client.setPhone(dto.phone());
         client.setAge(dto.age());
-
-        clientRepository.save(client);
-
+        saveClient(client);
         return clientMapper.toDTO(client);
     }
 
-    @Transactional(readOnly = true)
-    public List<Client> getNonAdminClients() {
-        return clientRepository.findAll()
-                .stream()
-                .filter(c -> !c.getAdmin())
-                .toList();
+    private Client findClientOrThrowById(Long id) {
+        return clientRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado"));
     }
 
-    @Transactional(readOnly = true)
-    public Optional<Client> findByEmail(String email) {
-        return clientRepository.findByEmail(email);
+    private Client findClientOrThrowByEmail(String email) {
+        return clientRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado"));
+    }
+
+    public Client saveClient(Client client) {
+        return clientRepository.save(client);
+    }
+
+    private void copyClientFields(Client target, Client source) {
+        target.setName(source.getName());
+        target.setSurname(source.getSurname());
+        target.setUsername(source.getUsername());
+        target.setEmail(source.getEmail());
+        target.setPhone(source.getPhone());
+        target.setAge(source.getAge());
+        target.setVersion(source.getVersion());
     }
 }
