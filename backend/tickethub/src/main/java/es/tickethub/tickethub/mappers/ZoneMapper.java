@@ -19,6 +19,9 @@ public interface ZoneMapper {
     @Mapping(source = "event.eventID", target = "eventId")
     List<ZoneDTO> toDTOs(Collection<Zone> zones);
 
+    @Mapping(source = "event.eventID", target = "eventId")
+    List<ZoneBasicDTO> toBasicDTOs(Collection<Zone> zones);
+
     @Mapping(target = "id", ignore = true)
     Zone toDomain(ZoneDTO zoneDTO);
 }
