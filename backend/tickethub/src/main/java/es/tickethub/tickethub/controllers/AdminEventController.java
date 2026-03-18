@@ -22,6 +22,7 @@ import es.tickethub.tickethub.entities.Artist;
 import es.tickethub.tickethub.entities.Discount;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Zone;
+import es.tickethub.tickethub.services.AdminViewService;
 import es.tickethub.tickethub.services.ArtistService;
 import es.tickethub.tickethub.services.DiscountService;
 import es.tickethub.tickethub.services.EventService;
@@ -33,6 +34,9 @@ import jakarta.validation.Valid;
 public class AdminEventController {
     @Autowired
     private EventService eventService;
+
+    @Autowired
+    private AdminViewService adminViewService;
 
     @Autowired
     private ZoneService zoneService;
@@ -83,23 +87,10 @@ public class AdminEventController {
     // To show the edit event view
     @GetMapping("/edit_event/{eventID}")
     public String editEvent(@PathVariable Long eventID, Model model) {
-        Event event = eventService.findById(eventID).get();
-        List<Artist> allArtists = artistService.findAll();
-        List<Zone> allZones = event.getZones();
-        List<Discount> allDiscounts = discountService.getAllDiscounts();
+        Event event = eventService.findByIdOrThrow(eventID);
 
-        // To mark the correct artist as selected in the edit view
-        for (Artist artist : allArtists) {
-            if (event.getArtist() != null &&
-                    artist.getArtistID().equals(event.getArtist().getArtistID())) {
-                artist.setSelected(true);
-            } else {
-                artist.setSelected(false);
-            }
-        }
+        adminViewService.prepareEditEventView(model, event);
 
-        AdminControllerHelper.addingAttributesCreateEvent(model, event, allArtists, allZones);
-        AdminControllerHelper.addingDiscounts(model, event, allDiscounts);
         return "admin/events/create_event";
     }
 
@@ -126,18 +117,9 @@ public class AdminEventController {
 
     // To delete a saved event
     @DeleteMapping("/delete_event/{eventID}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEvent(@PathVariable Long eventID) {
-        Event event = eventService.findById(eventID).get();
-        Artist artist = event.getArtist();
-
-        artist.getLastEvents().remove(event);
-        artist.getEventsIncoming().remove(event);
-
-        event.setArtist(null);
-        event.setZones(null);
-
-        eventService.deleteById(eventID);
+        eventService.deleteEvent(eventID);
     }
 
 }

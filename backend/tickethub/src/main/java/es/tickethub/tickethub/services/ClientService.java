@@ -3,6 +3,7 @@ package es.tickethub.tickethub.services;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -182,5 +183,13 @@ public class ClientService {
         clientRepository.save(client);
 
         return clientMapper.toDTO(client);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Client> getNonAdminClients() {
+        return clientRepository.findAll()
+                .stream()
+                .filter(c -> !c.getAdmin())
+                .toList();
     }
 }

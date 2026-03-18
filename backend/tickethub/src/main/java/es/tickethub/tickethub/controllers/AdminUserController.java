@@ -1,8 +1,5 @@
 package es.tickethub.tickethub.controllers;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,20 +19,13 @@ public class AdminUserController {
 
     @GetMapping("/admin/users")
     public String listUsers(Model model) {
-        List<Client> clients = clientService.getClientRepository().findAll()
-                .stream()
-                .filter(c -> !c.getAdmin())
-                .collect(Collectors.toList());
-
-        model.addAttribute("clients", clients);
+        model.addAttribute("clients", clientService.getNonAdminClients());
         return "admin/users/admin_users";
     }
 
-
     @GetMapping("/admin/users/edit/{id}")
     public String editUser(@PathVariable Long id, Model model) {
-        Client client = clientService.getClientRepository().findById(id).orElseThrow();
-        model.addAttribute("client", client);
+        model.addAttribute("client", clientService.getClientById(id));
         return "admin/users/edit_users";
     }
 

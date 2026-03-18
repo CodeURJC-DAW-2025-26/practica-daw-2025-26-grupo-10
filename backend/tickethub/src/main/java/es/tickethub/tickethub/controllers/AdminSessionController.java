@@ -1,7 +1,5 @@
 package es.tickethub.tickethub.controllers;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,11 +16,8 @@ public class AdminSessionController {
 
     @GetMapping("/admin/events/{id}/manage_sessions")
     public String manageSessions(@PathVariable Long id, Model model) {
-        Optional <Event> event = eventService.findById(id);
-        if (event.isPresent()) {
-            model.addAttribute("event", event.get());
-            
-        }
+        Event event = eventService.findByIdOrThrow(id);
+        model.addAttribute("event", event);
         return "admin/events/manage_sessions";
     }
 }

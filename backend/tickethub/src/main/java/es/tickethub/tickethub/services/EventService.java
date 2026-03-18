@@ -205,6 +205,24 @@ public class EventService {
     private int calculateTotalCapacity(List<Zone> zones) {
         return zones.stream().mapToInt(Zone::getCapacity).sum();
     }
+    // DELETE
+    public void deleteEvent(Long eventID) {
+        Event event = findByIdOrThrow(eventID);
+
+        Artist artist = event.getArtist();
+
+        if (artist != null) {
+            artist.getLastEvents().remove(event);
+            artist.getEventsIncoming().remove(event);
+        }
+
+        event.setArtist(null);
+        event.setZones(null);
+
+        eventRepository.delete(event);
+    }
+    
+    
 
     // ======================
     // REST METHODS
