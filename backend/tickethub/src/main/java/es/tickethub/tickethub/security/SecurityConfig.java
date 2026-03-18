@@ -55,7 +55,6 @@ public class SecurityConfig {
 	@Bean
 	@Order(1)
 	public SecurityFilterChain apiFilterChain(HttpSecurity http, JwtRequestFilter jwtRequestFilter) throws Exception {
-
 		http.authenticationProvider(authenticationProvider());
 
 		http

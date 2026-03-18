@@ -1,17 +1,17 @@
 package es.tickethub.tickethub.controllers;
 
 import java.io.IOException;
-import java.sql.Blob;
 import java.sql.SQLException;
 
-import javax.sql.rowset.serial.SerialBlob;
-
+import org.springframework.data.domain.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.tickethub.tickethub.entities.Artist;
-import es.tickethub.tickethub.entities.Image;
 import es.tickethub.tickethub.services.ArtistService;
 import jakarta.validation.Valid;
 
@@ -34,7 +33,9 @@ public class ArtistController {
     /*------------------------------------- FUNCTIONS FOR THE PUBLIC FOLDER ---------------------------------*/
     @GetMapping("/public/artists")
     public String artists(Model model) {
-        model.addAttribute("artists", artistService.findPaginated(0, 5));
+        Pageable pageable = PageRequest.of(0, 5, Sort.by("artistName"));
+        Page<Artist> artistPage = artistService.findPaginated(pageable);
+        model.addAttribute("artists",artistPage.getContent());
         return "public/artists";
     }
 
@@ -87,16 +88,10 @@ public class ArtistController {
             Model model) {
 
         if (result.hasErrors()) {
-            return "create_artist";
+            return "admin/artists/create_artist";
         }
         try {
-            if (!file.isEmpty()) {
-                Blob blob = new SerialBlob(file.getBytes());
-                Image image = new Image(file.getOriginalFilename(), blob);
-                artist.setArtistImage(image);
-            }
-
-            artistService.saveArtist(artist);
+            artistService.createArtist(artist, file);
         } catch (IOException | SQLException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "admin/artists/create_artist";
@@ -113,27 +108,7 @@ public class ArtistController {
         }
 
         try {
-            Artist existing = artistService.findById(artist.getArtistID());
-
-            // each setter to update the info
-            existing.setArtistName(artist.getArtistName());
-            existing.setInfo(artist.getInfo());
-
-            existing.getEventsIncoming().clear();
-            existing.getEventsIncoming().addAll(artist.getEventsIncoming());
-
-            existing.getLastEvents().clear();
-            existing.getLastEvents().addAll(artist.getLastEvents());
-            if (!file.isEmpty()) {
-                Blob blob = new SerialBlob(file.getBytes());
-                Image image = new Image(file.getOriginalFilename(), blob);
-                artist.setArtistImage(image);
-                existing.setArtistImage(artist.getArtistImage());
-            }
-            existing.setInstagram(artist.getInstagram());
-            existing.setTwitter(artist.getTwitter());
-            artistService.saveArtist(artist);
-
+            artistService.updateArtist(artist, file);
         } catch (IOException | SQLException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "/admin/artists/create_artist";
