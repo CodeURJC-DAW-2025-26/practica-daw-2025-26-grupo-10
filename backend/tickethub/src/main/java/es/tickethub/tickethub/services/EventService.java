@@ -3,8 +3,10 @@ package es.tickethub.tickethub.services;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,9 +20,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-
 import es.tickethub.tickethub.dto.EventDTO;
 import es.tickethub.tickethub.entities.Artist;
+import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Discount;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Image;
@@ -39,6 +41,10 @@ public class EventService {
 
     @Autowired
     private ArtistService artistService;
+
+    @Autowired
+    private RecommendationService recommendationService;
+
 
     @Autowired
     private DiscountService discountService;
@@ -222,7 +228,48 @@ public class EventService {
         eventRepository.delete(event);
     }
     
-    
+    // Top eventos por ventas
+public List<Event> getTopSellingEvents(int limit) {
+    List<Event> allEvents = findAll(); // tu método existente
+    return allEvents.stream()
+            .sorted((e1, e2) -> {
+                int sales1 = (e1.getSessions() == null) ? 0
+                        : e1.getSessions().stream()
+                                .flatMap(s -> s.getPurchases().stream())
+                                .mapToInt(p -> p.getTickets().size())
+                                .sum();
+                int sales2 = (e2.getSessions() == null) ? 0
+                        : e2.getSessions().stream()
+                                .flatMap(s -> s.getPurchases().stream())
+                                .mapToInt(p -> p.getTickets().size())
+                                .sum();
+                return Integer.compare(sales2, sales1);
+            })
+            .limit(limit)
+            .toList();
+}
+
+// Next Events
+    public List<Event> getNextUpcomingEvents(int limit) {
+        List<Event> allEvents = findAll();
+        return allEvents.stream()
+                .sorted(Comparator.comparing(event -> {
+                    if (event.getSessions() == null || event.getSessions().isEmpty())
+                        return Instant.MAX;
+                    return event.getSessions().stream()
+                            .map(session -> session.getDate().toInstant())
+                            .filter(date -> !date.isBefore(Instant.now()))
+                            .min(Instant::compareTo)
+                            .orElse(Instant.MAX);
+                }))
+                .limit(limit)
+                .toList();
+    }
+
+    public List<Event> getRecommendedEvents(Client client, ServerRecommendationService serverService, int limit) {
+        ClientRecommendationService crs = new ClientRecommendationService(client);
+        return recommendationService.recommendEvents(crs, serverService, limit, true);
+    }
 
     // ======================
     // REST METHODS

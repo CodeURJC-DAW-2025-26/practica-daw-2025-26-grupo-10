@@ -118,4 +118,18 @@ public class ArtistService {
 
         return artistRepository.save(existing);
     }
+    //Most popular artists
+    public List<Artist> getPopularArtists(int limit) {
+        List<Artist> allArtists = findAll();
+        return allArtists.stream()
+                .sorted((a1, a2) -> {
+                    int count1 = ((a1.getEventsIncoming() != null) ? a1.getEventsIncoming().size() : 0)
+                            + ((a1.getLastEvents() != null) ? a1.getLastEvents().size() : 0);
+                    int count2 = ((a2.getEventsIncoming() != null) ? a2.getEventsIncoming().size() : 0)
+                            + ((a2.getLastEvents() != null) ? a2.getLastEvents().size() : 0);
+                    return Integer.compare(count2, count1);
+                })
+                .limit(limit)
+                .toList();
+    }
 }

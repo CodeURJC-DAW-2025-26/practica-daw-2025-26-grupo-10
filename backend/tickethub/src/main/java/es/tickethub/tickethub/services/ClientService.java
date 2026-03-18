@@ -192,4 +192,9 @@ public class ClientService {
                 .filter(c -> !c.getAdmin())
                 .toList();
     }
+
+    @Transactional(readOnly = true)
+    public Optional<Client> findByEmail(String email) {
+        return clientRepository.findByEmail(email);
+    }
 }
