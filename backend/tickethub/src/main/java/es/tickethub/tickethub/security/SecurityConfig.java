@@ -64,11 +64,20 @@ public class SecurityConfig {
 		
 		http
 				.authorizeHttpRequests(authorize -> authorize
+						/* 1. ENDPOINTS PÚBLICOS (Los más específicos)*/
+        				.requestMatchers("/api/v1/auth/**").permitAll()
+						// Consultas POST publicas
 						.requestMatchers(HttpMethod.POST, "/api/v1/purchases/save").permitAll()
-						.requestMatchers("/api/v1/clients/**", "/api/v1/purchases/**").hasAnyRole("USER", "ADMIN")
+
+						/* 2. ENDPOINTS SOLO ADMIN */
 						.requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+
+						/*3. ENDPOINTS CLIENTE LOGUEADO (USER o ADMIN)*/
+						.requestMatchers("/api/v1/clients/**", "/api/v1/purchases/**").hasAnyRole("USER", "ADMIN")
+						
+						/*4. Cualquier otra petición */
 						.anyRequest().permitAll());
-		
+
 		http.formLogin(formLogin -> formLogin.disable());
 
 		http.csrf(csrf -> csrf.disable());

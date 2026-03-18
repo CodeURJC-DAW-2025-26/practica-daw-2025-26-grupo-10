@@ -3,8 +3,8 @@ package es.tickethub.tickethub.security.jwt;
 import java.time.Duration;
 
 public enum TokenType {
-
-    ACCESS(Duration.ofMinutes(5), "AuthToken"),
+    //Esto lo que maneja es el tiempo de vida de los tokens
+    ACCESS(Duration.ofMinutes(10), "AuthToken"),
     REFRESH(Duration.ofDays(7), "RefreshToken");
 
     public final Duration duration;

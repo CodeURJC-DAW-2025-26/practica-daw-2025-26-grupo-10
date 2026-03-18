@@ -33,13 +33,13 @@ public class UserLoginService {
 
 	public ResponseEntity<AuthResponse> login(HttpServletResponse response, LoginRequest loginRequest) {
 		
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+		Authentication authentication = authenticationManager.authenticate(//va a la BBDD para comprobar si la info de login es correcta
+				new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
 		
-		String username = loginRequest.getUsername();
+		String username = loginRequest.getEmail();
 		UserDetails user = userDetailsService.loadUserByUsername(username);
 
 		HttpHeaders responseHeaders = new HttpHeaders();
@@ -82,6 +82,7 @@ public class UserLoginService {
 		return "logout successfully";
 	}
 
+	//el token lo mete en una cookie y le pone htpOnly (caja fuerte no modificable)
 	private Cookie buildTokenCookie(TokenType type, String token) {
 		Cookie cookie = new Cookie(type.tokenName, token);
 		cookie.setMaxAge((int) type.duration.getSeconds());

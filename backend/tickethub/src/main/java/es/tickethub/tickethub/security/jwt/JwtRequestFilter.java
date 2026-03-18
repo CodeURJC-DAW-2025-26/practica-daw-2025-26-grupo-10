@@ -17,6 +17,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+//intercepta cada una de las peticiones desde el front
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
@@ -35,8 +36,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         throws ServletException, IOException {
         
         try {
-			var claims = jwtTokenProvider.validateToken(request, true);
-			var userDetails = userDetailsService.loadUserByUsername(claims.getSubject());
+			var claims = jwtTokenProvider.validateToken(request, true); //busca el token en el httponly
+			var userDetails = userDetailsService.loadUserByUsername(claims.getSubject());//de ser valido extrae el nombre de usuario y lo busca en la bbdd
 
 			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());
@@ -50,7 +51,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			}			
 		}
         
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(request, response);//esto deja pasar la solicitud si todo sale bien
                 
     }
 }

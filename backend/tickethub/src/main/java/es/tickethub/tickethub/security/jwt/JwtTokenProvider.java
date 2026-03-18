@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @Component
 public class JwtTokenProvider {
 
-    private final SecretKey jwtSecret = Jwts.SIG.HS256.key().build();
+    private final SecretKey jwtSecret = Jwts.SIG.HS256.key().build(); //esto es como una llave criptográfica (una maquina de sellos)
 	private final JwtParser jwtParser = Jwts.parser().verifyWith(jwtSecret).build();
 
 	public String tokenStringFromHeaders(HttpServletRequest req){
@@ -51,6 +51,7 @@ public class JwtTokenProvider {
 		throw new IllegalArgumentException("No access token cookie found in request");
 	}
 
+	//estos validate abren el token y me devuelven los datos que habían dentro
 	public Claims validateToken(HttpServletRequest req, boolean fromCookie){
 		var token = fromCookie?
 				tokenStringFromCookies(req):
@@ -62,24 +63,28 @@ public class JwtTokenProvider {
 		return jwtParser.parseSignedClaims(token).getPayload();
 	}
 
+	//genera el token con duracion corta
 	public String generateAccessToken(UserDetails userDetails) {
 		return buildToken(TokenType.ACCESS, userDetails).compact();
 	}
-
+	
+	//genera el token de refresco que tiene la duracion larga
 	public String generateRefreshToken(UserDetails userDetails) {
 		var token = buildToken(TokenType.REFRESH, userDetails);
         return token.compact();
 	}
 
+	//cuado el usuario acierta la contraseña se llama a este método
 	private JwtBuilder buildToken(TokenType tokenType, UserDetails userDetails) {
 		var currentDate = new Date();
 		var expiryDate = Date.from(new Date().toInstant().plus(tokenType.duration));
 		return Jwts.builder()
+				//los claims son la información que va a viajar dentro de los tokens
 				.claim("roles", userDetails.getAuthorities())
 				.claim("type", tokenType.name())
-				.subject(userDetails.getUsername())
+				.subject(userDetails.getUsername())//le metes el nombre de usuario
 				.issuedAt(currentDate)
-				.expiration((Date) expiryDate)
-				.signWith(jwtSecret);
+				.expiration((Date) expiryDate)//establece la fecha de caducidad del token
+				.signWith(jwtSecret);//esto le pone el sello al token
 	}
 }
