@@ -1,14 +1,14 @@
 package es.tickethub.tickethub.services;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Zone;
+import es.tickethub.tickethub.entities.Ticket;
 import es.tickethub.tickethub.repositories.ZoneRepository;
 
 @Service
@@ -16,50 +16,72 @@ public class ZoneService {
 
     private final ZoneRepository zoneRepository;
 
+    @Autowired
+    private EventService eventService;
+
     public ZoneService(ZoneRepository zoneRepository) {
         this.zoneRepository = zoneRepository;
     }
 
     public List<Zone> findAll() {
-        List<Zone> zone = zoneRepository.findAll();
-        if (!(zone.isEmpty())) {
-            return zone;
-        }
-        throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No hay zonas registradas");
+        return zoneRepository.findAll();
     }
 
     public Zone findById(Long id) {
-        Optional<Zone> zoneOptional = zoneRepository.findById(id);
-        if (zoneOptional.isPresent()) {
-            return zoneOptional.get();
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Zona no encontrada");
+        return zoneRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Zona no encontrada"));
     }
 
-    public Zone save(Zone zone) {
+    public Zone createZone(Long eventID, Zone zoneData) {
+        Event event = eventService.findByIdOrThrow(eventID);
+        
+        Zone newZone = new Zone(zoneData.getName(), zoneData.getCapacity(), zoneData.getPrice());
+        newZone.setEvent(event);
+        event.getZones().add(newZone);
 
-        if (zone.getId() == null) {
-            return zoneRepository.save(zone);
-        } else {
-            if (zone.getCapacity() <= 0) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La capacidad debe ser mayor que 0");
-            }
-
-            if (zone.getPrice().compareTo(BigDecimal.ZERO) < 0) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El precio no puede ser negativo");
-            }
-
-            return zoneRepository.save(zone);
-        }
+        updateEventCapacity(event);
+        return zoneRepository.save(newZone);
     }
 
-    public void deleteById(Long id) {
-        Optional<Zone> optionalZone = zoneRepository.findById(id);
-        if (!optionalZone.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Zone not found");
+    public Zone updateZone(Long eventID, Long zoneID, Zone zoneData) {
+        Event event = eventService.findByIdOrThrow(eventID);
+        
+        Zone existing = event.getZones().stream()
+                .filter(z -> z.getId().equals(zoneID))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "La zona no pertenece a este evento"));
+
+        existing.setName(zoneData.getName());
+        existing.setCapacity(zoneData.getCapacity());
+        existing.setPrice(zoneData.getPrice());
+
+        if (existing.getTickets() != null) {
+            for (Ticket ticket : existing.getTickets()) {
+                ticket.setZone(existing);
+            }
         }
-        Zone zone = optionalZone.get();
+
+        updateEventCapacity(event);
+        return zoneRepository.save(existing);
+    }
+
+    public void deleteZone(Long eventID, Long zoneID) {
+        Event event = eventService.findByIdOrThrow(eventID);
+        boolean removed = event.getZones().removeIf(z -> z.getId().equals(zoneID));
+        if (!removed) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Zona no encontrada en el evento");
+        }
+        Zone zone = findById(zoneID);
         zone.setEvent(null);
-        zoneRepository.deleteById(zone.getId());
+        zoneRepository.delete(zone);
+        updateEventCapacity(event);
+    }
+
+    private void updateEventCapacity(Event event) {
+        int totalCapacity = event.getZones().stream()
+                .mapToInt(Zone::getCapacity)
+                .sum();
+        event.setCapacity(totalCapacity);
+        eventService.save(event);
     }
 }

@@ -53,10 +53,10 @@ public class PurchaseController {
      */
     @PostMapping("/save")
     public String savePurchase(
-            @RequestParam Long eventId, 
+            @RequestParam Long eventId,
             @RequestParam String totalPrice,
-            @RequestParam List<Long> zoneIds, 
-            @RequestParam Long sessionId, 
+            @RequestParam List<Long> zoneIds,
+            @RequestParam Long sessionId,
             @RequestParam String email) {
         
         purchaseService.processPurchase(eventId, totalPrice, zoneIds, sessionId, email);
