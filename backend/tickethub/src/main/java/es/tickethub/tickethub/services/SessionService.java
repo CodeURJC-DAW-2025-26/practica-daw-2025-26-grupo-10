@@ -15,10 +15,11 @@ import org.springframework.web.server.ResponseStatusException;
 import es.tickethub.tickethub.entities.Purchase;
 import es.tickethub.tickethub.entities.Session;
 import es.tickethub.tickethub.repositories.SessionRepository;
-
+import es.tickethub.tickethub.entities.Event;
 @Service
 public class SessionService {
-
+    @Autowired
+    private EventService eventService;
     @Autowired
     private SessionRepository sessionRepository;
 
@@ -106,5 +107,20 @@ public class SessionService {
     public void save(Session session) {
         sessionRepository.save(session);
     }
+    
+    public Session createSession(Long eventID, String dateStr) {
+        Event event = eventService.findById(eventID)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado"));
+        Session session = new Session();
+        session.setEvent(event);
+        session.setDate(session.getTimestampedDate(dateStr));
+        event.getSessions().add(session);
+        return sessionRepository.save(session);
+    }
 
+    public Session updateSession(Long sessionID, String dateStr) {
+        Session session = this.findById(sessionID);
+        session.setDate(session.getTimestampedDate(dateStr));
+        return sessionRepository.save(session);
+    }
 }
