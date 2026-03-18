@@ -2,9 +2,12 @@ package es.tickethub.tickethub.services;
 
 import java.math.BigDecimal;
 import java.util.List;
-
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,15 +17,11 @@ import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.io.source.ByteArrayOutputStream;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.AreaBreak;
+import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.properties.AreaBreakType;
-
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
 
 import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Event;
@@ -70,14 +69,7 @@ public class PurchaseService {
 
         Client client = clientService.findByEmail(email)
                 .orElseGet(() -> {
-                    Client newClient = new Client();
-                    newClient.setEmail(email);
-                    newClient.setName("");
-                    newClient.setSurname("");
-                    newClient.setUsername("");
-                    newClient.setPassword("");
-                    newClient.setCoins(BigDecimal.ZERO);
-                    clientService.saveClient(newClient);
+                    Client newClient = new Client(email, "","", "", "", 0, 0, BigDecimal.ZERO, null, null, null);
                     return newClient;
                 });
 
