@@ -1,7 +1,6 @@
 package es.tickethub.tickethub.controllers;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,9 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import es.tickethub.tickethub.entities.Event;
-import es.tickethub.tickethub.entities.Session;
-import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.SessionService;
 
 @Controller
@@ -29,9 +25,6 @@ public class SessionController {
 
     @Autowired
     private SessionService sessionService;
-
-    @Autowired
-    private EventService eventService;
 
     // Show upcoming sessions
     @GetMapping("/upcoming")
@@ -62,18 +55,7 @@ public class SessionController {
     @PostMapping("/{eventID}/add_session")
     @ResponseBody // To return a simple status without redirecting
     public ResponseEntity<?> addSession(@RequestParam String date, @PathVariable Long eventID) {
-        Optional <Event> optionalEvent = eventService.findById(eventID);
-        if (optionalEvent.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        Event event = optionalEvent.get();
-
-        Session session = new Session();
-        session.setEvent(event);
-        session.setDate(session.getTimestampedDate(date));
-
-        event.getSessions().add(session);
-        sessionService.save(session);
+        sessionService.createSession(eventID, date);
 
         return ResponseEntity.ok().build();
     }
@@ -83,14 +65,7 @@ public class SessionController {
     public ResponseEntity<?> editSession(@RequestParam("newDate") String date, @PathVariable Long eventID,
             @RequestParam Long sessionID) {
 
-        Session session = sessionService.findById(sessionID);
-        if (session == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        session.setDate(session.getTimestampedDate(date));
-        sessionService.save(session);
-
+        sessionService.updateSession(sessionID, date);
         return ResponseEntity.ok().build();
     }
 

@@ -1,17 +1,22 @@
 package es.tickethub.tickethub.services;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
-
+import java.sql.Blob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.multipart.MultipartFile;
+import es.tickethub.tickethub.entities.Artist;
+import es.tickethub.tickethub.entities.Image;
+import es.tickethub.tickethub.services.ArtistService;
+import javax.sql.rowset.serial.SerialBlob;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import es.tickethub.tickethub.entities.Artist;
 import es.tickethub.tickethub.repositories.ArtistRepository;
 
 @Service
@@ -49,7 +54,6 @@ public class ArtistService {
     }
 
     public Artist saveArtist(Artist artist) {
-
         return artistRepository.save(artist);
     }
 
@@ -62,9 +66,12 @@ public class ArtistService {
         artistRepository.deleteById(artist.getArtistID());
     }
 
-    public List<Artist> findPaginated(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return artistRepository.findAll(pageable).getContent();
+    public Page<Artist> findPaginated(Pageable pageable) {
+        Page<Artist> artists = artistRepository.findAll(pageable);
+        if (artists.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No hay artistas");
+        }
+        return artists;
     }
 
     public Page<Artist> searchArtists(String name, int page, int size) {
@@ -78,4 +85,37 @@ public class ArtistService {
         return artistRepository.findByArtistNameContainingIgnoreCase(name, pageable);
     }
 
+    public Artist createArtist(Artist artist, MultipartFile file) throws IOException, SQLException {
+        if (!file.isEmpty()) {
+            Blob blob = new SerialBlob(file.getBytes());
+            Image image = new Image(file.getOriginalFilename(), blob);
+            artist.setArtistImage(image);
+        }
+        return artistRepository.save(artist);
+    }
+
+    public Artist updateArtist(Artist artist, MultipartFile file) throws IOException, SQLException {
+
+        Artist existing = findById(artist.getArtistID());
+
+        existing.setArtistName(artist.getArtistName());
+        existing.setInfo(artist.getInfo());
+
+        existing.getEventsIncoming().clear();
+        existing.getEventsIncoming().addAll(artist.getEventsIncoming());
+
+        existing.getLastEvents().clear();
+        existing.getLastEvents().addAll(artist.getLastEvents());
+
+        if (!file.isEmpty()) {
+            Blob blob = new SerialBlob(file.getBytes());
+            Image image = new Image(file.getOriginalFilename(), blob);
+            existing.setArtistImage(image);
+        }
+
+        existing.setInstagram(artist.getInstagram());
+        existing.setTwitter(artist.getTwitter());
+
+        return artistRepository.save(existing);
+    }
 }
