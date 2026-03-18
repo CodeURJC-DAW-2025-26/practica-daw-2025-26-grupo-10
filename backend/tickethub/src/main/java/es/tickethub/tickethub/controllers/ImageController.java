@@ -1,18 +1,17 @@
 package es.tickethub.tickethub.controllers;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.server.ResponseStatusException;
 
 import es.tickethub.tickethub.entities.Artist;
 import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Event;
-import es.tickethub.tickethub.entities.Image;
 import es.tickethub.tickethub.services.ArtistService;
 import es.tickethub.tickethub.services.ClientService;
 import es.tickethub.tickethub.services.EventService;
@@ -37,41 +36,19 @@ public class ImageController {
     @GetMapping("/users/{userID}")
     public ResponseEntity<byte[]> getClientImage(@PathVariable Long userID) {
         Client client = clientService.getClientById(userID);
-
-        if (client.getProfileImage() != null && client.getProfileImage().getImageCode() != null) {
-            return imageService.buildJpegResponse(client.getProfileImage().getImageCode());
-        }
-
-        return imageService.buildPngResponse(imageService.loadDefaultAvatar());
+        return imageService.getClientImageResponse(client);
     }
-
+    
     @GetMapping("/events/{eventID}/image/{imageID}")
     public ResponseEntity<byte[]> getEventImage(@PathVariable Long eventID, @PathVariable Long imageID) {
-        Optional <Event> eventOptional = eventService.findById(eventID);
-
-        if (eventOptional.isPresent()) {
-            Event event = eventOptional.get();
-
-            if (event.getEventImages() != null) {
-                for (Image image : event.getEventImages()) {
-                    if (image.getImageID().equals(imageID) && image.getImageCode() != null) {
-                        return imageService.buildJpegResponse(image.getImageCode());
-                    }
-                }
-            }
-        }
-
-        return imageService.buildNotFoundResponse();
+        Event event = eventService.findById(eventID)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado"));
+        return imageService.getEventImageResponse(event, imageID);
     }
 
     @GetMapping("/artists/{artistID}")
     public ResponseEntity<byte[]> getArtistImage(@PathVariable Long artistID) {
         Artist artist = artistService.findById(artistID);
-
-        if (artist.getArtistImage() != null && artist.getArtistImage().getImageCode() != null) {
-            return imageService.buildJpegResponse(artist.getArtistImage().getImageCode());
-        }
-
-        return imageService.buildNotFoundResponse();
+        return imageService.getArtistImageResponse(artist);
     }
 }

@@ -1,19 +1,19 @@
 package es.tickethub.tickethub.services;
 
-import java.util.List;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
 import es.tickethub.tickethub.dto.ImageDTO;
 import es.tickethub.tickethub.entities.Artist;
@@ -21,7 +21,6 @@ import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Image;
 import es.tickethub.tickethub.mappers.ImageMapper;
-
 
 @Service
 public class ImageService {
@@ -32,11 +31,8 @@ public class ImageService {
     /**
      * Converts a database Blob into a byte array.
      */
-    public byte[] blobToBytes(Blob blob) {
-        if (blob == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Image not found");
-        }
-
+    private byte[] blobToBytes(Blob blob) {
+        if (blob == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Image not found");
         try {
             return blob.getBytes(1, (int) blob.length());
         } catch (SQLException e) {
@@ -44,41 +40,26 @@ public class ImageService {
         }
     }
 
-    /**
-     * Builds an HTTP ResponseEntity containing a JPEG image from a Blob.
-     */
-    public ResponseEntity<byte[]> buildJpegResponse(Blob blob) {
-        return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_JPEG)
-                .body(blobToBytes(blob));
+    private byte[] loadResource(String path) {
+        try {
+            Resource resource = new ClassPathResource(path);
+            return StreamUtils.copyToByteArray(resource.getInputStream());
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Default image not found");
+        }
     }
-
-    /**
-     * Builds an HTTP ResponseEntity containing a PNG image from a byte array.
-     */
-    public ResponseEntity<byte[]> buildPngResponse(byte[] bytes) {
-        return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_PNG)
-                .body(bytes);
-    }
-
     /**
      * Returns a 404 Not Found response for missing images.
      */
-    public ResponseEntity<byte[]> buildNotFoundResponse() {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    private ResponseEntity<byte[]> buildResponse(byte[] bytes, MediaType mediaType) {
+        return ResponseEntity.ok().contentType(mediaType).body(bytes);
     }
 
     /**
      * Loads the default fallback avatar from the classpath.
      */
-    public byte[] loadDefaultAvatar() {
-        try {
-            Resource defaultImage = new ClassPathResource("static/images/default-avatar.png");
-            return StreamUtils.copyToByteArray(defaultImage.getInputStream());
-        } catch (IOException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Default avatar image not found");
-        }
+    private ResponseEntity<byte[]> buildResponse(Blob blob, MediaType mediaType) {
+        return buildResponse(blobToBytes(blob), mediaType);
     }
 
     // ======================
@@ -90,21 +71,20 @@ public class ImageService {
      */
     public ResponseEntity<byte[]> getClientImageResponse(Client client) {
         if (client != null && client.getProfileImage() != null && client.getProfileImage().getImageCode() != null) {
-            return buildJpegResponse(client.getProfileImage().getImageCode());
+            return buildResponse(client.getProfileImage().getImageCode(), MediaType.IMAGE_JPEG);
         }
-        return buildPngResponse(loadDefaultAvatar());
+        // Default avatar PNG
+        return buildResponse(loadResource("static/images/default-avatar.png"), MediaType.IMAGE_PNG);
     }
-
     /**
      * Retrieves the profile image for an artist, or a 404 if not found.
      */
     public ResponseEntity<byte[]> getArtistImageResponse(Artist artist) {
         if (artist != null && artist.getArtistImage() != null && artist.getArtistImage().getImageCode() != null) {
-            return buildJpegResponse(artist.getArtistImage().getImageCode());
+            return buildResponse(artist.getArtistImage().getImageCode(), MediaType.IMAGE_JPEG);
         }
-        return buildNotFoundResponse();
+        return ResponseEntity.notFound().build();
     }
-
     /**
      * Searches for a specific image within an event's gallery.
      */
@@ -112,11 +92,11 @@ public class ImageService {
         if (event != null && event.getEventImages() != null) {
             for (Image image : event.getEventImages()) {
                 if (image.getImageID().equals(imageID) && image.getImageCode() != null) {
-                    return buildJpegResponse(image.getImageCode());
+                    return buildResponse(image.getImageCode(), MediaType.IMAGE_JPEG);
                 }
             }
         }
-        return buildNotFoundResponse();
+        return ResponseEntity.notFound().build();
     }
 
     // ======================
