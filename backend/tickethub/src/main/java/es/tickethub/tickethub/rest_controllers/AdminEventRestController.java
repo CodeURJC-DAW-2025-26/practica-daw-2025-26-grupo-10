@@ -1,6 +1,7 @@
 package es.tickethub.tickethub.rest_controllers;
 
 import java.net.URI;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 import es.tickethub.tickethub.dto.EventDTO;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.mappers.EventMapper;
 import es.tickethub.tickethub.services.EventService;
-
-import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 @RestController
 @RequestMapping("/api/v1/admin/events")
@@ -66,7 +66,7 @@ public class AdminEventRestController {
 
             return eventMapper.toDTO(updatedEvent);
         } else {
-            throw noSuchElementException();
+            throw new NoSuchElementException();
         }
     }
 

@@ -39,10 +39,10 @@ public class JwtTokenProvider {
 		}
 
 		for (Cookie cookie : cookies) {
-			if (TokenType.ACCESS.cookieName.equals(cookie.getName())) {
+			if (TokenType.ACCESS.tokenName.equals(cookie.getName())) {
 				String accessToken = cookie.getValue();
 				if (accessToken == null) {
-					throw new IllegalArgumentException("Cookie %s has null value".formatted(TokenType.ACCESS.cookieName));
+					throw new IllegalArgumentException("Cookie %s has null value".formatted(TokenType.ACCESS.tokenName));
 				}
 
 				return accessToken;
@@ -79,7 +79,7 @@ public class JwtTokenProvider {
 				.claim("type", tokenType.name())
 				.subject(userDetails.getUsername())
 				.issuedAt(currentDate)
-				.expiration(expiryDate)
+				.expiration((Date) expiryDate)
 				.signWith(jwtSecret);
 	}
 }

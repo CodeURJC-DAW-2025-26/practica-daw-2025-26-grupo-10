@@ -10,11 +10,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 
+@Service
 public class UserLoginService {
 
     private static final Logger log = LoggerFactory.getLogger(UserLoginService.class);
@@ -64,7 +66,7 @@ public class UserLoginService {
 					"Auth successful. Tokens are created in cookie.");
 			return ResponseEntity.ok().body(loginResponse);
 
-		} catch (Exception e) {
+		} catch (UsernameNotFoundException e) {
 			log.error("Error while processing refresh token", e);
 			AuthResponse loginResponse = new AuthResponse(AuthResponse.Status.FAILURE,
 					"Failure while processing refresh token");
@@ -81,7 +83,7 @@ public class UserLoginService {
 	}
 
 	private Cookie buildTokenCookie(TokenType type, String token) {
-		Cookie cookie = new Cookie(type.cookieName, token);
+		Cookie cookie = new Cookie(type.tokenName, token);
 		cookie.setMaxAge((int) type.duration.getSeconds());
 		cookie.setHttpOnly(true);
 		cookie.setPath("/");
@@ -89,7 +91,7 @@ public class UserLoginService {
 	}
 
 	private Cookie removeTokenCookie(TokenType type){
-		Cookie cookie = new Cookie(type.cookieName, "");
+		Cookie cookie = new Cookie(type.tokenName, "");
 		cookie.setMaxAge(0);
 		cookie.setHttpOnly(true);
 		cookie.setPath("/");
