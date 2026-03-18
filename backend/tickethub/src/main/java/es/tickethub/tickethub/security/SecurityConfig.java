@@ -69,7 +69,7 @@ public class SecurityConfig {
 						.requestMatchers(HttpMethod.POST, "/api/v1/purchases/save").permitAll()
 
 						/* 2. ENDPOINTS SOLO ADMIN */
-						.requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+						.requestMatchers("/api/v1/admin**").hasRole("ADMIN")
 
 						/*3. ENDPOINTS CLIENTE LOGUEADO (USER o ADMIN)*/
 						.requestMatchers("/api/v1/clients/**", "/api/v1/purchases/**").hasAnyRole("USER", "ADMIN")
