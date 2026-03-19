@@ -25,7 +25,6 @@ import es.tickethub.tickethub.entities.Zone;
 import es.tickethub.tickethub.services.AdminViewService;
 import es.tickethub.tickethub.services.ArtistService;
 import es.tickethub.tickethub.services.DiscountService;
-import es.tickethub.tickethub.services.EventManagementService;
 import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.ZoneService;
 import jakarta.validation.Valid;
@@ -77,12 +76,7 @@ public class AdminEventController {
         if (result.hasErrors()) {
             return "/admin/events/create_event";
         }
-        try {
-            eventService.create(event, artistID, files);
-        } catch (IOException | SQLException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            return "/admin/events/create_event";
-        }
+        eventService.create(event, artistID, files);
         return "redirect:/admin/events/manage_events";
     }
 
