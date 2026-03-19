@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -40,6 +43,11 @@ public class DiscountService {
         return discounts;
     }
 
+    public Page<Discount> getDiscountsPage(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return discountRepository.findAll(pageable);
+    }
+
     public List<Discount> getDiscountsByEvent(Long eventID) {
         List<Discount> discounts = eventRepository.findById(eventID).get().getDiscounts();
         if (discounts.isEmpty()) {
@@ -48,23 +56,21 @@ public class DiscountService {
         return discounts;
     }
 
-    /*
-     * Use of existsByDiscountName -> no need to bring the discount. We want to
-     * check if it already exists
-     */
+    public Discount editDiscount(Discount discount, Long id) {
+        Discount existing = discountRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Descuento no encontrado"));
 
-    public Discount createAndEditDiscount(Discount discount) {
+        existing.setAmount(discount.getAmount());
+        existing.setDiscountName(discount.getDiscountName());
+        existing.setPercentage(discount.getPercentage());
 
-        if (discount.getDiscountID() == null) {
-            return discountRepository.save(discount);
-        } else {
-            Optional<Discount> existing = discountRepository.findById(discount.getDiscountID());
+        return discountRepository.save(existing);
+    }
 
-            existing.get().setAmount(discount.getAmount());
-            existing.get().setDiscountName(discount.getDiscountName());
-            existing.get().setPercentage(discount.getPercentage());
-            return discountRepository.save(existing.get());
+    public Discount save(Discount discount) {
+        if (discountRepository.findByDiscountName(discount.getDiscountName()).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ya existe un descuento con ese nombre.");
         }
+        return discountRepository.save(discount);
     }
 
     public void deleteDiscount(Long discountID) {

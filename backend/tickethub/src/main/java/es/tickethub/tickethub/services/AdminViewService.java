@@ -20,9 +20,6 @@ public class AdminViewService {
     private ArtistService artistService;
 
     @Autowired
-    private ZoneService zoneService;
-
-    @Autowired
     private DiscountService discountService;
 
     public void prepareEditEventView(Model model, Event event) {

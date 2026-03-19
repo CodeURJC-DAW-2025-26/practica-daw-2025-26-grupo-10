@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import es.tickethub.tickethub.entities.Discount;
 import es.tickethub.tickethub.services.DiscountService;
@@ -45,7 +46,11 @@ public class DiscountController {
         }
 
         try {
-            discountService.createAndEditDiscount(discount);
+            discountService.save(discount);
+        } catch (ResponseStatusException e) {
+            model.addAttribute("errorMessage", e.getReason());
+            model.addAttribute("discount", discount);
+            return "/admin/discounts/create_discount";
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "/admin/discounts/create_discount";
@@ -64,10 +69,10 @@ public class DiscountController {
 
     // To save the edited discount
     @PostMapping("/edit_discount/{discountID}")
-    public String editDiscount(@Valid Discount discount, BindingResult result, Model model) {
+    public String editDiscount(@Valid Discount discount, @PathVariable Long discountID, BindingResult result, Model model) {
         Discount editedDiscount = discount;
         try {
-            discountService.createAndEditDiscount(editedDiscount);
+            discountService.editDiscount(editedDiscount, discountID);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "/admin/discounts/create_discount";
@@ -79,6 +84,6 @@ public class DiscountController {
     @ResponseStatus(HttpStatus.OK)
     public String deleteDiscount(@PathVariable Long discountID) {
         discountService.deleteDiscount(discountID);
-        return "/admin/discounts/manage_discounts";
+        return "redirect:/admin/discounts/manage_discounts";
     }
 }

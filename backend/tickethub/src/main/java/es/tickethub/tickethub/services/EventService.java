@@ -40,6 +40,9 @@ public class EventService {
     private EventCreationService eventCreationService;
 
     @Autowired
+    private DiscountService discountService;
+
+    @Autowired
     private EventMapper eventMapper;
 
     public EventService(EventRepository eventRepository) {
