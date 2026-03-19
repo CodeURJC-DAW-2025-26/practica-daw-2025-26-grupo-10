@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import es.tickethub.tickethub.dto.EventDTO;
-import es.tickethub.tickethub.entities.Discount;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Zone;
 import es.tickethub.tickethub.mappers.EventMapper;
@@ -40,12 +38,6 @@ public class EventService {
 
     @Autowired
     private EventCreationService eventCreationService;
-
-    @Autowired
-    private ArtistService artistService;
-
-    @Autowired
-    private DiscountService discountService;
 
     @Autowired
     private EventMapper eventMapper;
@@ -96,30 +88,10 @@ public class EventService {
 
     public Event edit(Event oldEvent, Event editedEvent, Long artistID, List<Long> discountIDs, MultipartFile[] files)
             throws SQLException, IOException {
-
         eventRelationService.updateArtist(oldEvent, artistID);
-
-        for (Zone zone : editedEvent.getZones()) {
-            zone.setEvent(oldEvent);
-            oldEvent.getZones().add(zone);
-        }
-
-        for (Discount discount : new ArrayList<>(oldEvent.getDiscounts())) {
-            discount.getEvents().remove(oldEvent);
-        }
-        oldEvent.getDiscounts().clear();
-
-        for (Long discountID : discountIDs) {
-            Discount discount = discountService.findById(discountID);
-            if (!discount.getEvents().contains(oldEvent)) {
-                discount.getEvents().add(oldEvent);
-                oldEvent.getDiscounts().add(discount);
-            }
-        }
-
-        if (files != null && files.length > 0) {
-            oldEvent.getEventImages().addAll(imageService.createImagesFromFiles(files));
-        }
+        eventRelationService.addZones(oldEvent, editedEvent.getZones());
+        eventRelationService.syncDiscounts(oldEvent, discountIDs);
+        imageService.addImagesToEvent(oldEvent, files);
         return save(oldEvent);
     }
 

@@ -135,7 +135,11 @@ public class ImageService {
                 }
             }
         }
-
         return images;
+    }
+
+    public void addImagesToEvent(Event event, MultipartFile[] files) {
+        if (files == null || files.length == 0) return;
+        event.getEventImages().addAll(createImagesFromFiles(files));
     }
 }
