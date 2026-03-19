@@ -26,8 +26,10 @@ import es.tickethub.tickethub.services.ArtistService;
 @RestController
 @RequestMapping("/api/v1/artists")
 public class ArtistRestController {
+
     @Autowired
     private ArtistService artistService;
+
     @Autowired
     private ArtistMapper artistMapper;
 
@@ -36,6 +38,11 @@ public class ArtistRestController {
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size,
         @RequestParam(defaultValue = "artistName") String sortField) {
+
+    List<String> allowed = List.of("artistName", "artistID");
+    if (!allowed.contains(sortField)) {
+        sortField = "artistName";
+    }
 
     Pageable pageable = PageRequest.of(page, size, Sort.by(sortField));
     Page<Artist> artistPage = artistService.findPaginated(pageable);
@@ -55,16 +62,14 @@ public class ArtistRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public ArtistDTO createArtist(@RequestBody ArtistDTO dto) {
         Artist artist = artistMapper.pathDTO(dto, new Artist());
-        Artist saved = artistService.saveArtist(artist);
-        return artistMapper.toDTO(saved);
+        return artistMapper.toDTO(artistService.save(artist));
     }
 
     @PutMapping("/{id}")
     public ArtistDTO updateArtist(@PathVariable Long id, @RequestBody ArtistDTO dto) {
         Artist existing = artistService.findById(id);
         artistMapper.pathDTO(dto, existing);
-        Artist updated = artistService.saveArtist(existing);
-        return artistMapper.toDTO(updated);
+        return artistMapper.toDTO(artistService.save(existing));
     }
 
     @DeleteMapping("/{id}")

@@ -1,7 +1,5 @@
 package es.tickethub.tickethub.controllers;
 
-import java.io.IOException;
-import java.sql.SQLException;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,12 +88,7 @@ public class ArtistController {
         if (result.hasErrors()) {
             return "admin/artists/create_artist";
         }
-        try {
-            artistService.createArtist(artist, file);
-        } catch (IOException | SQLException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            return "admin/artists/create_artist";
-        }
+        artistService.save(artist);
         return "redirect:/admin/artists/manage_artists";
     }
 
@@ -107,12 +100,8 @@ public class ArtistController {
             return "/admin/artists/create_artist";
         }
 
-        try {
-            artistService.updateArtist(artist, file);
-        } catch (IOException | SQLException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            return "/admin/artists/create_artist";
-        }
+        artistService.save(artist);
+        
         return "redirect:/admin/artists/manage_artists";
     }
 

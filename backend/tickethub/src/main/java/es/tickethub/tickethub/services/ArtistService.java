@@ -3,7 +3,6 @@ package es.tickethub.tickethub.services;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 import java.sql.Blob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,64 +17,42 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import es.tickethub.tickethub.repositories.ArtistRepository;
-
 @Service
 public class ArtistService {
 
     @Autowired
     private ArtistRepository artistRepository;
 
-    public ArtistService(ArtistRepository artistRepository) {
-        this.artistRepository = artistRepository;
-    }
-
     public List<Artist> findAll() {
-        List<Artist> artists = artistRepository.findAll();
-        if (artists.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No hay artistas");
-        }
-        return artists;
+        return artistRepository.findAll();
     }
 
     public Artist findById(Long id) {
-        Optional<Artist> optionalArtist = artistRepository.findById(id);
-        if (optionalArtist.isPresent()) {
-            return optionalArtist.get();
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artista no encontrado");
+        return artistRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Artista no encontrado"));
     }
 
     public Artist findByName(String name) {
-        Optional<Artist> optionalArtist = artistRepository.findByArtistName(name);
-        if (optionalArtist.isPresent()) {
-            return optionalArtist.get();
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artista no encontrado");
+        return artistRepository.findByArtistName(name)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Artista no encontrado"));
     }
 
-    public Artist saveArtist(Artist artist) {
+    public Artist save(Artist artist) {
         return artistRepository.save(artist);
     }
 
     public void deleteById(Long id) {
-        Optional<Artist> optionalArtist = artistRepository.findById(id);
-        if (!optionalArtist.isPresent()) {
+        if (!artistRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artist not found");
         }
-        Artist artist = optionalArtist.get();
-        artistRepository.deleteById(artist.getArtistID());
+        artistRepository.deleteById(id);
     }
 
     public Page<Artist> findPaginated(Pageable pageable) {
-        Page<Artist> artists = artistRepository.findAll(pageable);
-        if (artists.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No hay artistas");
-        }
-        return artists;
+        return artistRepository.findAll(pageable);
     }
 
     public Page<Artist> searchArtists(String name, int page, int size) {
-
         Pageable pageable = PageRequest.of(page, size);
 
         if (name == null || name.isBlank()) {
@@ -85,43 +62,16 @@ public class ArtistService {
         return artistRepository.findByArtistNameContainingIgnoreCase(name, pageable);
     }
 
-    public Artist createArtist(Artist artist, MultipartFile file) throws IOException, SQLException {
-        if (!file.isEmpty()) {
+    public void assignImage(Artist artist, MultipartFile file) throws IOException, SQLException {
+        if (file != null && !file.isEmpty()) {
             Blob blob = new SerialBlob(file.getBytes());
             Image image = new Image(file.getOriginalFilename(), blob);
             artist.setArtistImage(image);
         }
-        return artistRepository.save(artist);
     }
 
-    public Artist updateArtist(Artist artist, MultipartFile file) throws IOException, SQLException {
-
-        Artist existing = findById(artist.getArtistID());
-
-        existing.setArtistName(artist.getArtistName());
-        existing.setInfo(artist.getInfo());
-
-        existing.getEventsIncoming().clear();
-        existing.getEventsIncoming().addAll(artist.getEventsIncoming());
-
-        existing.getLastEvents().clear();
-        existing.getLastEvents().addAll(artist.getLastEvents());
-
-        if (!file.isEmpty()) {
-            Blob blob = new SerialBlob(file.getBytes());
-            Image image = new Image(file.getOriginalFilename(), blob);
-            existing.setArtistImage(image);
-        }
-
-        existing.setInstagram(artist.getInstagram());
-        existing.setTwitter(artist.getTwitter());
-
-        return artistRepository.save(existing);
-    }
-    //Most popular artists
     public List<Artist> getPopularArtists(int limit) {
-        List<Artist> allArtists = findAll();
-        return allArtists.stream()
+        return findAll().stream()
                 .sorted((a1, a2) -> {
                     int count1 = ((a1.getEventsIncoming() != null) ? a1.getEventsIncoming().size() : 0)
                             + ((a1.getLastEvents() != null) ? a1.getLastEvents().size() : 0);
