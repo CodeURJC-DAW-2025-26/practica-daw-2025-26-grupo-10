@@ -3,7 +3,10 @@ package es.tickethub.tickethub.services;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -12,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 
@@ -109,5 +113,29 @@ public class ImageService {
 
     public List<ImageDTO> toDTOs(List<Image> images) {
         return imageMapper.toDTOs(images);
+    }
+
+    public List<Image> createImagesFromFiles(MultipartFile[] files) {
+        List<Image> images = new ArrayList<>();
+
+        if (files == null) return images;
+
+        for (MultipartFile file : files) {
+            if (!file.isEmpty()) {
+                try {
+                    images.add(new Image(
+                        file.getOriginalFilename(),
+                        new SerialBlob(file.getBytes())
+                    ));
+                } catch (SQLException | IOException e) {
+                    throw new ResponseStatusException(
+                        HttpStatus.INTERNAL_SERVER_ERROR,
+                        "Error processing image"
+                    );
+                }
+            }
+        }
+
+        return images;
     }
 }

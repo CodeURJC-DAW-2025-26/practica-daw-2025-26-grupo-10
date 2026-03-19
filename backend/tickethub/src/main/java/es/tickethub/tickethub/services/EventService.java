@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.sql.rowset.serial.SerialBlob;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +21,6 @@ import es.tickethub.tickethub.dto.EventDTO;
 import es.tickethub.tickethub.entities.Artist;
 import es.tickethub.tickethub.entities.Discount;
 import es.tickethub.tickethub.entities.Event;
-import es.tickethub.tickethub.entities.Image;
 import es.tickethub.tickethub.entities.Zone;
 import es.tickethub.tickethub.mappers.EventMapper;
 import es.tickethub.tickethub.repositories.EventRepository;
@@ -31,8 +28,14 @@ import es.tickethub.tickethub.repositories.EventRepository;
 @Service
 public class EventService {
 
+    @Autowired 
+    private EventManagementService eventManagementService;
+
     @Autowired
     private EventRepository eventRepository;
+
+    @Autowired
+    private ImageService imageService;
 
     @Autowired
     private ArtistService artistService;
@@ -79,24 +82,14 @@ public class EventService {
 
 
     public Event create(Event event, Long artistID, MultipartFile[] files) throws SQLException, IOException {
-        Artist artist = artistService.findById(artistID);
-        event.setArtist(artist);
-        artist.getEventsIncoming().add(event);
-
-        if (files != null && files.length > 0) {
-            event.getEventImages().addAll(convertFilesToImages(files));
-        }
-
-        event.setCapacity(calculateTotalCapacity(event.getZones()));
-
-        return save(event);
+        return eventManagementService.create(event, artistID, files);
     }
 
     public Event edit(Event oldEvent, Event editedEvent, Long artistID, List<Long> discountIDs, MultipartFile[] files)
             throws SQLException, IOException {
 
         oldEvent.setName(editedEvent.getName());
-        oldEvent.setCapacity(calculateTotalCapacity(editedEvent.getZones()));
+        oldEvent.setCapacity(eventManagementService.calculateTotalCapacity(editedEvent.getZones()));
         oldEvent.setTargetAge(editedEvent.getTargetAge());
         oldEvent.setPlace(editedEvent.getPlace());
         oldEvent.setCategory(editedEvent.getCategory());
@@ -130,9 +123,8 @@ public class EventService {
         }
 
         if (files != null && files.length > 0) {
-            oldEvent.getEventImages().addAll(convertFilesToImages(files));
+            oldEvent.getEventImages().addAll(imageService.createImagesFromFiles(files));
         }
-
         return save(oldEvent);
     }
 
@@ -199,19 +191,5 @@ public class EventService {
 
     public Page<Event> getFirstPageOfEvents() {
         return searchEvents(null, null, null, 0, 5);
-    }
-
-    private List<Image> convertFilesToImages(MultipartFile[] files) throws SQLException, IOException {
-        List<Image> images = new ArrayList<>();
-        for (MultipartFile file : files) {
-            if (!file.isEmpty()) {
-                images.add(new Image(file.getOriginalFilename(), new SerialBlob(file.getBytes())));
-            }
-        }
-        return images;
-    }
-
-    private int calculateTotalCapacity(List<Zone> zones) {
-        return zones.stream().mapToInt(Zone::getCapacity).sum();
     }
 }

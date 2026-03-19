@@ -17,7 +17,7 @@ public class EventRankingService {
     }
 
     public List<Event> getTopSellingEvents(int limit) {
-        return eventService.findAll().stream()
+        List<Event> events = eventService.findAll().stream()
                 .sorted((e1, e2) -> {
                     int sales1 = e1.getSessions() == null ? 0
                             : e1.getSessions().stream()
@@ -29,6 +29,13 @@ public class EventRankingService {
                                     .mapToInt(p -> p.getTickets().size()).sum();
                     return Integer.compare(sales2, sales1);
                 }).limit(limit).toList();
+        //Images here
+        for (Event event : events) {
+            if (event.getEventImages() != null && !event.getEventImages().isEmpty()) {
+                event.setMainImage(event.getEventImages().get(0));
+            }
+        }
+        return events;
     }
 
     public List<Event> getNextUpcomingEvents(int limit) {
