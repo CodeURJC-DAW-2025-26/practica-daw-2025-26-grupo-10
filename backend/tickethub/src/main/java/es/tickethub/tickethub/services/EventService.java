@@ -28,9 +28,6 @@ import es.tickethub.tickethub.repositories.EventRepository;
 @Service
 public class EventService {
 
-    @Autowired 
-    private EventManagementService eventManagementService;
-
     @Autowired
     private EventRepository eventRepository;
 
@@ -81,15 +78,28 @@ public class EventService {
     }
 
 
-    public Event create(Event event, Long artistID, MultipartFile[] files) throws SQLException, IOException {
-        return eventManagementService.create(event, artistID, files);
+    public Event create(Event event, Long artistID, MultipartFile[] files) {
+
+        Artist artist = artistService.findById(artistID);
+        event.setArtist(artist);
+        artist.getEventsIncoming().add(event);
+        if (files != null && files.length > 0) {
+            event.getEventImages().addAll(imageService.createImagesFromFiles(files));
+        }
+
+        event.setCapacity(calculateTotalCapacity(event.getZones()));
+        return save(event);
+    }
+
+    public int calculateTotalCapacity(List<Zone> zones) {
+        return zones.stream().mapToInt(Zone::getCapacity).sum();
     }
 
     public Event edit(Event oldEvent, Event editedEvent, Long artistID, List<Long> discountIDs, MultipartFile[] files)
             throws SQLException, IOException {
 
         oldEvent.setName(editedEvent.getName());
-        oldEvent.setCapacity(eventManagementService.calculateTotalCapacity(editedEvent.getZones()));
+        oldEvent.setCapacity(calculateTotalCapacity(editedEvent.getZones()));
         oldEvent.setTargetAge(editedEvent.getTargetAge());
         oldEvent.setPlace(editedEvent.getPlace());
         oldEvent.setCategory(editedEvent.getCategory());

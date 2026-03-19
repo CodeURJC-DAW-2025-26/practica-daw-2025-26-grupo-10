@@ -25,6 +25,7 @@ import es.tickethub.tickethub.entities.Zone;
 import es.tickethub.tickethub.services.AdminViewService;
 import es.tickethub.tickethub.services.ArtistService;
 import es.tickethub.tickethub.services.DiscountService;
+import es.tickethub.tickethub.services.EventManagementService;
 import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.ZoneService;
 import jakarta.validation.Valid;
@@ -32,6 +33,7 @@ import jakarta.validation.Valid;
 @Controller
 @RequestMapping("/admin/events")
 public class AdminEventController {
+
     @Autowired
     private EventService eventService;
 
