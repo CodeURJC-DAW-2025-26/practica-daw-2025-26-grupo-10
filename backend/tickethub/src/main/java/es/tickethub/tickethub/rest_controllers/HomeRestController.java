@@ -12,9 +12,8 @@ import es.tickethub.tickethub.mappers.ArtistMapper;
 import es.tickethub.tickethub.mappers.EventMapper;
 import es.tickethub.tickethub.services.ArtistService;
 import es.tickethub.tickethub.services.ClientService;
-import es.tickethub.tickethub.services.EventRankingService;
-import es.tickethub.tickethub.services.EventRecommendationService;
-
+import es.tickethub.tickethub.services.EventServices.EventRankingService;
+import es.tickethub.tickethub.services.EventServices.EventRecommendationService;
 
 import java.util.ArrayList;
 import java.util.List;

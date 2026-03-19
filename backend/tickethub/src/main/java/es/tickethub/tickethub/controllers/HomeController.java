@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import es.tickethub.tickethub.services.ArtistService;
 import es.tickethub.tickethub.services.ClientService;
-import es.tickethub.tickethub.services.EventRankingService;
-import es.tickethub.tickethub.services.EventRecommendationService;
+import es.tickethub.tickethub.services.EventServices.EventRankingService;
+import es.tickethub.tickethub.services.EventServices.EventRecommendationService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller

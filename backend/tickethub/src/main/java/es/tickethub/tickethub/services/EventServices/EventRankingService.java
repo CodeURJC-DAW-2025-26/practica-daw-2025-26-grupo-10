@@ -1,4 +1,4 @@
-package es.tickethub.tickethub.services;
+package es.tickethub.tickethub.services.EventServices;
 
 import java.time.Instant;
 import java.util.Comparator;
@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import es.tickethub.tickethub.entities.Event;
+import es.tickethub.tickethub.services.EventService;
 
 @Service
 public class EventRankingService {

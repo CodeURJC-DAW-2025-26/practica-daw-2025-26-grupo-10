@@ -18,15 +18,19 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import es.tickethub.tickethub.dto.EventDTO;
-import es.tickethub.tickethub.entities.Artist;
 import es.tickethub.tickethub.entities.Discount;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Zone;
 import es.tickethub.tickethub.mappers.EventMapper;
 import es.tickethub.tickethub.repositories.EventRepository;
+import es.tickethub.tickethub.services.EventServices.EventCreationService;
+import es.tickethub.tickethub.services.EventServices.EventRelationService;
 
 @Service
 public class EventService {
+
+    @Autowired
+    private EventRelationService eventRelationService;
 
     @Autowired
     private EventRepository eventRepository;
@@ -93,21 +97,7 @@ public class EventService {
     public Event edit(Event oldEvent, Event editedEvent, Long artistID, List<Long> discountIDs, MultipartFile[] files)
             throws SQLException, IOException {
 
-        oldEvent.setName(editedEvent.getName());
-        oldEvent.setCapacity(calculateTotalCapacity(editedEvent.getZones()));
-        oldEvent.setTargetAge(editedEvent.getTargetAge());
-        oldEvent.setPlace(editedEvent.getPlace());
-        oldEvent.setCategory(editedEvent.getCategory());
-
-        Artist oldArtist = oldEvent.getArtist();
-        Artist newArtist = artistService.findById(artistID);
-        if (!oldArtist.getArtistID().equals(newArtist.getArtistID())) {
-            oldArtist.getEventsIncoming().remove(oldEvent);
-            oldArtist.getLastEvents().remove(oldEvent);
-
-            newArtist.getEventsIncoming().add(oldEvent);
-            oldEvent.setArtist(newArtist);
-        }
+        eventRelationService.updateArtist(oldEvent, artistID);
 
         for (Zone zone : editedEvent.getZones()) {
             zone.setEvent(oldEvent);
