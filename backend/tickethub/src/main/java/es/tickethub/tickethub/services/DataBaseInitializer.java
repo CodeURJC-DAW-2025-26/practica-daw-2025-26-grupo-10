@@ -177,6 +177,10 @@ public class DataBaseInitializer {
             }
         }
 
+        for (Discount discount : discounts) {
+            discount.setEvents(events);
+        }
+
         artists.get(0).getLastEvents().add(events.get(0));
         artists.get(0).getEventsIncoming().add(events.get(9));
         for (int i = 1; i < events.size(); i++) {
@@ -195,6 +199,7 @@ public class DataBaseInitializer {
 
         eventRepository.saveAll(events);
         artistRepository.saveAll(artists);
+        discountRepository.saveAll(discounts);
 
         return events; 
     }

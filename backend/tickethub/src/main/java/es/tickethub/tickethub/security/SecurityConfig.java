@@ -66,15 +66,18 @@ public class SecurityConfig {
 						/* 1. ENDPOINTS PÚBLICOS (Los más específicos)*/
         				.requestMatchers("/api/v1/auth/**","/api/v1/public/**").permitAll()
 						// Consultas POST publicas
+						/* PUBLIC ROUTES */
+        				.requestMatchers("/api/v1/auth/**").permitAll()
+						// PURCHASES AND PDF GENERATION AUTORIZED WITHOUT BEING LOGGED IN
 						.requestMatchers(HttpMethod.POST, "/api/v1/purchases/save").permitAll()
-
-						/* 2. ENDPOINTS SOLO ADMIN */
+						.requestMatchers(HttpMethod.GET, "/api/v1/purchases/download/**").permitAll()
+						/* ONLY ADMIN ROUTES */
 						.requestMatchers("/api/v1/admin**").hasRole("ADMIN")
 
-						/*3. ENDPOINTS CLIENTE LOGUEADO (USER o ADMIN)*/
+						/* USER (CLIENT OR ADMIN) ROUTES */
 						.requestMatchers("/api/v1/clients/**", "/api/v1/purchases/**").hasAnyRole("USER", "ADMIN")
 						
-						/*4. Cualquier otra petición */
+						/* OTHER ROUTES */
 						.anyRequest().permitAll());
 
 		http.formLogin(formLogin -> formLogin.disable());

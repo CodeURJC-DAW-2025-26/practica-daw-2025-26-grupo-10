@@ -76,7 +76,12 @@ public class AdminEventController {
         if (result.hasErrors()) {
             return "/admin/events/create_event";
         }
-        eventService.create(event, artistID, files);
+        try {
+            eventService.create(event, artistID, files);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "/admin/events/create_event";
+        }
         return "redirect:/admin/events/manage_events";
     }
 

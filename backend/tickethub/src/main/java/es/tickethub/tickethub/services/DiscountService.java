@@ -83,6 +83,7 @@ public class DiscountService {
             event.getDiscounts().remove(discount);
             eventRepository.save(event);
         }
+        discount.getEvents().clear();
         discountRepository.deleteById(discount.getDiscountID());
     }
 

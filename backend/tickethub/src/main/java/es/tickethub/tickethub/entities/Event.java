@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -73,6 +74,11 @@ public class Event {
      */
 
     @ManyToMany
+    @JoinTable(
+        name = "event_discounts",
+        joinColumns = @JoinColumn(name = "eventID"),
+        inverseJoinColumns = @JoinColumn(name = "discountID")
+    )
     private List<Discount> discounts = new ArrayList<>();
 
     @Column(nullable = false)

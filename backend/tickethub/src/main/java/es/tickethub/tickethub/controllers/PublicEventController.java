@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
+
 import es.tickethub.tickethub.entities.Event;
+import es.tickethub.tickethub.entities.Purchase;
 import es.tickethub.tickethub.services.EventService;
+import es.tickethub.tickethub.services.PurchaseService;
 import es.tickethub.tickethub.services.ZoneService;
 @Controller
 public class PublicEventController {
@@ -24,6 +27,9 @@ public class PublicEventController {
 
     @Autowired
     private ZoneService zoneService;
+
+    @Autowired
+    private PurchaseService purchaseService;
 
     @GetMapping("/public/events")
     public String events(Model model) {
@@ -75,10 +81,13 @@ public class PublicEventController {
         }
     }
 
-    @GetMapping("/public/confirmation/{eventID}")
-    public String showConfirmation(@PathVariable Long eventID, Model model) {
+    @GetMapping("/public/confirmation/{purchaseID}")
+    public String showConfirmation(@PathVariable Long purchaseID, Model model) {
         try {
-            model.addAttribute("event", eventService.findByIdOrThrow(eventID));
+            Purchase purchase = purchaseService.getPurchaseById(purchaseID);
+            Event event = purchase.getSession().getEvent();
+            model.addAttribute("purchase", purchase);
+            model.addAttribute("event", event);
             return "public/confirmation";
         } catch (ResponseStatusException e) {
             return "redirect:/public/events";

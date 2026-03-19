@@ -44,9 +44,6 @@ public class PurchaseService {
     ClientRepository clientRepository;
 
     @Autowired
-    TicketService ticketService;
-
-    @Autowired
     ZoneService zoneService;
 
     @Autowired
@@ -70,7 +67,7 @@ public class PurchaseService {
         Client client = clientService.findByEmail(email)
                 .orElseGet(() -> {
                     Client newClient = new Client(email, "","", "", "", 0, 0, BigDecimal.ZERO, null, null, null);
-                    return newClient;
+                    return clientService.saveClient(newClient);
                 });
 
         Purchase purchase = new Purchase();
@@ -166,7 +163,8 @@ public class PurchaseService {
         Purchase purchase = purchaseRepository.findById(purchaseId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Compra no encontrada"));
 
-        if (!purchase.getClient().getEmail().equals(userEmail)) {
+        Client client = purchase.getClient();
+        if (!client.getEmail().equals(userEmail)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Acceso denegado");
         }
 
@@ -183,6 +181,8 @@ public class PurchaseService {
         for (Ticket ticket : purchase.getTickets()) {
             document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
             document.add(new Paragraph("TICKET " + i).setBold().setFontSize(18));
+            document.add(new Paragraph("Email: " + client.getEmail()));
+            document.add(new Paragraph("Cliente: " + client.getUsername()));
             document.add(new Paragraph("Zone: " + ticket.getZone().getName()));
             document.add(new Paragraph("Code: " + ticket.getCode()));
             document.add(new Paragraph("Price: " + ticket.getTicketPrice() + "€"));

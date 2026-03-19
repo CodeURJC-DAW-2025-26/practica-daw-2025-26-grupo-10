@@ -7,12 +7,18 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 
 import es.tickethub.tickethub.entities.Discount;
 import es.tickethub.tickethub.entities.Event;
@@ -23,13 +29,6 @@ import es.tickethub.tickethub.services.DiscountService;
 import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.PurchaseService;
 import es.tickethub.tickethub.services.ZoneService;
-
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 @RequestMapping("/purchases")
@@ -49,7 +48,7 @@ public class PurchaseController {
 
 
     /**
-     * Processes the purchase submitted from the form and redirects to the user's history.
+     * Processes the purchase submitted from the form and redirects to the confirmation page.
      */
     @PostMapping("/save")
     public String savePurchase(
@@ -59,22 +58,26 @@ public class PurchaseController {
             @RequestParam Long sessionId,
             @RequestParam String email) {
         
-        purchaseService.processPurchase(eventId, totalPrice, zoneIds, sessionId, email);
+        Purchase purchase = purchaseService.processPurchase(eventId, totalPrice, zoneIds, sessionId, email);
         
-        return "redirect:/purchases/me";
+        return "redirect:/public/confirmation/" + purchase.getPurchaseID();
     }
 
     /**
      * Allows downloading the PDF directly from the web interface.
+     * Works for both authenticated and unauthenticated users.
      */
     @GetMapping("/download/{purchaseId}")
     public ResponseEntity<byte[]> downloadTickets(@PathVariable Long purchaseId, Principal principal) {
         try {
-            byte[] pdfBytes = purchaseService.generateTicketsPdf(purchaseId, principal.getName());
+            Purchase purchase = purchaseService.getPurchaseById(purchaseId);
+            String userEmail = principal != null ? principal.getName() : purchase.getClient().getEmail();
+            Long eventID = purchase.getSession().getEvent().getEventID();
+            byte[] pdfBytes = purchaseService.generateTicketsPdf(purchaseId, userEmail);
 
             return ResponseEntity.ok()
                     .contentType(MediaType.APPLICATION_PDF)
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=TicketHub_Order_" + purchaseId + ".pdf")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=TicketHub_Event_" + eventID + "_Order_" + purchaseId + ".pdf")
                     .body(pdfBytes);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error generating the PDF");
