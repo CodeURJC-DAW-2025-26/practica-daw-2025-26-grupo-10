@@ -35,6 +35,9 @@ public class EventService {
     private ImageService imageService;
 
     @Autowired
+    private EventCreationService eventCreationService;
+
+    @Autowired
     private ArtistService artistService;
 
     @Autowired
@@ -79,15 +82,7 @@ public class EventService {
 
 
     public Event create(Event event, Long artistID, MultipartFile[] files) {
-
-        Artist artist = artistService.findById(artistID);
-        event.setArtist(artist);
-        artist.getEventsIncoming().add(event);
-        if (files != null && files.length > 0) {
-            event.getEventImages().addAll(imageService.createImagesFromFiles(files));
-        }
-
-        event.setCapacity(calculateTotalCapacity(event.getZones()));
+        eventCreationService.prepareEventForCreation(event, artistID, files);
         return save(event);
     }
 
