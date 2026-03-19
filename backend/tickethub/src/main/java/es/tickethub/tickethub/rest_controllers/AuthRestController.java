@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-public class AuxiliarRestController {
+public class AuthRestController {
     private final UserLoginService userLoginService;
     private final ClientService clientService;
 
-    public AuxiliarRestController(UserLoginService userLoginService,ClientService clientService){
+    public AuthRestController(UserLoginService userLoginService,ClientService clientService){
         this.userLoginService = userLoginService;
         this.clientService = clientService;
     }

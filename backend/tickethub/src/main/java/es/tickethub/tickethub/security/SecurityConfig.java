@@ -64,7 +64,7 @@ public class SecurityConfig {
 		http
 				.authorizeHttpRequests(authorize -> authorize
 						/* 1. ENDPOINTS PÚBLICOS (Los más específicos)*/
-        				.requestMatchers("/api/v1/auth/**").permitAll()
+        				.requestMatchers("/api/v1/auth/**","/api/v1/public/**").permitAll()
 						// Consultas POST publicas
 						.requestMatchers(HttpMethod.POST, "/api/v1/purchases/save").permitAll()
 

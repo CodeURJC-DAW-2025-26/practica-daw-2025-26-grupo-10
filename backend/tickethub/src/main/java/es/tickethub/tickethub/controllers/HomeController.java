@@ -12,19 +12,11 @@ import es.tickethub.tickethub.services.ArtistService;
 import es.tickethub.tickethub.services.ClientService;
 import es.tickethub.tickethub.services.EventRankingService;
 import es.tickethub.tickethub.services.EventRecommendationService;
-import es.tickethub.tickethub.services.EventService;
-import es.tickethub.tickethub.services.ServerRecommendationService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/public")
 public class HomeController {
-
-    @Autowired
-    private ServerRecommendationService serverService;
-
-    @Autowired
-    private EventService eventService;
 
     @Autowired
     private EventRankingService eventRankingService;

@@ -10,14 +10,12 @@ import es.tickethub.tickethub.entities.Event;
 @Service
 public class EventRecommendationService {
 
-    private final EventService eventService;
     private final RecommendationService recommendationService;
     private final ServerRecommendationService serverService;
 
-    public EventRecommendationService(EventService eventService,
+    public EventRecommendationService(
             RecommendationService recommendationService,
             ServerRecommendationService serverService) {
-        this.eventService = eventService;
         this.recommendationService = recommendationService;
         this.serverService = serverService;
     }
