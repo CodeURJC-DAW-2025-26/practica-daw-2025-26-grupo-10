@@ -23,7 +23,7 @@ public class Image {
 
     private String imageName;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     @Lob
     private Blob imageCode; /* This type is a Binary Large Object for the SQL Database */
 

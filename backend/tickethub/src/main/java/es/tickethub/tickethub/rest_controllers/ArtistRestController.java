@@ -17,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import es.tickethub.tickethub.dto.ArtistBasicDTO;
+import es.tickethub.tickethub.dto.ArtistCreateDTO;
 import es.tickethub.tickethub.dto.ArtistDTO;
+import es.tickethub.tickethub.dto.ArtistUpdateDTO;
+
 import org.springframework.data.domain.Pageable;
 import es.tickethub.tickethub.entities.Artist;
 import es.tickethub.tickethub.mappers.ArtistMapper;
@@ -60,15 +63,17 @@ public class ArtistRestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ArtistDTO createArtist(@RequestBody ArtistDTO dto) {
-        Artist artist = artistMapper.pathDTO(dto, new Artist());
+    public ArtistDTO createArtist(@RequestBody ArtistCreateDTO dto) {
+        Artist artist = artistMapper.toEntity(dto);
+        
         return artistMapper.toDTO(artistService.save(artist));
     }
 
     @PutMapping("/{id}")
-    public ArtistDTO updateArtist(@PathVariable Long id, @RequestBody ArtistDTO dto) {
+    public ArtistDTO updateArtist(@PathVariable Long id, @RequestBody ArtistUpdateDTO dto) {
         Artist existing = artistService.findById(id);
-        artistMapper.pathDTO(dto, existing);
+        artistMapper.updateEntityFromDto(dto, existing);
+
         return artistMapper.toDTO(artistService.save(existing));
     }
 

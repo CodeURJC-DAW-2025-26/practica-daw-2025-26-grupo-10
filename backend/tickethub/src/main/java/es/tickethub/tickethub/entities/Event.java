@@ -60,12 +60,10 @@ public class Event {
      * one Event can have many Sessions associated
      */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "event", orphanRemoval = true, fetch = FetchType.LAZY)
-    @Column(nullable = false) // I think this make no sense
     private List<Session> sessions = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", nullable = true)
-
     private List<Zone> zones = new ArrayList<>();
 
     /*
@@ -115,8 +113,7 @@ public class Event {
         }
         if (zones != null) {
             this.zones = zones;
-            this.capacity = zones.stream().mapToInt(Zone::getCapacity).sum(); // This adds the capacity of all the zones
-                                                                              // to set the total capacity of the event
+            this.capacity = zones.stream().mapToInt(Zone::getCapacity).sum(); // This adds the capacity of all the zones to set the total capacity of the event
         }
         if (discounts != null) {
             this.discounts = discounts;
@@ -147,5 +144,12 @@ public class Event {
             return 0.0;
 
         return sum / count;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Event event)) return false;
+        return eventID != null && eventID.equals(event.getEventID());
     }
 }

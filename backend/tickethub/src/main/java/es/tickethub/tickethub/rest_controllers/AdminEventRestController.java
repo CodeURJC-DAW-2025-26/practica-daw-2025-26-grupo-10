@@ -18,59 +18,62 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
+import es.tickethub.tickethub.dto.EventCreateDTO;
 import es.tickethub.tickethub.dto.EventDTO;
+import es.tickethub.tickethub.dto.EventUpdateDTO;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.mappers.EventMapper;
 import es.tickethub.tickethub.services.EventService;
+import es.tickethub.tickethub.services.EventServices.EventCreationService;
+import es.tickethub.tickethub.services.EventServices.EventRelationService;
 
 @RestController
 @RequestMapping("/api/v1/admin/events")
 public class AdminEventRestController {
-    
+
     @Autowired
     private EventService eventService;
 
+    @Autowired
+    private EventCreationService eventCreationService;
 
+    @Autowired
+    private EventRelationService eventRelationService;
 
     @Autowired
     private EventMapper eventMapper;
 
     @GetMapping("/")
-    public Page<EventDTO> getEvents(@RequestParam(defaultValue = "0") int page,
-                                    @RequestParam(defaultValue = "5") int size) {
-        return eventService.getEventsPage(page, size)
-                        .map(eventMapper::toDTO);
+    public Page<EventDTO> getEvents(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+        return eventService.getEventsPage(page, size).map(eventMapper::toDTO);
     }
-    
 
     @PostMapping("/")
-    public ResponseEntity <EventDTO> createEvent(@RequestBody EventDTO eventDTO) {
-        Event event = eventMapper.toEntity(eventDTO);
+    public ResponseEntity<EventDTO> createEvent(@RequestBody EventCreateDTO createEventDTO) {
+        Event event = eventMapper.toEntity(createEventDTO);
+        eventCreationService.prepareEventForCreation(event, createEventDTO.artistId(), null);
         eventService.save(event);
 
         URI location = fromCurrentRequest().path("/{eventID}").buildAndExpand(event.getEventID()).toUri();
-
         return ResponseEntity.created(location).body(eventMapper.toDTO(event));
     }
 
     @PutMapping("/{eventID}")
-    public EventDTO updateEvent(@PathVariable Long eventID, @RequestBody EventDTO updatedEventDTO) {
-        if (eventService.existsById(eventID)) {
-            
-            Event updatedEvent = eventMapper.toEntity(updatedEventDTO);
-            
-            updatedEvent.setEventID(eventID);
-            eventService.save(updatedEvent);
-
-            return eventMapper.toDTO(updatedEvent);
-        } else {
-            throw new NoSuchElementException();
+    public EventDTO updateEvent(@PathVariable Long eventID, @RequestBody EventUpdateDTO updatedEventDTO) {
+        Event existingEvent = eventService.findById(eventID).orElseThrow(() -> new NoSuchElementException("Evento no encontrado"));
+        
+        if (updatedEventDTO.artistId() != null) {
+            eventRelationService.updateArtist(existingEvent, updatedEventDTO.artistId());
         }
+        eventMapper.updateEntityFromDto(updatedEventDTO, existingEvent);
+        eventService.save(existingEvent);
+
+        return eventMapper.toDTO(existingEvent);
     }
 
     @DeleteMapping("/{eventID}")
     public EventDTO deleteEvent(@PathVariable Long eventID) {
-        Optional <Event> event = eventService.findById(eventID);
+        Optional<Event> event = eventService.findById(eventID);
         if (event.isPresent()) {
             eventService.deleteById(eventID);
         }

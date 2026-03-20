@@ -5,13 +5,21 @@ import es.tickethub.tickethub.entities.Event;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE) 
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {ReferenceMapper.class} ) 
 public interface EventMapper {
     EventDTO toDTO(Event event);
+
     EventBasicDTO toBasicDTO(Event event);
     
-    @Mapping(source = "artist.artistID", target = "artist.artistID")
-    Event toEntity(EventDTO eventDTO);
+    @Mapping(source = "artistId", target = "artist")
+    Event toEntity(EventCreateDTO createEventDTO);
+
+    @Mapping(source = "artistId", target = "artist")
+    @Mapping(source = "discountIds", target = "discounts")
+    @Mapping(source = "zones", target = "zones")
+    @Mapping(source = "sessions", target = "sessions")
+    void updateEntityFromDto(EventUpdateDTO dto, @MappingTarget Event event);    
 }

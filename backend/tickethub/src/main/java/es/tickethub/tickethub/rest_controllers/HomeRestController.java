@@ -4,8 +4,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.tickethub.tickethub.dto.ArtistBasicDTO;
-import es.tickethub.tickethub.dto.EventBasicDTO;
 import es.tickethub.tickethub.dto.IndexResponseDTO;
+import es.tickethub.tickethub.dto.EventBasicDTO;
 import es.tickethub.tickethub.entities.Artist;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.mappers.ArtistMapper;

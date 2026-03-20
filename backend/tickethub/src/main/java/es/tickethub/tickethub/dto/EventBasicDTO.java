@@ -4,5 +4,6 @@ public record EventBasicDTO(
     Long eventID,
     String name,
     String category,
-    String place
+    String place,
+    String mainImageUrl
 ) {}
