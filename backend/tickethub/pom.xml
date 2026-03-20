@@ -31,10 +31,13 @@
 		<jjwt.version>0.12.6</jjwt.version>
 	</properties>
 	<repositories>
-	<repository>
-		<id>itext-releases</id>
-		<url>https://repo.itextpdf.com/releases</url>
-	</repository>
+    <repository>
+        <id>itext-releases</id>
+        <url>https://repo.itextpdf.com/releases</url>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </repository>
 	</repositories>
 
 	<dependencies>
