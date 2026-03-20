@@ -8,10 +8,10 @@ public record ClientDTO(
     String username,
     Boolean admin,
     Long version,
-    List<PurchaseBasicDTO> purchases,
+    List<PurchaseDTO> purchases,
     String name,
     String surname,
     Integer age,
     Integer phone,
-    ImageBasicDTO profileImage
+    ImageDTO profileImage
 ) {}

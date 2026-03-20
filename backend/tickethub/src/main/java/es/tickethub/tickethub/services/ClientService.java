@@ -20,10 +20,14 @@ import es.tickethub.tickethub.dto.ClientDTO;
 import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Image;
 import es.tickethub.tickethub.mappers.ClientMapper;
+import es.tickethub.tickethub.mappers.ImageMapper;
 import es.tickethub.tickethub.repositories.ClientRepository;
 
 @Service
 public class ClientService {
+
+    @Autowired
+    private ImageMapper imageMapper;    
 
     @Autowired
     private ClientRepository clientRepository;
@@ -162,6 +166,7 @@ public class ClientService {
         client.setEmail(dto.email());
         client.setPhone(dto.phone());
         client.setAge(dto.age());
+        client.setProfileImage(imageMapper.toDomain(dto.profileImage()));
         saveClient(client);
         return clientMapper.toDTO(client);
     }
