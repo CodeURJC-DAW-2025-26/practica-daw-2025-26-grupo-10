@@ -1,36 +1,36 @@
 package es.tickethub.tickethub.rest_controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import es.tickethub.tickethub.dto.TicketDTO;
+import es.tickethub.tickethub.entities.Ticket;
+import es.tickethub.tickethub.mappers.TicketMapper;
 import es.tickethub.tickethub.services.TicketService;
 
 @RestController
 @RequestMapping("/api/v1/tickets")
 public class TicketRestController {
-    @Autowired private TicketService ticketService;
-    
-    /**
-     * Retrieves a single ticket by its unique identifier.
-     */
-    @GetMapping("/{id}")
-    public ResponseEntity<TicketDTO> getTicket(@PathVariable Long id) {
-        return ResponseEntity.ok(ticketService.findById(id));
+
+    private final TicketService ticketService;
+    private final TicketMapper ticketMapper;
+
+    public TicketRestController(TicketService ticketService, TicketMapper ticketMapper) {
+        this.ticketService = ticketService;
+        this.ticketMapper = ticketMapper;
     }
 
-    /**
-     * Creates a new ticket record from a DTO.
-     */
+    @GetMapping("/{id}")
+    public ResponseEntity<TicketDTO> getTicket(@PathVariable Long id) {
+        Ticket ticket = ticketService.findById(id);
+        return ResponseEntity.ok(ticketMapper.toDTO(ticket));
+    }
+
     @PostMapping
     public ResponseEntity<TicketDTO> createTicket(@RequestBody TicketDTO dto) {
-        return new ResponseEntity<>(ticketService.save(dto), HttpStatus.CREATED);
+        Ticket ticket = ticketMapper.toDomain(dto);
+        Ticket savedTicket = ticketService.save(ticket);
+        return new ResponseEntity<>(ticketMapper.toDTO(savedTicket), HttpStatus.CREATED);
     }
 }

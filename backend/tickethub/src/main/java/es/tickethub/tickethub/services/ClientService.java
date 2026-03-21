@@ -16,28 +16,18 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import es.tickethub.tickethub.dto.ClientDTO;
 import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Image;
-import es.tickethub.tickethub.mappers.ClientMapper;
-import es.tickethub.tickethub.mappers.ImageMapper;
 import es.tickethub.tickethub.repositories.ClientRepository;
 
 @Service
 public class ClientService {
 
     @Autowired
-    private ImageMapper imageMapper;    
-
-    @Autowired
     private ClientRepository clientRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private ClientMapper clientMapper;
-
 
     @Transactional
     public void registerClient(String name, String email, String surname, String password, String passWordConfirmation,
@@ -115,7 +105,6 @@ public class ClientService {
         saveClient(client);
     }
 
-
     @Transactional(readOnly = true)
     public Client getClientById(Long id) {
         return findClientOrThrowById(id);
@@ -147,28 +136,20 @@ public class ClientService {
     // REST METHODS
     // ======================
 
-    @Transactional(readOnly = true)
-    public ClientDTO getClientDTOById(Long id) {
-        return clientMapper.toDTO(findClientOrThrowById(id));
-    }
-
-    @Transactional(readOnly = true)
-    public ClientDTO getLoggedClientDTO(String email) {
-        return clientMapper.toDTO(findClientOrThrowByEmail(email));
-    }
-
     @Transactional
-    public ClientDTO updateClientREST(String email, ClientDTO dto) {
+    public Client updateClientREST(String email, Client updatedClient) {
         Client client = findClientOrThrowByEmail(email);
-        client.setName(dto.name());
-        client.setSurname(dto.surname());
-        client.setUsername(dto.username());
-        client.setEmail(dto.email());
-        client.setPhone(dto.phone());
-        client.setAge(dto.age());
-        client.setProfileImage(imageMapper.toDomain(dto.profileImage()));
+
+        client.setName(updatedClient.getName());
+        client.setSurname(updatedClient.getSurname());
+        client.setUsername(updatedClient.getUsername());
+        client.setEmail(updatedClient.getEmail());
+        client.setPhone(updatedClient.getPhone());
+        client.setAge(updatedClient.getAge());
+        client.setProfileImage(updatedClient.getProfileImage());
+
         saveClient(client);
-        return clientMapper.toDTO(client);
+        return client;
     }
 
     private Client findClientOrThrowById(Long id) {

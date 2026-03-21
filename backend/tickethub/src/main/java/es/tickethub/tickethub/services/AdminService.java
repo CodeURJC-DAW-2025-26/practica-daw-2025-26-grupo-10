@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import es.tickethub.tickethub.dto.AdminDashboardDTO;
+import es.tickethub.tickethub.dto.AdminStatisticsDTO;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.repositories.AdminRepository;
 import es.tickethub.tickethub.repositories.EventRepository;
@@ -59,38 +61,56 @@ public class AdminService {
         return adminRepository.count();
     }
 
+    public AdminDashboardDTO getDashboard() {
+        return new AdminDashboardDTO(
+                eventsActive(),
+                getNumberTickets(),
+                getNumberUsers(),
+                getNumberAdmins()
+        );
+    }
+
     // ---------- STATISTICS ----------
 
     public List<Object[]> getMonthEventData() {
         return purchaseRepository.getTicketsByMonthAndEvent();
     }
 
-    public List<Object> getRankingLabels() {
+    public List<String> getRankingLabels() {
         return purchaseRepository.getRankingByEvent()
                 .stream()
-                .map(d -> d[0])
+                .map(d -> String.valueOf(d[0]))
                 .toList();
     }
 
-    public List<Object> getRankingValues() {
+    public List<Number> getRankingValues() {
         return purchaseRepository.getRankingByEvent()
                 .stream()
-                .map(d -> d[1])
+                .map(d -> (Number) d[1])
                 .toList();
     }
 
-    public List<Object> getEvolutionLabels() {
+    public List<String> getEvolutionLabels() {
         return purchaseRepository.getTotalTicketsEvolution()
                 .stream()
-                .map(d -> d[0])
+                .map(d -> String.valueOf(d[0]))
                 .toList();
     }
 
-    public List<Object> getEvolutionValues() {
+    public List<Number> getEvolutionValues() {
         return purchaseRepository.getTotalTicketsEvolution()
                 .stream()
-                .map(d -> d[1])
+                .map(d -> (Number) d[1])
                 .toList();
+    }
+
+    public AdminStatisticsDTO getStatistics() {
+        return new AdminStatisticsDTO(
+                getMonthEventData(),
+                getRankingLabels(),
+                getRankingValues(),
+                getEvolutionLabels(),
+                getEvolutionValues()
+        );
     }
 }
-

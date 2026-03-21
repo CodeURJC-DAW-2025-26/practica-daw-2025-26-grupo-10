@@ -11,11 +11,9 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.io.image.ImageDataFactory;
 
-import es.tickethub.tickethub.dto.TicketDTO;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Purchase;
 import es.tickethub.tickethub.entities.Ticket;
-import es.tickethub.tickethub.mappers.TicketMapper;
 import es.tickethub.tickethub.repositories.TicketRepository;
 
 import javax.imageio.ImageIO;
@@ -26,7 +24,6 @@ import java.io.ByteArrayOutputStream;
 public class TicketService {
 
     @Autowired private TicketRepository ticketRepository;
-    @Autowired private TicketMapper ticketMapper;
     
     /**
      * Internal helper to generate a PNG QR code as a byte array.
@@ -90,17 +87,16 @@ public class TicketService {
     }
 
     /**
-     * Retrieves and maps a ticket entity to a TicketDTO.
+     * Retrieves a ticket entity by id.
      */
-    public TicketDTO findById(Long id) {
-        return ticketRepository.findById(id).map(ticketMapper::toDTO).orElseThrow();
+    public Ticket findById(Long id) {
+        return ticketRepository.findById(id).orElseThrow();
     }
 
     /**
-     * Persists a TicketDTO into the database.
+     * Persists a ticket entity into the database.
      */
-    public TicketDTO save(TicketDTO ticketDTO){
-        Ticket ticket = ticketMapper.toDomain(ticketDTO);
-        return ticketMapper.toDTO(ticketRepository.save(ticket));
+    public Ticket save(Ticket ticket){
+        return ticketRepository.save(ticket);
     }
 }

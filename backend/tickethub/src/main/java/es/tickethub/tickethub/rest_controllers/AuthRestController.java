@@ -12,6 +12,7 @@ import es.tickethub.tickethub.services.ClientService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -22,13 +23,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthRestController {
-    private final UserLoginService userLoginService;
-    private final ClientService clientService;
+    @Autowired
+    private UserLoginService userLoginService;
 
-    public AuthRestController(UserLoginService userLoginService,ClientService clientService){
-        this.userLoginService = userLoginService;
-        this.clientService = clientService;
-    }
+    @Autowired
+    private ClientService clientService;
 
     @PostMapping("/login")
     public ResponseEntity <AuthResponse> login(
