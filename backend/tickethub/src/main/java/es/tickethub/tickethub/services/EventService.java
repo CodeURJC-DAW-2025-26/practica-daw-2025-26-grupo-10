@@ -88,8 +88,7 @@ public class EventService {
         return zones.stream().mapToInt(Zone::getCapacity).sum();
     }
 
-    public Event edit(Event oldEvent, Event editedEvent, Long artistID, List<Long> discountIDs, MultipartFile[] files)
-            throws SQLException, IOException {
+    public Event edit(Event oldEvent, Event editedEvent, Long artistID, List<Long> discountIDs, MultipartFile[] files) throws SQLException, IOException {
         eventRelationService.updateArtist(oldEvent, artistID);
         eventRelationService.addZones(oldEvent, editedEvent.getZones());
         eventRelationService.syncDiscounts(oldEvent, discountIDs);
@@ -97,6 +96,10 @@ public class EventService {
         return save(oldEvent);
     }
 
+    public void deleteEventImage(Long eventID, Long imageID){
+        Event event = findByIdOrThrow(eventID);
+        imageService.deleteImageFromEvent(event, imageID);
+    }
 
     public List<Event> findPaginated(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);

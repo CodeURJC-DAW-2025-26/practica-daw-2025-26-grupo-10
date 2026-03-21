@@ -1,7 +1,6 @@
 package es.tickethub.tickethub.services.EventServices;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,4 +31,5 @@ public class EventCreationService {
             event.getZones().stream().mapToInt(Zone::getCapacity).sum()
         );
     }
+
 }
