@@ -13,15 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.itextpdf.io.image.ImageDataFactory;
-import com.itextpdf.io.source.ByteArrayOutputStream;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.AreaBreak;
-import com.itextpdf.layout.element.Image;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.properties.AreaBreakType;
 
 import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Event;
@@ -36,6 +27,9 @@ public class PurchaseService {
 
     @Autowired
     PurchaseRepository purchaseRepository;
+
+    @Autowired
+    private PdfGeneratorService pdfGeneratorService;
 
     @Autowired
     ClientService clientService;
@@ -163,39 +157,10 @@ public class PurchaseService {
         Purchase purchase = purchaseRepository.findById(purchaseId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Compra no encontrada"));
 
-        Client client = purchase.getClient();
-        if (!client.getEmail().equals(userEmail)) {
+        if (!purchase.getClient().getEmail().equals(userEmail)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Acceso denegado");
         }
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PdfWriter writer = new PdfWriter(baos);
-        PdfDocument pdf = new PdfDocument(writer);
-        Document document = new Document(pdf);
-
-        document.add(new Paragraph("TICKETHUB - PURCHASE SUMMARY").setBold().setFontSize(18));
-        document.add(new Paragraph("Event: " + purchase.getSession().getEvent().getName()).setBold());
-        document.add(new Paragraph("Date: " + purchase.getSession().getFormattedDate()).setUnderline());
-
-        int i = 1;
-        for (Ticket ticket : purchase.getTickets()) {
-            document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
-            document.add(new Paragraph("TICKET " + i).setBold().setFontSize(18));
-            document.add(new Paragraph("Email: " + client.getEmail()));
-            document.add(new Paragraph("Cliente: " + client.getUsername()));
-            document.add(new Paragraph("Zone: " + ticket.getZone().getName()));
-            document.add(new Paragraph("Code: " + ticket.getCode()));
-            document.add(new Paragraph("Price: " + ticket.getTicketPrice() + "€"));
-
-            byte[] qrBytes = qrService.generateQR(ticket.getCode());
-            Image qrImage = new Image(ImageDataFactory.create(qrBytes)).setWidth(200);
-
-            document.add(new Paragraph("Show this QR code at the entrance:"));
-            document.add(qrImage);
-            i++;
-        }
-        document.close();
-        
-        return baos.toByteArray();
+        return pdfGeneratorService.generatePurchasePdf(purchase);
     }
 }
