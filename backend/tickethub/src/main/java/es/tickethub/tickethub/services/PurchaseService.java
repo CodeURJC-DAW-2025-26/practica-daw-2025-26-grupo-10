@@ -42,9 +42,6 @@ public class PurchaseService {
 
     @Autowired
     EventService eventService;
-    
-    @Autowired
-    private QrService qrService;
 
     /**
      * Processes a complete purchase workflow:

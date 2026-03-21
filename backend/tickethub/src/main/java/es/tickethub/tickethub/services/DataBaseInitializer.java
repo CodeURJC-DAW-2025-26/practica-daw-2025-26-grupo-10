@@ -124,6 +124,9 @@ public class DataBaseInitializer {
     }
 
     public List<Artist> initializeArtists(List <Image> artistImages) {
+        if (artistRepository.count() > 0) {
+            return artistRepository.findAll();
+        }
 
         List<Artist> artists = Arrays.asList(
             new Artist("Duki", "Cantante argentino nacido en Buenos Aires el 24/06/1996. Sus temas abarcan sobre todo música urbana (trap, reggaeton)",artistImages.get(0), "duki", "DukiSSJ"),
@@ -207,18 +210,19 @@ public class DataBaseInitializer {
     public Client initializeUsers(List <Image> clientImages) {
         Client defaultClient = new Client("pepe@gmail.com", "PepeG", passwordEncoder.encode("pepe123"), "Pepe", "Garcia", 33, 666666666, BigDecimal.ZERO, null, null, clientImages.get(0));
         Client defaultClient1 = new Client("manolo@gmail.com", "Manolin", passwordEncoder.encode("manolo123"), "Manolo", "Pérez", 19, 777777777, BigDecimal.ZERO, null, null, clientImages.get(1));
-
         Admin defaultAdmin = new Admin("adminEmail@gmail.com", "newAdmin", passwordEncoder.encode("admin"));
 
         userRepository.save(defaultClient);
         userRepository.save(defaultClient1);
-
         userRepository.save(defaultAdmin);
 
         return defaultClient;
     }
 
     public List<Discount> initializeDiscounts() {
+        if (discountRepository.count() > 0) {
+            return discountRepository.findAll();
+        }
 
         List<Discount> discounts = Arrays.asList(
             new Discount("WELCOME10", new BigDecimal("10.00"), true),
