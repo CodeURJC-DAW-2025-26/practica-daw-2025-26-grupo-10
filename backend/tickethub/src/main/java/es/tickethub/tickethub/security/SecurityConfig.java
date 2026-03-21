@@ -103,6 +103,7 @@ public class SecurityConfig {
 		http
 				.authorizeHttpRequests(authorize -> authorize
 						// PUBLIC Routes
+						.requestMatchers("/v3/api-docs", "/v3/api-docs/**", "/v3/api-docs.yaml", "/swagger-ui/**", "/swagger-ui.html").permitAll()
 						.requestMatchers("/", "/css/**", "/js/**", "/images/**", "/public/**","/images/entities/**").permitAll()
 						// PURCHASES AUTORIZED WITHOUT BEING LOGGED IN
 						.requestMatchers(HttpMethod.POST, "/purchases/save").permitAll()
