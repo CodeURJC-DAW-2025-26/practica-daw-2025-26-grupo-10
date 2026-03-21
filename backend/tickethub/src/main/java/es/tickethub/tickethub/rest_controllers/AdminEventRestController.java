@@ -75,7 +75,7 @@ public class AdminEventRestController {
     public EventDTO deleteEvent(@PathVariable Long eventID) {
         Optional<Event> event = eventService.findById(eventID);
         if (event.isPresent()) {
-            eventService.deleteById(eventID);
+            eventService.deleteEvent(eventID);
         }
         return eventMapper.toDTO(event.get());
     }

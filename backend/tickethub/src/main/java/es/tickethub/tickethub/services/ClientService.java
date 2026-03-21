@@ -1,7 +1,6 @@
 package es.tickethub.tickethub.services;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -53,7 +52,6 @@ public class ClientService {
         client.setUsername(username);
         client.setPassword(passwordEncoder.encode(password));
         client.setAdmin(false);
-        client.setCoins(BigDecimal.ZERO);
 
         saveClient(client);
     }

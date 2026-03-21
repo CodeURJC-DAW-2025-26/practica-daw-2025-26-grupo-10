@@ -1,15 +1,14 @@
 package es.tickethub.tickethub.controllers;
 
 
-import org.springframework.data.domain.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +30,7 @@ public class ArtistController {
     /*------------------------------------- FUNCTIONS FOR THE PUBLIC FOLDER ---------------------------------*/
     @GetMapping("/public/artists")
     public String artists(Model model) {
-        Pageable pageable = PageRequest.of(0, 5, Sort.by("artistName"));
+        Pageable pageable = PageRequest.of(0, 5);
         Page<Artist> artistPage = artistService.findPaginated(pageable);
         model.addAttribute("artists",artistPage.getContent());
         return "public/artists";

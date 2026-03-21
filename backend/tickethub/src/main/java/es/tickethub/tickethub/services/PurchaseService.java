@@ -57,7 +57,7 @@ public class PurchaseService {
 
         Client client = clientService.findByEmail(email)
                 .orElseGet(() -> {
-                    Client newClient = new Client(email, "","", "", "", 0, 0, BigDecimal.ZERO, null, null, null);
+                    Client newClient = new Client(email, "","", "", "", 0, 0, null, null);
                     return clientService.saveClient(newClient);
                 });
 

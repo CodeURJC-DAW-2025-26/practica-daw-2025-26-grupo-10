@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import es.tickethub.tickethub.dto.EventDTO;
+import es.tickethub.tickethub.entities.Discount;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Zone;
 import es.tickethub.tickethub.mappers.EventMapper;
@@ -73,6 +74,7 @@ public class EventService {
     }
 
     public void deleteById(Long id) {
+
         eventRepository.deleteById(id);
     }
 
@@ -139,6 +141,11 @@ public class EventService {
 
         event.setArtist(null);
         event.setZones(null);
+
+        for (Discount discount : event.getDiscounts()) {
+            discount.getEvents().remove(event);
+        }
+        event.setDiscounts(null);
 
         eventRepository.delete(event);
     }
