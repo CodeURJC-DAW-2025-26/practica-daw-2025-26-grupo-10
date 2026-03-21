@@ -1,5 +1,6 @@
 package es.tickethub.tickethub.rest_controllers;
 
+import java.io.IOException;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +31,12 @@ public class ClientRestController {
     }
 
     @PutMapping("/me")
-    public ResponseEntity<ClientDTO> updateLoggedClient(@RequestBody ClientUpdateDTO clientUpdateDTO, Principal principal) {
+    public ResponseEntity<ClientDTO> updateLoggedClient(@RequestBody ClientUpdateDTO clientUpdateDTO, Principal principal) throws IOException {
         Client client = clientService.getClientByEmail(principal.getName());
         clientMapper.updateEntityFromDto(clientUpdateDTO, client);
-        Client updatedClient = clientService.updateClientREST(principal.getName(), client);
-
+        Client updatedClient = clientService.updateClient(client.getEmail(), client, null);
         return ResponseEntity.ok(clientMapper.toDTO(updatedClient));
     }
-
     @PutMapping("/me/password")
     public ResponseEntity<Void> changePassword(
             @RequestParam String oldPassword,
