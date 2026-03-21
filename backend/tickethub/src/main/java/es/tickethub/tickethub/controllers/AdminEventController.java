@@ -105,7 +105,7 @@ public class AdminEventController {
         }
 
         try {
-            Event existing = eventService.findById(event.getEventID()).get();
+            Event existing = eventService.findByIdOrThrow(event.getEventID());
 
             eventService.edit(existing, event, artistID, discountIDs, files);
 

@@ -31,11 +31,7 @@ public class ZoneController {
 
     @GetMapping("/edit_event/{eventID}/manage_zones")
     public String listZones(@PathVariable Long eventID, Model model) {
-        Optional<Event> optionalEvent = eventService.findById(eventID);
-        if (optionalEvent.isEmpty()) {
-            return "redirect:/admin/events";
-        }
-        Event event = optionalEvent.get();
+        Event event = eventService.findByIdOrThrow(eventID);
 
         model.addAttribute("zones", event.getZones());
         model.addAttribute("eventID", eventID);
@@ -44,11 +40,7 @@ public class ZoneController {
 
     @GetMapping("/edit_event/{eventID}/create_zone")
     public String showCreateForm(@PathVariable Long eventID, Model model) {
-        Optional<Event> optionalEvent = eventService.findById(eventID);
-        if (optionalEvent.isEmpty()) {
-            return "redirect:/admin/events";
-        }
-        Event event = optionalEvent.get();
+        Event event = eventService.findByIdOrThrow(eventID);
 
         model.addAttribute("event", event);
 

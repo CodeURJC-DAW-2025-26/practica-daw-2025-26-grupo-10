@@ -38,8 +38,8 @@ public class ImageRestController {
 
     @GetMapping("/events/{eventID}/image/{imageID}")
     public ResponseEntity<byte[]> getEventImage(@PathVariable Long eventID, @PathVariable Long imageID) {
-        Optional<Event> event = eventService.findById(eventID);
-        return imageService.getEventImageResponse(event.orElse(null), imageID);
+        Event event = eventService.findByIdOrThrow(eventID);
+        return imageService.getEventImageResponse(event, imageID);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

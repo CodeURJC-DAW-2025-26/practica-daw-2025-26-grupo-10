@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,11 +129,7 @@ public class PurchaseController {
      */
     @GetMapping("/select/{eventID}")
     public String showPurchaseFromEvent(@PathVariable Long eventID, Model model, Principal principal) {
-        Optional <Event> optionalEvent = eventService.findById(eventID);
-        if (optionalEvent.isEmpty()) {
-            return "redirect:/public/events";
-        }
-        Event event = optionalEvent.get();
+        Event event = eventService.findByIdOrThrow(eventID);
         List<Zone> zones = zoneService.findAll();
         List<Discount> discounts = discountService.getAllDiscounts();
 

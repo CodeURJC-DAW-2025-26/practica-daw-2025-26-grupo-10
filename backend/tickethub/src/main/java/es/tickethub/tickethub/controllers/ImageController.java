@@ -41,8 +41,7 @@ public class ImageController {
     
     @GetMapping("/events/{eventID}/image/{imageID}")
     public ResponseEntity<byte[]> getEventImage(@PathVariable Long eventID, @PathVariable Long imageID) {
-        Event event = eventService.findById(eventID)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado"));
+        Event event = eventService.findByIdOrThrow(eventID);
         return imageService.getEventImageResponse(event, imageID);
     }
 

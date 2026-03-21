@@ -109,8 +109,7 @@ public class SessionService {
     }
     
     public Session createSession(Long eventID, String dateStr) {
-        Event event = eventService.findById(eventID)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado"));
+        Event event = eventService.findByIdOrThrow(eventID);
         Session session = new Session();
         session.setEvent(event);
         session.setDate(session.getTimestampedDate(dateStr));

@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -68,16 +67,6 @@ public class EventService {
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No events found");
         }
         return events;
-    }
-
-    /**
-     * Finds an event by its ID.
-     *
-     * @param id Event ID
-     * @return Optional containing the Event if found
-     */
-    public Optional<Event> findById(Long id) {
-        return eventRepository.findById(id);
     }
 
     /**

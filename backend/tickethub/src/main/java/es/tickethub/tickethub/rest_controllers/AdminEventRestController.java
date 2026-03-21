@@ -1,8 +1,6 @@
 package es.tickethub.tickethub.rest_controllers;
 
 import java.net.URI;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -59,7 +57,7 @@ public class AdminEventRestController {
 
     @PutMapping("/{eventID}")
     public EventDTO updateEvent(@PathVariable Long eventID, @RequestBody EventUpdateDTO updatedEventDTO) {
-        Event existingEvent = eventService.findById(eventID).orElseThrow(() -> new NoSuchElementException("Evento no encontrado"));
+        Event existingEvent = eventService.findByIdOrThrow(eventID);
         
         if (updatedEventDTO.artistId() != null) {
             eventRelationService.updateArtist(existingEvent, updatedEventDTO.artistId());
@@ -72,11 +70,9 @@ public class AdminEventRestController {
 
     @DeleteMapping("/{eventID}")
     public EventDTO deleteEvent(@PathVariable Long eventID) {
-        Optional<Event> event = eventService.findById(eventID);
-        if (event.isPresent()) {
-            eventService.deleteEvent(eventID);
-        }
-        return eventMapper.toDTO(event.get());
+        Event event = eventService.findByIdOrThrow(eventID);
+        eventService.deleteEvent(eventID);
+        return eventMapper.toDTO(event);
     }
 
 }
