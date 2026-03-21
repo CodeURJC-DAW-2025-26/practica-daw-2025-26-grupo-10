@@ -53,7 +53,6 @@ public class AdminEventRestController {
         Event event = eventMapper.toEntity(createEventDTO);
         eventCreationService.prepareEventForCreation(event, createEventDTO.artistId(), null);
         eventService.save(event);
-
         URI location = fromCurrentRequest().path("/{eventID}").buildAndExpand(event.getEventID()).toUri();
         return ResponseEntity.created(location).body(eventMapper.toDTO(event));
     }
@@ -79,4 +78,5 @@ public class AdminEventRestController {
         }
         return eventMapper.toDTO(event.get());
     }
+
 }

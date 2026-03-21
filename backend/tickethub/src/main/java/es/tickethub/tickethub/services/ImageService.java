@@ -25,12 +25,17 @@ import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Image;
 import es.tickethub.tickethub.mappers.ImageMapper;
+import es.tickethub.tickethub.repositories.ImageRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class ImageService {
 
     @Autowired
     private ImageMapper imageMapper;
+
+    @Autowired
+    private ImageRepository imageRepository;
 
     /**
      * Converts a database Blob into a byte array.
@@ -141,5 +146,17 @@ public class ImageService {
     public void addImagesToEvent(Event event, MultipartFile[] files) {
         if (files == null || files.length == 0) return;
         event.getEventImages().addAll(createImagesFromFiles(files));
+    }
+
+    
+    @Transactional
+    public void deleteImageFromEvent(Event event, Long imageId) {
+        Image imageToDelete = event.getEventImages().stream()
+            .filter(img -> img.getImageID().equals(imageId))
+            .findFirst()
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Imagen no encontrada en este evento"));
+
+        event.getEventImages().remove(imageToDelete);
+        imageRepository.delete(imageToDelete);
     }
 }

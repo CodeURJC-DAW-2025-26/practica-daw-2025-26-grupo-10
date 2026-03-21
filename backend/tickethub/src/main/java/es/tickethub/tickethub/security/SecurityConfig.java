@@ -72,8 +72,8 @@ public class SecurityConfig {
 						.requestMatchers(HttpMethod.POST, "/api/v1/purchases/save").permitAll()
 						.requestMatchers(HttpMethod.GET, "/api/v1/purchases/download/**").permitAll()
 						/* ONLY ADMIN ROUTES */
-						.requestMatchers("/api/v1/admin**").hasRole("ADMIN")
-
+						.requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.DELETE, "/api/v1/images/admin/**").permitAll()
 						/* USER (CLIENT OR ADMIN) ROUTES */
 						.requestMatchers("/api/v1/clients/**", "/api/v1/purchases/**").hasAnyRole("USER", "ADMIN")
 						

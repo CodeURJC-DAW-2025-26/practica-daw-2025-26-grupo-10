@@ -9,8 +9,10 @@ function showConfirmation(onConfirm, message = "Esta acción no se puede deshace
     text: message,
     icon: "warning",
     showCancelButton: true,
-    confirmButtonText: "Eliminar",
-    cancelButtonText: "Cancelar"
+    confirmButtonColor: '#e98747',
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: 'Eliminar',
+    cancelButtonText: 'Cancelar',
   }).then(result => {
     if (result.isConfirmed) onConfirm();
   });

@@ -28,7 +28,7 @@ public class ClientController {
 
     @GetMapping("/profile")
     public String getClientOverview(Model model, Principal principal) {
-        Client clientLogged = clientService.getLoggedClient(principal.getName());
+        Client clientLogged = clientService.getClientByEmail(principal.getName());
 
         model.addAttribute("useID", clientLogged.getUserID());
         model.addAttribute("clientLogged", clientLogged);
@@ -38,7 +38,7 @@ public class ClientController {
 
     @GetMapping("/profile/edit")
     public String getClientData(Principal principal, Model model) {
-        Client clientLogged = clientService.getLoggedClient(principal.getName());
+        Client clientLogged = clientService.getClientByEmail(principal.getName());
 
         model.addAttribute("clientLogged", clientLogged);
         return "user/edit_profile";

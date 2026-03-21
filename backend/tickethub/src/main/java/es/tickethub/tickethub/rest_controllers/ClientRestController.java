@@ -1,5 +1,6 @@
 package es.tickethub.tickethub.rest_controllers;
 
+import java.io.IOException;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,21 +24,19 @@ public class ClientRestController {
     private ClientMapper clientMapper;
 
     @GetMapping("/me")
-    public ResponseEntity<ClientDTO> getLoggedClient(Principal principal) {
-        Client client = clientService.getLoggedClient(principal.getName());
+    public ResponseEntity<ClientDTO> getClientByEmail(Principal principal) {
+        Client client = clientService.getClientByEmail(principal.getName());
         ClientDTO clientDTO = clientMapper.toDTO(client);
         return ResponseEntity.ok(clientDTO);
     }
 
     @PutMapping("/me")
-    public ResponseEntity<ClientDTO> updateLoggedClient(@RequestBody ClientUpdateDTO clientUpdateDTO, Principal principal) {
-        Client client = clientService.getLoggedClient(principal.getName());
+    public ResponseEntity<ClientDTO> updateLoggedClient(@RequestBody ClientUpdateDTO clientUpdateDTO, Principal principal) throws IOException {
+        Client client = clientService.getClientByEmail(principal.getName());
         clientMapper.updateEntityFromDto(clientUpdateDTO, client);
-        Client updatedClient = clientService.updateClientREST(principal.getName(), client);
-
+        Client updatedClient = clientService.updateClient(client.getEmail(), client, null);
         return ResponseEntity.ok(clientMapper.toDTO(updatedClient));
     }
-
     @PutMapping("/me/password")
     public ResponseEntity<Void> changePassword(
             @RequestParam String oldPassword,
