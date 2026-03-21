@@ -8,6 +8,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 import es.tickethub.tickethub.dto.AdminDTO;
+import es.tickethub.tickethub.dto.ClientRegisterDTO;
 import es.tickethub.tickethub.entities.Admin;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -18,6 +19,11 @@ public interface AdminMapper {
     List<AdminDTO> toDTOs(Collection <Admin> admins);
 
     @Mapping(target = "version", ignore = true)
+    @Mapping(target = "password", ignore = true)
     Admin toDomain(AdminDTO adminDTO);
+
+    @Mapping(target = "userID", ignore = true)
+    @Mapping(target = "admin", constant = "true")
+    Admin toEntityFromRegister(ClientRegisterDTO dto);
 }
 

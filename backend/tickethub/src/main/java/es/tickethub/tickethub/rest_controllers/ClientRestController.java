@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import es.tickethub.tickethub.dto.ClientDTO;
+import es.tickethub.tickethub.dto.ClientUpdateDTO;
 import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.mappers.ClientMapper;
 import es.tickethub.tickethub.services.ClientService;
@@ -29,11 +30,9 @@ public class ClientRestController {
     }
 
     @PutMapping("/me")
-    public ResponseEntity<ClientDTO> updateLoggedClient(
-            @RequestBody ClientDTO clientDTO,
-            Principal principal) {
-
-        Client client = clientMapper.toDomain(clientDTO);
+    public ResponseEntity<ClientDTO> updateLoggedClient(@RequestBody ClientUpdateDTO clientUpdateDTO, Principal principal) {
+        Client client = clientService.getLoggedClient(principal.getName());
+        clientMapper.updateEntityFromDto(clientUpdateDTO, client);
         Client updatedClient = clientService.updateClientREST(principal.getName(), client);
 
         return ResponseEntity.ok(clientMapper.toDTO(updatedClient));

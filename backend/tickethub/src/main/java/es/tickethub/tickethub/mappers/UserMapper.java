@@ -18,5 +18,6 @@ public interface UserMapper {
     List<UserDTO> toDTOs(Collection <User> users);
 
     @Mapping(target = "version", ignore = true)
+    @Mapping(target = "password", ignore = true)
     User toDomain(UserDTO userDTO);
 }
