@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import es.tickethub.tickethub.dto.DiscountDTO;
 import es.tickethub.tickethub.entities.Discount;
 import es.tickethub.tickethub.dto.DiscountBasicDTO;
+import es.tickethub.tickethub.dto.DiscountCreateDTO;
 import es.tickethub.tickethub.mappers.DiscountMapper;
 import es.tickethub.tickethub.services.DiscountService;
 
@@ -44,8 +45,8 @@ public class DiscountRestController {
     }
 
     @PostMapping
-    public ResponseEntity<DiscountDTO> createDiscount(@RequestBody DiscountDTO discountDTO) {
-        Discount newDiscount = discountMapper.toEntity(discountDTO);
+    public ResponseEntity<DiscountDTO> createDiscount(@RequestBody DiscountCreateDTO discountCreateDTO) {
+        Discount newDiscount = discountMapper.toEntity(discountCreateDTO);
         discountService.save(newDiscount);
 
         URI location = fromCurrentRequest().path("/{discountID}").buildAndExpand(newDiscount.getDiscountID()).toUri();
@@ -54,9 +55,10 @@ public class DiscountRestController {
     }
 
     @PutMapping("/{discountID}")
-    public ResponseEntity<DiscountDTO> updateDiscount(@RequestBody DiscountDTO discountDTO, @PathVariable Long discountID) {
-        Discount discount = discountMapper.toEntity(discountDTO);
-        Discount updated = discountService.editDiscount(discount, discountID);
+    public ResponseEntity<DiscountDTO> updateDiscount(@RequestBody DiscountBasicDTO discountUpdateDTO, @PathVariable Long discountID) {
+        Discount existingDiscount = discountService.findById(discountID);
+        discountMapper.updateEntityFromBasicDto(discountUpdateDTO, existingDiscount);
+        Discount updated = discountService.editDiscount(existingDiscount, discountID);
 
         return ResponseEntity.ok(discountMapper.toDTO(updated));
     }
