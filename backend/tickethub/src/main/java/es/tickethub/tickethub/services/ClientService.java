@@ -114,11 +114,6 @@ public class ClientService {
     }
 
     @Transactional(readOnly = true)
-    public Client getLoggedClient(String email) {
-        return findClientOrThrowByEmail(email);
-    }
-
-    @Transactional(readOnly = true)
     public Optional<Client> findByEmail(String email) {
         return clientRepository.findByEmail(email);
     }
@@ -137,15 +132,7 @@ public class ClientService {
     @Transactional
     public Client updateClientREST(String email, Client updatedClient) {
         Client client = findClientOrThrowByEmail(email);
-
-        client.setName(updatedClient.getName());
-        client.setSurname(updatedClient.getSurname());
-        client.setUsername(updatedClient.getUsername());
-        client.setEmail(updatedClient.getEmail());
-        client.setPhone(updatedClient.getPhone());
-        client.setAge(updatedClient.getAge());
-        client.setProfileImage(updatedClient.getProfileImage());
-
+        copyClientFields(client, updatedClient);
         saveClient(client);
         return client;
     }
@@ -172,5 +159,6 @@ public class ClientService {
         target.setPhone(source.getPhone());
         target.setAge(source.getAge());
         target.setVersion(source.getVersion());
+        target.setProfileImage(source.getProfileImage());
     }
 }

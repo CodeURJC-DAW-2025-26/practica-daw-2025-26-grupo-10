@@ -106,7 +106,7 @@
         "tags": [
           "client-rest-controller"
         ],
-        "operationId": "getLoggedClient",
+        "operationId": "getClientByEmail",
         "responses": {
           "200": {
             "description": "OK",
