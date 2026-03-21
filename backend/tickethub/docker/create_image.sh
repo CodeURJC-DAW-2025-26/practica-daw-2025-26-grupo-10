@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 
 if [ -z "$1" ]; then
     echo "Error: Debes indicar el nombre de la imagen."
@@ -11,13 +11,7 @@ IMAGE_NAME=$1
 
 echo "Construyendo la imagen: $IMAGE_NAME..."
 
-export DOCKER_BUILDKIT=1
-
+IMAGE_NAME=$1
+echo "Construyendo imagen: $IMAGE_NAME..."
 docker build -t "$IMAGE_NAME" -f docker/Dockerfile .
-
-if [ $? -eq 0 ]; then
-    echo "¡Imagen $IMAGE_NAME creada con éxito!"
-else
-    echo "Error: Hubo un fallo al construir la imagen."
-    exit 1
-fi
+echo "¡Imagen $IMAGE_NAME creada con éxito!"
