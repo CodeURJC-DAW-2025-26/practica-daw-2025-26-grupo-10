@@ -3,7 +3,9 @@ package es.tickethub.tickethub.controllers;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Slice;
@@ -51,14 +53,15 @@ public class PurchaseController {
      * Processes the purchase submitted from the form and redirects to the confirmation page.
      */
     @PostMapping("/save")
-    public String savePurchase(
-            @RequestParam Long eventId,
-            @RequestParam String totalPrice,
-            @RequestParam List<Long> zoneIds,
-            @RequestParam Long sessionId,
-            @RequestParam String email) {
-        
-        Purchase purchase = purchaseService.processPurchase(eventId, totalPrice, zoneIds, sessionId, email);
+    public String savePurchase(@RequestParam Long sessionId, @RequestParam List<Long> zoneIds, @RequestParam String email) {
+
+        Map<Long, Integer> selections = zoneIds.stream()
+            .collect(Collectors.groupingBy(
+                id -> id, 
+                Collectors.collectingAndThen(Collectors.counting(), Long::intValue)
+            ));
+
+        Purchase purchase = purchaseService.processPurchase(sessionId, selections, email);
         
         return "redirect:/public/confirmation/" + purchase.getPurchaseID();
     }

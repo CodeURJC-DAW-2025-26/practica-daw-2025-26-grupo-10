@@ -2,7 +2,9 @@ package es.tickethub.tickethub.services;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -15,8 +17,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 
 import es.tickethub.tickethub.entities.Client;
-import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Purchase;
+import es.tickethub.tickethub.entities.Session;
 import es.tickethub.tickethub.entities.Ticket;
 import es.tickethub.tickethub.entities.Zone;
 import es.tickethub.tickethub.repositories.ClientRepository;
@@ -41,6 +43,9 @@ public class PurchaseService {
     ZoneService zoneService;
 
     @Autowired
+    SessionService sessionService;
+
+    @Autowired
     EventService eventService;
 
     /**
@@ -51,33 +56,38 @@ public class PurchaseService {
      * 4. Persists the entire tree.
      */
     @Transactional
-    public Purchase processPurchase(Long eventId, String totalPrice, List<Long> zoneIds, Long sessionId, String email) {
-        Event event = eventService.findById(eventId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado"));
-
+    public Purchase processPurchase(Long sessionId, Map<Long, Integer> selections, String email) {
         Client client = clientService.findByEmail(email)
-                .orElseGet(() -> {
-                    Client newClient = new Client(email, "","", "", "", 0, 0, null, null);
-                    return clientService.saveClient(newClient);
-                });
+                .orElseGet(() -> clientService.saveClient(new Client(email, "", "", "", "", 0, 0, null, null)));
 
         Purchase purchase = new Purchase();
         purchase.setClient(client);
 
-        String cleanPrice = totalPrice.replace("€", "").replace(",", ".").trim();
-        purchase.setTotalPrice(new BigDecimal(cleanPrice));
-        event.getSessions().stream()
-                .filter(s -> s.getSessionID().equals(sessionId))
-                .findFirst()
-                .ifPresent(purchase::setSession);
-        for (Long zoneId : zoneIds) {
+        Session session = sessionService.findById(sessionId);
+        purchase.setSession(session);
+
+        BigDecimal calculatedTotal = BigDecimal.ZERO;
+
+        for (Map.Entry<Long, Integer> entry : selections.entrySet()) {
+            Long zoneId = entry.getKey();
+            Integer quantity = entry.getValue();
+            
             Zone zone = zoneService.findById(zoneId);
-            Ticket ticket = new Ticket();
-            ticket.setZone(zone);
-            ticket.setTicketPrice(zone.getPrice());
-            ticket.setPurchase(purchase);
-            purchase.getTickets().add(ticket);
+
+            for (int i = 0; i < quantity; i++) {
+                Ticket ticket = new Ticket();
+                ticket.setZone(zone);
+                ticket.setTicketPrice(zone.getPrice());
+                ticket.setPurchase(purchase);
+                ticket.setIsActive(true);
+                ticket.setCode(UUID.randomUUID().toString());
+                
+                purchase.getTickets().add(ticket);
+                calculatedTotal = calculatedTotal.add(zone.getPrice());
+            }
         }
+
+        purchase.setTotalPrice(calculatedTotal);
         return purchaseRepository.save(purchase);
     }
     

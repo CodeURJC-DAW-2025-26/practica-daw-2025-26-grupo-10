@@ -9,6 +9,7 @@ import org.mapstruct.ReportingPolicy;
 
 import es.tickethub.tickethub.dto.PurchaseDTO;
 import es.tickethub.tickethub.dto.PurchaseBasicDTO;
+import es.tickethub.tickethub.dto.PurchaseCreateDTO;
 import es.tickethub.tickethub.entities.Purchase;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -23,5 +24,8 @@ public interface PurchaseMapper {
     List<PurchaseDTO> toDTOs(Collection<Purchase> purchases);
 
     @Mapping(target = "purchaseID", ignore = true)
-    Purchase toDomain(PurchaseDTO purchaseDTO);
+    @Mapping(target = "tickets", ignore = true)
+    @Mapping(target = "totalPrice", ignore = true)
+    @Mapping(target = "session", ignore = true)
+    Purchase toDomain(PurchaseCreateDTO purchaseDTO);
 }
