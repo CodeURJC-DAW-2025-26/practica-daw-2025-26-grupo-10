@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import es.tickethub.tickethub.entities.Client;
@@ -65,5 +66,9 @@ public class UserService {
 
     public boolean isAdmin(User user) {
         return ((user != null) && (user.getAdmin() != null) && (user.getAdmin()));
+    }
+    
+    public List<User> getUsers(int page, int size) {
+        return userRepository.findAll(PageRequest.of(page, size)).getContent();
     }
 }
