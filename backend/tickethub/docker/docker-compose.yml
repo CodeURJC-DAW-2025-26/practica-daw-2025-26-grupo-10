@@ -16,7 +16,7 @@ services:
       retries: 10
 
   app:
-    image: ${DOCKER_USER}/tickethub-app:latest
+    image: ${DOCKER_USER:-your_user}/tickethub-app:latest
     container_name: tickethub-app
     depends_on:
       db:

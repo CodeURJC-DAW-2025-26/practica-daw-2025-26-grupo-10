@@ -8,6 +8,8 @@ fi
 
 USER=$1
 docker tag ${USER}/tickethub-app:latest ${USER}/tickethub-app:compose-ready
+
 docker push ${USER}/tickethub-app:compose-ready
 
-echo "¡docker-compose listo! Para ejecutar: DOCKER_USER=$USER docker compose up"
+DOCKER_USER=$USER docker compose -f ./docker/docker-compose.yml push
+echo "¡OCI Artifact de Docker Compose listo! Para ejecutar: DOCKER_USER=$USER docker compose up"
