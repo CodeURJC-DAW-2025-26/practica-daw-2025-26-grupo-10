@@ -423,12 +423,16 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 #### **Pasos para ejecutar con docker-compose:**
 
 1. **Clonar el repositorio** (si no lo has hecho ya):
-   ```bash
    git clone https://github.com/[usuario]/[repositorio].git
    cd [repositorio]
-   ```
 
-2. **AQUÍ LOS SIGUIENTES PASOS**:
+2. **Levantar la aplicación**:
+   Sustituye `tu_usuario` por tu nombre de usuario de Docker Hub para que Compose sepa de qué repositorio descargar las imágenes.
+   DOCKER_USER=tu_usuario docker compose up -d
+
+3. **Verificar los logs**:
+   Para comprobar que el servidor Tomcat ha arrancado correctamente:
+   docker logs tickethub-app
 
 ### **Construcción de la Imagen Docker**
 
@@ -438,11 +442,21 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 #### **Pasos para construir y publicar la imagen:**
 
 1. **Navegar al directorio de Docker**:
-   ```bash
    cd docker
-   ```
 
-2. **AQUÍ LOS SIGUIENTES PASOS**
+2. **Crear la imagen local**:
+   bash create_image.sh tickethub-app
+
+3. **Iniciar sesión en Docker Hub**:
+   Asegúrate de tener tus credenciales a mano.
+   docker login
+
+4. **Publicar la imagen y el archivo compose**:
+   Sustituye `tu_usuario` por tu identificador real.
+   bash publish_image.sh tu_usuario tickethub-app
+   bash publish_docker-compose.sh tu_usuario
+
+---
 
 ### **Despliegue en Máquina Virtual**
 
@@ -453,21 +467,23 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 
 #### **Pasos para desplegar:**
 
+#### **Pasos para desplegar:**
+
 1. **Conectar a la máquina virtual**:
-   ```bash
    ssh -i [ruta/a/clave.key] [usuario]@[IP-o-dominio-VM]
-   ```
    
    Ejemplo:
-   ```bash
    ssh -i ssh-keys/app.key vmuser@10.100.139.XXX
-   ```
 
-2. **AQUÍ LOS SIGUIENTES PASOS**:
+2. **Ejecutar la aplicación en la VM**:
+   Una vez dentro de la máquina y con el archivo `docker-compose.yml` disponible (importante estar en el directorio correcto):
+   DOCKER_USER=tu_usuario docker compose up -d
+
+---
 
 ### **URL de la Aplicación Desplegada**
 
-🌐 **URL de acceso**: `https://[nombre-app].etsii.urjc.es:8443`
+🌐 **URL de acceso local**: https://localhost:8443
 
 #### **Credenciales de Usuarios de Ejemplo**
 
