@@ -294,8 +294,8 @@ Página la cual muestras los usuarios presentes en el sistema con la capacidad d
 
 1. **Clonar el repositorio**
    ```bash
-   git clone https://github.com/[usuario]/[nombre-repositorio].git
-   cd [nombre-repositorio]
+   git clone https://github.com/[usuario]/[practica-daw-2025-26-grupo-10].git
+   cd [practica-daw-2025-26-grupo-10]
    ```
 
 2. **AQUÍ INDICAR LO SIGUIENTES PASOS**
@@ -423,8 +423,8 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 #### **Pasos para ejecutar con docker-compose:**
 
 1. **Clonar el repositorio** (si no lo has hecho ya):
-   git clone https://github.com/[usuario]/[repositorio].git
-   cd [repositorio]
+   git clone https://github.com/[usuario]/[practica-daw-2025-26-grupo-10].git
+   cd [practica-daw-2025-26-grupo-10]
 
 2. **Levantar la aplicación**:
    Sustituye `tu_usuario` por tu nombre de usuario de Docker Hub para que Compose sepa de qué repositorio descargar las imágenes.
