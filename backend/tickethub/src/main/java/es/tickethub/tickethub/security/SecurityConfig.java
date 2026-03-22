@@ -20,6 +20,7 @@ import es.tickethub.tickethub.security.jwt.JwtRequestFilter;
 import es.tickethub.tickethub.security.jwt.JwtTokenProvider;
 import es.tickethub.tickethub.security.jwt.UnauthorizedHandlerJwt;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
@@ -30,7 +31,7 @@ public class SecurityConfig {
 
 	@Autowired
 	private RepositoryUserDetailsService userDetailsService;
-	
+
 	@Autowired
 	private UnauthorizedHandlerJwt unauthorizedHandlerJwt;
 
@@ -44,7 +45,7 @@ public class SecurityConfig {
 		return authConfig.getAuthenticationManager();
 	}
 
-    // Authentication provider that uses our custom UserDetailsService
+	// Authentication provider that uses our custom UserDetailsService
 	@Bean
 	public DaoAuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
@@ -55,52 +56,37 @@ public class SecurityConfig {
 
 	@Bean
 	@Order(1)
-	public SecurityFilterChain apiFilterChain(HttpSecurity http, JwtRequestFilter jwtRequestFilter) throws Exception {
+	public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
+
 		http.authenticationProvider(authenticationProvider());
 
 		http
-				.securityMatcher("/api/v1/**")
-				.exceptionHandling(handling -> handling
+				.securityMatcher("/api/**", "/error")
+				.csrf(csrf -> csrf.disable())
+				.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+				.exceptionHandling(ex -> ex
 						.authenticationEntryPoint(unauthorizedHandlerJwt)
 						.accessDeniedHandler((request, response, accessDeniedException) -> {
-							response.setContentType("application/json;charset=UTF-8");
 							response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-							response.getWriter().write("{\n" +
-									"  \"status\": \"FAILURE\",\n" +
-									"  \"message\": \"Permisos insuficientes\",\n" +
-									"  \"data\": \"No tienes privilegios para acceder a este recurso.\"\n" +
-									"}");
-						})
-				);
+							response.setContentType("application/json");
+							response.getWriter().write(
+									"{\"status\":\"FAILURE\",\"message\":\"No tienes permisos para realizar esta acción (ADMIN requerido)\"}");
+						}));
 
-		http
-				.authorizeHttpRequests(authorize -> authorize
-						/* 1. ENDPOINTS PÚBLICOS (Los más específicos)*/
-        				.requestMatchers("/api/v1/auth/**","/api/v1/public/**").permitAll()
-						// Consultas POST publicas
-						/* PUBLIC ROUTES */
-        				.requestMatchers("/api/v1/auth/**").permitAll()
-						// PURCHASES AND PDF GENERATION AUTORIZED WITHOUT BEING LOGGED IN
-						.requestMatchers(HttpMethod.POST, "/api/v1/purchases/save").permitAll()
-						.requestMatchers(HttpMethod.GET, "/api/v1/purchases/download/**").permitAll()
-						/* ONLY ADMIN ROUTES */
-						.requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.DELETE, "/api/v1/images/admin/**").permitAll()
-						/* USER (CLIENT OR ADMIN) ROUTES */
-						.requestMatchers("/api/v1/clients/**", "/api/v1/purchases/**").hasAnyRole("USER", "ADMIN")
-						
-						/* OTHER ROUTES */
-						.anyRequest().permitAll());
+		http.authorizeHttpRequests(auth -> auth
+				.requestMatchers("/api/v1/auth/**", "/api/v1/public/**").permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/v1/purchases/save").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/v1/purchases/download/**").permitAll()
+				.requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+				.requestMatchers("/api/v1/clients/**", "/api/v1/purchases/**").hasAnyRole("USER", "ADMIN")
+				.anyRequest().authenticated());
 
-		http.formLogin(formLogin -> formLogin.disable());
+		http.formLogin(f -> f.disable());
+		http.httpBasic(b -> b.disable());
 
-		http.csrf(csrf -> csrf.disable());
-
-		http.httpBasic(httpBasic -> httpBasic.disable());
-
-		http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
-		http.addFilterBefore(new JwtRequestFilter(jwtTokenProvider, userDetailsService), UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(new JwtRequestFilter(jwtTokenProvider, userDetailsService),
+				UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}
@@ -115,8 +101,11 @@ public class SecurityConfig {
 		http
 				.authorizeHttpRequests(authorize -> authorize
 						// PUBLIC Routes
-						.requestMatchers("/v3/api-docs", "/v3/api-docs/**", "/v3/api-docs.yaml", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-						.requestMatchers("/", "/css/**", "/js/**", "/images/**", "/public/**","/images/entities/**").permitAll()
+						.requestMatchers("/v3/api-docs", "/v3/api-docs/**", "/v3/api-docs.yaml", "/swagger-ui/**",
+								"/swagger-ui.html")
+						.permitAll()
+						.requestMatchers("/", "/css/**", "/js/**", "/images/**", "/public/**", "/images/entities/**")
+						.permitAll()
 						// PURCHASES AUTORIZED WITHOUT BEING LOGGED IN
 						.requestMatchers(HttpMethod.POST, "/purchases/save").permitAll()
 						// USER (CLIENT OR ADMIN) ROUTES

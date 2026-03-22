@@ -16,6 +16,7 @@ import es.tickethub.tickethub.dto.DiscountBasicDTO;
 import es.tickethub.tickethub.dto.DiscountCreateDTO;
 import es.tickethub.tickethub.mappers.DiscountMapper;
 import es.tickethub.tickethub.services.DiscountService;
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,7 +46,7 @@ public class DiscountRestController {
     }
 
     @PostMapping
-    public ResponseEntity<DiscountDTO> createDiscount(@RequestBody DiscountCreateDTO discountCreateDTO) {
+    public ResponseEntity<DiscountDTO> createDiscount(@Valid @RequestBody DiscountCreateDTO discountCreateDTO) {
         Discount newDiscount = discountMapper.toEntity(discountCreateDTO);
         discountService.save(newDiscount);
 
@@ -55,7 +56,7 @@ public class DiscountRestController {
     }
 
     @PutMapping("/{discountID}")
-    public ResponseEntity<DiscountDTO> updateDiscount(@RequestBody DiscountBasicDTO discountUpdateDTO, @PathVariable Long discountID) {
+    public ResponseEntity<DiscountDTO> updateDiscount(@Valid @RequestBody DiscountBasicDTO discountUpdateDTO, @PathVariable Long discountID) {
         Discount existingDiscount = discountService.findById(discountID);
         discountMapper.updateEntityFromBasicDto(discountUpdateDTO, existingDiscount);
         Discount updated = discountService.editDiscount(existingDiscount, discountID);

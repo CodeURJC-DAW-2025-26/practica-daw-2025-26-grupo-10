@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 public record EventCreateDTO(
-    @NotBlank(message = "El nombre es obligatorio")
+    @NotBlank(message = "El nombre del evento es obligatorio")
     String name,
 
     @NotBlank(message = "La categoría es obligatoria")
@@ -18,8 +18,10 @@ public record EventCreateDTO(
     Long artistId,
 
     @NotNull(message = "La edad objetivo es obligatoria")
+    @Positive(message = "La edad debe ser un número positivo")
     Integer targetAge,
-
+    
+    @NotNull(message = "La capacidad es obligatoria")
     @Positive(message = "La capacidad debe ser mayor a 0")
     Integer capacity
 ) {}

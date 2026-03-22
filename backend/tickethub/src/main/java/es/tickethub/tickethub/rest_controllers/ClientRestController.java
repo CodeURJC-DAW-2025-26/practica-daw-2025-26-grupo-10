@@ -12,6 +12,7 @@ import es.tickethub.tickethub.dto.ClientUpdateDTO;
 import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.mappers.ClientMapper;
 import es.tickethub.tickethub.services.ClientService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/clients")
@@ -31,12 +32,14 @@ public class ClientRestController {
     }
 
     @PutMapping("/me")
-    public ResponseEntity<ClientDTO> updateLoggedClient(@RequestBody ClientUpdateDTO clientUpdateDTO, Principal principal) throws IOException {
+    public ResponseEntity<ClientDTO> updateLoggedClient(@Valid @RequestBody ClientUpdateDTO clientUpdateDTO,
+            Principal principal) throws IOException {
         Client client = clientService.getClientByEmail(principal.getName());
         clientMapper.updateEntityFromDto(clientUpdateDTO, client);
         Client updatedClient = clientService.updateClient(client.getEmail(), client, null);
         return ResponseEntity.ok(clientMapper.toDTO(updatedClient));
     }
+
     @PutMapping("/me/password")
     public ResponseEntity<Void> changePassword(
             @RequestParam String oldPassword,
@@ -48,8 +51,7 @@ public class ClientRestController {
                 principal.getName(),
                 oldPassword,
                 newPassword,
-                newPasswordConfirmation
-        );
+                newPasswordConfirmation);
 
         return ResponseEntity.noContent().build();
     }

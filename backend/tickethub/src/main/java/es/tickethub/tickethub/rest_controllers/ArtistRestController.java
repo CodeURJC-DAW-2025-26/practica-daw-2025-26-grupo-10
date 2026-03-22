@@ -25,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import es.tickethub.tickethub.entities.Artist;
 import es.tickethub.tickethub.mappers.ArtistMapper;
 import es.tickethub.tickethub.services.ArtistService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/artists")
@@ -38,22 +39,22 @@ public class ArtistRestController {
 
     @GetMapping
     public List<ArtistBasicDTO> getAllArtists(
-        @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "10") int size,
-        @RequestParam(defaultValue = "artistName") String sortField) {
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "artistName") String sortField) {
 
-    List<String> allowed = List.of("artistName", "artistID");
-    if (!allowed.contains(sortField)) {
-        sortField = "artistName";
-    }
+        List<String> allowed = List.of("artistName", "artistID");
+        if (!allowed.contains(sortField)) {
+            sortField = "artistName";
+        }
 
-    Pageable pageable = PageRequest.of(page, size, Sort.by(sortField));
-    Page<Artist> artistPage = artistService.findPaginated(pageable);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortField));
+        Page<Artist> artistPage = artistService.findPaginated(pageable);
 
-    return artistPage.getContent()
-            .stream()
-            .map(artistMapper::toBasicDTO)
-            .toList();
+        return artistPage.getContent()
+                .stream()
+                .map(artistMapper::toBasicDTO)
+                .toList();
     }
 
     @GetMapping("/{id}")
@@ -63,14 +64,14 @@ public class ArtistRestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ArtistDTO createArtist(@RequestBody ArtistCreateDTO dto) {
+    public ArtistDTO createArtist(@Valid @RequestBody ArtistCreateDTO dto) {
         Artist artist = artistMapper.toEntity(dto);
-        
+
         return artistMapper.toDTO(artistService.save(artist));
     }
 
     @PutMapping("/{id}")
-    public ArtistDTO updateArtist(@PathVariable Long id, @RequestBody ArtistUpdateDTO dto) {
+    public ArtistDTO updateArtist(@PathVariable Long id, @Valid @RequestBody ArtistUpdateDTO dto) {
         Artist existing = artistService.findById(id);
         artistMapper.updateEntityFromDto(dto, existing);
 

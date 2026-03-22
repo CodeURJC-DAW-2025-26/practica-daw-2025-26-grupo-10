@@ -24,6 +24,7 @@ import es.tickethub.tickethub.mappers.EventMapper;
 import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.EventServices.EventCreationService;
 import es.tickethub.tickethub.services.EventServices.EventRelationService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/admin/events")
@@ -47,7 +48,7 @@ public class AdminEventRestController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<EventDTO> createEvent(@RequestBody EventCreateDTO createEventDTO) {
+    public ResponseEntity<EventDTO> createEvent(@Valid @RequestBody EventCreateDTO createEventDTO) {
         Event event = eventMapper.toEntity(createEventDTO);
         eventCreationService.prepareEventForCreation(event, createEventDTO.artistId(), null);
         eventService.save(event);
@@ -56,7 +57,7 @@ public class AdminEventRestController {
     }
 
     @PutMapping("/{eventID}")
-    public EventDTO updateEvent(@PathVariable Long eventID, @RequestBody EventUpdateDTO updatedEventDTO) {
+    public EventDTO updateEvent(@PathVariable Long eventID, @Valid @RequestBody EventUpdateDTO updatedEventDTO) {
         Event existingEvent = eventService.findByIdOrThrow(eventID);
         
         if (updatedEventDTO.artistId() != null) {

@@ -3,17 +3,10 @@ package es.tickethub.tickethub.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.qrcode.QRCodeWriter;
-import com.google.zxing.common.BitMatrix;
-
 import es.tickethub.tickethub.entities.Purchase;
 import es.tickethub.tickethub.entities.Ticket;
 import es.tickethub.tickethub.repositories.TicketRepository;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 
 @Service
 public class TicketService {
@@ -26,7 +19,7 @@ public class TicketService {
     /**
      * Internal helper to generate a PNG QR code as a byte array.
      * Uses ZXing to encode the input text into a BitMatrix.
-     */
+    
     private byte[] generateQR(String text) throws Exception {
 
         QRCodeWriter writer = new QRCodeWriter();
@@ -44,7 +37,7 @@ public class TicketService {
         ImageIO.write(image, "png", baos);
 
         return baos.toByteArray();
-    }
+    } */
 
     public byte[] generateTicketsPdf(Purchase purchase) throws Exception {
         return pdfGenerator.generatePurchasePdf(purchase);

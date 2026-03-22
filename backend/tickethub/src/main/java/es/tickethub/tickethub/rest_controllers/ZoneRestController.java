@@ -4,12 +4,14 @@ import java.net.URI;
 import java.util.List;
 
 import es.tickethub.tickethub.dto.ZoneBasicDTO;
+import es.tickethub.tickethub.dto.ZoneCreateDTO;
 import es.tickethub.tickethub.dto.ZoneDTO;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Zone;
 import es.tickethub.tickethub.mappers.ZoneMapper;
 import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.ZoneService;
+import jakarta.validation.Valid;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,19 +52,18 @@ public class ZoneRestController {
     
 
     @PostMapping
-    public ResponseEntity <ZoneDTO> createZone(@RequestBody ZoneDTO zoneDTO, @PathVariable Long eventID) {
-        Zone newZone = zoneMapper.toDomain(zoneDTO);
+    public ResponseEntity <ZoneDTO> createZone(@Valid @RequestBody ZoneCreateDTO zoneCreateDTO, @PathVariable Long eventID) {
+        Zone newZone = zoneMapper.toDomain(zoneCreateDTO);
         zoneService.createAndAssignEvent(newZone, eventID);
-
         URI location = fromCurrentRequest().path("/{id}").buildAndExpand(newZone.getId()).toUri();
         return ResponseEntity.created(location).body(zoneMapper.toDTO(newZone));
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<ZoneDTO> updateZone (@PathVariable Long eventID, @PathVariable Long id, @RequestBody ZoneDTO ZoneDTO) {
-        Zone zone = zoneMapper.toDomain(ZoneDTO);
-        Zone updated = zoneService.updateZone(eventID, id, zone);
-
+    public ResponseEntity<ZoneDTO> updateZone (@PathVariable Long eventID, @PathVariable Long id, @Valid @RequestBody ZoneBasicDTO zoneBasicDTO) {
+        Zone existingZone = zoneService.findByEventAndID(eventID, id);
+        zoneMapper.updateEntityFromBasicDTO(zoneBasicDTO, existingZone);
+        Zone updated = zoneService.updateZone(eventID, id, existingZone);
         return ResponseEntity.ok(zoneMapper.toDTO(updated));
     }
 

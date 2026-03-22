@@ -13,6 +13,8 @@ import es.tickethub.tickethub.dto.TicketSelectionDTO;
 import es.tickethub.tickethub.entities.Purchase;
 import es.tickethub.tickethub.mappers.PurchaseMapper;
 import es.tickethub.tickethub.services.PurchaseService;
+import jakarta.validation.Valid;
+
 import java.security.Principal;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -28,7 +30,7 @@ public class PurchaseRestController {
      * Processes a new purchase request from external clients.
      */
     @PostMapping("/save")
-    public ResponseEntity<PurchaseDTO> savePurchase(@RequestBody PurchaseCreateDTO dto, Principal principal) {
+    public ResponseEntity<PurchaseDTO> savePurchase(@Valid @RequestBody PurchaseCreateDTO dto, Principal principal) {
         Long sessionId = dto.sessionID();
         String email = principal.getName();
         
