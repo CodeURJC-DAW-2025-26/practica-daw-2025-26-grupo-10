@@ -2,6 +2,7 @@ package es.tickethub.tickethub.rest_controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,13 +18,11 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/api/v1/user")
 public class UserRestController {
 
-    private final UserService userService;
-    private final TicketMapper ticketMapper;
+    @Autowired
+    private UserService userService;
 
-    public UserRestController(UserService userService, TicketMapper ticketMapper) {
-        this.userService = userService;
-        this.ticketMapper = ticketMapper;
-    }
+    @Autowired
+    private TicketMapper ticketMapper;
 
     @GetMapping("/tickets")
     public ResponseEntity<List<TicketDTO>> getTickets(HttpSession session) {

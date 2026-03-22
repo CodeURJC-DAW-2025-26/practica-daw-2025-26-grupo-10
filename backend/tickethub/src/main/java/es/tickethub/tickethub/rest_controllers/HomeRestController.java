@@ -1,11 +1,19 @@
 package es.tickethub.tickethub.rest_controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.tickethub.tickethub.dto.ArtistBasicDTO;
-import es.tickethub.tickethub.dto.IndexResponseDTO;
 import es.tickethub.tickethub.dto.EventBasicDTO;
+import es.tickethub.tickethub.dto.IndexResponseDTO;
 import es.tickethub.tickethub.entities.Artist;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.mappers.ArtistMapper;
@@ -15,36 +23,29 @@ import es.tickethub.tickethub.services.ClientService;
 import es.tickethub.tickethub.services.EventServices.EventRankingService;
 import es.tickethub.tickethub.services.EventServices.EventRecommendationService;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-
 
 
 @RestController
 @RequestMapping("/api/v1/public")
 public class HomeRestController {
     
-    private final EventRankingService eventRankingService;
-    private final EventRecommendationService eventRecommendationService;
-    private final ClientService clientService;
-    private final ArtistService artistService;
-    private final EventMapper eventMapper;
-    private final ArtistMapper artistMapper;
+    @Autowired
+    private EventRankingService eventRankingService;
 
-    public HomeRestController(EventRankingService eventRankingService,EventRecommendationService eventRecommendationService, 
-        ClientService clientService, ArtistService artistService, EventMapper eventMapper, ArtistMapper artistMapper){
-            this.eventRankingService=eventRankingService;
-            this.eventRecommendationService = eventRecommendationService;
-            this.clientService = clientService;
-            this.artistService = artistService;
-            this.eventMapper = eventMapper;
-            this.artistMapper = artistMapper;
-    }
+    @Autowired
+    private EventRecommendationService eventRecommendationService;
+
+    @Autowired
+    private ClientService clientService;
+
+    @Autowired
+    private ArtistService artistService;
+
+    @Autowired
+    private EventMapper eventMapper;
+
+    @Autowired
+    private ArtistMapper artistMapper;
 
 
     @GetMapping("/index")

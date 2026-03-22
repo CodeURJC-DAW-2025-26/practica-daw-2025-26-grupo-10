@@ -12,10 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Purchase;
 import es.tickethub.tickethub.entities.Session;
 import es.tickethub.tickethub.repositories.SessionRepository;
-import es.tickethub.tickethub.entities.Event;
 @Service
 public class SessionService {
     @Autowired

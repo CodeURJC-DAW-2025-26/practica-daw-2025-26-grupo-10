@@ -10,5 +10,8 @@ public record PurchaseCreateDTO(
     Long sessionID,
 
     @NotEmpty(message = "Debes seleccionar al menos un ticket para realizar la compra")
-    List<TicketSelectionDTO> selections
+    List<TicketSelectionDTO> selections,
+
+    @NotEmpty(message = "Debes meter un email al que asignar la compra")
+    String name
 ) {}

@@ -20,7 +20,6 @@ import es.tickethub.tickethub.security.jwt.JwtRequestFilter;
 import es.tickethub.tickethub.security.jwt.JwtTokenProvider;
 import es.tickethub.tickethub.security.jwt.UnauthorizedHandlerJwt;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity

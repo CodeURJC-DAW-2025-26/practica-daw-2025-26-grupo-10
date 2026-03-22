@@ -1,12 +1,15 @@
 package es.tickethub.tickethub.mappers;
 
-import es.tickethub.tickethub.dto.*;
-import es.tickethub.tickethub.entities.Session;
+import java.util.Collection;
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
-import java.util.Collection;
-import java.util.List;
+
+import es.tickethub.tickethub.dto.SessionBasicDTO;
+import es.tickethub.tickethub.dto.SessionDTO;
+import es.tickethub.tickethub.entities.Session;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface SessionMapper {
