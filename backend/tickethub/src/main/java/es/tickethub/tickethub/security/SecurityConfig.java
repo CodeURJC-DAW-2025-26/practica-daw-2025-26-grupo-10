@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import es.tickethub.tickethub.security.jwt.JwtRequestFilter;
 import es.tickethub.tickethub.security.jwt.JwtTokenProvider;
 import es.tickethub.tickethub.security.jwt.UnauthorizedHandlerJwt;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
@@ -59,8 +60,19 @@ public class SecurityConfig {
 
 		http
 				.securityMatcher("/api/v1/**")
-				.exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt));
-		
+				.exceptionHandling(handling -> handling
+						.authenticationEntryPoint(unauthorizedHandlerJwt)
+						.accessDeniedHandler((request, response, accessDeniedException) -> {
+							response.setContentType("application/json;charset=UTF-8");
+							response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+							response.getWriter().write("{\n" +
+									"  \"status\": \"FAILURE\",\n" +
+									"  \"message\": \"Permisos insuficientes\",\n" +
+									"  \"data\": \"No tienes privilegios para acceder a este recurso.\"\n" +
+									"}");
+						})
+				);
+
 		http
 				.authorizeHttpRequests(authorize -> authorize
 						/* 1. ENDPOINTS PÚBLICOS (Los más específicos)*/

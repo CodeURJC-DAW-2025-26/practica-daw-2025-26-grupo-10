@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.server.ResponseStatusException;
 import jakarta.servlet.http.HttpServletResponse;
 
-@ControllerAdvice
+@ControllerAdvice(basePackages = "es.tickethub.tickethub.controllers")
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResponseStatusException.class)
