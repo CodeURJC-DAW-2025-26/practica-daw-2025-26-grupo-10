@@ -1,20 +1,25 @@
 package es.tickethub.tickethub.services;
 
+import java.math.BigDecimal;
 import java.util.List;
-
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
 
 import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Purchase;
+import es.tickethub.tickethub.entities.Session;
 import es.tickethub.tickethub.entities.Ticket;
+import es.tickethub.tickethub.entities.Zone;
 import es.tickethub.tickethub.repositories.ClientRepository;
 import es.tickethub.tickethub.repositories.PurchaseRepository;
 
@@ -25,21 +30,60 @@ public class PurchaseService {
     PurchaseRepository purchaseRepository;
 
     @Autowired
+    private PdfGeneratorService pdfGeneratorService;
+
+    @Autowired
     ClientService clientService;
 
     @Autowired
     ClientRepository clientRepository;
 
     @Autowired
-    TicketService ticketService;
+    ZoneService zoneService;
+
+    @Autowired
+    SessionService sessionService;
 
     /**
-     * Creates a new purchase along with all associated tickets
-     * Uses @Transactional to ensure that the purchase and its tickets
-     * are saved as a single atomic operation
+     * Processes a complete purchase workflow:
+     * 1. Resolves client (new or existing).
+     * 2. Calculates and validates total price.
+     * 3. Configures session and links tickets.
+     * 4. Persists the entire tree.
      */
     @Transactional
-    public Purchase createPurchase(Purchase purchase) {
+    public Purchase processPurchase(Long sessionId, Map<Long, Integer> selections, String email) {
+        Client client = clientService.findByEmail(email)
+                .orElseGet(() -> clientService.saveClient(new Client(email, "", "", "", "", 0, 0, null, null)));
+
+        Purchase purchase = new Purchase();
+        purchase.setClient(client);
+
+        Session session = sessionService.findById(sessionId);
+        purchase.setSession(session);
+
+        BigDecimal calculatedTotal = BigDecimal.ZERO;
+
+        for (Map.Entry<Long, Integer> entry : selections.entrySet()) {
+            Long zoneId = entry.getKey();
+            Integer quantity = entry.getValue();
+
+            Zone zone = zoneService.findById(zoneId);
+
+            for (int i = 0; i < quantity; i++) {
+                Ticket ticket = new Ticket();
+                ticket.setZone(zone);
+                ticket.setTicketPrice(zone.getPrice());
+                ticket.setPurchase(purchase);
+                ticket.setIsActive(true);
+                ticket.setCode(UUID.randomUUID().toString());
+
+                purchase.getTickets().add(ticket);
+                calculatedTotal = calculatedTotal.add(zone.getPrice());
+            }
+        }
+
+        purchase.setTotalPrice(calculatedTotal);
         return purchaseRepository.save(purchase);
     }
 
@@ -106,5 +150,32 @@ public class PurchaseService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Compra no encontrada");
         }
         return optionalPurchase.get();
+    }
+
+    /**
+     * Generates a PDF containing ticket details and QR codes.
+     * Includes security validation to prevent unauthorized PDF downloads.
+     */
+    public byte[] generateTicketsPdf(Long purchaseId, String userEmail) throws Exception {
+        Purchase purchase = purchaseRepository.findById(purchaseId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Compra no encontrada"));
+
+        if (!purchase.getClient().getEmail().equals(userEmail)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Acceso denegado");
+        }
+
+        return pdfGeneratorService.generatePurchasePdf(purchase);
+    }
+
+    /**
+     * Deletes all purchases associated with a specific session.
+     * Used during event deletion to ensure referential integrity.
+     */
+    @Transactional
+    public void deletePurchasesBySession(Session session) {
+        List<Purchase> purchases = purchaseRepository.findBySession(session);
+        if (!purchases.isEmpty()) {
+            purchaseRepository.deleteAll(purchases);
+        }
     }
 }

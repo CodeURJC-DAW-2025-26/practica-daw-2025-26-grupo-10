@@ -5,32 +5,20 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
+import es.tickethub.tickethub.dto.SessionBasicDTO;
 import es.tickethub.tickethub.dto.SessionDTO;
-import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Session;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface SessionMapper {
-    
+
+    @Mapping(source = "event.eventID", target = "event") 
     SessionDTO toDTO(Session session);
 
-    List <SessionDTO> toDTOs(Collection <Session> sessions);
+    SessionBasicDTO toBasicDTO(Session session);
 
-    @Mapping(target = "sessionID", ignore = true)
-    Session toDomain(SessionDTO sessionDTO);
-
-    default Long eventToLong(Event event) {
-        return event != null ? event.getEventID() : null;
-    }
-
-    default Event longToEvent(Long eventID) {
-        if (eventID == null) {
-            return null;
-        }
-        Event event = new Event();
-        event.setEventID(eventID);
-        return event;
-    }
-
+    @Mapping(source = "event.eventID", target = "event")
+    List<SessionDTO> toDTOs(Collection<Session> sessions);
 }

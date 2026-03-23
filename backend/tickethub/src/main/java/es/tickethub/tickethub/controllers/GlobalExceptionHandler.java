@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.server.ResponseStatusException;
 import jakarta.servlet.http.HttpServletResponse;
 
-@ControllerAdvice
-public class GlobalExeceptionHandler {
+@ControllerAdvice(basePackages = "es.tickethub.tickethub.controllers", annotations = org.springframework.stereotype.Controller.class)
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResponseStatusException.class)
     public String handleResponseStatusException(ResponseStatusException ex, Model model, HttpServletResponse response) {

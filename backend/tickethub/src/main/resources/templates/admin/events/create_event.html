@@ -159,7 +159,7 @@
               <option value="">Seleccionar descuento</option>
               {{#eventDiscounts}}
               <option value="{{discountID}}" {{#selected}}selected{{/selected}}>
-                {{discountName}} (-{{ammount}} {{#isPercentage}}%{{/isPercentage}}{{^isPercentage}}€{{/isPercentage}})
+                {{discountName}} (-{{amount}} {{#isPercentage}}%{{/isPercentage}}{{^isPercentage}}€{{/isPercentage}})
               </option>
               {{/eventDiscounts}}
             </select>
@@ -185,7 +185,7 @@
             <select name="discounts" class="form-select">
               {{#allDiscounts}}
               <option value="{{discountID}}">
-                {{discountName}} ({{ammount}} {{#percentage}}%{{/percentage}}{{^percentage}}€{{/percentage}} de
+                {{discountName}} ({{amount}} {{#percentage}}%{{/percentage}}{{^percentage}}€{{/percentage}} de
                 descuento)
               </option>
               {{/allDiscounts}}
@@ -208,11 +208,36 @@
       <button type="button" class="btn btn-add mb-3" id="add-discount">Agregar descuento</button>
       {{/event}}
 
-      <p class="fw-bold mb-1">Imágenes</p>
+      {{#event}}
+      <p class="fw-bold mb-1">Imágenes actuales</p>
+      <div class="row g-3 mb-4" id="event-images-grid">
+        {{#event.eventImages}}
+        <div class="col-6 col-md-3" id="image-container-{{imageID}}">
+          <div class="image-overlay-container border">
+
+            <a class="btn-delete-overlay delete-item" data-id="{{imageID}}" data-url="/images/entities/events/{{event.eventID}}/image"
+              title="Eliminar imagen">
+              <i class="bi bi-trash-fill"></i>
+              <span class="fw-bold small">ELIMINAR</span>
+            </a>
+
+            <img src="/images/entities/events/{{eventID}}/image/{{imageID}}" class="img-event-admin" alt="Event Image">
+
+          </div>
+        </div>
+        {{/event.eventImages}}
+
+        {{^event.eventImages}}
+        <p class="text-muted">No hay imágenes para este evento.</p>
+        {{/event.eventImages}}
+      </div>
+      {{/event}}
+
+      <p class="fw-bold mb-1">Subir nuevas imágenes</p>
       <input type="file" name="images" class="form-control mb-3" multiple>
 
       <div class="d-flex justify-content-between mt-3">
-        <a href="/admin/admin" class="btn btn-outline-primary">Cancelar</a>
+        <a href="/admin/events/manage_events" class="btn btn-outline-primary">Cancelar</a>
 
         <button type="submit" class="btn btn-success">
           {{#event}}Guardar cambios{{/event}}
@@ -227,6 +252,7 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script type="module" src="/js/confirmation.js"></script>
   <script type="module" src="/js/discountsThings.js"></script>
+  <script type="module" src="/js/eventImage.js"></script>
 
   <!--LOCATION OF THE FOOTER OF THE WEB-->
 

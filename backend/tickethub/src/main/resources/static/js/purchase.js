@@ -109,8 +109,9 @@ function htmlConfirmations(sessionElement, ticketCount, ticketZones, email, emai
         showMsg("Debes introducir los datos de la tarjeta.", "error");
     } else if (cardNumber.toString().length !== 16 || cvv.toString().length !== 3) {
         showMsg("Los datos de la tarjeta no son válidos.", "error");
+    } else {
+        return true;
     }
-    return true;
 }
 
 /**

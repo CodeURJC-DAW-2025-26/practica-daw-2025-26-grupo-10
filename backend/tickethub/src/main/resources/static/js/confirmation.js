@@ -3,14 +3,16 @@
  * @param {HTMLElement} element
  * @param {string} message
  */
-function showConfirmation(onConfirm, message = "Esta acción no se puede deshacer") {
+export function showConfirmation(onConfirm, message = "Esta acción no se puede deshacer") {
   Swal.fire({
     title: "¿Eliminar?",
     text: message,
     icon: "warning",
     showCancelButton: true,
-    confirmButtonText: "Eliminar",
-    cancelButtonText: "Cancelar"
+    confirmButtonColor: '#e98747',
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: 'Eliminar',
+    cancelButtonText: 'Cancelar',
   }).then(result => {
     if (result.isConfirmed) onConfirm();
   });
@@ -86,6 +88,8 @@ if (form) {
 document.addEventListener('click', (e) => {
   const btn = e.target.closest('.delete-item');
   if (!btn) return;
+
+  if (btn.dataset.url?.includes('/image')) return;
 
   const baseUrl = btn.dataset.url;
   const id = btn.dataset.id;

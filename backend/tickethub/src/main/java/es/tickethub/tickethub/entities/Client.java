@@ -1,11 +1,9 @@
 package es.tickethub.tickethub.entities;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -30,11 +28,6 @@ public class Client extends User {
 
     private Integer phone;
 
-    private BigDecimal coins;
-
-    @ElementCollection
-    private List<String> subjects = new ArrayList<>();
-
     @OneToOne(cascade = CascadeType.ALL)
     private Image profileImage;
 
@@ -51,8 +44,6 @@ public class Client extends User {
             String surname,
             Integer age,
             Integer phone,
-            BigDecimal coins,
-            List<String> subjects,
             List<Purchase> purchases,
             Image profileImage) {
         super(email, username, password, false);
@@ -60,10 +51,6 @@ public class Client extends User {
         this.surname = surname;
         this.age = age;
         this.phone = phone;
-        this.coins = coins;
-        if (subjects != null) {
-            this.subjects = subjects;
-        }
         if (purchases != null) {
             this.purchases = purchases;
         }

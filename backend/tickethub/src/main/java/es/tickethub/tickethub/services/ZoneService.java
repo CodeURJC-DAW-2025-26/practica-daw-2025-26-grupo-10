@@ -1,65 +1,110 @@
 package es.tickethub.tickethub.services;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Zone;
+import es.tickethub.tickethub.repositories.EventRepository;
 import es.tickethub.tickethub.repositories.ZoneRepository;
 
 @Service
 public class ZoneService {
 
-    private final ZoneRepository zoneRepository;
+    @Autowired
+    private EventService eventService;
 
-    public ZoneService(ZoneRepository zoneRepository) {
-        this.zoneRepository = zoneRepository;
-    }
+    @Autowired
+    ZoneRepository zoneRepository;
+    @Autowired
+    EventRepository eventRepository;
 
     public List<Zone> findAll() {
-        List<Zone> zone = zoneRepository.findAll();
-        if (!(zone.isEmpty())) {
-            return zone;
-        }
-        throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No hay zonas registradas");
+        return zoneRepository.findAll();
     }
 
     public Zone findById(Long id) {
-        Optional<Zone> zoneOptional = zoneRepository.findById(id);
-        if (zoneOptional.isPresent()) {
-            return zoneOptional.get();
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Zona no encontrada");
+        return zoneRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Zona no encontrada"));
     }
 
-    public Zone save(Zone zone) {
+    public Zone createZone(Long eventID, Zone zoneData) {
+        Event event = eventService.findByIdOrThrow(eventID);
+        
+        Zone newZone = new Zone(zoneData.getName(), zoneData.getCapacity(), zoneData.getPrice());
+        newZone.setEvent(event);
+        event.getZones().add(newZone);
 
-        if (zone.getId() == null) {
-            return zoneRepository.save(zone);
-        } else {
-            if (zone.getCapacity() <= 0) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La capacidad debe ser mayor que 0");
-            }
-
-            if (zone.getPrice().compareTo(BigDecimal.ZERO) < 0) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El precio no puede ser negativo");
-            }
-
-            return zoneRepository.save(zone);
-        }
+        updateEventCapacity(event);
+        return zoneRepository.save(newZone);
     }
 
-    public void deleteById(Long id) {
-        Optional<Zone> optionalZone = zoneRepository.findById(id);
-        if (!optionalZone.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Zone not found");
+    @Transactional
+    public Zone createAndAssignEvent(Zone zone, Long eventID) {
+        Event event = eventRepository.findById(eventID).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "El evento con ID " + eventID + " no existe"));
+
+        Zone newZone = new Zone(zone.getName(), zone.getCapacity(), zone.getPrice());
+        newZone.setEvent(event);
+        event.getZones().add(newZone);
+
+        int totalCapacity = event.getZones().stream().mapToInt(Zone::getCapacity).sum();
+        event.setCapacity(totalCapacity);
+
+        eventRepository.save(event);
+
+        return zoneRepository.save(newZone);
+    }
+
+    public Zone findByEventAndID(Long eventID, Long zoneID) {
+        return zoneRepository.findByIdAndEventEventID(zoneID, eventID)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "La zona " + zoneID + " no pertenece al evento " + eventID));
+    }
+
+    @Transactional
+    public Zone updateZone(Long eventId, Long zoneId, Zone zone) {
+        Zone existing = findByEventAndID(eventId, zoneId);
+        Event event = existing.getEvent();
+
+        existing.setName(zone.getName());
+        existing.setCapacity(zone.getCapacity());
+        existing.setPrice(zone.getPrice());
+
+        if (existing.getTickets() != null) {
+            existing.getTickets().forEach(ticket -> ticket.setZone(existing));
         }
-        Zone zone = optionalZone.get();
-        zone.setEvent(null);
-        zoneRepository.deleteById(zone.getId());
+
+        int newTotalCapacity = event.getZones().stream().mapToInt(Zone::getCapacity).sum();
+        event.setCapacity(newTotalCapacity);
+
+        return zoneRepository.save(existing);
+    }
+
+    @Transactional
+    public void deleteZoneFromEvent (Long eventID, Long zoneID) {
+        Zone zone = zoneRepository.findByIdAndEventEventID(zoneID, eventID).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "La zona " + zoneID + " no pertenece al evento " + eventID));;
+        Event event = zone.getEvent();
+
+        event.getZones().remove(zone);
+
+        int updatedCapacity = event.getZones().stream().mapToInt(Zone::getCapacity).sum();
+        event.setCapacity(updatedCapacity);
+
+        eventRepository.save(event);
+        zoneRepository.delete(zone);
+    }
+
+    private void updateEventCapacity(Event event) {
+        int totalCapacity = event.getZones().stream()
+                .mapToInt(Zone::getCapacity)
+                .sum();
+        event.setCapacity(totalCapacity);
+        eventService.save(event);
     }
 }

@@ -39,11 +39,15 @@ public class Artist {
     // Orphan removal --> every child deleted in the collection of the father is
     // deleted auto. in the DB
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Event> eventsIncoming = new ArrayList<>();
+    @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Event> events = new ArrayList<>();
+    public List<Event> getEventsIncoming() {
+        return events;
+    }
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Event> lastEvents = new ArrayList<>();
+    public List<Event> getLastEvents() {
+        return events;
+    }
 
     // the cascade thing means that the object associated to this column will be
     // saved and deleted with the artist

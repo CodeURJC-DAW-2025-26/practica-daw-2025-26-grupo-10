@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -33,6 +34,7 @@ public class Event {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "event_id")
     private Long eventID;
 
     @Column(nullable = false)
@@ -51,7 +53,7 @@ public class Event {
      * one Artist can have many Events associated to him
      */
     @ManyToOne
-    @JoinColumn(name = "artist_id", nullable = false)
+    @JoinColumn(name = "artistID", nullable = true)
     private Artist artist;
 
     /*
@@ -59,12 +61,9 @@ public class Event {
      * one Event can have many Sessions associated
      */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "event", orphanRemoval = true, fetch = FetchType.LAZY)
-    @Column(nullable = false) // I think this make no sense
     private List<Session> sessions = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id", nullable = true)
-
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Zone> zones = new ArrayList<>();
 
     /*
@@ -73,6 +72,7 @@ public class Event {
      */
 
     @ManyToMany
+    @JoinTable(name = "event_discounts", joinColumns = @JoinColumn(name = "eventID"), inverseJoinColumns = @JoinColumn(name = "discountID"))
     private List<Discount> discounts = new ArrayList<>();
 
     @Column(nullable = false)
@@ -141,5 +141,14 @@ public class Event {
             return 0.0;
 
         return sum / count;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof Event event))
+            return false;
+        return eventID != null && eventID.equals(event.getEventID());
     }
 }

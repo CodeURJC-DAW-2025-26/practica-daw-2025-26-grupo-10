@@ -8,11 +8,15 @@ import org.springframework.data.jpa.repository.Query;
 
 import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Purchase;
+import es.tickethub.tickethub.entities.Session;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
 public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
         Slice<Purchase> findByClient_Email(String email, Pageable pageable);
+
+        List<Purchase> findBySession(Session session);
 
         Slice<Purchase> findByClient_UserID(Long clientID, Pageable pageable);
 

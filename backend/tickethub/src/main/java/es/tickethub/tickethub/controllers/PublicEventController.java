@@ -11,16 +11,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 
-import es.tickethub.tickethub.entities.Discount;
 import es.tickethub.tickethub.entities.Event;
-import es.tickethub.tickethub.entities.Zone;
-import es.tickethub.tickethub.services.DiscountService;
+import es.tickethub.tickethub.entities.Purchase;
 import es.tickethub.tickethub.services.EventService;
+import es.tickethub.tickethub.services.PurchaseService;
 import es.tickethub.tickethub.services.ZoneService;
 
 @Controller
+@RequestMapping("/public")
 public class PublicEventController {
 
     @Autowired
@@ -30,26 +32,26 @@ public class PublicEventController {
     private ZoneService zoneService;
 
     @Autowired
-    private DiscountService discountService;
+    private PurchaseService purchaseService;
 
-    @GetMapping("/public/events")
+    @GetMapping("/events")
     public String events(Model model) {
-        // Load the first page using the general search without filters
-        List<String> categories = eventService.getUniqueCategories();
-    
-        model.addAttribute("categories", categories);
-        model.addAttribute("events", eventService.searchEvents(null, null, null, 0, 5).getContent());
+        model.addAttribute("categories", eventService.getUniqueCategories());
+        model.addAttribute("events", eventService.getFirstPageOfEvents().getContent());
         return "/public/events";
     }
 
-    @GetMapping("/public/event/{id}")
+    @GetMapping("/events/{id}")
     public String showEventDetails(@PathVariable Long id, Model model) {
-        Event event = eventService.findById(id);
-        model.addAttribute("event", event);
-        return "public/event";
+        try {
+            model.addAttribute("event", eventService.findByIdOrThrow(id));
+            return "public/event";
+        } catch (ResponseStatusException e) {
+            return "redirect:/public/events";
+        }
     }
 
-    @GetMapping("/public/events/fragments")
+    @GetMapping("/events/fragments")
     public String getMoreEvents(
             @RequestParam int page,
             @RequestParam(required = false) String artist,
@@ -57,11 +59,7 @@ public class PublicEventController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
             Model model) {
 
-        System.out.println("DEBUG: Date received on server -> " + date);
-        int size = 5;
-
-        // This call handles artist, category, and date simultaneously
-        Page<Event> eventPage = eventService.searchEvents(artist, category, date, page, size);
+        Page<Event> eventPage = eventService.searchEvents(artist, category, date, page, 5);
 
         model.addAttribute("events", eventPage.getContent());
         model.addAttribute("hasMore", eventPage.hasNext());
@@ -69,28 +67,34 @@ public class PublicEventController {
         return "fragments/eventsFragments";
     }
 
-    /* To see the purchase page */
-    @GetMapping("/public/purchase/{eventID}")
+    @GetMapping("/purchase/{eventID}")
     public String showPurchaseFromEvent(@PathVariable Long eventID, Model model) {
-        Event event = eventService.findById(eventID);
-        List<Zone> zones = zoneService.findAll();
-        List<Discount> discounts = event.getDiscounts();
+        try {
+            Event event = eventService.findByIdOrThrow(eventID);
+            
+            model.addAttribute("event", event);
+            model.addAttribute("zones", zoneService.findAll());
+            model.addAttribute("discounts", event.getDiscounts());
+            model.addAttribute("ticketCounts", List.of(1, 2, 3, 4, 5));
+            model.addAttribute("totalPrice", BigDecimal.ZERO);
 
-        model.addAttribute("event", event);
-        model.addAttribute("zones", zones);
-        model.addAttribute("discounts", discounts);
-        model.addAttribute("ticketCounts", List.of(1, 2, 3, 4, 5)); // User can buy up to 5 tickets
-        model.addAttribute("tickets", List.of());
-        model.addAttribute("totalPrice", BigDecimal.ZERO);
-
-        return "public/purchase";
+            return "public/purchase";
+        } catch (ResponseStatusException e) {
+            return "redirect:/public/events";
+        }
     }
 
-    /* To see the confirmation page */
-    @GetMapping("/public/confirmation/{eventID}")
-    public String showConfirmation(@PathVariable Long eventID, Model model) {
-        Event event = eventService.findById(eventID);
-        model.addAttribute("event", event);
-        return "public/confirmation";
+    @GetMapping("/confirmation/{purchaseID}")
+    public String showConfirmation(@PathVariable Long purchaseID, Model model) {
+        try {
+            Purchase purchase = purchaseService.getPurchaseById(purchaseID);
+            Event event = purchase.getSession().getEvent();
+            model.addAttribute("purchase", purchase);
+            model.addAttribute("event", event);
+            return "public/confirmation";
+        } catch (ResponseStatusException e) {
+            return "redirect:/public/events";
+        }
     }
+
 }
