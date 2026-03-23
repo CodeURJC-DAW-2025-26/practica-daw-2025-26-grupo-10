@@ -1,15 +1,9 @@
 package es.tickethub.tickethub.services;
-import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
-import java.sql.Blob;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -55,87 +49,67 @@ public class DataBaseInitializer {
     private UserRepository userRepository;
 
     @Autowired
+    private ImageService imageService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private byte[] loadImage(String imagePath) {
-        try (InputStream inputStream = getClass().getClassLoader()
-                .getResourceAsStream("static/images/" + imagePath)) {
-            if (inputStream == null) {
-                System.err.println("No se encontró la imagen: " + imagePath);
-                return new byte[0];
-            }
-            return inputStream.readAllBytes();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new byte[0];
-        }
-    }
-
-    public static Blob convertToBlob(byte[] imageBytes) {
-        try {
-            return new SerialBlob(imageBytes);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     /* FUNCTION FOR ADD ALL THE IMAGES THAT WILL BE AT THE DATABASE*/
-    public List <List <Image>> initializeImages() {
+    public List <List <Image>> initializeImages() throws Exception {
         
         List <List <Image>> allImages = new ArrayList<>();
 
         List <Image> artistImages = Arrays.asList(
-            new Image("imagen1", convertToBlob(loadImage("artists/duki.jpg"))),
-            new Image("imagen2", convertToBlob(loadImage("artists/FSO.jpeg"))),
-            new Image("imagen3", convertToBlob(loadImage("artists/aitana.jpg"))),
-            new Image("imagen4", convertToBlob(loadImage("artists/juan_davila.jpeg"))),
-            new Image("imagen5", convertToBlob(loadImage("artists/galder_varas.jpeg"))),
-            new Image("imagen6", convertToBlob(loadImage("artists/linkin_park.jpg"))),
-            new Image("imagen7", convertToBlob(loadImage("artists/vetusta_morla.jpg"))),
-            new Image("imagen8", convertToBlob(loadImage("artists/David_Guetta.jpg"))),
-            new Image("imagen9", convertToBlob(loadImage("artists/diana_krall.jpg"))),
-            new Image("imagen10", convertToBlob(loadImage("artists/alejandro_sanz.jpg"))),
-            new Image("imagen11", convertToBlob(loadImage("artists/niña_pastori.jpg"))),
-            new Image("imagen12", convertToBlob(loadImage("artists/metallica.jpg")))
+            new Image("imagen1", imageService.convertToBlob(imageService.loadImage("artists/duki.jpg"))),
+            new Image("imagen2", imageService.convertToBlob(imageService.loadImage("artists/FSO.jpeg"))),
+            new Image("imagen3", imageService.convertToBlob(imageService.loadImage("artists/aitana.jpg"))),
+            new Image("imagen4", imageService.convertToBlob(imageService.loadImage("artists/juan_davila.jpeg"))),
+            new Image("imagen5", imageService.convertToBlob(imageService.loadImage("artists/galder_varas.jpeg"))),
+            new Image("imagen6", imageService.convertToBlob(imageService.loadImage("artists/linkin_park.jpg"))),
+            new Image("imagen7", imageService.convertToBlob(imageService.loadImage("artists/vetusta_morla.jpg"))),
+            new Image("imagen8", imageService.convertToBlob(imageService.loadImage("artists/David_Guetta.jpg"))),
+            new Image("imagen9", imageService.convertToBlob(imageService.loadImage("artists/diana_krall.jpg"))),
+            new Image("imagen10", imageService.convertToBlob(imageService.loadImage("artists/alejandro_sanz.jpg"))),
+            new Image("imagen11", imageService.convertToBlob(imageService.loadImage("artists/niña_pastori.jpg"))),
+            new Image("imagen12", imageService.convertToBlob(imageService.loadImage("artists/metallica.jpg")))
         );
 
         List <Image> clientImages = Arrays.asList(
-            new Image("clientImage1", convertToBlob(loadImage("default-avatar.png"))),
-            new Image("clientImage2", convertToBlob(loadImage("default-avatar.png")))
+            new Image("clientImage1", imageService.convertToBlob(imageService.loadImage("default-avatar.png"))),
+            new Image("clientImage2", imageService.convertToBlob(imageService.loadImage("default-avatar.png")))
 
         );
 
         List <Image> eventImages = Arrays.asList(
             // adding .png to the name
-            new Image("conciertoDukiImage1.jpg", convertToBlob(loadImage("events/concierto.jpg"))),
-            new Image("conciertoDukiImage2.jpg", convertToBlob(loadImage("events/images.jpg"))),
-            new Image("conciertoDukiImage3.png", convertToBlob(loadImage("events/concert_background.png"))),
-            new Image("filmSymphonyImage1.jpg", convertToBlob(loadImage("events/FSO1.jpg"))),
-            new Image("filmSymphonyImage2.jpg", convertToBlob(loadImage("events/FSO2.jpg"))),
-            new Image("conciertoAitanaImage1.jpg", convertToBlob(loadImage("events/aitanaImage1.jpg"))),
-            new Image("conciertoAitanaImage2.jpg", convertToBlob(loadImage("events/aitanaImage2.jpg"))),
-            new Image("showJuanDavilaImage1.jpg", convertToBlob(loadImage("events/Juan_Davila_01.jpg"))),
-            new Image("showJuanDavilaImage2.jpg", convertToBlob(loadImage("events/Juan_Davila_02.jpg"))),
-            new Image("showGalderVarasImage1.jpg", convertToBlob(loadImage("events/galder_varas_1.jpg"))),
-            new Image("showGalderVarasImage2.jpg", convertToBlob(loadImage("events/galder_varas_2.jpg"))),
-            new Image("rockImage1.jpg", convertToBlob(loadImage("events/rock1.jpg"))),
-            new Image("rockImage2.jpg", convertToBlob(loadImage("events/rock2.jpg"))),
-            new Image("indieImage1.jpg", convertToBlob(loadImage("events/indie1.jpg"))),
-            new Image("indieImage2.jpg", convertToBlob(loadImage("events/indie2.jpg"))),
-            new Image("technoImage1.jpg", convertToBlob(loadImage("events/techno1.jpg"))),
-            new Image("technoImage2.jpg", convertToBlob(loadImage("events/techno2.jpg"))),
-            new Image("jazzImage1.jpg", convertToBlob(loadImage("events/jazz1.jpg"))),
-            new Image("jazzImage2.jpg", convertToBlob(loadImage("events/jazz2.jpg"))),
-            new Image("trapRevolutioneventImage1.jpg", convertToBlob(loadImage("events/concierto.jpg"))),
-            new Image("trapRevolutioneventImage2.jpg", convertToBlob(loadImage("events/images.jpg"))),
-            new Image("trapRevolutioneventImage3.png", convertToBlob(loadImage("events/concert_background.png"))),
-            new Image("popEspañolImage1.jpg", convertToBlob(loadImage("events/pop_español1.jpg"))),
-            new Image("popEspañolImage2.jpg", convertToBlob(loadImage("events/pop_español2.jpg"))),
-            new Image("flamencoFusionImage1.jpg", convertToBlob(loadImage("events/flamenco_fusion1.jpg"))),
-            new Image("flamencoFusionImage2.jpg", convertToBlob(loadImage("events/flamenco_fusion2.jpg"))),
-            new Image("metalImage1.jpg", convertToBlob(loadImage("events/metal1.jpg"))),
-            new Image("metalImage2.jpg", convertToBlob(loadImage("events/metal2.jpg")))
+            new Image("conciertoDukiImage1.jpg", imageService.convertToBlob(imageService.loadImage("events/concierto.jpg"))),
+            new Image("conciertoDukiImage2.jpg", imageService.convertToBlob(imageService.loadImage("events/images.jpg"))),
+            new Image("conciertoDukiImage3.png", imageService.convertToBlob(imageService.loadImage("events/concert_background.png"))),
+            new Image("filmSymphonyImage1.jpg", imageService.convertToBlob(imageService.loadImage("events/FSO1.jpg"))),
+            new Image("filmSymphonyImage2.jpg", imageService.convertToBlob(imageService.loadImage("events/FSO2.jpg"))),
+            new Image("conciertoAitanaImage1.jpg", imageService.convertToBlob(imageService.loadImage("events/aitanaImage1.jpg"))),
+            new Image("conciertoAitanaImage2.jpg", imageService.convertToBlob(imageService.loadImage("events/aitanaImage2.jpg"))),
+            new Image("showJuanDavilaImage1.jpg", imageService.convertToBlob(imageService.loadImage("events/Juan_Davila_01.jpg"))),
+            new Image("showJuanDavilaImage2.jpg", imageService.convertToBlob(imageService.loadImage("events/Juan_Davila_02.jpg"))),
+            new Image("showGalderVarasImage1.jpg", imageService.convertToBlob(imageService.loadImage("events/galder_varas_1.jpg"))),
+            new Image("showGalderVarasImage2.jpg", imageService.convertToBlob(imageService.loadImage("events/galder_varas_2.jpg"))),
+            new Image("rockImage1.jpg", imageService.convertToBlob(imageService.loadImage("events/rock1.jpg"))),
+            new Image("rockImage2.jpg", imageService.convertToBlob(imageService.loadImage("events/rock2.jpg"))),
+            new Image("indieImage1.jpg", imageService.convertToBlob(imageService.loadImage("events/indie1.jpg"))),
+            new Image("indieImage2.jpg", imageService.convertToBlob(imageService.loadImage("events/indie2.jpg"))),
+            new Image("technoImage1.jpg", imageService.convertToBlob(imageService.loadImage("events/techno1.jpg"))),
+            new Image("technoImage2.jpg", imageService.convertToBlob(imageService.loadImage("events/techno2.jpg"))),
+            new Image("jazzImage1.jpg", imageService.convertToBlob(imageService.loadImage("events/jazz1.jpg"))),
+            new Image("jazzImage2.jpg", imageService.convertToBlob(imageService.loadImage("events/jazz2.jpg"))),
+            new Image("trapRevolutioneventImage1.jpg", imageService.convertToBlob(imageService.loadImage("events/concierto.jpg"))),
+            new Image("trapRevolutioneventImage2.jpg", imageService.convertToBlob(imageService.loadImage("events/images.jpg"))),
+            new Image("trapRevolutioneventImage3.png", imageService.convertToBlob(imageService.loadImage("events/concert_background.png"))),
+            new Image("popEspañolImage1.jpg", imageService.convertToBlob(imageService.loadImage("events/pop_español1.jpg"))),
+            new Image("popEspañolImage2.jpg", imageService.convertToBlob(imageService.loadImage("events/pop_español2.jpg"))),
+            new Image("flamencoFusionImage1.jpg", imageService.convertToBlob(imageService.loadImage("events/flamenco_fusion1.jpg"))),
+            new Image("flamencoFusionImage2.jpg", imageService.convertToBlob(imageService.loadImage("events/flamenco_fusion2.jpg"))),
+            new Image("metalImage1.jpg", imageService.convertToBlob(imageService.loadImage("events/metal1.jpg"))),
+            new Image("metalImage2.jpg", imageService.convertToBlob(imageService.loadImage("events/metal2.jpg")))
         );
 
         allImages.addFirst(artistImages);   //We add the artistImages list to the big list

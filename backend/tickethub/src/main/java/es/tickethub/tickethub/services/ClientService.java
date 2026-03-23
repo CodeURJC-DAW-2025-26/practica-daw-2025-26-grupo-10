@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+
 import javax.sql.rowset.serial.SerialBlob;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,9 +14,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+
 import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Image;
 import es.tickethub.tickethub.repositories.ClientRepository;
+import es.tickethub.tickethub.repositories.ImageRepository;
 
 /**
  * Service class responsible for managing clients.
@@ -25,6 +29,9 @@ public class ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired
+    private ImageRepository imageRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -226,5 +233,10 @@ public class ClientService {
         target.setAge(source.getAge());
         target.setVersion(source.getVersion());
         target.setProfileImage(source.getProfileImage());
+    }
+
+    public void deleteClientImage(Client client, Long imageID) {
+        imageRepository.deleteById(imageID);
+        client.setProfileImage(null);
     }
 }

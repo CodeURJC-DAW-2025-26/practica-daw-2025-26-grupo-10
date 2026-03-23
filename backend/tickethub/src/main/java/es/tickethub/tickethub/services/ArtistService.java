@@ -1,28 +1,30 @@
 package es.tickethub.tickethub.services;
 
 import java.io.IOException;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
-import java.sql.Blob;
+
+import javax.sql.rowset.serial.SerialBlob;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.multipart.MultipartFile;
-import es.tickethub.tickethub.entities.Artist;
-import es.tickethub.tickethub.entities.Image;
-import es.tickethub.tickethub.services.ArtistService;
-import javax.sql.rowset.serial.SerialBlob;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+
+import es.tickethub.tickethub.entities.Artist;
+import es.tickethub.tickethub.entities.Image;
 import es.tickethub.tickethub.repositories.ArtistRepository;
 
 
 @Service
 public class ArtistService {
 
-    @Autowired private  ArtistRepository artistRepository;
+    @Autowired private ArtistRepository artistRepository;
 
     public List<Artist> findAll() {
         return artistRepository.findAll();

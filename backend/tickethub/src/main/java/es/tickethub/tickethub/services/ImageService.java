@@ -1,6 +1,7 @@
 package es.tickethub.tickethub.services;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,13 +12,13 @@ import javax.sql.rowset.serial.SerialBlob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.http.HttpStatus;
 
 import es.tickethub.tickethub.dto.ImageDTO;
 import es.tickethub.tickethub.entities.Artist;
@@ -36,6 +37,33 @@ public class ImageService {
 
     @Autowired
     private ImageRepository imageRepository;
+
+    @Autowired
+    private ArtistService artistService;
+
+    @Autowired
+    private ClientService clientService;
+
+    @Autowired
+    private EventService eventService;
+
+
+    public byte[] loadExternalImage(MultipartFile file) throws IOException {
+        return file.getBytes();
+    }
+
+    public byte[] loadImage(String imagePath) throws IOException {
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("static/images/" + imagePath);
+        if (inputStream == null) {
+            System.err.println("No se encontró la imagen: " + imagePath);
+            return new byte[0];
+        }
+        return inputStream.readAllBytes();
+    }
+
+    public Blob convertToBlob(byte[] imageBytes) throws SQLException {
+        return new SerialBlob(imageBytes);
+    }
 
     /**
      * Converts a database Blob into a byte array.
@@ -130,7 +158,7 @@ public class ImageService {
                 try {
                     images.add(new Image(
                         file.getOriginalFilename(),
-                        new SerialBlob(file.getBytes())
+                        convertToBlob(file.getBytes())
                     ));
                 } catch (SQLException | IOException e) {
                     throw new ResponseStatusException(
@@ -143,11 +171,60 @@ public class ImageService {
         return images;
     }
 
+    public Image editClientImage(Client client, MultipartFile newImage, boolean option) throws IOException, SQLException {
+        byte [] bytes = loadExternalImage(newImage);
+        Blob i = convertToBlob(bytes);
+
+        Image image = client.getProfileImage();
+        if (option || image == null) {
+            image = new Image(client.getName() + "_image", i);
+        } else {
+            image.setImageCode(i);
+        }
+        client.setProfileImage(image);
+        clientService.saveClient(client);
+        return image;
+    }
+
+    public Image editArtistImage(Artist artist, MultipartFile newImage, boolean option) throws IOException, SQLException {
+        byte [] bytes = loadExternalImage(newImage);
+        Blob i = convertToBlob(bytes);
+
+        Image image = artist.getArtistImage();
+        if (option || image == null) {
+            image = new Image(artist.getArtistName() + "_image", i);
+        } else {
+            image.setImageCode(i);
+        }
+        artist.setArtistImage(image);
+        artistService.save(artist);
+        return image;
+    }
+
+    public void deleteArtistImage(Artist artist) {
+        Long artistImageID = artist.getArtistImage().getImageID();
+        imageRepository.deleteById(artistImageID);
+    }
+
     public void addImagesToEvent(Event event, MultipartFile[] files) {
         if (files == null || files.length == 0) return;
         event.getEventImages().addAll(createImagesFromFiles(files));
     }
 
+    public Image editEventImage(Event event, MultipartFile newImage, Long imageID, boolean option) throws IOException, SQLException {
+        byte [] bytes = loadExternalImage(newImage);
+        Blob i = convertToBlob(bytes);
+
+        Image image = !imageID.equals(0) ? eventService.findEventImageById(event, imageID) : null;
+        if (option || image == null) {
+            image = new Image(event.getName() + "_image", i);
+            event.getEventImages().add(image);
+        } else {
+            image.setImageCode(i);
+        }
+        eventService.save(event);
+        return image;
+    }
     
     @Transactional
     public void deleteImageFromEvent(Event event, Long imageId) {

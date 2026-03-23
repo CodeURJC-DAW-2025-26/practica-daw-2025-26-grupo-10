@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 import es.tickethub.tickethub.dto.EventDTO;
 import es.tickethub.tickethub.entities.Discount;
 import es.tickethub.tickethub.entities.Event;
+import es.tickethub.tickethub.entities.Image;
 import es.tickethub.tickethub.entities.Zone;
 import es.tickethub.tickethub.mappers.EventMapper;
 import es.tickethub.tickethub.repositories.EventRepository;
@@ -290,5 +291,14 @@ public class EventService {
      */
     public Page<Event> getFirstPageOfEvents() {
         return searchEvents(null, null, null, 0, 5);
+    }
+
+    public Image findEventImageById(Event event, Long imageID) {
+        return event.getEventImages().stream()
+                .filter(image -> image.getImageID().equals(imageID))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Imagen no encontrada para el evento con ID: " + imageID));
     }
 }
