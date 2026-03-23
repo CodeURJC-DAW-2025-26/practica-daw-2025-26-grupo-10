@@ -427,31 +427,30 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
    cd [practica-daw-2025-26-grupo-10]
 
 2. **Levantar la aplicación**:
+   Navegar a cd docker
    Sustituye `tu_usuario` por tu nombre de usuario de Docker Hub para que Compose sepa de qué repositorio descargar las imágenes.
    DOCKER_USER=tu_usuario docker compose up -d
 
-3. **Verificar los logs**:
-   Para comprobar que el servidor Tomcat ha arrancado correctamente:
+4. **Verificar los logs**:
+   Para comprobar que el servidor Tomcat ha arrancado correctamente, notar que es importante darle unos instantes para que cargue la página:
    docker logs tickethub-app
 
 ### **Construcción de la Imagen Docker**
 
 #### **Requisitos:**
 - Docker instalado en el sistema
+- Cuenta en DockerHub
 
 #### **Pasos para construir y publicar la imagen:**
 
-1. **Navegar al directorio de Docker**:
-   cd docker
+1. **Crear la imagen local**:
+   bash docker/create_image.sh tickethub-app
 
-2. **Crear la imagen local**:
-   bash create_image.sh tickethub-app
-
-3. **Iniciar sesión en Docker Hub**:
+2. **Iniciar sesión en Docker Hub**:
    Asegúrate de tener tus credenciales a mano.
    docker login
 
-4. **Publicar la imagen y el archivo compose**:
+3. **Publicar la imagen y el archivo compose**:
    Sustituye `tu_usuario` por tu identificador real.
    bash publish_image.sh tu_usuario tickethub-app
    bash publish_docker-compose.sh tu_usuario
@@ -464,8 +463,6 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 - Acceso a la máquina virtual (SSH)
 - Clave privada para autenticación
 - Conexión a la red correspondiente o VPN configurada
-
-#### **Pasos para desplegar:**
 
 #### **Pasos para desplegar:**
 
