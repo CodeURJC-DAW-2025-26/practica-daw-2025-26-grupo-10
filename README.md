@@ -401,10 +401,10 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 ### **Documentación de la API REST**
 
 #### **Especificación OpenAPI**
-📄 **[Especificación OpenAPI (YAML)](./backend/tickethub/api-docs/api-docs.yaml)**
+📄 **[Especificación OpenAPI (YAML)](backend/tickethub/api-docs/api-docs.yaml)**
 
 #### **Documentación HTML**
-📖 **[Documentación API REST (HTML)](./backend/tickethub/api-docs/api-docs.html)**
+📖 **[Documentación API REST (HTML)](backend/tickethub/api-docs/api-docs.html)**
 
 > La documentación de la API REST se encuentra en la carpeta `/api-docs` del repositorio. Se ha generado automáticamente con SpringDoc a partir de las anotaciones en el código Java.
 
@@ -492,17 +492,17 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 
 ### **Participación de Miembros en la Práctica 2**
 
-#### **Alumno 1 - [Nombre Completo]**
+#### **Alumno 1 - [Ronald Sebastian Silvera Llimpe]**
 
 [Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Creación del API-DOCS](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/a9a5a1ed0b160bcd6748338d3f42188a89b7652a)  | [api-docs](backend/tickethub/api-docs/api-docs.html)   |
+|2| [Temas de seguridad para el proceso de autenticación del usuario](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/bd4289aaca4e5b79eb059a92b719b0b91a8174b4)  | [AusiliarRestController](backend/tickethub/src/main/java/es/tickethub/tickethub/rest_controllers/AuxiliarRestController.java)   |
+|3| [RestController para el index de admin](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/292371201647c8f07b72d3808fc666e4036dd710#diff-c0befd13d2a651c2c677800ad4cc8187330b1835d498cc7b74b9b92b1e45e18f)  | [AdminRestController](backend/tickethub/src/main/java/es/tickethub/tickethub/rest_controllers/AdminRestController.java)   |
+|4| [Confiruración del GlobalHandler para errores por postman](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/acf3a8ca1c3581a5615fab7f9044b1bd03593252)  | [GlobalRestExceptionHandler](backend/tickethub/src/main/java/es/tickethub/tickethub/rest_controllers/GlobalRestExceptionHandler.java)   |
+|5| [Comprobaciones añadidas en caso de haber información en la BBDD](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/a6e7fb8b38334647c9eca33bf276bde6fa7134ba)  |  [DataBaseInitializer.java](backend/tickethub/src/main/java/es/tickethub/tickethub/services/DataBaseInitializer.java)  |
 
 ---
 
