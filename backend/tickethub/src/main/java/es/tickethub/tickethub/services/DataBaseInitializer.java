@@ -1,5 +1,7 @@
 package es.tickethub.tickethub.services;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,7 +57,7 @@ public class DataBaseInitializer {
     private PasswordEncoder passwordEncoder;
 
     /* FUNCTION FOR ADD ALL THE IMAGES THAT WILL BE AT THE DATABASE*/
-    public List <List <Image>> initializeImages() throws Exception {
+    public List <List <Image>> initializeImages() throws IOException,SQLException {
         
         List <List <Image>> allImages = new ArrayList<>();
 
@@ -352,7 +354,7 @@ public class DataBaseInitializer {
 
     /* This function will be executed after the database tables are created and will put the default data that will be at the website */
     @PostConstruct
-    public void initializeDataBase() {
+    public void initializeDataBase() throws IOException, SQLException {
         List <List <Image> > images = initializeImages();
 
         List<Zone> zones = initializeZones();
