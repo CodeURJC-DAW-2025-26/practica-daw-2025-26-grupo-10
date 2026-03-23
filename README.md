@@ -520,17 +520,17 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 
 ---
 
-#### **Alumno 3 - [Nombre Completo]**
+#### **Alumno 3 - [Daniel Bonachela Martínez]**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+He creado una parte de los REST Controller, he refactorizado el código, solucionado bugs y he creado los archivos relacionados con docker.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Logic Separation I](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/1dd2427a464072ea837df3d92c1d5e7edbe9a5d6)  | [AuthController.java](backend/tickethub/src/main/java/es/tickethub/tickethub/controllers/AuthController.java) |
+|2| [God Class deleted](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/de0e5520348b832aa3f0fe34a889bd81ec1c9806)  | [AuthController.java](backend/tickethub/src/main/java/es/tickethub/tickethub/controllers/AuthController.java) |
+|3| [Event Refactor](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/f27084fba4000d9f86ba92fd865f1b5856b56b07)  | [EventController.java](backend/tickethub/src/main/java/es/tickethub/tickethub/controllers/EventController.java) |
+|4| [Docker Stuff](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/99ba29df9e69fc19ecfcc99c5eb2935da50be98d)  | [create_image.sh](backend/tickethub/docker/create_image.sh) |
+|5| [ClientService clean up](https://github://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/a3fd5863c36924bb456ca247807442d6025b2339)  | [PurchaseService.java](backend/tickethub/src/main/java/es/tickethub/tickethub/services/PurchaseService.java) |
 
 ---
 
