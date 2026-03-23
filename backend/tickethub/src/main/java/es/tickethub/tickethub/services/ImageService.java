@@ -200,6 +200,7 @@ public class ImageService {
 
     public void deleteArtistImage(Artist artist) {
         Long artistImageID = artist.getArtistImage().getImageID();
+        artist.setArtistImage(null);
         imageRepository.deleteById(artistImageID);
     }
 
