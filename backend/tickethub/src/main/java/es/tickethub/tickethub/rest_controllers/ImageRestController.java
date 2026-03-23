@@ -68,7 +68,7 @@ public class ImageRestController {
     @DeleteMapping("/users/{userID}/image")
     public ImageDTO deleteClientImage(@PathVariable Long userID) {
         Client client = clientService.getClientById(userID);
-        clientService.deleteClientImage(client, client.getProfileImage().getImageID());
+        imageService.deleteClientImage(client);
         return imageMapper.toDTO(client.getProfileImage());
     }
 

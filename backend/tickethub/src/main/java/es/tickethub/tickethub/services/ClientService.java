@@ -18,7 +18,6 @@ import org.springframework.web.server.ResponseStatusException;
 import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Image;
 import es.tickethub.tickethub.repositories.ClientRepository;
-import es.tickethub.tickethub.repositories.ImageRepository;
 
 /**
  * Service class responsible for managing clients.
@@ -29,9 +28,6 @@ public class ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
-
-    @Autowired
-    private ImageRepository imageRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -235,8 +231,4 @@ public class ClientService {
         target.setProfileImage(source.getProfileImage());
     }
 
-    public void deleteClientImage(Client client, Long imageID) {
-        imageRepository.deleteById(imageID);
-        client.setProfileImage(null);
-    }
 }
