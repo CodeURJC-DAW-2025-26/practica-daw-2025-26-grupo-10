@@ -43,6 +43,7 @@ public class PurchaseService {
 
     @Autowired
     SessionService sessionService;
+
     /**
      * Processes a complete purchase workflow:
      * 1. Resolves client (new or existing).
@@ -66,7 +67,7 @@ public class PurchaseService {
         for (Map.Entry<Long, Integer> entry : selections.entrySet()) {
             Long zoneId = entry.getKey();
             Integer quantity = entry.getValue();
-            
+
             Zone zone = zoneService.findById(zoneId);
 
             for (int i = 0; i < quantity; i++) {
@@ -76,7 +77,7 @@ public class PurchaseService {
                 ticket.setPurchase(purchase);
                 ticket.setIsActive(true);
                 ticket.setCode(UUID.randomUUID().toString());
-                
+
                 purchase.getTickets().add(ticket);
                 calculatedTotal = calculatedTotal.add(zone.getPrice());
             }
@@ -85,7 +86,7 @@ public class PurchaseService {
         purchase.setTotalPrice(calculatedTotal);
         return purchaseRepository.save(purchase);
     }
-    
+
     /**
      * Retrieves all purchases not matter the client (for admin usage)
      */
@@ -164,5 +165,17 @@ public class PurchaseService {
         }
 
         return pdfGeneratorService.generatePurchasePdf(purchase);
+    }
+
+    /**
+     * Deletes all purchases associated with a specific session.
+     * Used during event deletion to ensure referential integrity.
+     */
+    @Transactional
+    public void deletePurchasesBySession(Session session) {
+        List<Purchase> purchases = purchaseRepository.findBySession(session);
+        if (!purchases.isEmpty()) {
+            purchaseRepository.deleteAll(purchases);
+        }
     }
 }

@@ -44,7 +44,7 @@ public class Zone {
     private List<Ticket> tickets;
 
     @ManyToOne
-    @JoinColumn(name = "eventID", nullable = false)
+    @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
     @Transient
