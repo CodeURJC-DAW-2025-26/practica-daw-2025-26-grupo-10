@@ -12,6 +12,7 @@ import org.mapstruct.MappingTarget;
 public interface EventMapper {
     EventDTO toDTO(Event event);
 
+    @Mapping(source = "sessions", target = "sessions")
     EventBasicDTO toBasicDTO(Event event);
     
     @Mapping(source = "artistId", target = "artist")

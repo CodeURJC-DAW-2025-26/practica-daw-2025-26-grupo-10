@@ -2,10 +2,11 @@ package es.tickethub.tickethub.rest_controllers;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,6 +25,7 @@ import es.tickethub.tickethub.dto.SessionDTO;
 import es.tickethub.tickethub.entities.Session;
 import es.tickethub.tickethub.mappers.SessionMapper;
 import es.tickethub.tickethub.services.SessionService;
+import es.tickethub.tickethub.services.EventService;
 import jakarta.validation.Valid;
 
 
@@ -35,6 +37,9 @@ public class SessionRestController {
     private SessionService sessionService;
 
     @Autowired
+    private EventService eventService;
+
+    @Autowired
     private SessionMapper sessionMapper;
 
 
@@ -43,8 +48,10 @@ public class SessionRestController {
         return sessionMapper.toDTOs(sessionService.getSessionsFromNow());
     }
 
-    @GetMapping("/public/sessions/date/{date}")
-    public List<SessionDTO> getSessionsByDate(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+    @GetMapping("/public/sessions/date/{stringDate}")
+    public List<SessionDTO> getSessionsByDate(@PathVariable String stringDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+        LocalDate date = LocalDateTime.parse(stringDate, formatter).toLocalDate();
         return sessionMapper.toDTOs(sessionService.getSessionsByFullDay(date));
     }
 
@@ -55,18 +62,20 @@ public class SessionRestController {
 
     @GetMapping("/admin/sessions/{sessionID}")
     public SessionDTO getSessionById(@PathVariable Long sessionID) {
-        return sessionMapper.toDTO (sessionService.findById(sessionID));
+        return sessionMapper.toDTO(sessionService.findById(sessionID));
     }
 
-    @PostMapping("/admin/sessions/")
-    public ResponseEntity<SessionDTO> createSession(@Valid @RequestBody SessionCreateDTO sessionDTO) {
-        Session newSession = sessionService.createSession(sessionDTO.eventID(), sessionDTO.dateStr());
+    @PostMapping("/admin/events/{eventID}/sessions")
+    public ResponseEntity<SessionDTO> createSession(@PathVariable Long eventID, @Valid @RequestBody SessionCreateDTO sessionDTO) {
+        Session newSession = sessionService.createSession(eventID, sessionDTO.dateStr());
         URI location = fromCurrentRequest().path("/{sessionID}").buildAndExpand(newSession.getSessionID()).toUri();
         return ResponseEntity.created(location).body(sessionMapper.toDTO(newSession));
     }
 
-    @PutMapping("/admin/sessions/{sessionID}")
-    public SessionDTO updateSession(@PathVariable Long sessionID, @Valid @RequestBody SessionCreateDTO sessionDTO) {
+    @PutMapping("/admin/events/{eventID}/sessions/{index}")
+    public SessionDTO updateSession(@PathVariable Long eventID, @PathVariable int index, @Valid @RequestBody SessionCreateDTO sessionDTO) {
+        int num = index - 1;
+        Long sessionID = eventService.findByIdOrThrow(eventID).getSessions().get(num).getSessionID();
         Session updatedSession = sessionService.updateSession(sessionID, sessionDTO.dateStr());
         return sessionMapper.toDTO(updatedSession);
     }

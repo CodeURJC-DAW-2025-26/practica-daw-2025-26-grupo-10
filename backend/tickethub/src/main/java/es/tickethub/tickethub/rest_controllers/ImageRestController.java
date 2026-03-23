@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,7 +49,7 @@ public class ImageRestController {
         return imageService.getClientImageResponse(clientService.getClientById(userID));
     }
 
-    @PostMapping("/users/{userID}/image")
+    @PostMapping(value = "/users/{userID}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ImageDTO> addClientImage(@PathVariable Long userID, @RequestParam MultipartFile image) throws IOException, SQLException {
         Client client = clientService.getClientById(userID);
         Image newImage = imageService.editClientImage(client, image, true);
@@ -57,7 +58,7 @@ public class ImageRestController {
         return ResponseEntity.created(location).body(imageMapper.toDTO(newImage));
     }
 
-    @PutMapping("/users/{userID}/image")
+    @PutMapping(value = "/users/{userID}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ImageDTO changeClientImage(@PathVariable Long userID, @RequestParam MultipartFile image) throws IOException, SQLException {
         Client client = clientService.getClientById(userID);
         Image newImage = imageService.editClientImage(client, image, false);
@@ -77,7 +78,7 @@ public class ImageRestController {
         return imageService.getArtistImageResponse(artistService.findById(artistID));
     }
 
-    @PostMapping("/admin/artists/{artistID}/image")
+    @PostMapping(value = "/admin/artists/{artistID}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ImageDTO> postArtistImage(@PathVariable Long artistID, @RequestParam MultipartFile image) throws IOException, SQLException {
         Artist artist = artistService.findById(artistID);
         Image newImage = imageService.editArtistImage(artist, image, true);
@@ -86,7 +87,7 @@ public class ImageRestController {
         return ResponseEntity.created(location).body(imageMapper.toDTO(newImage));
     }
 
-    @PutMapping("/admin/artists/{artistID}/image")
+    @PutMapping(value = "/admin/artists/{artistID}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ImageDTO changeArtistImage(@PathVariable Long artistID, @RequestParam MultipartFile image) throws IOException, SQLException {
         Artist artist = artistService.findById(artistID);
         imageService.editArtistImage(artist, image, false);
@@ -107,13 +108,15 @@ public class ImageRestController {
         return imageMapper.toDTOs(event.getEventImages());
     }
 
-    @GetMapping("/public/events/{eventID}/images/{imageID}")
-    public ResponseEntity<byte[]> getEventImage(@PathVariable Long eventID, @PathVariable Long imageID) {
+    @GetMapping("/public/events/{eventID}/images/{index}")
+    public ResponseEntity<byte[]> getEventImage(@PathVariable Long eventID, @PathVariable int index) {
+        int num = index - 1;
+        Long imageID = eventService.findByIdOrThrow(eventID).getEventImages().get(num).getImageID();
         Event event = eventService.findByIdOrThrow(eventID);
         return imageService.getEventImageResponse(event, imageID);
     }
 
-    @PostMapping("/admin/events/{eventID}/images")
+    @PostMapping(value = "/admin/events/{eventID}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ImageDTO> postMethodName(@PathVariable Long eventID, @RequestParam MultipartFile image) throws IOException, SQLException {
         Event event = eventService.findByIdOrThrow(eventID);
         Image newImage = eventService.editEventImage(event, image, (long) 0, true);
@@ -122,15 +125,19 @@ public class ImageRestController {
         return ResponseEntity.created(location).body(imageMapper.toDTO(newImage));
     }
     
-    @PutMapping("/admin/events/{eventID}/images/{imageID}")
-    public ImageDTO putMethodName(@PathVariable Long eventID, @PathVariable Long imageID, @RequestParam MultipartFile image) throws IOException, SQLException {
-        Event event = eventService.findByIdOrThrow(imageID);
+    @PutMapping(value = "/admin/events/{eventID}/images/{index}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ImageDTO putMethodName(@PathVariable Long eventID, @PathVariable int index, @RequestParam MultipartFile image) throws IOException, SQLException {
+        int num = index - 1;
+        Long imageID = eventService.findByIdOrThrow(eventID).getEventImages().get(num).getImageID();
+        Event event = eventService.findByIdOrThrow(eventID);
         Image newImage = eventService.editEventImage(event, image, imageID, false);
         return imageMapper.toDTO(newImage);
     }
 
-    @DeleteMapping("/admin/events/{eventID}/images/{imageID}")
-    public ResponseEntity<Void> deleteImageFromEvent (@PathVariable Long eventID, @PathVariable Long imageID) {
+    @DeleteMapping("/admin/events/{eventID}/images/{index}")
+    public ResponseEntity<Void> deleteImage(@PathVariable Long eventID, @PathVariable int index) {
+        int num = index - 1;
+        Long imageID = eventService.findByIdOrThrow(eventID).getEventImages().get(num).getImageID();
         eventService.deleteEventImage(eventID, imageID);
         return ResponseEntity.noContent().build();
     }

@@ -9,6 +9,5 @@ public record ArtistUpdateDTO(
     
     String info,
     String instagram,
-    String twitter,
-    ImageBasicDTO artistImage
+    String twitter
 ) {}

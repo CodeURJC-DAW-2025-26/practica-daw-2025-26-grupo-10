@@ -51,7 +51,7 @@ public class ZoneRestController {
     }
     
 
-    @PostMapping("/admin/events/{eventID}/zones/")
+    @PostMapping("/admin/events/{eventID}/zones")
     public ResponseEntity <ZoneDTO> createZone(@Valid @RequestBody ZoneCreateDTO zoneCreateDTO, @PathVariable Long eventID) {
         Zone newZone = zoneMapper.toDomain(zoneCreateDTO);
         zoneService.createAndAssignEvent(newZone, eventID);

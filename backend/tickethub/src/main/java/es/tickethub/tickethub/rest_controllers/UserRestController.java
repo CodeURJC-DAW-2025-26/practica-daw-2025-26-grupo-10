@@ -26,7 +26,7 @@ public class UserRestController {
 
     @GetMapping("/tickets")
     public ResponseEntity<List<TicketDTO>> getTickets(HttpSession session) {
-        Long clientId = (Long) session.getAttribute("clientId");
+        Long clientId = (Long) session.getAttribute("clientID");
         List<Ticket> tickets = userService.getTicketsByClientId(clientId);
         return ResponseEntity.ok(ticketMapper.toDTOs(tickets));
     }

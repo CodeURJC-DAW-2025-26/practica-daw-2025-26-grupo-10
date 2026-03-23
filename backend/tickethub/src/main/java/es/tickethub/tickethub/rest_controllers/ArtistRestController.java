@@ -64,7 +64,7 @@ public class ArtistRestController {
         return artistMapper.toDTO(artistService.findById(artistID));
     }
 
-    @PostMapping("/admin/artists/")
+    @PostMapping("/admin/artists")
     public ResponseEntity<ArtistDTO> createArtist(@Valid @RequestBody ArtistCreateDTO createArtistDTO) {
         Artist artist = artistMapper.toEntity(createArtistDTO);
         artistService.save(artist);

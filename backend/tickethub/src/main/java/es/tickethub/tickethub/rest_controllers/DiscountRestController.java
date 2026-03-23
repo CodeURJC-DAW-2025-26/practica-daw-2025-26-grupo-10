@@ -43,7 +43,7 @@ public class DiscountRestController {
         return ResponseEntity.ok(discountMapper.toBasicDTO(discount));
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<DiscountDTO> createDiscount(@Valid @RequestBody DiscountCreateDTO discountCreateDTO) {
         Discount newDiscount = discountMapper.toEntity(discountCreateDTO);
         discountService.save(newDiscount);
