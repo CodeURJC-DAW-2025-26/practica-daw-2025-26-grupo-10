@@ -53,7 +53,7 @@ public class Event {
      * one Artist can have many Events associated to him
      */
     @ManyToOne
-    @JoinColumn(name = "artist_id", nullable = false)
+    @JoinColumn(name = "artistID", nullable = true)
     private Artist artist;
 
     /*
@@ -72,11 +72,7 @@ public class Event {
      */
 
     @ManyToMany
-    @JoinTable(
-        name = "event_discounts",
-        joinColumns = @JoinColumn(name = "eventID"),
-        inverseJoinColumns = @JoinColumn(name = "discountID")
-    )
+    @JoinTable(name = "event_discounts", joinColumns = @JoinColumn(name = "eventID"), inverseJoinColumns = @JoinColumn(name = "discountID"))
     private List<Discount> discounts = new ArrayList<>();
 
     @Column(nullable = false)
@@ -113,7 +109,8 @@ public class Event {
         }
         if (zones != null) {
             this.zones = zones;
-            this.capacity = zones.stream().mapToInt(Zone::getCapacity).sum(); // This adds the capacity of all the zones to set the total capacity of the event
+            this.capacity = zones.stream().mapToInt(Zone::getCapacity).sum(); // This adds the capacity of all the zones
+                                                                              // to set the total capacity of the event
         }
         if (discounts != null) {
             this.discounts = discounts;
@@ -148,8 +145,10 @@ public class Event {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Event event)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof Event event))
+            return false;
         return eventID != null && eventID.equals(event.getEventID());
     }
 }

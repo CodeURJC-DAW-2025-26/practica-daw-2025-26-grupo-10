@@ -3,28 +3,35 @@ package es.tickethub.tickethub.services;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import es.tickethub.tickethub.entities.Artist;
+import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Image;
 import es.tickethub.tickethub.repositories.ArtistRepository;
 
-
 @Service
 public class ArtistService {
+    @Autowired
+    @Lazy
+    private EventService eventService;
 
-    @Autowired private ArtistRepository artistRepository;
+    @Autowired
+    private ArtistRepository artistRepository;
 
     public List<Artist> findAll() {
         return artistRepository.findAll();
@@ -37,7 +44,8 @@ public class ArtistService {
 
     public Artist findByName(String name) {
         return artistRepository.findByArtistName(name)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Artista no encontrado con nombre: " + name));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Artista no encontrado con nombre: " + name));
     }
 
     public Artist save(Artist artist) {
@@ -47,11 +55,18 @@ public class ArtistService {
         return artistRepository.save(artist);
     }
 
+    @Transactional
     public void deleteById(Long id) {
-        if (!artistRepository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El artista con ID " + id + " no existe");
+        Artist artist = artistRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Artista no encontrado"));
+        List<Event> eventsToDelete = new ArrayList<>(artist.getEvents());
+
+        for (Event event : eventsToDelete) {
+            eventService.deleteEvent(event.getEventID());
         }
-        artistRepository.deleteById(id);
+        artist.getEvents().clear();
+
+        artistRepository.delete(artist);
     }
 
     public Page<Artist> findPaginated(Pageable pageable) {
@@ -83,7 +98,8 @@ public class ArtistService {
     }
 
     private int getEventCount(Artist artist) {
-        if (artist == null) return 0;
+        if (artist == null)
+            return 0;
         int incoming = (artist.getEventsIncoming() != null) ? artist.getEventsIncoming().size() : 0;
         int last = (artist.getLastEvents() != null) ? artist.getLastEvents().size() : 0;
         return incoming + last;

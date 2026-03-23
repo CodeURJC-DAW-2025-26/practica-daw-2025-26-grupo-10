@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.sql.Timestamp;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import es.tickethub.tickethub.entities.Event;
@@ -19,6 +20,10 @@ public interface EventRepository extends JpaRepository<Event, Long> {
         Page<Event> findByCategoryContainingIgnoreCase(String category, Pageable pageable);
 
         Page<Event> findByArtist_ArtistNameContainingIgnoreCase(String artistName, Pageable pageable);
+
+        @Modifying
+        @Query(value = "DELETE FROM discount_events WHERE events_event_id = :eventId", nativeQuery = true)
+        void removeDiscountAssociations(@Param("eventId") Long eventId);
 
         /**
          * Finds events by artist name, category, and date range.

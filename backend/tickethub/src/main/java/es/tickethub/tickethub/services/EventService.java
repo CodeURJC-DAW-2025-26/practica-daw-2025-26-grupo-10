@@ -20,10 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import es.tickethub.tickethub.dto.EventDTO;
-import es.tickethub.tickethub.entities.Discount;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Image;
-import es.tickethub.tickethub.entities.Session;
 import es.tickethub.tickethub.entities.Zone;
 import es.tickethub.tickethub.mappers.EventMapper;
 import es.tickethub.tickethub.repositories.EventRepository;
@@ -248,25 +246,23 @@ public class EventService {
         Event event = eventRepository.findById(eventID)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado"));
 
-        if (event.getArtist() != null) {
-            event.getArtist().getEventsIncoming().remove(event);
-            event.getArtist().getLastEvents().remove(event);
-            event.setArtist(null);
-        }
-        if (event.getDiscounts() != null) {
-            for (Discount discount : new ArrayList<>(event.getDiscounts())) {
-                discount.getEvents().remove(event);
-            }
-            event.getDiscounts().clear();
-        }
+        // 1. Compras (obligatorio primero)
         if (event.getSessions() != null) {
-            for (Session session : event.getSessions()) {
-                purchaseService.deletePurchasesBySession(session);
-            }
+            new ArrayList<>(event.getSessions()).forEach(s -> purchaseService.deletePurchasesBySession(s));
         }
 
-        // 4. Borrado final del evento
+        eventRepository.removeDiscountAssociations(eventID);
+        eventRepository.flush();
+
+        event.getDiscounts().clear();
+
+        event.getEventImages().clear();
+        event.getSessions().clear();
+        event.getZones().clear();
+
+        eventRepository.flush();
         eventRepository.delete(event);
+        eventRepository.flush();
     }
 
     /**
