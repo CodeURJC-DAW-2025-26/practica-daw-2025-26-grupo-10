@@ -486,37 +486,37 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 
 | Rol | Usuario | Contraseña |
 |:---|:---|:---|
-| Administrador | admin | admin123 |
-| Usuario Registrado | user1 | user123 |
-| Usuario Registrado | user2 | user123 |
+| Administrador | adminEmail@gmail.com | admin |
+| Usuario Registrado | pepe@gmail.com | pepe123 |
+| Usuario Registrado | manolo@gmail.com | manolo123 |
 
 ### **Participación de Miembros en la Práctica 2**
 
 #### **Alumno 1 - [Ronald Sebastian Silvera Llimpe]**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Me he encargado de implementar la arquitectura API REST del proyecto y asegurando la seguridad en la autenticación de usuarios. Además, optimicé la estabilidad del sistema mediante un gestor global de errores y garanticé la integridad de la base de datos con un proceso de inicialización controlado y documentado.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
 |1| [Creación del API-DOCS](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/a9a5a1ed0b160bcd6748338d3f42188a89b7652a)  | [api-docs](backend/tickethub/api-docs/api-docs.html)   |
-|2| [Temas de seguridad para el proceso de autenticación del usuario](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/bd4289aaca4e5b79eb059a92b719b0b91a8174b4)  | [AusiliarRestController](backend/tickethub/src/main/java/es/tickethub/tickethub/rest_controllers/AuxiliarRestController.java)   |
+|2| [Temas de seguridad para el proceso de autenticación del usuario](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/bd4289aaca4e5b79eb059a92b719b0b91a8174b4)  | [AuxiliarRestController](backend/tickethub/src/main/java/es/tickethub/tickethub/rest_controllers/AuxiliarRestController.java)   |
 |3| [RestController para el index de admin](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/292371201647c8f07b72d3808fc666e4036dd710#diff-c0befd13d2a651c2c677800ad4cc8187330b1835d498cc7b74b9b92b1e45e18f)  | [AdminRestController](backend/tickethub/src/main/java/es/tickethub/tickethub/rest_controllers/AdminRestController.java)   |
 |4| [Confiruración del GlobalHandler para errores por postman](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/acf3a8ca1c3581a5615fab7f9044b1bd03593252)  | [GlobalRestExceptionHandler](backend/tickethub/src/main/java/es/tickethub/tickethub/rest_controllers/GlobalRestExceptionHandler.java)   |
 |5| [Comprobaciones añadidas en caso de haber información en la BBDD](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/a6e7fb8b38334647c9eca33bf276bde6fa7134ba)  |  [DataBaseInitializer.java](backend/tickethub/src/main/java/es/tickethub/tickethub/services/DataBaseInitializer.java)  |
 
 ---
 
-#### **Alumno 2 - [Nombre Completo]**
+#### **Alumno 2 - [Shania Manso García]**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Me he encargado de la creación de DTOs, mappers y controladores clave para la gestión de compras, zonas y descuentos. Mi trabajo se centró en refactorizar controladores y servicios existentes para adaptarlos a este nuevo flujo, garantizando la integridad del sistema mediante la corrección de operaciones CRUD y una gestión de errores robusta.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [API errors working](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/a4457c9cc53b83e5398709d7798cfe290369ab02)  | [ArtistRestController.java]   |
+|2| [Ticket and Purchase REST Applied](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/97e6d10467972b17b065cb8f32438fbce4104681)  | [PurchaseController.java]  |
+|3| [Zone API applied](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/9a696fcd02eb8e1b81284acbc2a2ee258908ce2d)  | [ZoneRestController.java]  |
+|4| [Discount Rest](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/01499f04ed5bc3bd268c5b9000a95b259605898a)  | [DiscountRestController.java]  |
+|5| [CRUD fix for artist and event](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/4b7ec309828512083b484a84304e04ef1232d812)  | [RefferenceMapper.java]  |
 
 ---
 
