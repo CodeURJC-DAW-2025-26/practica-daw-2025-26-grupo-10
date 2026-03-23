@@ -42,12 +42,12 @@ public class AdminEventRestController {
     @Autowired
     private EventMapper eventMapper;
 
-    @GetMapping("/")
+    @GetMapping
     public Page<EventDTO> getEvents(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
         return eventService.getEventsPage(page, size).map(eventMapper::toDTO);
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<EventDTO> createEvent(@Valid @RequestBody EventCreateDTO createEventDTO) {
         Event event = eventMapper.toEntity(createEventDTO);
         eventCreationService.prepareEventForCreation(event, createEventDTO.artistId(), null);
@@ -59,10 +59,7 @@ public class AdminEventRestController {
     @PutMapping("/{eventID}")
     public EventDTO updateEvent(@PathVariable Long eventID, @Valid @RequestBody EventUpdateDTO updatedEventDTO) {
         Event existingEvent = eventService.findByIdOrThrow(eventID);
-        
-        if (updatedEventDTO.artistId() != null) {
-            eventRelationService.updateArtist(existingEvent, updatedEventDTO.artistId());
-        }
+        eventRelationService.updateArtist(existingEvent, updatedEventDTO.artistId());
         eventMapper.updateEntityFromDto(updatedEventDTO, existingEvent);
         eventService.save(existingEvent);
 

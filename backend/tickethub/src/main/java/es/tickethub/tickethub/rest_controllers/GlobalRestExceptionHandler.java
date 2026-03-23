@@ -14,6 +14,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import es.tickethub.tickethub.security.jwt.AuthResponse;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 @RestControllerAdvice(annotations = org.springframework.web.bind.annotation.RestController.class)
@@ -23,10 +24,15 @@ public class GlobalRestExceptionHandler {
      * 404 Not Found
      */
     @ExceptionHandler({NoResourceFoundException.class, NoHandlerFoundException.class})
-    public ResponseEntity<AuthResponse> handle404(Exception ex) {
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(new AuthResponse(AuthResponse.Status.FAILURE, "API endpoint does not exists (404)"));
+    public ResponseEntity<AuthResponse> handle404(Exception ex, HttpServletRequest request) {
+        String path = request.getRequestURI();
+        if (path.startsWith("/api")) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(new AuthResponse(AuthResponse.Status.FAILURE, "API endpoint does not exists (404)"));
+        } else {
+            return null;
+        }
     }
 
     /**

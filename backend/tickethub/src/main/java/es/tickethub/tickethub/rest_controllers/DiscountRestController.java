@@ -43,7 +43,7 @@ public class DiscountRestController {
         return ResponseEntity.ok(discountMapper.toBasicDTO(discount));
     }
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<DiscountDTO> createDiscount(@Valid @RequestBody DiscountCreateDTO discountCreateDTO) {
         Discount newDiscount = discountMapper.toEntity(discountCreateDTO);
         discountService.save(newDiscount);
@@ -54,12 +54,12 @@ public class DiscountRestController {
     }
 
     @PutMapping("/{discountID}")
-    public ResponseEntity<DiscountDTO> updateDiscount(@Valid @RequestBody DiscountBasicDTO discountUpdateDTO, @PathVariable Long discountID) {
+    public DiscountDTO updateDiscount(@Valid @RequestBody DiscountBasicDTO discountUpdateDTO, @PathVariable Long discountID) {
         Discount existingDiscount = discountService.findById(discountID);
         discountMapper.updateEntityFromBasicDto(discountUpdateDTO, existingDiscount);
         Discount updated = discountService.editDiscount(existingDiscount, discountID);
 
-        return ResponseEntity.ok(discountMapper.toDTO(updated));
+        return discountMapper.toDTO(updated);
     }
 
     @DeleteMapping("/{discountID}")

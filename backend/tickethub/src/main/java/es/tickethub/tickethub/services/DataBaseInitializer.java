@@ -57,7 +57,7 @@ public class DataBaseInitializer {
     private PasswordEncoder passwordEncoder;
 
     /* FUNCTION FOR ADD ALL THE IMAGES THAT WILL BE AT THE DATABASE*/
-    public List <List <Image>> initializeImages() throws IOException,SQLException {
+    public List <List <Image>> initializeImages() throws IOException, SQLException {
         
         List <List <Image>> allImages = new ArrayList<>();
 
