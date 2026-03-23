@@ -36,8 +36,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         throws ServletException, IOException {
         
         try {
-			var claims = jwtTokenProvider.validateToken(request, true); //busca el token en el httponly
-			var userDetails = userDetailsService.loadUserByUsername(claims.getSubject());//de ser valido extrae el nombre de usuario y lo busca en la bbdd
+			var claims = jwtTokenProvider.validateToken(request, true);
+			var userDetails = userDetailsService.loadUserByUsername(claims.getSubject());
 
 			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());
@@ -54,7 +54,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }			
 		}
         
-        filterChain.doFilter(request, response);//esto deja pasar la solicitud si todo sale bien
+        filterChain.doFilter(request, response);
                 
     }
 }

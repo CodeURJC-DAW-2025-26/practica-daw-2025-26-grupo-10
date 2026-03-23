@@ -36,7 +36,7 @@ public class AuthController {
         return "public/signup";
     }
 
-    /** Registro de cliente */
+    /** Register of client */
     @PostMapping("/registration")
     public String registerClient(
             @RequestParam String name,

@@ -17,8 +17,8 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Component
 public class JwtTokenProvider {
-
-    private final SecretKey jwtSecret = Jwts.SIG.HS256.key().build(); //esto es como una llave criptográfica (una maquina de sellos)
+	// Cryptographic key used for signing and verifying tokens (like a digital stamp)
+    private final SecretKey jwtSecret = Jwts.SIG.HS256.key().build();
 	private final JwtParser jwtParser = Jwts.parser().verifyWith(jwtSecret).build();
 
 	public String tokenStringFromHeaders(HttpServletRequest req){
@@ -51,7 +51,7 @@ public class JwtTokenProvider {
 		throw new IllegalArgumentException("No access token cookie found in request");
 	}
 
-	//estos validate abren el token y me devuelven los datos que habían dentro
+	// These validation methods decode the token and return the claims (payload) stored inside
 	public Claims validateToken(HttpServletRequest req, boolean fromCookie){
 		var token = fromCookie?
 				tokenStringFromCookies(req):
@@ -63,28 +63,28 @@ public class JwtTokenProvider {
 		return jwtParser.parseSignedClaims(token).getPayload();
 	}
 
-	//genera el token con duracion corta
+	// Generates a short-lived access token
 	public String generateAccessToken(UserDetails userDetails) {
 		return buildToken(TokenType.ACCESS, userDetails).compact();
 	}
 	
-	//genera el token de refresco que tiene la duracion larga
+	// Generates a long-lived refresh token
 	public String generateRefreshToken(UserDetails userDetails) {
 		var token = buildToken(TokenType.REFRESH, userDetails);
         return token.compact();
 	}
 
-	//cuado el usuario acierta la contraseña se llama a este método
+	// This method is called to construct the token once the user has successfully authenticated
 	private JwtBuilder buildToken(TokenType tokenType, UserDetails userDetails) {
 		var currentDate = new Date();
 		var expiryDate = Date.from(new Date().toInstant().plus(tokenType.duration));
 		return Jwts.builder()
-				//los claims son la información que va a viajar dentro de los tokens
+				// Claims are the pieces of information (payload) encoded within the token
 				.claim("roles", userDetails.getAuthorities())
 				.claim("type", tokenType.name())
-				.subject(userDetails.getUsername())//le metes el nombre de usuario
+				.subject(userDetails.getUsername())// Sets the username as the token subject
 				.issuedAt(currentDate)
-				.expiration((Date) expiryDate)//establece la fecha de caducidad del token
-				.signWith(jwtSecret);//esto le pone el sello al token
+				.expiration((Date) expiryDate)// Sets the token expiration date
+				.signWith(jwtSecret);// Digitally signs the token for security
 	}
 }
