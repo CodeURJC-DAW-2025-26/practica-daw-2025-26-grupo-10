@@ -30,7 +30,7 @@ import es.tickethub.tickethub.services.ArtistService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/artists")
+@RequestMapping("/api/v1")
 public class ArtistRestController {
 
     @Autowired
@@ -39,8 +39,8 @@ public class ArtistRestController {
     @Autowired
     private ArtistMapper artistMapper;
 
-    @GetMapping
-    public List<ArtistBasicDTO> getAllArtists(
+    @GetMapping("/public/artists")
+    public List<ArtistBasicDTO> getPageArtists(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "artistName") String sortField) {
@@ -59,12 +59,12 @@ public class ArtistRestController {
                 .toList();
     }
 
-    @GetMapping("/{artistID}")
+    @GetMapping("/public/artists/{artistID}")
     public ArtistDTO getArtist(@PathVariable Long artistID) {
         return artistMapper.toDTO(artistService.findById(artistID));
     }
 
-    @PostMapping
+    @PostMapping("/admin/artists/")
     public ResponseEntity<ArtistDTO> createArtist(@Valid @RequestBody ArtistCreateDTO createArtistDTO) {
         Artist artist = artistMapper.toEntity(createArtistDTO);
         artistService.save(artist);
@@ -73,7 +73,7 @@ public class ArtistRestController {
         return ResponseEntity.created(location).body(artistMapper.toDTO(artist));
     }
 
-    @PutMapping("/{artistID}")
+    @PutMapping("/admin/artists/{artistID}")
     public ArtistDTO updateArtist(@PathVariable Long artistID, @Valid @RequestBody ArtistUpdateDTO dto) {
         Artist existing = artistService.findById(artistID);
         artistMapper.updateEntityFromDto(dto, existing);
@@ -81,7 +81,7 @@ public class ArtistRestController {
         return artistMapper.toDTO(artistService.save(existing));
     }
 
-    @DeleteMapping("/{artistID}")
+    @DeleteMapping("/admin/artists/{artistID}")
     public ArtistDTO deleteArtist(@PathVariable Long artistID) {
         Artist artist = artistService.findById(artistID);
         artistService.deleteById(artistID);

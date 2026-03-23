@@ -60,7 +60,7 @@ public class SecurityConfig {
 		http.authenticationProvider(authenticationProvider());
 
 		http
-				.securityMatcher("/api/**", "/error")
+				.securityMatcher("/api/**")
 				.csrf(csrf -> csrf.disable())
 				.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
