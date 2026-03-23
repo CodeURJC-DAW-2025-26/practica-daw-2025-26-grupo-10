@@ -130,7 +130,7 @@ public class ImageRestController {
     }
 
     @DeleteMapping("/admin/events/{eventID}/images/{imageID}")
-    public ResponseEntity<Void> deleteImage(@PathVariable Long eventID, @PathVariable Long imageID) {
+    public ResponseEntity<Void> deleteImageFromEvent (@PathVariable Long eventID, @PathVariable Long imageID) {
         eventService.deleteEventImage(eventID, imageID);
         return ResponseEntity.noContent().build();
     }

@@ -210,19 +210,25 @@
 
       {{#event}}
       <p class="fw-bold mb-1">Imágenes actuales</p>
-      <div class="row g-3 mb-4">
+      <div class="row g-3 mb-4" id="event-images-grid">
         {{#event.eventImages}}
         <div class="col-6 col-md-3" id="image-container-{{imageID}}">
           <div class="image-overlay-container border">
-            <img src="/images/entities/events/{{event.eventID}}/image/{{imageID}}" class="img-event-admin"
-              alt="Event Image">
 
-            <button type="button" class="btn-delete-overlay" onclick="deleteImage('{{event.eventID}}', '{{imageID}}')">
+            <a class="btn-delete-overlay delete-item" data-id="{{imageID}}" data-url="/images/entities/events/{{event.eventID}}/image"
+              title="Eliminar imagen">
               <i class="bi bi-trash-fill"></i>
               <span class="fw-bold small">ELIMINAR</span>
-            </button>
+            </a>
+
+            <img src="/images/entities/events/{{eventID}}/image/{{imageID}}" class="img-event-admin" alt="Event Image">
+
           </div>
         </div>
+        {{/event.eventImages}}
+
+        {{^event.eventImages}}
+        <p class="text-muted">No hay imágenes para este evento.</p>
         {{/event.eventImages}}
       </div>
       {{/event}}
@@ -231,7 +237,7 @@
       <input type="file" name="images" class="form-control mb-3" multiple>
 
       <div class="d-flex justify-content-between mt-3">
-        <a href="/admin/admin" class="btn btn-outline-primary">Cancelar</a>
+        <a href="/admin/events/manage_events" class="btn btn-outline-primary">Cancelar</a>
 
         <button type="submit" class="btn btn-success">
           {{#event}}Guardar cambios{{/event}}
@@ -246,7 +252,7 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script type="module" src="/js/confirmation.js"></script>
   <script type="module" src="/js/discountsThings.js"></script>
-  <script type="module" src="/js/eventImages.js"></script>
+  <script type="module" src="/js/eventImage.js"></script>
 
   <!--LOCATION OF THE FOOTER OF THE WEB-->
 
