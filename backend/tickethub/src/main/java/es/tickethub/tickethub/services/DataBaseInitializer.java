@@ -141,7 +141,6 @@ public class DataBaseInitializer {
             new Artist("Metallica", "Banda estadounidense de heavy metal, considerada una de las más influyentes y exitosas de la historia.", artistImages.get(11), "metallica", "Metallica")
         );
 
-        artistRepository.deleteAll();
         artistRepository.saveAll(artists);
 
         return artists;
@@ -149,16 +148,23 @@ public class DataBaseInitializer {
 
     public List<Event>  initializeEvents(List<Artist> artists, List<Image> eventImages, List<Zone> zones, List<Discount> discounts) {
 
-        /* This is for the initializeZones function. If u want to add zones to any event do it a set/list/array and pass it here
-        To add anything (zones, sessions or discounts) u have to do events.get().getzones/getSessions/getDiscounts().add(zone/session/discount)
-
-        Zone zoneVip = new Zone("Zone VIP", 500, new BigDecimal(74.99));
-        zoneRepository.save(zoneVip);
-        */
+        /*
+         * This is for the initializeZones function. If u want to add zones to any event
+         * do it a set/list/array and pass it here
+         * To add anything (zones, sessions or discounts) u have to do
+         * events.get().getzones/getSessions/getDiscounts().add(zone/session/discount)
+         * 
+         * Zone zoneVip = new Zone("Zone VIP", 500, new BigDecimal(74.99));
+         * zoneRepository.save(zoneVip);
+         */
+        if (eventRepository.count() > 0) {
+            return eventRepository.findAll();
+        }
 
         List<Event> events = Arrays.asList(
-            new Event("Concierto Duki Wizink Center", artists.get(0), null, zones.subList(0,3), discounts, "Wizink Center", "Música", eventImages.subList(0, 3) , 3),
-            new Event("Film Symphony Orchestra Wizink Center", artists.get(1), null, zones.subList(3,6), discounts, "Wizink Center", "Música", eventImages.subList(3, 5),4),
+                new Event("Concierto Duki Wizink Center", artists.get(0), null, zones.subList(0, 3), discounts,
+                        "Wizink Center", "Música", eventImages.subList(0, 3), 3),
+                new Event("Film Symphony Orchestra Wizink Center", artists.get(1), null, zones.subList(3,6), discounts, "Wizink Center", "Música", eventImages.subList(3, 5),4),
             new Event("Concierto Aitana Wizink Center", artists.get(2), null, zones.subList(6,9), discounts, "Wizink Center", "Música", eventImages.subList(5, 7),2),
             new Event("El show de Juan Dávila", artists.get(3), null, zones.subList(9,12), discounts, "Palacio Vistalegre", "Comedia", eventImages.subList(7, 9),6),
             new Event("Riendo con Galder Varas", artists.get(4), null, zones.subList(12,15), discounts, "Palacio Vistalegre", "Comedia", eventImages.subList(9, 11),2),
@@ -209,12 +215,17 @@ public class DataBaseInitializer {
         artistRepository.saveAll(artists);
         discountRepository.saveAll(discounts);
 
-        return events; 
+        return eventRepository.saveAll(events);
     }
 
-    public Client initializeUsers(List <Image> clientImages) {
-        Client defaultClient = new Client("pepe@gmail.com", "PepeG", passwordEncoder.encode("pepe123"), "Pepe", "Garcia", 33, 666666666, null, clientImages.get(0));
-        Client defaultClient1 = new Client("manolo@gmail.com", "Manolin", passwordEncoder.encode("manolo123"), "Manolo", "Pérez", 19, 777777777, null, clientImages.get(1));
+    public Client initializeUsers(List<Image> clientImages) {
+        if (userRepository.count() > 0) {
+            return (Client) userRepository.findByEmail("pepe@gmail.com").orElse(null);
+        }
+        Client defaultClient = new Client("pepe@gmail.com", "PepeG", passwordEncoder.encode("pepe123"), "Pepe",
+                "Garcia", 33, 666666666, null, clientImages.get(0));
+        Client defaultClient1 = new Client("manolo@gmail.com", "Manolin", passwordEncoder.encode("manolo123"), "Manolo",
+                "Pérez", 19, 777777777, null, clientImages.get(1));
 
         Admin defaultAdmin = new Admin("adminEmail@gmail.com", "newAdmin", passwordEncoder.encode("admin"));
 
@@ -288,15 +299,17 @@ public class DataBaseInitializer {
     }
 
     public List<Session> initializeSessions(List<Event> events) {
-
+        if (sessionRepository.count() > 0) {
+            return sessionRepository.findAll();
+        }
         List<Session> sessions = Arrays.asList(
-            new Session(events.get(0), null, Timestamp.valueOf("2026-06-10 21:00:00")),
-            new Session(events.get(0), null, Timestamp.valueOf("2026-06-11 20:30:00")),
-            new Session(events.get(1), null, Timestamp.valueOf("2026-06-12 22:00:00")),
-            new Session(events.get(1), null, Timestamp.valueOf("2026-06-13 19:30:00")),
-            new Session(events.get(2), null, Timestamp.valueOf("2026-06-14 21:30:00")),
-            new Session(events.get(2), null, Timestamp.valueOf("2026-06-15 20:00:00")),
-            new Session(events.get(3), null, Timestamp.valueOf("2026-06-16 22:15:00")),
+                new Session(events.get(0), null, Timestamp.valueOf("2026-06-10 21:00:00")),
+                new Session(events.get(0), null, Timestamp.valueOf("2026-06-11 20:30:00")),
+                new Session(events.get(1), null, Timestamp.valueOf("2026-06-12 22:00:00")),
+                new Session(events.get(1), null, Timestamp.valueOf("2026-06-13 19:30:00")),
+                new Session(events.get(2), null, Timestamp.valueOf("2026-06-14 21:30:00")),
+                new Session(events.get(2), null, Timestamp.valueOf("2026-06-15 20:00:00")),
+                new Session(events.get(3), null, Timestamp.valueOf("2026-06-16 22:15:00")),
             new Session(events.get(3), null, Timestamp.valueOf("2026-06-17 19:45:00")),
             new Session(events.get(4), null, Timestamp.valueOf("2026-06-18 21:00:00")),
             new Session(events.get(4), null, Timestamp.valueOf("2026-06-19 20:30:00")),
@@ -318,8 +331,7 @@ public class DataBaseInitializer {
             new Session(events.get(12), null, Timestamp.valueOf("2026-07-05 20:30:00"))
         );
 
-        sessionRepository.saveAll(sessions);
-        return sessions;
+        return sessionRepository.saveAll(sessions);
     }
 
     public void initializePurchases(Client client, Session session, List<Zone> zones) {
