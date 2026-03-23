@@ -26,7 +26,7 @@ import es.tickethub.tickethub.services.PurchaseService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/purchases")
+@RequestMapping("/api/v1/public/purchases")
 public class PurchaseRestController {
 
     @Autowired private PurchaseService purchaseService;

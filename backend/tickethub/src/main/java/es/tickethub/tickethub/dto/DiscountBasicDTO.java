@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 public record DiscountBasicDTO(
-    Long discountID, 
 
     @NotBlank(message = "El nombre del descuento es obligatorio") 
     String discountName, 

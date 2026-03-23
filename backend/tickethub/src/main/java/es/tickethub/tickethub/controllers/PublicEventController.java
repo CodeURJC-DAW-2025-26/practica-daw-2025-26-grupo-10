@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -19,7 +20,9 @@ import es.tickethub.tickethub.entities.Purchase;
 import es.tickethub.tickethub.services.EventService;
 import es.tickethub.tickethub.services.PurchaseService;
 import es.tickethub.tickethub.services.ZoneService;
+
 @Controller
+@RequestMapping("/public")
 public class PublicEventController {
 
     @Autowired
@@ -31,14 +34,14 @@ public class PublicEventController {
     @Autowired
     private PurchaseService purchaseService;
 
-    @GetMapping("/public/events")
+    @GetMapping("/events")
     public String events(Model model) {
         model.addAttribute("categories", eventService.getUniqueCategories());
         model.addAttribute("events", eventService.getFirstPageOfEvents().getContent());
         return "/public/events";
     }
 
-    @GetMapping("/public/event/{id}")
+    @GetMapping("/events/{id}")
     public String showEventDetails(@PathVariable Long id, Model model) {
         try {
             model.addAttribute("event", eventService.findByIdOrThrow(id));
@@ -48,7 +51,7 @@ public class PublicEventController {
         }
     }
 
-    @GetMapping("/public/events/fragments")
+    @GetMapping("/events/fragments")
     public String getMoreEvents(
             @RequestParam int page,
             @RequestParam(required = false) String artist,
@@ -64,7 +67,7 @@ public class PublicEventController {
         return "fragments/eventsFragments";
     }
 
-    @GetMapping("/public/purchase/{eventID}")
+    @GetMapping("/purchase/{eventID}")
     public String showPurchaseFromEvent(@PathVariable Long eventID, Model model) {
         try {
             Event event = eventService.findByIdOrThrow(eventID);
@@ -81,7 +84,7 @@ public class PublicEventController {
         }
     }
 
-    @GetMapping("/public/confirmation/{purchaseID}")
+    @GetMapping("/confirmation/{purchaseID}")
     public String showConfirmation(@PathVariable Long purchaseID, Model model) {
         try {
             Purchase purchase = purchaseService.getPurchaseById(purchaseID);

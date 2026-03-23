@@ -44,9 +44,6 @@ public class ImageService {
     @Autowired
     private ClientService clientService;
 
-    @Autowired
-    private EventService eventService;
-
 
     public byte[] loadExternalImage(MultipartFile file) throws IOException {
         return file.getBytes();
@@ -209,21 +206,6 @@ public class ImageService {
     public void addImagesToEvent(Event event, MultipartFile[] files) {
         if (files == null || files.length == 0) return;
         event.getEventImages().addAll(createImagesFromFiles(files));
-    }
-
-    public Image editEventImage(Event event, MultipartFile newImage, Long imageID, boolean option) throws IOException, SQLException {
-        byte [] bytes = loadExternalImage(newImage);
-        Blob i = convertToBlob(bytes);
-
-        Image image = !imageID.equals(0) ? eventService.findEventImageById(event, imageID) : null;
-        if (option || image == null) {
-            image = new Image(event.getName() + "_image", i);
-            event.getEventImages().add(image);
-        } else {
-            image.setImageCode(i);
-        }
-        eventService.save(event);
-        return image;
     }
     
     @Transactional

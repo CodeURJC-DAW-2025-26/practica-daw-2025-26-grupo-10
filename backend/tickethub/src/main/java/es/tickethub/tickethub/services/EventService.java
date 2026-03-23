@@ -1,6 +1,7 @@
 package es.tickethub.tickethub.services;
 
 import java.io.IOException;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -300,5 +301,20 @@ public class EventService {
                 .orElseThrow(() -> new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
                     "Imagen no encontrada para el evento con ID: " + imageID));
+    }
+
+    public Image editEventImage(Event event, MultipartFile newImage, Long imageID, boolean option) throws IOException, SQLException {
+        byte [] bytes = imageService.loadExternalImage(newImage);
+        Blob i = imageService.convertToBlob(bytes);
+
+        Image image = !imageID.equals(0) ? findEventImageById(event, imageID) : null;
+        if (option || image == null) {
+            image = new Image(event.getName() + "_image", i);
+            event.getEventImages().add(image);
+        } else {
+            image.setImageCode(i);
+        }
+        save(event);
+        return image;
     }
 }

@@ -5,10 +5,15 @@ import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import es.tickethub.tickethub.dto.ClientDTO;
 import es.tickethub.tickethub.dto.ClientUpdateDTO;
+import es.tickethub.tickethub.dto.PasswordDTO;
 import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.mappers.ClientMapper;
 import es.tickethub.tickethub.services.ClientService;
@@ -32,27 +37,25 @@ public class ClientRestController {
     }
 
     @PutMapping("/me")
-    public ResponseEntity<ClientDTO> updateLoggedClient(@Valid @RequestBody ClientUpdateDTO clientUpdateDTO,
+    public ClientDTO updateLoggedClient(@Valid @RequestBody ClientUpdateDTO clientUpdateDTO,
             Principal principal) throws IOException {
         Client client = clientService.getClientByEmail(principal.getName());
         clientMapper.updateEntityFromDto(clientUpdateDTO, client);
         Client updatedClient = clientService.updateClient(client.getEmail(), client, null);
-        return ResponseEntity.ok(clientMapper.toDTO(updatedClient));
+        return clientMapper.toDTO(updatedClient);
     }
 
     @PutMapping("/me/password")
-    public ResponseEntity<Void> changePassword(
-            @RequestParam String oldPassword,
-            @RequestParam String newPassword,
-            @RequestParam String newPasswordConfirmation,
+    public ResponseEntity<String> changePassword(
+            @RequestBody PasswordDTO password,
             Principal principal) {
 
-        clientService.changePassword(
-                principal.getName(),
-                oldPassword,
-                newPassword,
-                newPasswordConfirmation);
+        String oldPassword = password.oldPassword();
+        String newPassword = password.newPassword();
+        String newPasswordConfirmation = password.confirmationPassword();
 
-        return ResponseEntity.noContent().build();
+        clientService.changePassword(principal.getName(), oldPassword, newPassword, newPasswordConfirmation);
+
+        return ResponseEntity.ok().build();
     }
 }

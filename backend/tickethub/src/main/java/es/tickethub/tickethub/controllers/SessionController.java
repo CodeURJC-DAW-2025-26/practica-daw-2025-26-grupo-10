@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import es.tickethub.tickethub.services.SessionService;
@@ -53,7 +52,6 @@ public class SessionController {
     }
 
     @PostMapping("/{eventID}/add_session")
-    @ResponseBody // To return a simple status without redirecting
     public ResponseEntity<?> addSession(@RequestParam String date, @PathVariable Long eventID) {
         sessionService.createSession(eventID, date);
 
@@ -61,7 +59,6 @@ public class SessionController {
     }
 
     @PostMapping("/{eventID}/update_session")
-    @ResponseBody // To return a simple status without redirecting
     public ResponseEntity<?> editSession(@RequestParam("newDate") String date, @PathVariable Long eventID,
             @RequestParam Long sessionID) {
 
