@@ -16,4 +16,4 @@ echo "Subiendo $FULL_IMAGE a DockerHub..."
 docker tag "$IMAGE_NAME" "$FULL_IMAGE"
 docker push "$FULL_IMAGE"
 
-echo "¡Imagen publicada con éxito en: https://hub.docker.com/r/$FULL_IMAGE!"
+echo "¡Imagen publicada con éxito en: https://hub.docker.com/repository/docker/$USER/$IMAGE_NAME/tags/latest"
