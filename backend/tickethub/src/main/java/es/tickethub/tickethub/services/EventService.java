@@ -246,7 +246,7 @@ public class EventService {
         Event event = eventRepository.findById(eventID)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado"));
 
-        // 1. Compras (obligatorio primero)
+      
         if (event.getSessions() != null) {
             new ArrayList<>(event.getSessions()).forEach(s -> purchaseService.deletePurchasesBySession(s));
         }
@@ -320,7 +320,7 @@ public class EventService {
         byte[] bytes = imageService.loadExternalImage(newImage);
         Blob i = imageService.convertToBlob(bytes);
 
-        Image image = !imageID.equals(0) ? findEventImageById(event, imageID) : null;
+        Image image = !imageID.equals(0L) ? findEventImageById(event, imageID) : null;
         if (option || image == null) {
             image = new Image(event.getName() + "_image", i);
             event.getEventImages().add(image);

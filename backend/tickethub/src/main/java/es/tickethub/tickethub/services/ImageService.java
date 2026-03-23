@@ -20,20 +20,16 @@ import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import es.tickethub.tickethub.dto.ImageDTO;
 import es.tickethub.tickethub.entities.Artist;
 import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Event;
 import es.tickethub.tickethub.entities.Image;
-import es.tickethub.tickethub.mappers.ImageMapper;
 import es.tickethub.tickethub.repositories.ImageRepository;
 import jakarta.transaction.Transactional;
 
 @Service
 public class ImageService {
 
-    @Autowired
-    private ImageMapper imageMapper;
 
     @Autowired
     private ImageRepository imageRepository;
@@ -139,14 +135,6 @@ public class ImageService {
     // ======================
     // DTO MAPPING METHODS
     // ======================
-
-    public ImageDTO toDTO(Image image) {
-        return imageMapper.toDTO(image);
-    }
-
-    public List<ImageDTO> toDTOs(List<Image> images) {
-        return imageMapper.toDTOs(images);
-    }
 
     public List<Image> createImagesFromFiles(MultipartFile[] files) {
         List<Image> images = new ArrayList<>();
