@@ -395,7 +395,7 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 ## 🛠 **Práctica 2: Incorporación de una API REST a la aplicación web, despliegue con Docker y despliegue remoto**
 
 ### **Vídeo de Demostración**
-📹 **[Enlace al vídeo en YouTube](https://www.youtube.com/watch?v=x91MPoITQ3I)**
+📹 **[Enlace al vídeo en YouTube](https://www.youtube.com/watch?v=JnCIcVIb98g)**
 > Vídeo mostrando las principales funcionalidades de la aplicación web.
 
 ### **Documentación de la API REST**
@@ -412,7 +412,7 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 
 Diagrama actualizado incluyendo los @RestController y su relación con los @Service compartidos:
 
-![Diagrama de Clases Actualizado](backend/tickethub/src/main/resources/static/images/complete-classes-diagram.png)
+![Diagrama de Clases Actualizado](backend/tickethub/src/main/resources/static/images/complete-classes-diagram-part2.png)
 
 ### **Instrucciones de Ejecución con Docker**
 
@@ -547,6 +547,18 @@ Me he encargado de la creación de DTOs, correción de mappers y creación contr
 |5| [Arreglos de rest controllers y añadiendo mappers](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/c21b2a06cd80a18a2ccb20e442c124a557785570)  | [AdminRestController.java](backend/tickethub/src/main/java/es/tickethub/tickethub/rest_controllers/AdminRestController.java)   |
 
 ---
+
+#### **Alumno 5 - [Rubén Alcojor Patilla]**
+
+Me he encargado de la creación de mappers, de la separación de la seguridad de la API Rest y la web, de la creación de la colección Postman y de adecuar varios endpoints de los RestControllers.
+
+| Nº    | Commits      | Files      |
+|:------------: |:------------:| :------------:|
+|1| [Adecuating security](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/3c3dfd3af856c172134cce9943d58063719950bc)  | [SecurityConfig.java](backend/tickethub/src/main/java/es/tickethub/tickethub/security/SecurityConfig.java)   |
+|2| [Completing DataBaseInitializer](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/a92e87803bc5ee639fe766282464d87822e9b32f)  | [DataBaseInitializer.java](backend/tickethub/src/main/java/es/tickethub/tickethub/services/DataBaseInitializer.java)   |
+|3| [Creating Images methods](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/50655c5790a0ba2829c20241f670d81de5d0e346)  | [ImageService.java](backend/tickethub/src/main/java/es/tickethub/tickethub/services/ImageService.java)   |
+|4| [Creating mappers](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/1d71b5c1ac99f0e22f8bec673fc0b3f8f6ded511)  | [EventMapper.java](backend/tickethub/src/main/java/es/tickethub/tickethub/mappers/EventMapper.java)   |
+|5| [Adding location to POST methods](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/d3792194b27b905bc93d87ac023bfd0e8f6a3817)  | [ArtistRestController.java](backend/tickethub/src/main/java/es/tickethub/tickethub/rest_controllers/ArtistRestController.java)   |
 
 ## 🛠 **Práctica 3: Implementación de la web con arquitectura SPA**
 
