@@ -534,17 +534,17 @@ He creado una parte de los REST Controller, he refactorizado el código, solucio
 
 ---
 
-#### **Alumno 4 - [Nombre Completo]**
+#### **Alumno 4 - [Alejandro Valor González]**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Me he encargado de la creación de DTOs, correción de mappers y creación controladores clave para la gestión de clientes, usuarios e imágenes.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Rest Controllers y DTO mapping](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/29097b8fb6d93bc91d6b5763d98bc212ccea6897)  | [ImageRestController.java](backend/tickethub/src/main/java/es/tickethub/tickethub/rest_controllers/ImageRestController.java)   |
+|2| [Creación de DTOs]([URL_commit_2](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/be0392874fe8991e9db43240ed0d72ed29ba55e7))  | [ClientDTO.java](backend/tickethub/src/main/java/es/tickethub/tickethub/dto/ClientDTO.java)   |
+|3| [Arreglo ImageClient](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/cf8079e8bd860490d1fa8034fdb8e67bca1f048c)  | [ClientService.java](backend/tickethub/src/main/java/es/tickethub/tickethub/services/ClientService.java)   |
+|4| [Bug loop infinito](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/b4a55f22f77e7493ea983d573c286ef922b21950)  | [EventService.java](backend/tickethub/src/main/java/es/tickethub/tickethub/services/EventService.java)   |
+|5| [Arreglos de rest controllers y añadiendo mappers](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/c21b2a06cd80a18a2ccb20e442c124a557785570)  | [AdminRestController.java](backend/tickethub/src/main/java/es/tickethub/tickethub/rest_controllers/AdminRestController.java)   |
 
 ---
 
