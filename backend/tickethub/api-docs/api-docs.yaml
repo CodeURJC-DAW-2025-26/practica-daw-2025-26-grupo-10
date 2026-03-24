@@ -6,13 +6,13 @@ servers:
 - url: https://localhost:8443
   description: Generated server url
 paths:
-  /api/v1/sessions/{sessionID}:
+  /api/v1/users/{userID}/image:
     get:
       tags:
-      - session-rest-controller
-      operationId: getSessionById
+      - image-rest-controller
+      operationId: getClientImage
       parameters:
-      - name: sessionID
+      - name: userID
         in: path
         required: true
         schema:
@@ -24,49 +24,89 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/SessionDTO"
+                type: string
+                format: byte
     put:
       tags:
-      - session-rest-controller
-      operationId: updateSession
+      - image-rest-controller
+      operationId: changeClientImage
       parameters:
-      - name: sessionID
+      - name: userID
         in: path
         required: true
         schema:
           type: integer
           format: int64
-      - name: date
-        in: query
-        required: true
-        schema:
-          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+              required:
+              - image
       responses:
         "200":
           description: OK
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/SessionDTO"
+                $ref: "#/components/schemas/ImageDTO"
+    post:
+      tags:
+      - image-rest-controller
+      operationId: addClientImage
+      parameters:
+      - name: userID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+              required:
+              - image
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ImageDTO"
     delete:
       tags:
-      - session-rest-controller
-      operationId: deleteSession
+      - image-rest-controller
+      operationId: deleteClientImage
       parameters:
-      - name: sessionID
+      - name: userID
         in: path
         required: true
         schema:
           type: integer
           format: int64
       responses:
-        "204":
-          description: No Content
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ImageDTO"
   /api/v1/clients/me:
     get:
       tags:
       - client-rest-controller
-      operationId: getLoggedClient
+      operationId: getClientByEmail
       responses:
         "200":
           description: OK
@@ -96,60 +136,11 @@ paths:
       tags:
       - client-rest-controller
       operationId: changePassword
-      parameters:
-      - name: oldPassword
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: newPassword
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: newPasswordConfirmation
-        in: query
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-  /api/v1/artists/{id}:
-    get:
-      tags:
-      - artist-rest-controller
-      operationId: getArtist
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/ArtistDTO"
-    put:
-      tags:
-      - artist-rest-controller
-      operationId: updateArtist
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ArtistUpdateDTO"
+              $ref: "#/components/schemas/PasswordDTO"
         required: true
       responses:
         "200":
@@ -157,21 +148,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/ArtistDTO"
-    delete:
-      tags:
-      - artist-rest-controller
-      operationId: deleteArtist
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "204":
-          description: No Content
+                type: string
   /api/v1/admin/events/{eventID}:
     put:
       tags:
@@ -216,30 +193,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/EventDTO"
   /api/v1/admin/events/{eventID}/zones/{id}:
-    get:
-      tags:
-      - zone-rest-controller
-      operationId: getZone
-      parameters:
-      - name: eventID
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/ZoneBasicDTO"
     put:
       tags:
       - zone-rest-controller
@@ -261,7 +214,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ZoneDTO"
+              $ref: "#/components/schemas/ZoneBasicDTO"
         required: true
       responses:
         "200":
@@ -287,6 +240,93 @@ paths:
         schema:
           type: integer
           format: int64
+      responses:
+        "200":
+          description: OK
+  /api/v1/admin/events/{eventID}/sessions/{index}:
+    put:
+      tags:
+      - session-rest-controller
+      operationId: updateSession
+      parameters:
+      - name: eventID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: index
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SessionCreateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SessionDTO"
+  /api/v1/admin/events/{eventID}/images/{index}:
+    put:
+      tags:
+      - image-rest-controller
+      operationId: putMethodName
+      parameters:
+      - name: eventID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: index
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+              required:
+              - image
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ImageDTO"
+    delete:
+      tags:
+      - image-rest-controller
+      operationId: deleteImage
+      parameters:
+      - name: eventID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: index
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
       responses:
         "200":
           description: OK
@@ -347,13 +387,41 @@ paths:
       responses:
         "200":
           description: OK
-  /api/v1/sessions/event/{eventID}:
-    get:
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/DiscountDTO"
+  /api/v1/admin/artists/{artistID}:
+    put:
       tags:
-      - session-rest-controller
-      operationId: getSessionsByEvent
+      - artist-rest-controller
+      operationId: updateArtist
       parameters:
-      - name: eventID
+      - name: artistID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArtistUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ArtistDTO"
+    delete:
+      tags:
+      - artist-rest-controller
+      operationId: deleteArtist
+      parameters:
+      - name: artistID
         in: path
         required: true
         schema:
@@ -365,33 +433,85 @@ paths:
           content:
             '*/*':
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/SessionDTO"
-    post:
+                $ref: "#/components/schemas/ArtistDTO"
+  /api/v1/admin/artists/{artistID}/image:
+    put:
       tags:
-      - session-rest-controller
-      operationId: createSession
+      - image-rest-controller
+      operationId: changeArtistImage
       parameters:
-      - name: eventID
+      - name: artistID
         in: path
         required: true
         schema:
           type: integer
           format: int64
-      - name: date
-        in: query
-        required: true
-        schema:
-          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+              required:
+              - image
       responses:
-        "201":
-          description: Created
+        "200":
+          description: OK
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/SessionDTO"
-  /api/v1/purchases/save:
+                $ref: "#/components/schemas/ImageDTO"
+    post:
+      tags:
+      - image-rest-controller
+      operationId: postArtistImage
+      parameters:
+      - name: artistID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+              required:
+              - image
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ImageDTO"
+    delete:
+      tags:
+      - image-rest-controller
+      operationId: deleteArtistImage
+      parameters:
+      - name: artistID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ImageDTO"
+  /api/v1/public/purchases/save:
     post:
       tags:
       - purchase-rest-controller
@@ -475,104 +595,7 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/AuthResponse"
-  /api/v1/artists:
-    get:
-      tags:
-      - artist-rest-controller
-      operationId: getAllArtists
-      parameters:
-      - name: page
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int32
-          default: 0
-      - name: size
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int32
-          default: 10
-      - name: sortField
-        in: query
-        required: false
-        schema:
-          type: string
-          default: artistName
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/ArtistBasicDTO"
-    post:
-      tags:
-      - artist-rest-controller
-      operationId: createArtist
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ArtistCreateDTO"
-        required: true
-      responses:
-        "201":
-          description: Created
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/ArtistDTO"
-  /api/v1/admin/events/{eventID}/zones:
-    get:
-      tags:
-      - zone-rest-controller
-      operationId: getZones
-      parameters:
-      - name: eventID
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/ZoneBasicDTO"
-    post:
-      tags:
-      - zone-rest-controller
-      operationId: createZone
-      parameters:
-      - name: eventID
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ZoneDTO"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/ZoneDTO"
-  /api/v1/admin/events/:
+  /api/v1/admin/events:
     get:
       tags:
       - admin-event-rest-controller
@@ -616,6 +639,100 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/EventDTO"
+  /api/v1/admin/events/{eventID}/zones:
+    post:
+      tags:
+      - zone-rest-controller
+      operationId: createZone
+      parameters:
+      - name: eventID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ZoneCreateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ZoneDTO"
+  /api/v1/admin/events/{eventID}/sessions:
+    post:
+      tags:
+      - session-rest-controller
+      operationId: createSession
+      parameters:
+      - name: eventID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SessionCreateDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SessionDTO"
+  /api/v1/admin/events/{eventID}/images:
+    post:
+      tags:
+      - image-rest-controller
+      operationId: postMethodName
+      parameters:
+      - name: eventID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+              required:
+              - image
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ImageDTO"
+    delete:
+      tags:
+      - image-rest-controller
+      operationId: deleteEventImages
+      parameters:
+      - name: eventID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
   /api/v1/admin/discounts:
     get:
       tags:
@@ -660,60 +777,24 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/DiscountDTO"
-  /admin/events/{eventID}/update_session:
+  /api/v1/admin/artists:
     post:
       tags:
-      - session-controller
-      operationId: editSession
-      parameters:
-      - name: newDate
-        in: query
+      - artist-rest-controller
+      operationId: createArtist
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArtistCreateDTO"
         required: true
-        schema:
-          type: string
-      - name: eventID
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      - name: sessionID
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int64
       responses:
         "200":
           description: OK
           content:
             '*/*':
               schema:
-                type: object
-  /admin/events/{eventID}/add_session:
-    post:
-      tags:
-      - session-controller
-      operationId: addSession
-      parameters:
-      - name: date
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: eventID
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: object
+                $ref: "#/components/schemas/ArtistDTO"
   /api/v1/users/me:
     get:
       tags:
@@ -740,26 +821,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/TicketDTO"
-  /api/v1/tickets/{id}:
-    get:
-      tags:
-      - ticket-rest-controller
-      operationId: getTicket
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/TicketDTO"
-  /api/v1/sessions/upcoming:
+  /api/v1/public/sessions/upcoming:
     get:
       tags:
       - session-rest-controller
@@ -773,18 +835,18 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/SessionDTO"
-  /api/v1/sessions/date/{date}:
+  /api/v1/public/sessions/event/{eventID}:
     get:
       tags:
       - session-rest-controller
-      operationId: getSessionsByDate
+      operationId: getSessionsByEvent
       parameters:
-      - name: date
+      - name: eventID
         in: path
         required: true
         schema:
-          type: string
-          format: date
+          type: integer
+          format: int64
       responses:
         "200":
           description: OK
@@ -794,7 +856,27 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/SessionDTO"
-  /api/v1/purchases/download/{purchaseId}:
+  /api/v1/public/sessions/date/{stringDate}:
+    get:
+      tags:
+      - session-rest-controller
+      operationId: getSessionsByDate
+      parameters:
+      - name: stringDate
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SessionDTO"
+  /api/v1/public/purchases/download/{purchaseId}:
     get:
       tags:
       - purchase-rest-controller
@@ -826,73 +908,7 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/IndexResponseDTO"
-  /api/v1/images/users/{userID}:
-    get:
-      tags:
-      - image-rest-controller
-      operationId: getClientImage
-      parameters:
-      - name: userID
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: string
-                format: byte
-  /api/v1/images/events/{eventID}/image/{imageID}:
-    get:
-      tags:
-      - image-rest-controller
-      operationId: getEventImage
-      parameters:
-      - name: eventID
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      - name: imageID
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: string
-                format: byte
-  /api/v1/images/artists/{artistID}:
-    get:
-      tags:
-      - image-rest-controller
-      operationId: getArtistImage
-      parameters:
-      - name: artistID
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: string
-                format: byte
-  /api/v1/events:
+  /api/v1/public/events:
     get:
       tags:
       - public-event-rest-controller
@@ -935,7 +951,7 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/PagedModelEventBasicDTO"
-  /api/v1/events/{id}:
+  /api/v1/public/events/{id}:
     get:
       tags:
       - public-event-rest-controller
@@ -954,7 +970,100 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/EventDTO"
-  /api/v1/events/categories:
+  /api/v1/public/events/{eventID}/zones:
+    get:
+      tags:
+      - zone-rest-controller
+      operationId: getZones
+      parameters:
+      - name: eventID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ZoneBasicDTO"
+  /api/v1/public/events/{eventID}/zones/{id}:
+    get:
+      tags:
+      - zone-rest-controller
+      operationId: getZone
+      parameters:
+      - name: eventID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ZoneBasicDTO"
+  /api/v1/public/events/{eventID}/images:
+    get:
+      tags:
+      - image-rest-controller
+      operationId: getEventImages
+      parameters:
+      - name: eventID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ImageDTO"
+  /api/v1/public/events/{eventID}/images/{index}:
+    get:
+      tags:
+      - image-rest-controller
+      operationId: getEventImage
+      parameters:
+      - name: eventID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: index
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: byte
+  /api/v1/public/events/categories:
     get:
       tags:
       - public-event-rest-controller
@@ -968,7 +1077,81 @@ paths:
                 type: array
                 items:
                   type: string
-  /api/v1/admin/users/:
+  /api/v1/public/artists:
+    get:
+      tags:
+      - artist-rest-controller
+      operationId: getPageArtists
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: sortField
+        in: query
+        required: false
+        schema:
+          type: string
+          default: artistName
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ArtistBasicDTO"
+  /api/v1/public/artists/{artistID}:
+    get:
+      tags:
+      - artist-rest-controller
+      operationId: getArtist
+      parameters:
+      - name: artistID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ArtistDTO"
+  /api/v1/public/artists/{artistID}/image:
+    get:
+      tags:
+      - image-rest-controller
+      operationId: getArtistImage
+      parameters:
+      - name: artistID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: byte
+  /api/v1/admin/users:
     get:
       tags:
       - admin-user-rest-controller
@@ -997,6 +1180,25 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/UserDTO"
+  /api/v1/admin/tickets/{id}:
+    get:
+      tags:
+      - ticket-rest-controller
+      operationId: getTicket
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TicketDTO"
   /api/v1/admin/statistics:
     get:
       tags:
@@ -1009,6 +1211,39 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/AdminStatisticsDTO"
+  /api/v1/admin/sessions/{sessionID}:
+    get:
+      tags:
+      - session-rest-controller
+      operationId: getSessionById
+      parameters:
+      - name: sessionID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SessionDTO"
+    delete:
+      tags:
+      - session-rest-controller
+      operationId: deleteSession
+      parameters:
+      - name: sessionID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: No Content
   /api/v1/admin/dashboard:
     get:
       tags:
@@ -1023,41 +1258,36 @@ paths:
                 $ref: "#/components/schemas/AdminDashboardDTO"
 components:
   schemas:
-    PurchaseBasicDTO:
+    ImageDTO:
       type: object
       properties:
-        purchaseID:
+        imageID:
           type: integer
           format: int64
-        totalPrice:
-          type: number
-    SessionDTO:
-      type: object
-      properties:
-        sessionID:
-          type: integer
-          format: int64
-        event:
-          type: integer
-          format: int64
-        purchases:
-          type: array
-          items:
-            $ref: "#/components/schemas/PurchaseBasicDTO"
-        date:
+        imageName:
           type: string
-          format: date-time
+        imageCode:
+          type: object
+          properties:
+            binaryStream: {}
+        first:
+          type: boolean
     ClientUpdateDTO:
       type: object
       properties:
         email:
           type: string
+          format: email
+          minLength: 1
         username:
           type: string
+          minLength: 1
         name:
           type: string
+          minLength: 1
         surname:
           type: string
+          minLength: 1
         age:
           type: integer
           format: int32
@@ -1066,6 +1296,13 @@ components:
           format: int32
         profileImage:
           $ref: "#/components/schemas/ImageBasicDTO"
+      required:
+      - age
+      - email
+      - name
+      - phone
+      - surname
+      - username
     ImageBasicDTO:
       type: object
       properties:
@@ -1107,20 +1344,6 @@ components:
           format: int32
         profileImage:
           $ref: "#/components/schemas/ImageDTO"
-    ImageDTO:
-      type: object
-      properties:
-        imageID:
-          type: integer
-          format: int64
-        imageName:
-          type: string
-        imageCode:
-          type: object
-          properties:
-            binaryStream: {}
-        first:
-          type: boolean
     PurchaseDTO:
       type: object
       properties:
@@ -1159,77 +1382,34 @@ components:
           type: number
         isActive:
           type: boolean
-    ArtistUpdateDTO:
+    PasswordDTO:
       type: object
       properties:
-        artistID:
-          type: integer
-          format: int64
-        artistName:
+        oldPassword:
           type: string
           minLength: 1
-        info:
+        newPassword:
           type: string
-        instagram:
+          minLength: 1
+        confirmationPassword:
           type: string
-        twitter:
-          type: string
-        artistImage:
-          $ref: "#/components/schemas/ImageBasicDTO"
+          minLength: 1
       required:
-      - artistName
-    ArtistDTO:
-      type: object
-      properties:
-        artistID:
-          type: integer
-          format: int64
-        artistName:
-          type: string
-        info:
-          type: string
-        eventsIncoming:
-          type: array
-          items:
-            $ref: "#/components/schemas/EventBasicDTO"
-        lastEvents:
-          type: array
-          items:
-            $ref: "#/components/schemas/EventBasicDTO"
-        artistImage:
-          $ref: "#/components/schemas/ImageBasicDTO"
-        instagram:
-          type: string
-        twitter:
-          type: string
-        selected:
-          type: boolean
-    EventBasicDTO:
-      type: object
-      properties:
-        eventID:
-          type: integer
-          format: int64
-        name:
-          type: string
-        category:
-          type: string
-        place:
-          type: string
-        mainImageUrl:
-          type: string
+      - confirmationPassword
+      - newPassword
+      - oldPassword
     EventUpdateDTO:
       type: object
       properties:
-        eventID:
-          type: integer
-          format: int64
         name:
           type: string
+          minLength: 1
         category:
           type: string
+          minLength: 1
         place:
           type: string
+          minLength: 1
         artistId:
           type: integer
           format: int64
@@ -1252,6 +1432,13 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/SessionBasicDTO"
+      required:
+      - artistId
+      - capacity
+      - category
+      - name
+      - place
+      - targetAge
     ZoneBasicDTO:
       type: object
       properties:
@@ -1260,11 +1447,16 @@ components:
           format: int64
         name:
           type: string
+          minLength: 1
         capacity:
           type: integer
           format: int32
         price:
           type: number
+      required:
+      - capacity
+      - name
+      - price
     ArtistBasicDTO:
       type: object
       properties:
@@ -1278,15 +1470,17 @@ components:
     DiscountBasicDTO:
       type: object
       properties:
-        discountID:
-          type: integer
-          format: int64
         discountName:
           type: string
+          minLength: 1
         amount:
           type: number
         percentage:
           type: boolean
+      required:
+      - amount
+      - discountName
+      - percentage
     EventDTO:
       type: object
       properties:
@@ -1347,6 +1541,38 @@ components:
           format: int64
         selected:
           type: boolean
+    SessionCreateDTO:
+      type: object
+      properties:
+        dateStr:
+          type: string
+          minLength: 1
+      required:
+      - dateStr
+    PurchaseBasicDTO:
+      type: object
+      properties:
+        purchaseID:
+          type: integer
+          format: int64
+        totalPrice:
+          type: number
+    SessionDTO:
+      type: object
+      properties:
+        sessionID:
+          type: integer
+          format: int64
+        event:
+          type: integer
+          format: int64
+        purchases:
+          type: array
+          items:
+            $ref: "#/components/schemas/PurchaseBasicDTO"
+        date:
+          type: string
+          format: date-time
     DiscountDTO:
       type: object
       properties:
@@ -1365,6 +1591,66 @@ components:
             $ref: "#/components/schemas/EventBasicDTO"
         selected:
           type: boolean
+    EventBasicDTO:
+      type: object
+      properties:
+        eventID:
+          type: integer
+          format: int64
+        name:
+          type: string
+        artist:
+          $ref: "#/components/schemas/ArtistBasicDTO"
+        category:
+          type: string
+        place:
+          type: string
+        sessions:
+          type: array
+          items:
+            $ref: "#/components/schemas/SessionBasicDTO"
+        mainImageUrl:
+          type: string
+    ArtistUpdateDTO:
+      type: object
+      properties:
+        artistName:
+          type: string
+          minLength: 1
+        info:
+          type: string
+        instagram:
+          type: string
+        twitter:
+          type: string
+      required:
+      - artistName
+    ArtistDTO:
+      type: object
+      properties:
+        artistID:
+          type: integer
+          format: int64
+        artistName:
+          type: string
+        info:
+          type: string
+        eventsIncoming:
+          type: array
+          items:
+            $ref: "#/components/schemas/EventBasicDTO"
+        lastEvents:
+          type: array
+          items:
+            $ref: "#/components/schemas/EventBasicDTO"
+        artistImage:
+          $ref: "#/components/schemas/ImageBasicDTO"
+        instagram:
+          type: string
+        twitter:
+          type: string
+        selected:
+          type: boolean
     PurchaseCreateDTO:
       type: object
       properties:
@@ -1375,6 +1661,14 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/TicketSelectionDTO"
+          minItems: 1
+        name:
+          type: string
+          minLength: 1
+      required:
+      - name
+      - selections
+      - sessionID
     TicketSelectionDTO:
       type: object
       properties:
@@ -1432,23 +1726,6 @@ components:
           type: string
         password:
           type: string
-    ArtistCreateDTO:
-      type: object
-      properties:
-        artistName:
-          type: string
-          minLength: 1
-        info:
-          type: string
-        instagram:
-          type: string
-        twitter:
-          type: string
-        artistImage:
-          $ref: "#/components/schemas/ImageBasicDTO"
-      required:
-      - artistImage
-      - artistName
     EventCreateDTO:
       type: object
       properties:
@@ -1472,10 +1749,26 @@ components:
           format: int32
       required:
       - artistId
+      - capacity
       - category
       - name
       - place
       - targetAge
+    ZoneCreateDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        capacity:
+          type: integer
+          format: int32
+        price:
+          type: number
+      required:
+      - capacity
+      - name
+      - price
     DiscountCreateDTO:
       type: object
       properties:
@@ -1490,6 +1783,20 @@ components:
       - amount
       - discountName
       - percentage
+    ArtistCreateDTO:
+      type: object
+      properties:
+        artistName:
+          type: string
+          minLength: 1
+        info:
+          type: string
+        instagram:
+          type: string
+        twitter:
+          type: string
+      required:
+      - artistName
     TicketDTO:
       type: object
       properties:
