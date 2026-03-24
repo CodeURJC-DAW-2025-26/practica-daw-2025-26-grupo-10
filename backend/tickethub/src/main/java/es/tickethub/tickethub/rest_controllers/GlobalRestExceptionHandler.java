@@ -6,12 +6,15 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 
 import es.tickethub.tickethub.security.jwt.AuthResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -78,4 +81,14 @@ public class GlobalRestExceptionHandler {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new AuthResponse(AuthResponse.Status.FAILURE, "An unexpected server error occurred."));
     }
+
+    /**
+ * Spring Security Authentication Errors (401)
+ */
+@ExceptionHandler({AuthenticationException.class, BadCredentialsException.class})
+public ResponseEntity<AuthResponse> handleAuthenticationException(Exception ex) {
+    return ResponseEntity
+            .status(HttpStatus.UNAUTHORIZED)
+            .body(new AuthResponse(AuthResponse.Status.FAILURE, "Credenciales inválidas: email o contraseña incorrectos"));
+}
 }

@@ -21,7 +21,8 @@ import es.tickethub.tickethub.repositories.ClientRepository;
 
 /**
  * Service class responsible for managing clients.
- * Provides methods for registration, updating, password changes, and retrieval of clients.
+ * Provides methods for registration, updating, password changes, and retrieval
+ * of clients.
  */
 @Service
 public class ClientService {
@@ -36,45 +37,61 @@ public class ClientService {
      * Registers a new client with the provided information.
      * Validates password confirmation and uniqueness of email/username.
      *
-     * @param name Client's first name
-     * @param email Client's email address
-     * @param surname Client's last name
-     * @param password Client's password
+     * @param name                 Client's first name
+     * @param email                Client's email address
+     * @param surname              Client's last name
+     * @param password             Client's password
      * @param passWordConfirmation Confirmation of the password
-     * @param username Desired username
-     * @throws ResponseStatusException If passwords do not match or email/username already exist
+     * @param username             Desired username
+     * @throws ResponseStatusException If passwords do not match or email/username
+     *                                 already exist
      */
     @Transactional
     public void registerClient(String name, String email, String surname, String password, String passWordConfirmation,
             String username) {
+
+        // 1. Validar que las contraseñas coincidan
         if (!password.equals(passWordConfirmation)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Las contraseñas no coinciden");
         }
+
+        // 2. Validar que el nombre de usuario sea único
         if (clientRepository.existsByUsername(username)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Este nombre de usuario ya está en uso");
         }
-        Client client = clientRepository.findByEmail(email).orElse(new Client());
-        client.setEmail(email);
-        if (!client.getPassword().equals("")) {
+
+        // 3. Validar que el email sea único (Aquí estaba tu error anterior)
+        if (clientRepository.existsByEmail(email)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Este correo electrónico ya pertenece a una cuenta");
         }
+
+        // 4. Si todo está bien, crear el nuevo cliente
+        Client client = new Client();
         client.setName(name);
         client.setSurname(surname);
+        client.setEmail(email);
         client.setUsername(username);
+
+        // 5. Hashear la contraseña
         client.setPassword(passwordEncoder.encode(password));
+
+        // 6. Valores por defecto
         client.setAdmin(false);
-        saveClient(client);
+
+        // 7. Guardar en BD
+        clientRepository.save(client);
     }
 
     /**
      * Changes the password of an existing client.
      * Validates old password and matches new password confirmation.
      *
-     * @param email Client's email address
-     * @param oldPassword Current password
-     * @param newPassword New password
+     * @param email                   Client's email address
+     * @param oldPassword             Current password
+     * @param newPassword             New password
      * @param newPasswordConfirmation Confirmation of the new password
-     * @throws ResponseStatusException If old password is incorrect or new passwords do not match
+     * @throws ResponseStatusException If old password is incorrect or new passwords
+     *                                 do not match
      */
     @Transactional
     public void changePassword(String email, String oldPassword, String newPassword, String newPasswordConfirmation) {
@@ -93,11 +110,12 @@ public class ClientService {
      * Updates client details, optionally including profile image.
      * Ensures email uniqueness if changed.
      *
-     * @param loggedEmail Email of the logged-in client
+     * @param loggedEmail   Email of the logged-in client
      * @param updatedClient Client object containing updated data
-     * @param imageFile Optional profile image file
+     * @param imageFile     Optional profile image file
      * @return Updated Client entity
-     * @throws IOException If an error occurs while processing the image file
+     * @throws IOException             If an error occurs while processing the image
+     *                                 file
      * @throws ResponseStatusException If email is already in use
      */
     @Transactional
@@ -123,7 +141,7 @@ public class ClientService {
     /**
      * Updates an existing client using form data.
      *
-     * @param id ID of the client to update
+     * @param id         ID of the client to update
      * @param formClient Client object containing updated data
      */
     @Transactional
