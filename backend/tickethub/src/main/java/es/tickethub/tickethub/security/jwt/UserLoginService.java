@@ -83,7 +83,7 @@ public class UserLoginService {
 	}
 
 	// Stores the token in a cookie and sets it to HttpOnly (a secure, non-modifiable vault)
-	private Cookie buildTokenCookie(TokenType type, String token) {
+	public Cookie buildTokenCookie(TokenType type, String token) {
 		Cookie cookie = new Cookie(type.tokenName, token);
 		cookie.setMaxAge((int) type.duration.getSeconds());
 		cookie.setHttpOnly(true);
