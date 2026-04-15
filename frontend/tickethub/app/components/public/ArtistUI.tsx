@@ -6,7 +6,6 @@ export interface Artist {
     info: string;
     instagram: string;
     twitter: string;
-    imageURL: string;
 }
 
 export interface EventShort {

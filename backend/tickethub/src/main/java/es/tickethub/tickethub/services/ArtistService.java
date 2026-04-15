@@ -78,8 +78,7 @@ public class ArtistService {
         return artistRepository.findAll(pageable);
     }
 
-    public Page<Artist> searchArtists(String name, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<Artist> searchArtists(String name, Pageable pageable) {
         if (name == null || name.isBlank()) {
             return artistRepository.findAll(pageable);
         }

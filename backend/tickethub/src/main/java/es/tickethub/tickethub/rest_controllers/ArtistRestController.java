@@ -20,7 +20,7 @@ import es.tickethub.tickethub.mappers.ArtistMapper;
 import es.tickethub.tickethub.services.ArtistService;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/public/artists")
 public class ArtistRestController {
 
     @Autowired
@@ -30,10 +30,11 @@ public class ArtistRestController {
     private ArtistMapper artistMapper;
 
     @GetMapping("/public/artists")
-    public List<ArtistBasicDTO> getPageArtists(
+    public Page<ArtistBasicDTO> getPageArtists(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "artistName") String sortField) {
+            @RequestParam(defaultValue = "artistName") String sortField,
+            @RequestParam(required = false) String name) { // Parámetro de búsqueda
 
         List<String> allowed = List.of("artistName", "artistID");
         if (!allowed.contains(sortField)) {
@@ -41,18 +42,15 @@ public class ArtistRestController {
         }
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortField));
-        Page<Artist> artistPage = artistService.findPaginated(pageable);
 
-        return artistPage.getContent()
-                .stream()
-                .map(artistMapper::toBasicDTO)
-                .toList();
+        Page<Artist> artistPage = artistService.searchArtists(name, pageable);
+        
+        return artistPage.map(artistMapper::toBasicDTO);
     }
 
-    @GetMapping("/public/artists/{artistID}")
+    @GetMapping("/{artistID}")
     public ArtistDTO getArtist(@PathVariable Long artistID) {
         return artistMapper.toDTO(artistService.findById(artistID));
     }
-
 
 }

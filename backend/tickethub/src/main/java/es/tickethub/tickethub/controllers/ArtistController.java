@@ -48,8 +48,8 @@ public class ArtistController {
             @RequestParam int page,
             @RequestParam(required = false) String search,
             Model model) {
-
-        Page<Artist> artistPage = artistService.searchArtists(search, page, 5);
+        Pageable pageable = PageRequest.of(page, 5);
+        Page<Artist> artistPage = artistService.searchArtists(search, pageable);
         model.addAttribute("artists", artistPage.getContent());
         return "fragments/artistsFragments";
     }
