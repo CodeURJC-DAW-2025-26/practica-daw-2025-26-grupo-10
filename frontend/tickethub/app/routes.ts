@@ -5,6 +5,8 @@ export default [
         index("routes/home.tsx"), 
         route("admin/artists", "routes/admin/artist-list.tsx"),
         route("admin/artists/add", "routes/admin/artist-form.tsx"),
-        route("admin/artists/edit/:id", "routes/admin/artist-form.tsx")
+        route("admin/artists/edit/:id", "routes/admin/artist-form.tsx"),
+        route("403", "routes/errors/error403.tsx")
     ]),
 ] satisfies RouteConfig;
+
