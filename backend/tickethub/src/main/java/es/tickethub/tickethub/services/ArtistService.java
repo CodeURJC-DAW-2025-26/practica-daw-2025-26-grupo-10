@@ -73,6 +73,11 @@ public class ArtistService {
         return artistRepository.findAll(pageable);
     }
 
+    public Page<Artist> getArtistsPage(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return artistRepository.findAll(pageable);
+    }
+
     public Page<Artist> searchArtists(String name, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         if (name == null || name.isBlank()) {
@@ -82,12 +87,17 @@ public class ArtistService {
     }
 
     public void assignImage(Artist artist, MultipartFile file) throws IOException, SQLException {
-        if (file != null && !file.isEmpty()) {
-            byte[] bytes = file.getBytes();
-            Blob blob = new SerialBlob(bytes);
-            Image image = new Image(file.getOriginalFilename(), blob);
-            artist.setArtistImage(image);
+        try {
+            if (file != null && !file.isEmpty()) {
+                byte[] bytes = file.getBytes();
+                Blob blob = new SerialBlob(bytes);
+                Image image = new Image(file.getOriginalFilename(), blob);
+                artist.setArtistImage(image);
+            }
+        } catch (IOException | SQLException e) {
+            throw new RuntimeException("Error al procesar la imagen del artista", e);
         }
+
     }
 
     public List<Artist> getPopularArtists(int limit) {
