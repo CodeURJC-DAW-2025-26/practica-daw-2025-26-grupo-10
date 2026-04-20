@@ -1,0 +1,37 @@
+import { create } from "zustand";
+import axios from "axios";
+
+export interface AdminArtist {
+    artistID: number;
+    artistName: string;
+    instagram: string;
+    twitter: string;
+}
+
+interface AdminArtistsState {
+    artists: AdminArtist[];
+    reset: (artists: AdminArtist[]) => void;
+    deleteArtist: (id: number) => Promise<void>;
+}
+
+export const useAdminArtistsStore = create<AdminArtistsState>((set, get) => ({
+    artists: [],
+
+    // for setting the store with the initial data from the loader
+    reset: (artists) => set({ artists }),
+
+    deleteArtist: async (id) => {
+        const confirmed = window.confirm(
+            "¿Estás seguro de que deseas eliminar este artista? Esta acción no se puede deshacer."
+        );
+        if (!confirmed) return;
+        try {
+            await axios.delete(`/api/v1/admin/artists/${id}`);
+            set((state) => ({
+                artists: state.artists.filter((a) => a.artistID !== id),
+            }));
+        } catch {
+            alert("Hubo un error al eliminar el artista.");
+        }
+    },
+}));

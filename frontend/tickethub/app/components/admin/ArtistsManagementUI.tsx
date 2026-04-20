@@ -52,7 +52,7 @@ export default function ArtistListUI({ artists, onDelete }: Props) {
     
                 <div className="row mb-3">
                     <div className="col d-flex justify-content-start">
-                        <Link to="/admin/admin" className="btn btn-outline-primary btn-success">
+                        <Link to="/admin/admin" className="btn btn-outline-primary ">
                             Volver
                         </Link>
                     </div>

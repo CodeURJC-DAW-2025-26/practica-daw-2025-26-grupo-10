@@ -106,7 +106,7 @@ export default function ArtistFormUI({
         </div>
 
         <div className="d-flex justify-content-between mt-4">
-          // We don't use Link here because Components don't know about routes
+          {/** We don't use Link here because Components don't know about routes */}
           <button
             type="button"
             onClick={onCancel}

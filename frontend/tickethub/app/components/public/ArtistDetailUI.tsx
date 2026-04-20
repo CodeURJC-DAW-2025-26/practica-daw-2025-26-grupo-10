@@ -23,7 +23,14 @@ export default function ArtistUI({ artist, eventsIncoming, lastEvents }: Props) 
     return (
         <div className="container my-5">
             <div className="card text-center">
-                <img src={`/images/entities/artists/${artist.artistID}`} className="rounded-circle mx-auto mt-4" width="150"></img>
+                <img
+                    src={`/images/entities/artists/${artist.artistID}`}
+                    className="rounded-circle mx-auto mt-4"
+                    width="150"
+                    height="150"
+                    style={{ objectFit: "cover" }}
+                    alt={artist.artistName}
+                />
                 <div className="card-body">
                     <h3>{artist.artistName}</h3>
                     <p>{artist.info}</p>
