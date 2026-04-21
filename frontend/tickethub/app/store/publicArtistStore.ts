@@ -1,18 +1,14 @@
 import { create } from "zustand";
 import axios from "axios";
-
-export interface PublicArtist {
-    artistID: number;
-    artistName: string;
-}
+import type { ArtistBasic } from "~/models/ArtistBasic";
 
 interface PublicArtistsState {
-    artists: PublicArtist[];
+    artists: ArtistBasic[];
     search: string;
     page: number;
     hasMore: boolean;
     loading: boolean;
-    reset: (initial: PublicArtist[], isLast: boolean) => void;
+    reset: (initial: ArtistBasic[], isLast: boolean) => void;
     setSearch: (query: string) => void;
     fetchBySearch: (query: string) => Promise<void>;
     loadMore: () => Promise<void>;

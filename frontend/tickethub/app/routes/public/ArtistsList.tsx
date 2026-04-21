@@ -1,17 +1,15 @@
 import { useEffect } from "react";
 import { useLoaderData } from "react-router";
-import axios from "axios";
-import ArtistsUI from "~/components/public/ArtistsListUI";
-import { usePublicArtistsStore, type PublicArtist } from "~/store/publicArtistStore";
+import ArtistsListUI from "~/components/public/ArtistsListUI";
+import { usePublicArtistsStore } from "~/store/publicArtistStore";
+import { publicArtistService } from "~/services/PublicArtistService";
 
 export async function loader() {
-    const res = await axios.get("/api/v1/public/artists", {
-        params: { page: 0, size: 5, name: "" },
-    });
-    return { initial: res.data.content as PublicArtist[], isLast: res.data.last as boolean };
+    const res = await publicArtistService.getAllArtists();
+    return { initial: res.content, isLast: res.last };
 }
 
-export default function ArtistsRoute() {
+export default function ArtistsListRoute() {
     const { initial, isLast } = useLoaderData<typeof loader>();
     const { artists, search, hasMore, loading, reset, setSearch, fetchBySearch, loadMore } = usePublicArtistsStore();
 
@@ -24,7 +22,7 @@ export default function ArtistsRoute() {
     }, [search]); // only refetch when the search query changes
 
     return (
-        <ArtistsUI
+        <ArtistsListUI
             artists={artists}
             searchQuery={search}
             onSearchChange={setSearch}

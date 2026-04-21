@@ -1,19 +1,15 @@
 import { Link } from "react-router";
-
-export interface Artist {
-    artistID: number;
-    artistName: string;
-}
+import type { ArtistBasic } from "~/models/ArtistBasic";
 
 interface Props {
-    artists: Artist[];
+    artists: ArtistBasic[];
     searchQuery: string;
     onSearchChange: (query: string) => void;
     onLoadMore: () => void;
     hasMore: boolean;
 }
 
-export default function ArtistsUI({ artists, searchQuery, onSearchChange, onLoadMore, hasMore }: Props) {
+export default function ArtistsListUI({ artists, searchQuery, onSearchChange, onLoadMore, hasMore }: Props) {
     return (
         <main className="flex-fill">
             <div className="container my-5">
@@ -38,7 +34,7 @@ export default function ArtistsUI({ artists, searchQuery, onSearchChange, onLoad
                                 <img
                                     src={`/images/entities/artists/${artist.artistID}`}
                                     className="card-img-top rounded-circle mx-auto mt-3"
-                                    style={{ width: '150px', height: '150px', objectFit: 'cover' }}
+                                    style={{ width: "150px", height: "150px", objectFit: "cover" }}
                                     alt={artist.artistName}
                                 />
                                 <div className="card-body">
@@ -54,10 +50,7 @@ export default function ArtistsUI({ artists, searchQuery, onSearchChange, onLoad
 
                 {hasMore && (
                     <div className="text-end mt-4">
-                        <button
-                            onClick={onLoadMore}
-                            className="btn btn-outline-secondary"
-                        >
+                        <button onClick={onLoadMore} className="btn btn-outline-secondary">
                             Cargar más
                         </button>
                     </div>

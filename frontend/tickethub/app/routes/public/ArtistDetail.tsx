@@ -1,26 +1,16 @@
 import { useLoaderData } from "react-router";
-import axios from "axios";
-import ArtistUI from "~/components/public/ArtistDetailUI";
-
-export interface ArtistDetail {
-    artistID: number;
-    artistName: string;
-    info: string;
-    instagram: string;
-    twitter: string;
-    eventsIncoming: { eventID: number; eventName: string }[];
-    lastEvents: { eventID: number; eventName: string }[];
-}
+import ArtistDetailUI from "~/components/public/ArtistDetailUI";
+import { publicArtistService } from "~/services/PublicArtistService";
 
 export async function loader({ params }: { params: { id: string } }) {
-    const res = await axios.get(`/api/v1/artists/${params.id}`);
-    return res.data as ArtistDetail;
+    const res = await publicArtistService.getArtistById(params.id);
+    return res;
 }
 
-export default function ArtistRoute() {
+export default function ArtistDetailRoute() {
     const artist = useLoaderData<typeof loader>();
     return (
-        <ArtistUI
+        <ArtistDetailUI
             artist={artist}
             eventsIncoming={artist.eventsIncoming ?? []}
             lastEvents={artist.lastEvents ?? []}

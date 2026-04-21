@@ -1,25 +1,14 @@
 import { Link } from "react-router";
-
-export interface Artist {
-    artistID: number;
-    artistName: string;
-    info: string;
-    instagram: string;
-    twitter: string;
-}
-
-export interface EventShort {
-    eventID: number;
-    eventName: string;
-}
+import type { Artist } from "~/models/Artist";
+import type { EventBasic } from "~/models/EventBasic";
 
 interface Props {
     artist: Artist;
-    eventsIncoming: EventShort[];
-    lastEvents: EventShort[];
+    eventsIncoming: EventBasic[];
+    lastEvents: EventBasic[];
 }
 
-export default function ArtistUI({ artist, eventsIncoming, lastEvents }: Props) {
+export default function ArtistDetailUI({ artist, eventsIncoming, lastEvents }: Props) {
     return (
         <div className="container my-5">
             <div className="card text-center">
@@ -40,7 +29,7 @@ export default function ArtistUI({ artist, eventsIncoming, lastEvents }: Props) 
                     ) : (
                         <ul className="list-group mb-3">
                             {eventsIncoming.map((event) => (
-                                <li key={event.eventID} className="list-group-item">{event.eventName}</li>
+                                <li key={event.eventID} className="list-group-item">{event.name}</li>
                             ))}
                         </ul>
                     )}
@@ -52,7 +41,7 @@ export default function ArtistUI({ artist, eventsIncoming, lastEvents }: Props) 
                     ) : (
                         <ul className="list-group mb-3">
                             {lastEvents.map((event) => (
-                                <li key={event.eventID} className="list-group-item">{event.eventName}</li>
+                                <li key={event.eventID} className="list-group-item">{event.name}</li>
                             ))}
                         </ul>
                     )}
