@@ -54,15 +54,6 @@ public class EventService {
     private EventMapper eventMapper;
 
     /**
-     * Constructor for EventService with repository injection.
-     *
-     * @param eventRepository Repository for Event entities
-     */
-    public EventService(EventRepository eventRepository) {
-        this.eventRepository = eventRepository;
-    }
-
-    /**
      * Retrieves all events.
      *
      * @return List of events
@@ -174,17 +165,6 @@ public class EventService {
         imageService.deleteImageFromEvent(event, imageID);
     }
 
-    /**
-     * Returns a paginated list of events.
-     *
-     * @param page Page number
-     * @param size Page size
-     * @return List of events for the requested page
-     */
-    public List<Event> findPaginated(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return eventRepository.findAll(pageable).getContent();
-    }
 
     /**
      * Searches events by optional filters: artist, category, and date.
@@ -246,7 +226,7 @@ public class EventService {
         Event event = eventRepository.findById(eventID)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado"));
 
-      
+
         if (event.getSessions() != null) {
             new ArrayList<>(event.getSessions()).forEach(s -> purchaseService.deletePurchasesBySession(s));
         }

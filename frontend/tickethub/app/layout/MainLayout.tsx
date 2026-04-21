@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import AdminHeader from "./adminHeader";
+import {AdminHeader} from "./adminHeader";
 import AdminFooter from "./adminFooter";
 
 const MainLayout = () => {
