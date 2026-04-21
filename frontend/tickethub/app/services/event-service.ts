@@ -1,0 +1,37 @@
+import type { ArtistBasic } from "~/models/ArtistBasic";
+import { API_URL } from "./homeService";
+import type { Event } from "~/models/Event";
+import type { EventCreateUpdate } from "~/models/EventCreateUpdate";
+
+export async function getArtists(): Promise<ArtistBasic[]> {
+  const res = await fetch(`${API_URL}/public/artists?page=0&size=1000`);
+  if (!res.ok) throw new Error("Error cargando artistas");
+  return await res.json();
+}
+ 
+export async function createEvent(formData: EventCreateUpdate): Promise<Event> {
+  const res = await fetch(`${API_URL}/admin/events`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(formData),
+  });
+  if (!res.ok) throw new Error("Error creando el evento");
+  return await res.json();
+}
+ 
+export async function updateEvent(eventID: number, formData: EventCreateUpdate): Promise<Event> {
+  const res = await fetch(`${API_URL}/admin/events/${eventID}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(formData),
+  });
+  if (!res.ok) throw new Error("Error actualizando el evento");
+  return await res.json();
+}
+
+//Function to the event.tsx file
+export async function getEvent(id: string): Promise<Event> {
+  const res = await fetch(`${API_URL}/public/events/${id}`);
+  if (!res.ok) throw new Error("Evento no encontrado");
+  return await res.json();
+}
