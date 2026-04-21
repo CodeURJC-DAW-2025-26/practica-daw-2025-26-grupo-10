@@ -1,18 +1,12 @@
 import { Link } from "react-router";
-
-export interface Artist {
-    artistID: number;
-    artistName: string;
-    instagram: string;
-    twitter: string;
-}
+import type { Artist } from "~/models/Artist";
 
 interface Props {
     artists: Artist[];
     onDelete: (id: number) => void;
 }
 
-export default function ArtistListUI({ artists, onDelete }: Props) {
+export default function ArtistsManagementUI({ artists, onDelete }: Props) {
         return (
             <div className="container my-5">
     

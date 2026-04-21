@@ -1,20 +1,22 @@
 import { useEffect } from "react";
 import { useLoaderData } from "react-router";
 import axios from "axios";
-import ArtistListUI from "~/components/admin/ArtistsManagementUI";
-import { useAdminArtistsStore, type AdminArtist } from "~/store/adminArtistsStore";
+import { useAdminArtistsStore } from "~/store/adminArtistsStore";
+import type { Artist } from "~/models/Artist";
+import ArtistsManagementUI from "~/components/admin/ArtistsManagementUI";
+import { adminArtistService } from "~/services/AdminArtistService";
 
 export async function loader() {
-    const res = await axios.get("/api/v1/admin/artists");
-    return { initial: res.data.content as AdminArtist[] };
+    const artists = await adminArtistService.getAllArtists();
+    return { initial: artists };
 }
 
-export default function ArtistListRoute() {
+export default function ArtistsManagementRoute() {
     const { initial } = useLoaderData<typeof loader>();
     const { artists, reset, deleteArtist } = useAdminArtistsStore();
 
     // Set the initial data from the loader into the store when the component mounts
     useEffect(() => { reset(initial); }, []);
 
-    return <ArtistListUI artists={artists} onDelete={deleteArtist} />;
+    return <ArtistsManagementUI artists={artists} onDelete={deleteArtist} />;
 }

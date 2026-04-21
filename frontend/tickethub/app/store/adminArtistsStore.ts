@@ -1,16 +1,10 @@
 import { create } from "zustand";
 import axios from "axios";
-
-export interface AdminArtist {
-    artistID: number;
-    artistName: string;
-    instagram: string;
-    twitter: string;
-}
+import type { Artist } from "~/models/Artist";
 
 interface AdminArtistsState {
-    artists: AdminArtist[];
-    reset: (artists: AdminArtist[]) => void;
+    artists: Artist[];
+    reset: (artists: Artist[]) => void;
     deleteArtist: (id: number) => Promise<void>;
 }
 
