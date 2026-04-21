@@ -7,13 +7,13 @@ export default [
 
     // Descuentos
     route("admin/discounts", "routes/admin/discounts/manage-discounts.tsx"),
-    route("admin/discounts/new", "routes/admin/discounts/create-discount.tsx"),
-    route("admin/discounts/:id/edit", "routes/admin/discounts/create-discount.tsx"),
+    route("admin/discounts/new", "routes/admin/discounts/create-discount.tsx", { id: "discount-new" }),
+    route("admin/discounts/:id/edit", "routes/admin/discounts/create-discount.tsx", { id: "discount-edit" }),
 
     // Zonas (dentro de un evento)
     route("admin/events/:eventId/zones", "routes/admin/events/manage-zones.tsx"),
-    route("admin/events/:eventId/zones/new", "routes/admin/events/create-zone.tsx"),
-    route("admin/events/:eventId/zones/:id/edit", "routes/admin/events/create-zone.tsx"),
+    route("admin/events/:eventId/zones/new", "routes/admin/events/create-zone.tsx", { id: "zone-new" }),
+    route("admin/events/:eventId/zones/:id/edit", "routes/admin/events/create-zone.tsx", { id: "zone-edit" }),
   ]),
 
   // ── Rutas Públicas (sin admin layout) ──────────────────────────────────────
