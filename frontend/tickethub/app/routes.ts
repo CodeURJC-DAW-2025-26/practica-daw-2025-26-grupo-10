@@ -8,6 +8,7 @@ export default [
         route("admin/artists", "routes/admin/ArtistsManagement.tsx"),
         route("admin/artists/add", "routes/admin/ArtistForm.tsx"),
         route("admin/artists/edit/:id", "routes/admin/ArtistForm.tsx"),
+        route("admin/statistics", "routes/admin/Statistics.tsx"),
 
         // Public routes
         route("public/artists", "routes/public/ArtistsList.tsx"),

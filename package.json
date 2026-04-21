@@ -21,6 +21,7 @@
 	},
 	"homepage": "https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10#readme",
 	"dependencies": {
+		"chart.js": "^4.5.1",
 		"express": "^5.1.0",
 		"mongo": "^0.1.0",
 		"multer": "^2.0.2",
