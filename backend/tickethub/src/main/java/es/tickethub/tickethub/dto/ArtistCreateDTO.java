@@ -9,5 +9,4 @@ public record ArtistCreateDTO(
     String info,
     String instagram,
     String twitter
-
 ) {}

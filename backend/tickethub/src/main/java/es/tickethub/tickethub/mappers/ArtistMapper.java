@@ -8,7 +8,6 @@ import org.mapstruct.ReportingPolicy;
 import es.tickethub.tickethub.dto.ArtistBasicDTO;
 import es.tickethub.tickethub.dto.ArtistCreateDTO;
 import es.tickethub.tickethub.dto.ArtistDTO;
-import es.tickethub.tickethub.dto.ArtistUpdateDTO;
 import es.tickethub.tickethub.entities.Artist;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {ReferenceMapper.class})
@@ -21,7 +20,7 @@ public interface ArtistMapper {
 
     @Mapping(target = "eventsIncoming", ignore = true)
     @Mapping(target = "lastEvents", ignore = true)
-    void updateEntityFromDto(ArtistUpdateDTO dto, @MappingTarget Artist artist);
+    void updateEntityFromDto(ArtistCreateDTO dto, @MappingTarget Artist artist);
 
     ArtistDTO toDTO(Artist artist);
     ArtistBasicDTO toBasicDTO(Artist artist);
