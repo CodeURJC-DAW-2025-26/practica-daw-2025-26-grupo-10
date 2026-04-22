@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { getDiscounts, deleteDiscount } from "~/services/discounts-service";
-import type { Discount } from "~/services/discounts-service";
+import type { Discount } from "~/models/Discount";
 
 export default function ManageDiscounts() {
   const [discounts, setDiscounts] = useState<Discount[]>([]);

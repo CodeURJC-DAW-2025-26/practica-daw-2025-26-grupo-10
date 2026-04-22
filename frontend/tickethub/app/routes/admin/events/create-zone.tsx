@@ -1,7 +1,7 @@
 import { useActionState, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { getZone, createZone, updateZone } from "~/services/zones-service";
-import type { Zone } from "~/services/zones-service";
+import type { Zone } from "~/models/Zone";
 
 export default function CreateZone() {
   const { eventId, id } = useParams<{ eventId: string; id?: string }>();

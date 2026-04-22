@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { getZones, deleteZone } from "~/services/zones-service";
-import type { Zone } from "~/services/zones-service";
+import type { Zone } from "~/models/Zone";
 
 export default function ManageZones() {
   const { eventId } = useParams<{ eventId: string }>();

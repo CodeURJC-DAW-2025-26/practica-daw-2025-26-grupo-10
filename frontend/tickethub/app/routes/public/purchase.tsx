@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { getPublicEvent } from "~/services/events-service";
 import { savePurchase } from "~/services/purchases-service";
-import type { EventPublic, SessionBasic, ZonePublic, DiscountPublic } from "~/services/events-service";
+import type { EventPublic } from "~/models/Event";
 
 interface TicketSelection {
   zoneId: number;
@@ -105,7 +105,13 @@ export default function Purchase() {
         zoneIds: tickets.map((t) => t.zoneId),
         email,
       });
-      navigate(`/public/confirmation/${purchase.purchaseID}`);
+      // Pass purchase data + event name via navigation state
+      navigate(`/public/confirmation/${purchase.purchaseID}`, {
+        state: {
+          purchase,
+          eventName: event?.name,
+        },
+      });
     } catch {
       setSubmitError("No se pudo procesar la compra. Inténtalo de nuevo.");
     } finally {

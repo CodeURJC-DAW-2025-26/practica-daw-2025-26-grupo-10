@@ -1,42 +1,45 @@
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router";
-import { getPurchase, getDownloadUrl } from "~/services/purchases-service";
-import type { PurchaseConfirmation } from "~/services/purchases-service";
+import { Link, useLocation, useParams } from "react-router";
+import { getDownloadUrl } from "~/services/purchases-service";
+import type { PurchaseConfirmation } from "~/models/Purchase";
+
+interface ConfirmationState {
+  purchase: PurchaseConfirmation;
+  eventName?: string;
+}
 
 export default function Confirmation() {
   const { purchaseId } = useParams<{ purchaseId: string }>();
-  const [purchase, setPurchase] = useState<PurchaseConfirmation | null>(null);
-  const [isPending, setIsPending] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const location = useLocation();
+  const state = location.state as ConfirmationState | null;
 
-  useEffect(() => {
-    if (!purchaseId) return;
-    getPurchase(purchaseId)
-      .then(setPurchase)
-      .catch(() => setError("No se pudo cargar la información de la compra."))
-      .finally(() => setIsPending(false));
-  }, [purchaseId]);
-
-  if (isPending) {
+  // If user navigates here directly without coming from purchase page
+  if (!state?.purchase) {
     return (
       <div className="container my-5 text-center">
-        <p>Cargando confirmación...</p>
-      </div>
-    );
-  }
-
-  if (error || !purchase) {
-    return (
-      <div className="container my-5 text-center">
-        <div className="alert alert-danger">
-          {error ?? "No se encontró la compra."}
+        <div className="alert alert-success mb-4">
+          <h4 className="alert-heading">¡Compra realizada!</h4>
+          <p className="mb-0">Tu pedido #{purchaseId} ha sido procesado.</p>
         </div>
-        <Link to="/" className="btn btn-primary">
-          Volver al inicio
-        </Link>
+        <div className="d-flex justify-content-center gap-3">
+          <Link to="/" className="btn btn-primary">
+            Volver al inicio
+          </Link>
+          {purchaseId && (
+            <a
+              href={getDownloadUrl(purchaseId)}
+              className="btn btn-outline-primary"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Descargar entradas (PDF)
+            </a>
+          )}
+        </div>
       </div>
     );
   }
+
+  const { purchase, eventName } = state;
 
   const formattedDate = purchase.session?.date
     ? new Date(purchase.session.date).toLocaleString("es-ES", {
@@ -56,9 +59,9 @@ export default function Confirmation() {
         <li className="list-group-item">
           <strong>ID de Pedido:</strong> #{purchase.purchaseID}
         </li>
-        {purchase.event && (
+        {(eventName || purchase.event?.name) && (
           <li className="list-group-item">
-            <strong>Evento:</strong> {purchase.event.name}
+            <strong>Evento:</strong> {eventName ?? purchase.event?.name}
           </li>
         )}
         <li className="list-group-item">

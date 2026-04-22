@@ -5,7 +5,7 @@ import {
   createDiscount,
   updateDiscount,
 } from "~/services/discounts-service";
-import type { Discount } from "~/services/discounts-service";
+import type { Discount } from "~/models/Discount";
 
 export default function CreateDiscount() {
   const { id } = useParams<{ id?: string }>();

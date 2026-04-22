@@ -1,33 +1,17 @@
+import type { Discount, DiscountCreateDTO } from "~/models/Discount";
+
 const API_URL = "/api/v1/admin/discounts";
-
-export interface DiscountBasic {
-  discountName: string;
-  amount: number;
-  percentage: boolean;
-}
-
-export interface Discount extends DiscountBasic {
-  discountID: number;
-  events: { eventID: number; name: string }[];
-  selected: boolean;
-}
-
-export interface DiscountCreateDTO {
-  discountName: string;
-  amount: number;
-  percentage: boolean;
-}
 
 export async function getDiscounts(): Promise<Discount[]> {
   const res = await fetch(`${API_URL}`);
   if (!res.ok) throw new Error("Error al obtener descuentos");
-  return res.json();
+  return await res.json();
 }
 
 export async function getDiscount(id: string): Promise<Discount> {
   const res = await fetch(`${API_URL}/${id}`);
   if (!res.ok) throw new Error("Descuento no encontrado");
-  return res.json();
+  return await res.json();
 }
 
 export async function createDiscount(data: DiscountCreateDTO): Promise<Discount> {
@@ -37,7 +21,7 @@ export async function createDiscount(data: DiscountCreateDTO): Promise<Discount>
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error("Error al crear descuento");
-  return res.json();
+  return await res.json();
 }
 
 export async function updateDiscount(id: string, data: DiscountCreateDTO): Promise<Discount> {
@@ -47,7 +31,7 @@ export async function updateDiscount(id: string, data: DiscountCreateDTO): Promi
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error("Error al actualizar descuento");
-  return res.json();
+  return await res.json();
 }
 
 export async function deleteDiscount(id: number): Promise<void> {
