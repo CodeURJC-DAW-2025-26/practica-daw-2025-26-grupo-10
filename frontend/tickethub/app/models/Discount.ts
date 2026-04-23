@@ -1,17 +1,10 @@
-export interface DiscountBasic {
-  discountName: string;
-  amount: number;
-  percentage: boolean;
-}
+import type EventBasic from "~/models/EventBasic";
 
-export interface Discount extends DiscountBasic {
+export default interface Discount {
   discountID: number;
-  events: { eventID: number; name: string }[];
-  selected: boolean;
-}
-
-export interface DiscountCreateDTO {
   discountName: string;
-  amount: number;
   percentage: boolean;
+  amount: number;
+  events: EventBasic[];
+  selected: boolean;
 }

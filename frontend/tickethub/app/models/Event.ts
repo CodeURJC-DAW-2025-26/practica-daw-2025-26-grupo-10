@@ -1,29 +1,20 @@
-export interface SessionBasic {
-  sessionID: number;
-  date: string;
-}
+import type ArtistBasic from "~/models/ArtistBasic";
+import type SessionBasic from "~/models/SessionBasic";
+import type ZoneBasic from "~/models/ZoneBasic";
+import type DiscountBasic from "~/models/DiscountBasic";
+import type ImageBasic from "~/models/ImageBasic";
 
-export interface ZonePublic {
-  id: number;
-  name: string;
-  capacity: number;
-  price: number;
-}
-
-export interface DiscountPublic {
-  discountID: number;
-  discountName: string;
-  amount: number;
-  percentage: boolean;
-}
-
-export interface EventPublic {
+export default interface Event {
   eventID: number;
   name: string;
+  capacity: number;
+  targetAge: number;
+  artist: ArtistBasic;
+  sessions: SessionBasic[];
+  zones: ZoneBasic[];
+  discounts: DiscountBasic[];
   place: string;
   category: string;
-  sessions: SessionBasic[];
-  zones: ZonePublic[];
-  discounts: DiscountPublic[];
-  mainImage?: { imageID: number; imageName: string };
+  eventImages: ImageBasic[];
+  mainImage: ImageBasic;
 }

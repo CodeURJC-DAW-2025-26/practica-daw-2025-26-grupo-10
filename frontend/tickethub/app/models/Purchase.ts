@@ -1,18 +1,10 @@
-export interface PurchaseCreateDTO {
-  sessionId: number;
-  zoneIds: number[];
-  email: string;
-}
+import type TicketBasic from "~/models/TicketBasic";
+import type SessionBasic from "~/models/SessionBasic";
 
-export interface PurchaseConfirmation {
+export default interface Purchase {
   purchaseID: number;
+  tickets: TicketBasic[];
+  session: SessionBasic;
+  clientId: number;
   totalPrice: number;
-  session: {
-    sessionID: number;
-    date: string;
-  };
-  event?: {
-    eventID: number;
-    name: string;
-  };
 }
