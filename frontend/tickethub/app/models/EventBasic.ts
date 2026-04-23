@@ -1,5 +1,5 @@
-import type {ArtistBasic} from "~/models/ArtistBasic";
-import type {ImageBasic} from "~/models/ImageBasic";
+import type {ArtistBasic} from "./ArtistBasic";
+import type {ImageBasic} from "./ImageBasic";
 
 export interface EventBasic {
   eventID: number;

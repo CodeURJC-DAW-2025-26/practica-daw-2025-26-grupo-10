@@ -1,6 +1,8 @@
 import type { ArtistBasic } from "./ArtistBasic";
 import type { ImageBasic } from "./ImageBasic";
 import type { SessionBasic } from "./SessionBasic";
+import type { ZoneBasic } from "./ZoneBasic";
+import type { DiscountBasic } from "./DiscountBasic";
 
 export interface Event {
     eventID: number,

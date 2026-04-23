@@ -1,7 +1,7 @@
-import type {Image} from "~/models/ImageBasic";
+import type {ImageBasic} from "./ImageBasic";
 
 export interface ArtistBasic {
   artistID: number;
   artistName: string;
-  artistImage: Image;
+  artistImage: ImageBasic;
 }
