@@ -1,9 +1,10 @@
-import type { EventPublic } from "~/models/Event";
+import { API_URL } from "~/services/homeService";
+import type Event from "~/models/Event";
 
-const API_URL = "/api/v1/public/events";
+const EVENTS_PUBLIC_URL = `${API_URL}/public/events`;
 
-export async function getPublicEvent(id: string): Promise<EventPublic> {
-  const res = await fetch(`${API_URL}/${id}`);
+export async function getPublicEvent(id: string): Promise<Event> {
+  const res = await fetch(`${EVENTS_PUBLIC_URL}/${id}`);
   if (!res.ok) throw new Error("Evento no encontrado");
   return await res.json();
 }

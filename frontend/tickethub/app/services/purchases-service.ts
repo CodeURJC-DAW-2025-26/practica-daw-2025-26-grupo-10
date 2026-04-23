@@ -1,9 +1,11 @@
-import type { PurchaseCreateDTO, PurchaseConfirmation } from "~/models/Purchase";
+import { API_URL } from "~/services/homeService";
+import type PurchaseCreate from "~/models/PurchaseCreate";
+import type Purchase from "~/models/Purchase";
 
-const API_URL = "/api/v1/public/purchases";
+const PURCHASES_URL = `${API_URL}/public/purchases`;
 
-export async function savePurchase(data: PurchaseCreateDTO): Promise<PurchaseConfirmation> {
-  const res = await fetch(`${API_URL}/save`, {
+export async function savePurchase(data: PurchaseCreate): Promise<Purchase> {
+  const res = await fetch(`${PURCHASES_URL}/save`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -12,8 +14,8 @@ export async function savePurchase(data: PurchaseCreateDTO): Promise<PurchaseCon
   return await res.json();
 }
 
-export async function getPurchase(purchaseId: string): Promise<PurchaseConfirmation> {
-  const res = await fetch(`${API_URL}/${purchaseId}`);
+export async function getPurchase(purchaseId: string): Promise<Purchase> {
+  const res = await fetch(`${PURCHASES_URL}/${purchaseId}`);
   if (!res.ok) throw new Error("Compra no encontrada");
   return await res.json();
 }

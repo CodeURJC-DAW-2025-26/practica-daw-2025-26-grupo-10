@@ -1,9 +1,11 @@
-import type { Zone, ZoneCreateDTO } from "~/models/Zone";
+import { API_URL } from "~/services/homeService";
+import type Zone from "~/models/Zone";
+import type ZoneCreate from "~/models/ZoneCreate";
 
-const BASE_URL = "/api/v1/admin/events";
+const EVENTS_URL = `${API_URL}/admin/events`;
 
 function url(eventId: string, zoneId?: string): string {
-  const base = `${BASE_URL}/${eventId}/zones`;
+  const base = `${EVENTS_URL}/${eventId}/zones`;
   return zoneId ? `${base}/${zoneId}` : base;
 }
 
@@ -19,7 +21,7 @@ export async function getZone(eventId: string, zoneId: string): Promise<Zone> {
   return await res.json();
 }
 
-export async function createZone(eventId: string, data: ZoneCreateDTO): Promise<Zone> {
+export async function createZone(eventId: string, data: ZoneCreate): Promise<Zone> {
   const res = await fetch(url(eventId), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -29,7 +31,7 @@ export async function createZone(eventId: string, data: ZoneCreateDTO): Promise<
   return await res.json();
 }
 
-export async function updateZone(eventId: string, zoneId: string, data: ZoneCreateDTO): Promise<Zone> {
+export async function updateZone(eventId: string, zoneId: string, data: ZoneCreate): Promise<Zone> {
   const res = await fetch(url(eventId, zoneId), {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
