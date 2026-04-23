@@ -5,7 +5,7 @@ import {
   createDiscount,
   updateDiscount,
 } from "~/services/discounts-service";
-import type { Discount } from "~/models/Discount";
+import type Discount from "~/models/Discount";
 
 export default function CreateDiscount() {
   const { id } = useParams<{ id?: string }>();
@@ -15,7 +15,6 @@ export default function CreateDiscount() {
   const [discount, setDiscount] = useState<Discount | null>(null);
   const [isLoadingDiscount, setIsLoadingDiscount] = useState(isEditing);
 
-  // Load existing discount data when editing
   useEffect(() => {
     if (!id) return;
     setIsLoadingDiscount(true);
@@ -29,22 +28,24 @@ export default function CreateDiscount() {
     _prev: { error: string | null },
     formData: FormData
   ) {
-    const discountName = formData.get("discountName") as string;
-    const amount = parseFloat(formData.get("amount") as string);
-    const percentage = formData.get("percentage") === "true";
+    const data = {
+      discountName: formData.get("discountName") as string,
+      amount: parseFloat(formData.get("amount") as string),
+      percentage: formData.get("percentage") === "true",
+    };
 
-    if (!discountName.trim()) {
+    if (!data.discountName.trim()) {
       return { error: "El nombre del descuento es obligatorio." };
     }
-    if (isNaN(amount) || amount <= 0) {
+    if (isNaN(data.amount) || data.amount <= 0) {
       return { error: "El importe debe ser un número positivo." };
     }
 
     try {
       if (isEditing && id) {
-        await updateDiscount(id, { discountName, amount, percentage });
+        await updateDiscount(id, data);
       } else {
-        await createDiscount({ discountName, amount, percentage });
+        await createDiscount(data);
       }
       navigate("/admin/discounts");
       return { error: null };

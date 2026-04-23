@@ -1,7 +1,7 @@
 import { useActionState, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { getZone, createZone, updateZone } from "~/services/zones-service";
-import type { Zone } from "~/models/Zone";
+import type Zone from "~/models/Zone";
 
 export default function CreateZone() {
   const { eventId, id } = useParams<{ eventId: string; id?: string }>();
@@ -11,7 +11,6 @@ export default function CreateZone() {
   const [zone, setZone] = useState<Zone | null>(null);
   const [isLoadingZone, setIsLoadingZone] = useState(isEditing);
 
-  // Load existing zone data when editing
   useEffect(() => {
     if (!id || !eventId) return;
     setIsLoadingZone(true);
@@ -25,25 +24,27 @@ export default function CreateZone() {
     _prev: { error: string | null },
     formData: FormData
   ) {
-    const name = formData.get("name") as string;
-    const capacity = parseInt(formData.get("capacity") as string, 10);
-    const price = parseFloat(formData.get("price") as string);
+    const data = {
+      name: formData.get("name") as string,
+      capacity: parseInt(formData.get("capacity") as string, 10),
+      price: parseFloat(formData.get("price") as string),
+    };
 
-    if (!name.trim()) {
+    if (!data.name.trim()) {
       return { error: "El nombre de la zona es obligatorio." };
     }
-    if (isNaN(capacity) || capacity <= 0) {
+    if (isNaN(data.capacity) || data.capacity <= 0) {
       return { error: "La capacidad debe ser un número entero positivo." };
     }
-    if (isNaN(price) || price <= 0) {
+    if (isNaN(data.price) || data.price <= 0) {
       return { error: "El precio debe ser un número positivo." };
     }
 
     try {
       if (isEditing && id && eventId) {
-        await updateZone(eventId, id, { name, capacity, price });
+        await updateZone(eventId, id, data);
       } else if (eventId) {
-        await createZone(eventId, { name, capacity, price });
+        await createZone(eventId, data);
       }
       navigate(`/admin/events/${eventId}/zones`);
       return { error: null };

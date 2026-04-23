@@ -1,9 +1,9 @@
 import { Link, useLocation, useParams } from "react-router";
 import { getDownloadUrl } from "~/services/purchases-service";
-import type { PurchaseConfirmation } from "~/models/Purchase";
+import type Purchase from "~/models/Purchase";
 
 interface ConfirmationState {
-  purchase: PurchaseConfirmation;
+  purchase: Purchase;
   eventName?: string;
 }
 
@@ -12,7 +12,6 @@ export default function Confirmation() {
   const location = useLocation();
   const state = location.state as ConfirmationState | null;
 
-  // If user navigates here directly without coming from purchase page
   if (!state?.purchase) {
     return (
       <div className="container my-5 text-center">
@@ -59,9 +58,9 @@ export default function Confirmation() {
         <li className="list-group-item">
           <strong>ID de Pedido:</strong> #{purchase.purchaseID}
         </li>
-        {(eventName || purchase.event?.name) && (
+        {eventName && (
           <li className="list-group-item">
-            <strong>Evento:</strong> {eventName ?? purchase.event?.name}
+            <strong>Evento:</strong> {eventName}
           </li>
         )}
         <li className="list-group-item">

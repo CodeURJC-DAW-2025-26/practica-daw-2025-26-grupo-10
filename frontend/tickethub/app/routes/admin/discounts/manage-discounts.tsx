@@ -1,21 +1,27 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { getDiscounts, deleteDiscount } from "~/services/discounts-service";
-import type { Discount } from "~/models/Discount";
+import type Discount from "~/models/Discount";
+import { ConfirmDialog } from "~/components/confirmDialog/ConfirmDialog";
+import { useTemporaryMessage } from "~/hooks/useTemporaryMessage";
+import { useConfirmDialog } from "~/hooks/useConfirmDialog";
 
 export default function ManageDiscounts() {
   const [discounts, setDiscounts] = useState<Discount[]>([]);
   const [isPending, setIsPending] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  const { error: deleteError, setError: setDeleteError, success: deleteSuccess, setSuccess: setDeleteSuccess } = useTemporaryMessage();
+  const { isOpen: isNotConfirmed, message, confirm, handleCancel, handleConfirm } = useConfirmDialog();
 
   async function loadDiscounts() {
     setIsPending(true);
     try {
       const data = await getDiscounts();
       setDiscounts(data);
-    } catch (err) {
-      setError("No se pudieron cargar los descuentos.");
+    } catch {
+      setLoadError("No se pudieron cargar los descuentos.");
     } finally {
       setIsPending(false);
     }
@@ -25,31 +31,39 @@ export default function ManageDiscounts() {
     loadDiscounts();
   }, []);
 
-  async function handleDelete(id: number) {
-    if (!confirm("¿Eliminar este descuento?")) return;
-    try {
-      await deleteDiscount(id);
-      await loadDiscounts();
-    } catch {
-      setError("No se pudo eliminar el descuento.");
-    }
+  function handleDelete(id: number) {
+    confirm("¿Estás seguro de que deseas eliminar este descuento?", async () => {
+      try {
+        await deleteDiscount(id);
+        setDeleteSuccess("Descuento eliminado correctamente.");
+        await loadDiscounts();
+      } catch (err) {
+        console.error(err);
+        setDeleteError("No se pudo eliminar el descuento.");
+      }
+    });
   }
 
   return (
     <div className="container my-5">
+      {isNotConfirmed && (
+        <ConfirmDialog
+          message={message}
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+        />
+      )}
+
       <h2>Gestión de Descuentos</h2>
 
-      {error && (
+      {loadError && (
         <div className="alert alert-danger alert-dismissible fade show" role="alert">
-          {error}
-          <button
-            type="button"
-            className="btn-close"
-            onClick={() => setError(null)}
-            aria-label="Cerrar"
-          />
+          {loadError}
+          <button type="button" className="btn-close" onClick={() => setLoadError(null)} aria-label="Cerrar" />
         </div>
       )}
+      {deleteError && <p className="alert alert-danger">{deleteError}</p>}
+      {deleteSuccess && <p className="alert alert-success">{deleteSuccess}</p>}
 
       {isPending ? (
         <p>Cargando descuentos...</p>

@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { getPublicEvent } from "~/services/events-service";
 import { savePurchase } from "~/services/purchases-service";
-import type { EventPublic } from "~/models/Event";
+import type Event from "~/models/Event";
+import type TicketSelection from "~/models/TicketSelection";
 
-interface TicketSelection {
+interface LocalTicket {
   zoneId: number;
 }
 
@@ -12,17 +13,16 @@ export default function Purchase() {
   const { eventId } = useParams<{ eventId: string }>();
   const navigate = useNavigate();
 
-  const [event, setEvent] = useState<EventPublic | null>(null);
+  const [event, setEvent] = useState<Event | null>(null);
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Form state
   const [selectedSession, setSelectedSession] = useState<number | "">("");
   const [ticketCount, setTicketCount] = useState(0);
-  const [tickets, setTickets] = useState<TicketSelection[]>([]);
-  const [selectedDiscount, setSelectedDiscount] = useState<number | "">("");
+  const [tickets, setTickets] = useState<LocalTicket[]>([]);
+  const [selectedDiscountIndex, setSelectedDiscountIndex] = useState<number | "">("");
   const [email, setEmail] = useState("");
   const [emailConfirm, setEmailConfirm] = useState("");
 
@@ -34,7 +34,6 @@ export default function Purchase() {
       .finally(() => setIsPending(false));
   }, [eventId]);
 
-  // Sync ticket array length with ticketCount
   useEffect(() => {
     setTickets((prev) => {
       if (ticketCount > prev.length) {
@@ -53,6 +52,14 @@ export default function Purchase() {
     );
   }
 
+  function buildSelections(): TicketSelection[] {
+    const counts = new Map<number, number>();
+    for (const t of tickets) {
+      counts.set(t.zoneId, (counts.get(t.zoneId) || 0) + 1);
+    }
+    return Array.from(counts.entries()).map(([zoneID, quantity]) => ({ zoneID, quantity }));
+  }
+
   function calculateTotal(): number {
     if (!event) return 0;
 
@@ -61,11 +68,9 @@ export default function Purchase() {
       return sum + (zone?.price ?? 0);
     }, 0);
 
-    if (!selectedDiscount) return baseTotal;
+    if (selectedDiscountIndex === "") return baseTotal;
 
-    const discount = event.discounts.find(
-      (d) => d.discountID === selectedDiscount
-    );
+    const discount = event.discounts[selectedDiscountIndex];
     if (!discount) return baseTotal;
 
     if (discount.percentage) {
@@ -101,11 +106,10 @@ export default function Purchase() {
     setIsSubmitting(true);
     try {
       const purchase = await savePurchase({
-        sessionId: Number(selectedSession),
-        zoneIds: tickets.map((t) => t.zoneId),
-        email,
+        sessionID: Number(selectedSession),
+        selections: buildSelections(),
+        name: email,
       });
-      // Pass purchase data + event name via navigation state
       navigate(`/public/confirmation/${purchase.purchaseID}`, {
         state: {
           purchase,
@@ -144,7 +148,6 @@ export default function Purchase() {
     <div className="container my-5">
       <h2 className="mb-4">Compra de Entradas — {event.name}</h2>
 
-      {/* Session selector */}
       <div className="mb-4">
         <h4 className="mb-2">Selecciona la sesión:</h4>
         <select
@@ -161,7 +164,6 @@ export default function Purchase() {
         </select>
       </div>
 
-      {/* Ticket count */}
       <div className="d-flex align-items-center gap-3 mb-4">
         <h4 className="mb-0">Número de entradas:</h4>
         <select
@@ -179,7 +181,6 @@ export default function Purchase() {
 
       <hr />
 
-      {/* Per-ticket zone selection */}
       {tickets.length > 0 && (
         <div className="mb-4">
           <h5>Selecciona zona para cada entrada:</h5>
@@ -205,19 +206,18 @@ export default function Purchase() {
 
       <hr />
 
-      {/* Discount */}
       <div className="mb-4">
         <h5>Aplicar descuento:</h5>
         <select
           className="form-select w-auto"
-          value={selectedDiscount}
+          value={selectedDiscountIndex}
           onChange={(e) =>
-            setSelectedDiscount(Number(e.target.value) || "")
+            setSelectedDiscountIndex(e.target.value === "" ? "" : Number(e.target.value))
           }
         >
           <option value="">Sin descuento</option>
-          {event.discounts.map((d) => (
-            <option key={d.discountID} value={d.discountID}>
+          {event.discounts.map((d, i) => (
+            <option key={i} value={i}>
               {d.discountName} —{" "}
               {d.percentage ? `${d.amount}%` : `${d.amount}€`}
             </option>
@@ -227,7 +227,6 @@ export default function Purchase() {
 
       <hr />
 
-      {/* Email */}
       <div className="col-md-4 mb-4">
         <div className="mb-3">
           <label className="form-label fw-bold">Correo electrónico</label>
@@ -257,7 +256,6 @@ export default function Purchase() {
 
       <hr />
 
-      {/* Payment (mock — no real gateway) */}
       <h4 className="mb-3">Datos de pago</h4>
       <div className="row mb-3">
         <div className="col-md-5">

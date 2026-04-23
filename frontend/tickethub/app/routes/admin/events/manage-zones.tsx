@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { getZones, deleteZone } from "~/services/zones-service";
-import type { Zone } from "~/models/Zone";
+import type Zone from "~/models/Zone";
+import { ConfirmDialog } from "~/components/confirmDialog/ConfirmDialog";
+import { useTemporaryMessage } from "~/hooks/useTemporaryMessage";
+import { useConfirmDialog } from "~/hooks/useConfirmDialog";
 
 export default function ManageZones() {
   const { eventId } = useParams<{ eventId: string }>();
   const [zones, setZones] = useState<Zone[]>([]);
   const [isPending, setIsPending] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  const { error: deleteError, setError: setDeleteError, success: deleteSuccess, setSuccess: setDeleteSuccess } = useTemporaryMessage();
+  const { isOpen: isNotConfirmed, message, confirm, handleCancel, handleConfirm } = useConfirmDialog();
 
   async function loadZones() {
     if (!eventId) return;
@@ -17,7 +23,7 @@ export default function ManageZones() {
       const data = await getZones(eventId);
       setZones(data);
     } catch {
-      setError("No se pudieron cargar las zonas.");
+      setLoadError("No se pudieron cargar las zonas.");
     } finally {
       setIsPending(false);
     }
@@ -27,31 +33,39 @@ export default function ManageZones() {
     loadZones();
   }, [eventId]);
 
-  async function handleDelete(zoneId: number) {
-    if (!confirm("¿Eliminar esta zona?")) return;
-    try {
-      await deleteZone(eventId!, zoneId);
-      await loadZones();
-    } catch {
-      setError("No se pudo eliminar la zona.");
-    }
+  function handleDelete(zoneId: number) {
+    confirm("¿Estás seguro de que deseas eliminar esta zona?", async () => {
+      try {
+        await deleteZone(eventId!, zoneId);
+        setDeleteSuccess("Zona eliminada correctamente.");
+        await loadZones();
+      } catch (err) {
+        console.error(err);
+        setDeleteError("No se pudo eliminar la zona.");
+      }
+    });
   }
 
   return (
     <div className="container my-5">
+      {isNotConfirmed && (
+        <ConfirmDialog
+          message={message}
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+        />
+      )}
+
       <h2>Gestión de Zonas</h2>
 
-      {error && (
+      {loadError && (
         <div className="alert alert-danger alert-dismissible fade show" role="alert">
-          {error}
-          <button
-            type="button"
-            className="btn-close"
-            onClick={() => setError(null)}
-            aria-label="Cerrar"
-          />
+          {loadError}
+          <button type="button" className="btn-close" onClick={() => setLoadError(null)} aria-label="Cerrar" />
         </div>
       )}
+      {deleteError && <p className="alert alert-danger">{deleteError}</p>}
+      {deleteSuccess && <p className="alert alert-success">{deleteSuccess}</p>}
 
       {isPending ? (
         <p>Cargando zonas...</p>
