@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { getEvents, getCategories } from "~/services/events-service";
 import type { EventBasic } from "~/models/EventBasic";
 import { API_URL } from "~/services/homeService";
+import { useStore } from "~/store/useStore";
 
 export default function Events() {
 
@@ -15,7 +16,7 @@ export default function Events() {
   const [isLast, setIsLast] = useState(false);
   const [page, setPage] = useState(0);
 
-  const [filterArtist, setFilterArtist] = useState("");
+  const {eventsSearch, setEventsSearch} = useStore();
   const [filterCategory, setFilterCategory] = useState("");
   const [filterDate, setFilterDate] = useState("");
 
@@ -39,7 +40,7 @@ export default function Events() {
     }
 
     try {
-      const data = await getEvents(currentPage, size, filterArtist, filterCategory, filterDate);
+      const data = await getEvents(currentPage, size, eventsSearch, filterCategory, filterDate);
       setEvents(reset ? data : (prev) => [...prev, ...data]);
       setIsLast(data.length < 5);
       setPage(currentPage + 1);
@@ -55,7 +56,12 @@ export default function Events() {
   useEffect(() => { loadCategories(); }, []);
 
   // Reload with every change at the filters
-  useEffect(() => { loadEvents(true); }, [filterArtist, filterCategory, filterDate]);
+  useEffect(() => { loadEvents(true); }, [filterCategory, filterDate]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {loadEvents(true)}, 500);
+    return () => clearTimeout(timer);
+  }, [eventsSearch]);
 
   return (
     <div className="container my-5">
@@ -88,8 +94,8 @@ export default function Events() {
             type="text"
             className="form-control"
             placeholder="Artista"
-            value={filterArtist}
-            onChange={(e) => setFilterArtist(e.target.value)}
+            value={eventsSearch}
+            onChange={(e) => setEventsSearch(e.target.value)}
           />
         </div>
       </div>

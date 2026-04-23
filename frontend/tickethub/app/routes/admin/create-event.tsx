@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router";
 import { getArtists, createEvent, updateEvent, getEvent } from "~/services/event-service";
 import type { ArtistBasic } from "~/models/ArtistBasic";
 import type { SessionBasic } from "~/models/SessionBasic";
-//import type { ZoneBasic } from "~/models/ZoneBasic";
+import type { ZoneBasic } from "~/models/ZoneBasic";
 import type { Event } from "~/models/Event";
 import type { ImageBasic } from "~/models/ImageBasic";
 import { API_URL } from "~/services/homeService";
@@ -90,6 +90,12 @@ export default function CreateEvent() {
   return (
     <main className="container my-5 flex-grow-1">
         <h2 className="text-center">{isEditing ? "Editar Evento" : "Crear Evento"}</h2>
+
+        {state.error && (
+          <div className="alert alert-danger alert-dismissible fade show" role="alert">
+            {state.error}
+          </div>
+        )}
 
         <form action={formAction}>
 
@@ -270,8 +276,6 @@ export default function CreateEvent() {
             {/* SUBIR IMÁGENES */}
             <p className="fw-bold mb-1">Subir nuevas imágenes</p>
             <input type="file" name="images" className="form-control mb-3" multiple disabled={isPending} />
-
-            {state.error && <p className="text-danger">{state.error}</p>}
 
             {/* BOTONES */}
             <div className="d-flex justify-content-between mt-3">

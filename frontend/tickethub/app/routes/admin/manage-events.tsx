@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { getEvents, deleteEvent } from "~/services/events-service";
 import type { EventBasic } from "~/models/EventBasic";
+import { useConfirmDialog } from "~/hooks/useConfirmDialog";
+import { ConfirmDialog } from "~/components/confirmDialog";
+import { useTemporaryMessage } from "~/hooks/useTemporaryMessage";
 
 export default function ManageEvents() {
 
@@ -12,7 +15,11 @@ export default function ManageEvents() {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [isLast, setIsLast] = useState(false);
   const [page, setPage] = useState(0);
-  const [deleteError, setDeleteError] = useState<string | null>(null);
+
+  const { error: deleteError, setError: setDeleteError,
+          success: deleteSuccess, setSuccess: setDeleteSuccess } = useTemporaryMessage();
+
+  const {isOpen: isNotConfirmed, message, confirm, handleCancel, handleConfirm} = useConfirmDialog();
 
   async function loadEvents(reset: boolean = false) {
     const currentPage = reset ? 0 : page;
@@ -37,26 +44,33 @@ export default function ManageEvents() {
   }
 
   async function handleDelete(eventID: number) {
-    const confirmed = window.confirm("¿Estás seguro de que quieres eliminar este evento?");
-    if (!confirmed) return;
-
-    setDeleteError(null);
-    try {
-      await deleteEvent(eventID);
-      setEvents((prev) => prev.filter((e) => e.eventID !== eventID));
-    } catch (err) {
-      console.error(err);
-      setDeleteError("Error al eliminar el evento");
-    }
+    confirm("¿Estás seguro de que quieres eliminar este evento?", async () => {
+      try {
+        await deleteEvent(eventID);
+        setEvents((prev) => prev.filter((e) => e.eventID !== eventID));
+        setDeleteSuccess("Evento eliminado correctamente")
+      } catch (err) {
+        console.error(err);
+        setDeleteError("Error al eliminar el evento");
+      }
+    });
   }
 
   useEffect(() => { loadEvents(true); }, []);
 
   return (
     <div className="container my-5">
+      {isNotConfirmed && (
+        <ConfirmDialog
+          message={message}
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+        />
+      )}
       <h2>Gestión de Eventos</h2>
 
-      {deleteError && <p className="text-danger">{deleteError}</p>}
+      {deleteError && <p className="alert alert-danger">{deleteError}</p>}
+      {deleteSuccess && <p className="alert alert-success">{deleteSuccess}</p>}
 
       {isPending ? (
         <p>Cargando eventos...</p>
