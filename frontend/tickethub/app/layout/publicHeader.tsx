@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { PublicNavMenu } from "~/components/publicNavBar/PublicNavMenu";
 import { API_URL } from "~/services/homeService";
 import { useStore } from "~/store/useStore";
 
@@ -10,7 +11,7 @@ export const PublicHeader = () => {
     const isClient = isAuthenticated && !isAdmin;
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark">
+        <nav className="navbar navbar-expand-lg">
             <div className="container-fluid">
                 <Link className="navbar-brand" to="/">
                     TicketHub
@@ -29,14 +30,7 @@ export const PublicHeader = () => {
                 </button>
 
                 <div className="collapse navbar-collapse" id="navbarMain">
-                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/public/events">Eventos</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/public/artists">Artistas</Link>
-                        </li>
-                    </ul>
+                    <PublicNavMenu/>
 
                     <div className="d-flex align-items-center gap-3">
                         {isAuthenticated && <>

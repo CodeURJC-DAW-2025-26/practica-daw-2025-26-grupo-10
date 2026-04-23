@@ -3,7 +3,7 @@ import { Link } from "react-router";
 export const PublicFooter = () => {
     return (
         <footer className="mt-auto">
-            <div className="container text-white py-4">
+            <div className="container text-black py-4">
 
                 <div className="row">
 
@@ -19,17 +19,17 @@ export const PublicFooter = () => {
                         <h5>Enlaces rápidos</h5>
                         <ul className="list-unstyled">
                             <li>
-                                <Link to="/" className="text-decoration-none text-white">
+                                <Link to="/" className="text-decoration-none text-black">
                                     Inicio
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/public/events" className="text-decoration-none text-white">
+                                <Link to="/public/events" className="text-decoration-none text-black">
                                     Eventos
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/public/artists" className="text-decoration-none text-white">
+                                <Link to="/public/artists" className="text-decoration-none text-black">
                                     Artistas
                                 </Link>
                             </li>
@@ -40,17 +40,17 @@ export const PublicFooter = () => {
                         <h5>Síguenos</h5>
                         <ul className="list-inline">
                             <li className="list-inline-item">
-                                <a href="#" className="text-white">
+                                <a href="#" className="text-black">
                                     <i className="bi bi-facebook"></i>
                                 </a>
                             </li>
                             <li className="list-inline-item">
-                                <a href="#" className="text-white">
+                                <a href="#" className="text-black">
                                     <i className="bi bi-twitter"></i>
                                 </a>
                             </li>
                             <li className="list-inline-item">
-                                <a href="#" className="text-white">
+                                <a href="#" className="text-black">
                                     <i className="bi bi-instagram"></i>
                                 </a>
                             </li>
