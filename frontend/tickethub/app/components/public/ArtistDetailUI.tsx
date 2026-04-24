@@ -13,7 +13,7 @@ export default function ArtistDetailUI({ artist, eventsIncoming, lastEvents }: P
         <div className="container my-5">
             <div className="card text-center">
                 <img
-                    src={`/images/entities/artists/${artist.artistID}`}
+                    src={`/api/v1/public/artists/${artist.artistID}/image`}
                     className="rounded-circle mx-auto mt-4"
                     width="150"
                     height="150"

@@ -28,24 +28,28 @@ export default function ArtistsListUI({ artists, searchQuery, onSearchChange, on
                 </div>
 
                 <div className="row g-4">
-                    {artists.map((artist) => (
-                        <div key={artist.artistID} className="col-md-3">
-                            <div className="card text-center">
-                                <img
-                                    src={`/images/entities/artists/${artist.artistID}`}
-                                    className="card-img-top rounded-circle mx-auto mt-3"
-                                    style={{ width: "150px", height: "150px", objectFit: "cover" }}
-                                    alt={artist.artistName}
-                                />
-                                <div className="card-body">
-                                    <h5 className="card-title">{artist.artistName}</h5>
-                                    <Link to={`/public/artist/${artist.artistID}`} className="btn btn-primary">
-                                        Ver artista
-                                    </Link>
+                    {artists.length === 0 ? (
+                        <p className="text-muted">No se encontraron artistas.</p>
+                    ) : (
+                        artists.map((artist) => (
+                            <div key={artist.artistID} className="col-md-3">
+                                <div className="card text-center">
+                                    <img
+                                        src={`/api/v1/public/artists/${artist.artistID}/image`}
+                                        className="card-img-top rounded-circle mx-auto mt-3"
+                                        style={{ width: "150px", height: "150px", objectFit: "cover" }}
+                                        alt={artist.artistName}
+                                    />
+                                    <div className="card-body">
+                                        <h5 className="card-title">{artist.artistName}</h5>
+                                        <Link to={`/public/artist/${artist.artistID}`} className="btn btn-primary">
+                                            Ver artista
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                    )}
                 </div>
 
                 {hasMore && (
