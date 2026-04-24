@@ -1,6 +1,6 @@
 import { API_URL } from "~/services/homeService";
 import type Discount from "~/models/Discount";
-import type DiscountCreate from "~/models/DiscountCreate";
+import type DiscountBasic from "~/models/DiscountBasic";
 
 const DISCOUNTS_URL = `${API_URL}/admin/discounts`;
 
@@ -17,7 +17,7 @@ export async function getDiscount(id: string): Promise<Discount> {
   return await res.json();
 }
 
-export async function createDiscount(data: DiscountCreate): Promise<Discount> {
+export async function createDiscount(data: DiscountBasic): Promise<Discount> {
   const res = await fetch(`${DISCOUNTS_URL}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -27,7 +27,7 @@ export async function createDiscount(data: DiscountCreate): Promise<Discount> {
   return await res.json();
 }
 
-export async function updateDiscount(id: string, data: DiscountCreate): Promise<Discount> {
+export async function updateDiscount(id: string, data: DiscountBasic): Promise<Discount> {
   const res = await fetch(`${DISCOUNTS_URL}/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },

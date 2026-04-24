@@ -5,10 +5,6 @@ import { savePurchase } from "~/services/purchases-service";
 import type Event from "~/models/Event";
 import type TicketSelection from "~/models/TicketSelection";
 
-interface LocalTicket {
-  zoneId: number;
-}
-
 export default function Purchase() {
   const { eventId } = useParams<{ eventId: string }>();
   const navigate = useNavigate();
@@ -21,7 +17,7 @@ export default function Purchase() {
 
   const [selectedSession, setSelectedSession] = useState<number | "">("");
   const [ticketCount, setTicketCount] = useState(0);
-  const [tickets, setTickets] = useState<LocalTicket[]>([]);
+  const [tickets, setTickets] = useState<number[]>([]);
   const [selectedDiscountIndex, setSelectedDiscountIndex] = useState<number | "">("");
   const [email, setEmail] = useState("");
   const [emailConfirm, setEmailConfirm] = useState("");
@@ -37,25 +33,20 @@ export default function Purchase() {
   useEffect(() => {
     setTickets((prev) => {
       if (ticketCount > prev.length) {
-        return [
-          ...prev,
-          ...Array(ticketCount - prev.length).fill({ zoneId: 0 }),
-        ];
+        return [...prev, ...Array(ticketCount - prev.length).fill(0)];
       }
       return prev.slice(0, ticketCount);
     });
   }, [ticketCount]);
 
   function updateTicketZone(index: number, zoneId: number) {
-    setTickets((prev) =>
-      prev.map((t, i) => (i === index ? { zoneId } : t))
-    );
+    setTickets((prev) => prev.map((t, i) => (i === index ? zoneId : t)));
   }
 
   function buildSelections(): TicketSelection[] {
     const counts = new Map<number, number>();
-    for (const t of tickets) {
-      counts.set(t.zoneId, (counts.get(t.zoneId) || 0) + 1);
+    for (const zoneId of tickets) {
+      counts.set(zoneId, (counts.get(zoneId) || 0) + 1);
     }
     return Array.from(counts.entries()).map(([zoneID, quantity]) => ({ zoneID, quantity }));
   }
@@ -63,8 +54,8 @@ export default function Purchase() {
   function calculateTotal(): number {
     if (!event) return 0;
 
-    const baseTotal = tickets.reduce((sum, t) => {
-      const zone = event.zones.find((z) => z.id === t.zoneId);
+    const baseTotal = tickets.reduce((sum, zoneId) => {
+      const zone = event.zones.find((z) => z.id === zoneId);
       return sum + (zone?.price ?? 0);
     }, 0);
 
@@ -90,7 +81,7 @@ export default function Purchase() {
       setSubmitError("Debes seleccionar al menos una entrada.");
       return;
     }
-    if (tickets.some((t) => !t.zoneId)) {
+    if (tickets.some((zoneId) => !zoneId)) {
       setSubmitError("Todas las entradas deben tener una zona asignada.");
       return;
     }
@@ -184,12 +175,12 @@ export default function Purchase() {
       {tickets.length > 0 && (
         <div className="mb-4">
           <h5>Selecciona zona para cada entrada:</h5>
-          {tickets.map((t, i) => (
+          {tickets.map((zoneId, i) => (
             <div key={i} className="d-flex align-items-center gap-2 mb-2">
               <span className="me-2">Entrada {i + 1}:</span>
               <select
                 className="form-select w-auto"
-                value={t.zoneId || ""}
+                value={zoneId || ""}
                 onChange={(e) => updateTicketZone(i, Number(e.target.value))}
               >
                 <option value="">Selecciona una zona</option>
