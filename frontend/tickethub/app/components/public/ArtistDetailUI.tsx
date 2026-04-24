@@ -47,22 +47,35 @@ export default function ArtistDetailUI({ artist, eventsIncoming, lastEvents }: P
                     )}
 
                     <div className="d-flex justify-content-center gap-2 mt-3">
-                        <a
-                            href={`https://www.instagram.com/${artist.instagram}/`}
-                            className="btn btn-outline-primary btn-sm"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            Instagram
-                        </a>
-                        <a
-                            href={`https://www.x.com/${artist.twitter}`}
-                            className="btn btn-outline-info btn-sm"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            Twitter
-                        </a>
+                        {artist.instagram ? (
+                            <a
+                                href={`https://www.instagram.com/${artist.instagram}/`}
+                                className="btn btn-outline-primary btn-sm"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                Instagram
+                            </a>
+                        ) : (
+                            <span className="btn btn-outline-primary btn-sm disabled opacity-50">
+                                Instagram
+                            </span>
+                        )}
+
+                        {artist.twitter ? (
+                            <a
+                                href={`https://www.x.com/${artist.twitter}`}
+                                className="btn btn-outline-info btn-sm"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                Twitter
+                            </a>
+                        ) : (
+                            <span className="btn btn-outline-info btn-sm disabled opacity-50">
+                                Twitter
+                            </span>
+                        )}
                     </div>
 
                     <div className="card-body" style={{ textAlign: "center" }}>
@@ -70,6 +83,6 @@ export default function ArtistDetailUI({ artist, eventsIncoming, lastEvents }: P
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
