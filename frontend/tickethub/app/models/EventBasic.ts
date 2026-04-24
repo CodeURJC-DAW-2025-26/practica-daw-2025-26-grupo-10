@@ -1,12 +1,13 @@
-import type ArtistBasic from "~/models/ArtistBasic";
-import type SessionBasic from "~/models/SessionBasic";
+import type {ArtistBasic} from "./ArtistBasic";
+import type {SessionBasic} from "./SessionBasic";
+import type {ImageBasic} from "./ImageBasic";
 
-export default interface EventBasic {
+export interface EventBasic {
   eventID: number;
   name: string;
   artist: ArtistBasic;
   category: string;
   place: string;
   sessions: SessionBasic[];
-  mainImageUrl: string;
+  mainImageUrl: ImageBasic;
 }

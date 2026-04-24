@@ -3,6 +3,8 @@ import { create } from 'zustand';
 interface AuthState {
     user: any | null; // Ese any habrá que cambiarlo por la interfaz de usuario, es un truño
     isAuthenticated: boolean;
+    eventsSearch: string;
+    setEventsSearch: (q: string) => void;
     setUser: (user: any) => void;
     logout: () => Promise<void>;
 }
@@ -11,6 +13,9 @@ export const useStore = create<AuthState>((set) => ({
     user: null,
     isAuthenticated: false,
     setUser: (user) => set({ user, isAuthenticated: !!user }),
+    eventsSearch: "",
+
+    setEventsSearch: (q) => set({eventsSearch: q}),
 
     logout: async () => {
         try {

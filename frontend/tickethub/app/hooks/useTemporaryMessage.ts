@@ -1,25 +1,22 @@
 import { useState, useEffect } from "react";
 
-export function useTemporaryMessage(duration = 3000) {
-  const [error, setErrorState] = useState<string | null>(null);
-  const [success, setSuccessState] = useState<string | null>(null);
+//Time to show the message
+const duration = 3000;
+
+//This adds a timer of 3 seconds to show the message of the error or success at deleting the event
+export function useTemporaryMessage() {
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!error) return;
-    const t = setTimeout(() => setErrorState(null), duration);
-    return () => clearTimeout(t);
-  }, [error, duration]);
+    if (error || success) {
+      const timer = setTimeout(() => {
+        setError(null);
+        setSuccess(null);
+      }, duration);
+      return () => clearTimeout(timer);
+    }
+  }, [error, success]);
 
-  useEffect(() => {
-    if (!success) return;
-    const t = setTimeout(() => setSuccessState(null), duration);
-    return () => clearTimeout(t);
-  }, [success, duration]);
-
-  return {
-    error,
-    setError: setErrorState,
-    success,
-    setSuccess: setSuccessState,
-  };
+  return { error, setError, success, setSuccess };
 }

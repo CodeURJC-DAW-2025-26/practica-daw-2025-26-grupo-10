@@ -1,5 +1,5 @@
-export default interface ImageBasic {
-  imageID: number;
-  imageName: string;
-  first: boolean;
+export interface ImageBasic {
+    imageID: number;
+    imageName: string;
+    first: boolean;
 }

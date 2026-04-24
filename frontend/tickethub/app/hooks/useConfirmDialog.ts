@@ -1,28 +1,24 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 export function useConfirmDialog() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isNotConfirmed, setIsNotConfirmed] = useState(false);
   const [message, setMessage] = useState("");
-  const callbackRef = useRef<(() => Promise<void>) | null>(null);
+  const [onConfirmCallback, setOnConfirmCallback] = useState<() => void>(() => {});
 
-  function confirm(msg: string, callback: () => Promise<void>) {
-    setMessage(msg);
-    callbackRef.current = callback;
-    setIsOpen(true);
+  function confirm(message: string, onConfirm: () => void) {
+    setMessage(message);
+    setOnConfirmCallback(() => onConfirm);
+    setIsNotConfirmed(true);
+  }
+
+  function handleConfirm() {
+    onConfirmCallback();
+    setIsNotConfirmed(false);
   }
 
   function handleCancel() {
-    setIsOpen(false);
-    callbackRef.current = null;
+    setIsNotConfirmed(false);
   }
 
-  async function handleConfirm() {
-    setIsOpen(false);
-    if (callbackRef.current) {
-      await callbackRef.current();
-      callbackRef.current = null;
-    }
-  }
-
-  return { isOpen, message, confirm, handleCancel, handleConfirm };
+  return { isOpen: isNotConfirmed, message, confirm, handleConfirm, handleCancel };
 }

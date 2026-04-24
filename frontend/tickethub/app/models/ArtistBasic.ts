@@ -1,6 +1,6 @@
-import type ImageBasic from "~/models/ImageBasic";
+import type {ImageBasic} from "./ImageBasic";
 
-export default interface ArtistBasic {
+export interface ArtistBasic {
   artistID: number;
   artistName: string;
   artistImage: ImageBasic;
