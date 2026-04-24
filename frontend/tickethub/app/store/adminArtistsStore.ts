@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import axios from "axios";
 import type { Artist } from "~/models/Artist";
 
 interface AdminArtistsState {
@@ -8,14 +7,15 @@ interface AdminArtistsState {
     deleteArtist: (id: number) => Promise<void>;
 }
 
-export const useAdminArtistsStore = create<AdminArtistsState>((set, get) => ({
+export const useAdminArtistsStore = create<AdminArtistsState>((set) => ({
     artists: [],
-
+    
     // for setting the store with the initial data from the loader
     reset: (artists) => set({ artists }),
 
     deleteArtist: async (id) => {
-        await axios.delete(`/api/v1/admin/artists/${id}`);
+        const res = await fetch(`/api/v1/admin/artists/${id}`, { method: "DELETE" });
+        if (!res.ok) throw new Error("Error al eliminar el artista");
         set((state) => ({
             artists: state.artists.filter((a) => a.artistID !== id),
         }));

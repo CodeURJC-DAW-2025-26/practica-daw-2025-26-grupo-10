@@ -6,13 +6,13 @@ import { adminArtistService } from "~/services/AdminArtistService";
 import { useConfirmDialog } from "~/hooks/useConfirmDialog";
 import { useTemporaryMessage } from "~/hooks/useTemporaryMessage";
 
-export async function loader() {
+export async function clientLoader() {
     const artists = await adminArtistService.getAllArtists();
     return { initial: artists };
 }
 
 export default function ArtistsManagementRoute() {
-    const { initial } = useLoaderData<typeof loader>();
+    const { initial } = useLoaderData<typeof clientLoader>();
     const { artists, reset, deleteArtist } = useAdminArtistsStore();
     const { isOpen, message, confirm, handleConfirm, handleCancel } = useConfirmDialog();
     const { error, setError, success, setSuccess } = useTemporaryMessage();

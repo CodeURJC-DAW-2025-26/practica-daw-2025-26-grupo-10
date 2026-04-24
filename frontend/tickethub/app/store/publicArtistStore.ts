@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import axios from "axios";
 import type { ArtistBasic } from "~/models/ArtistBasic";
 
 interface PublicArtistsState {
@@ -21,7 +20,6 @@ export const usePublicArtistsStore = create<PublicArtistsState>((set, get) => ({
     hasMore: true,
     loading: false,
 
-    // for setting the store with the initial data from the loader
     reset: (initial, isLast) =>
         set({ artists: initial, page: 0, hasMore: !isLast, search: "" }),
 
@@ -30,10 +28,10 @@ export const usePublicArtistsStore = create<PublicArtistsState>((set, get) => ({
     fetchBySearch: async (query) => {
         set({ loading: true });
         try {
-            const res = await axios.get("/api/v1/public/artists", {
-                params: { page: 0, size: 5, name: query },
-            });
-            set({ artists: res.data.content, page: 0, hasMore: !res.data.last });
+            const res = await fetch(`/api/v1/public/artists?page=0&size=5&name=${encodeURIComponent(query)}`);
+            if (!res.ok) throw new Error("Error al buscar artistas");
+            const data = await res.json();
+            set({ artists: data.content, page: 0, hasMore: !data.last });
         } finally {
             set({ loading: false });
         }
@@ -45,13 +43,13 @@ export const usePublicArtistsStore = create<PublicArtistsState>((set, get) => ({
         set({ loading: true });
         try {
             const nextPage = page + 1;
-            const res = await axios.get("/api/v1/public/artists", {
-                params: { page: nextPage, size: 5, name: search },
-            });
+            const res = await fetch(`/api/v1/public/artists?page=${nextPage}&size=5&name=${encodeURIComponent(search)}`);
+            if (!res.ok) throw new Error("Error al cargar más artistas");
+            const data = await res.json();
             set((state) => ({
-                artists: [...state.artists, ...res.data.content],
+                artists: [...state.artists, ...data.content],
                 page: nextPage,
-                hasMore: !res.data.last,
+                hasMore: !data.last,
             }));
         } finally {
             set({ loading: false });

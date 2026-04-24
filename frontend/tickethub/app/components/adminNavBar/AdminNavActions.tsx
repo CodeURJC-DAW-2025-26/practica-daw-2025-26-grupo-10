@@ -1,7 +1,6 @@
 import { Link, useNavigate } from "react-router";
 import { useStore } from "../../store/useStore";
 import { useState } from "react";
-import { error } from "console";
 
 export const AdminNavActions = () => {
     const logout = useStore((state) => state.logout);
@@ -15,7 +14,7 @@ export const AdminNavActions = () => {
             await logout();
             navigate("/");
         } finally {
-            console.error("Error al cerrar sesión", error);
+            console.error("Error al cerrar sesión");
             setIsLoggingOut(false);
         }
     };

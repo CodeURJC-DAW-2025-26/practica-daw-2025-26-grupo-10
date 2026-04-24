@@ -1,4 +1,3 @@
-import axios from "axios";
 import type { ArtistBasic } from "~/models/ArtistBasic";
 import type { Artist } from "~/models/Artist";
 import { API_URL } from "./homeService";
@@ -9,17 +8,16 @@ interface PagedArtists {
 }
 
 export const publicArtistService = {
-    getAllArtists: async() : Promise<PagedArtists> => {
-        const res = await axios.get(`${API_URL}/public/artists`, {
-            params: { page: 0, size: 5, name: "" },
-        });
-
-        return { content: res.data.content, last: res.data.last };
+    getAllArtists: async(): Promise<PagedArtists> => {
+        const res = await fetch(`${API_URL}/public/artists?page=0&size=5&name=`);
+        if (!res.ok) throw new Error("Error al obtener los artistas");
+        const data = await res.json();
+        return { content: data.content, last: data.last };
     },
 
-    getArtistById: async(id: string) : Promise<Artist> => {
-        const res = await axios.get(`${API_URL}/public/artists/${id}`);
-
-        return res.data as Artist;
+    getArtistById: async(id: string): Promise<Artist> => {
+        const res = await fetch(`${API_URL}/public/artists/${id}`);
+        if (!res.ok) throw new Error("Error al obtener el artista");
+        return await res.json();
     }
 }

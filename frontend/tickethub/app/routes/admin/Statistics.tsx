@@ -3,7 +3,7 @@ import StatisticsCharts from "~/components/admin/StatisticsUI";
 import { adminService } from "~/services/AdminService";
 import type { AdminStatisticsDTO } from "~/models/AdminStatistics";
 
-export async function loader() {
+export async function clientLoader() {
     const data = await adminService.getStatistics();
     return { data };
 }
