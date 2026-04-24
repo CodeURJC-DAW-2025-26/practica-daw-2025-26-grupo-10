@@ -12,7 +12,8 @@ export const publicArtistService = {
         const res = await fetch(`${API_URL}/public/artists?page=0&size=5&name=`);
         if (!res.ok) throw new Error("Error al obtener los artistas");
         const data = await res.json();
-        return { content: data.content, last: data.last };
+        const isLast = data.page.number >= data.page.totalPages - 1;
+        return { content: data.content, last: isLast };
     },
 
     getArtistById: async(id: string): Promise<Artist> => {

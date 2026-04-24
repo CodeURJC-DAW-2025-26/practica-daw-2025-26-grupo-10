@@ -13,6 +13,7 @@ interface PublicArtistsState {
     loadMore: () => Promise<void>;
 }
 
+
 export const usePublicArtistsStore = create<PublicArtistsState>((set, get) => ({
     artists: [],
     search: "",
@@ -31,7 +32,9 @@ export const usePublicArtistsStore = create<PublicArtistsState>((set, get) => ({
             const res = await fetch(`/api/v1/public/artists?page=0&size=5&name=${encodeURIComponent(query)}`);
             if (!res.ok) throw new Error("Error al buscar artistas");
             const data = await res.json();
-            set({ artists: data.content, page: 0, hasMore: !data.last });
+            const isLast = data.page.number >= data.page.totalPages - 1;
+
+            set({ artists: data.content, page: 0, hasMore: !isLast });
         } finally {
             set({ loading: false });
         }
@@ -46,10 +49,11 @@ export const usePublicArtistsStore = create<PublicArtistsState>((set, get) => ({
             const res = await fetch(`/api/v1/public/artists?page=${nextPage}&size=5&name=${encodeURIComponent(search)}`);
             if (!res.ok) throw new Error("Error al cargar más artistas");
             const data = await res.json();
+            const isLast = data.page.number >= data.page.totalPages - 1;
             set((state) => ({
                 artists: [...state.artists, ...data.content],
                 page: nextPage,
-                hasMore: !data.last,
+                hasMore: !isLast,
             }));
         } finally {
             set({ loading: false });
