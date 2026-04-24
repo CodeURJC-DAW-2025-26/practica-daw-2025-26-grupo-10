@@ -85,7 +85,7 @@ public class ArtistService {
         return artistRepository.findByArtistNameContainingIgnoreCase(name, pageable);
     }
 
-    public void assignImage(Artist artist, MultipartFile file) throws IOException, SQLException {
+    public void assignImage(Artist artist, MultipartFile file) {
         try {
             if (file != null && !file.isEmpty()) {
                 byte[] bytes = file.getBytes();

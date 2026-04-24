@@ -29,12 +29,12 @@ public class ArtistRestController {
     @Autowired
     private ArtistMapper artistMapper;
 
-    @GetMapping("/public/artists")
+    @GetMapping
     public Page<ArtistBasicDTO> getPageArtists(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "artistName") String sortField,
-            @RequestParam(required = false) String name) { // Parámetro de búsqueda
+            @RequestParam(required = false) String name) {
 
         List<String> allowed = List.of("artistName", "artistID");
         if (!allowed.contains(sortField)) {
