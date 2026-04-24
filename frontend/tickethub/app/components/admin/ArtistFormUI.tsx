@@ -1,19 +1,13 @@
 // Components don't know about routes, API calls, or any of that. 
 // They just receive data through props and display it, and they send data back to the parent component (route) through callbacks (like onSubmit and onCancel).
 import React, { useState, useEffect } from "react";
-
-export interface Artist {
-  artistName: string;
-  info: string;
-  instagram: string;
-  twitter: string;
-}
+import type { ArtistCreateUpdate } from "~/models/ArtistCreateUpdate";
 
 // Props are similar to mocks, but they are the actual data that the parent component will pass to this child component.
 interface Props {
-  initialData: Artist;
+  initialData: ArtistCreateUpdate;
   isEditMode: boolean;
-  onSubmit: (artist: Artist, image: File | null) => void;
+  onSubmit: (artist: ArtistCreateUpdate, image: File | null) => void;
   onCancel: () => void;
 }
 
@@ -23,7 +17,7 @@ export default function ArtistFormUI({
   onSubmit,
   onCancel,
 }: Props) {
-  const [artist, setArtist] = useState<Artist>(initialData);
+  const [artist, setArtist] = useState<ArtistCreateUpdate>(initialData);
   const [image, setImage] = useState<File | null>(null);
 
   // Just in case initialData is none at first, we want to set it when it changes (like when we fetch it from the server)
