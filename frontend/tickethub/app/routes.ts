@@ -3,6 +3,7 @@ import { type RouteConfig, index, layout, route } from "@react-router/dev/routes
 export default [
     layout("layout/MainLayout.tsx", [
         index("routes/public/home.tsx"),
+        
         // Artists
         route("/admin/artists", "routes/admin/ArtistsManagement.tsx"),
         route("/admin/artists/new", "routes/admin/ArtistForm.tsx", { id: "artist-create" }),
@@ -12,6 +13,7 @@ export default [
         route("/public/artists", "routes/public/ArtistsList.tsx"),
         route("/public/artists/:id", "routes/public/ArtistDetail.tsx"),
         // Events
+        route("/admin", "routes/admin/dashboard.tsx"),
         route("/public/events", "routes/public/events.tsx"),
         route("/admin/events", "routes/admin/manage-events.tsx"),
         route("/public/events/:id", "routes/public/event.tsx"),
@@ -34,7 +36,8 @@ export default [
 
         // Errors
         route("*", "routes/not-found.tsx"),
-        route("403", "routes/errors/error403.tsx")
+        route("403", "routes/errors/error403.tsx") //TODO: this should not be here
+
     ]),
 ] satisfies RouteConfig;
 
