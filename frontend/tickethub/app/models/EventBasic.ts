@@ -1,4 +1,5 @@
 import type {ArtistBasic} from "./ArtistBasic";
+import type {SessionBasic} from "./SessionBasic";
 import type {ImageBasic} from "./ImageBasic";
 
 export interface EventBasic {
@@ -7,5 +8,6 @@ export interface EventBasic {
   artist: ArtistBasic;
   category: string;
   place: string;
-  mainImage: ImageBasic;
+  sessions: SessionBasic[];
+  mainImageUrl: ImageBasic;
 }
