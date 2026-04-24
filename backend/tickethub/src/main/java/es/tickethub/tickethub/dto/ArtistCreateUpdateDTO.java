@@ -2,7 +2,7 @@ package es.tickethub.tickethub.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record ArtistCreateDTO(
+public record ArtistCreateUpdateDTO(
     @NotBlank(message = "El nombre del artista es obligatorio") 
     String artistName,
 
