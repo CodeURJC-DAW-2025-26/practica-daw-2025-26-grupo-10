@@ -4,7 +4,7 @@ export const AdminNavMenu = () => {
     return (
         <ul className="navbar-nav me-auto">
             <li className="nav-item">
-                <NavLink className="nav-link" to="/admin/events/manage_events">
+                <NavLink className="nav-link" to="/admin/events">
                     Gestionar Eventos
                 </NavLink>
             </li>
