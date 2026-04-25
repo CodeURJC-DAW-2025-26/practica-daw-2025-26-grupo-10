@@ -31,3 +31,23 @@ export async function getUsers(page: number = 0, size: number = 5): Promise<User
     
     return response.json();
 }
+
+export async function getUserById(id: string): Promise<UserDTO> {
+    const response = await fetch(`${API_BASE}/users/${id}`, { headers: getHeaders() });
+    if (!response.ok) throw new Error("Error al obtener el usuario");
+    return response.json();
+}
+
+export async function updateUser(id: number, userData: UserDTO): Promise<UserDTO> {
+    const response = await fetch(`${API_BASE}/users/${id}`, {
+        method: "PUT",
+        headers: getHeaders(),
+        body: JSON.stringify(userData),
+    });
+    
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.message || "Error al actualizar");
+    }
+    return response.json();
+}

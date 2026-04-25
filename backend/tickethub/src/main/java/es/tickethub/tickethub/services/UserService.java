@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Purchase;
@@ -70,5 +71,28 @@ public class UserService {
     
     public List<User> getUsers(int page, int size) {
         return userRepository.findAll(PageRequest.of(page, size)).getContent();
+    }
+
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
+                    org.springframework.http.HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+    }
+
+    @Transactional
+    public User updateUser(Long id, User userData) {
+        User existingUser = getUserById(id);
+        
+        if (!existingUser.getEmail().equals(userData.getEmail()) &&
+            userRepository.findByEmail(userData.getEmail()).isPresent()) {
+            throw new org.springframework.web.server.ResponseStatusException(
+                org.springframework.http.HttpStatus.CONFLICT, "El email ya está en uso");
+        }
+
+        existingUser.setUsername(userData.getUsername());
+        existingUser.setEmail(userData.getEmail());
+        existingUser.setAdmin(userData.getAdmin());
+        
+        return userRepository.save(existingUser);
     }
 }

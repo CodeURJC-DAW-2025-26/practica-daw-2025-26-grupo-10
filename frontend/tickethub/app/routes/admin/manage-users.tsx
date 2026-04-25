@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getUsers } from "~/services/adminService";
 import type { UserDTO } from "~/models/User";
+import { Link } from "react-router";
 
 export default function ManageUsers() {
     const [users, setUsers] = useState<UserDTO[]>([]);
@@ -65,14 +66,18 @@ export default function ManageUsers() {
                                         </tr>
                                     ) : (
                                         users.map((user) => (
-                                            <tr key={user.id}>
-                                                <td>{user.id}</td>
+                                            <tr key={user.userID}>
+                                                <td>{user.userID}</td>
                                                 <td>{user.username}</td>
                                                 <td>{user.email}</td>
                                                 <td className="text-end">
                                                     {/* Botones de acción vacíos para el futuro */}
-                                                    <button className="btn btn-sm btn-outline-secondary me-2">Editar</button>
-                                                    <button className="btn btn-sm btn-outline-danger">Bloquear</button>
+                                                    <Link
+                                                        to={`/admin/users/edit/${user.userID}`}
+                                                        className="btn btn-sm btn-outline-primary me-2"
+                                                    >
+                                                        Editar
+                                                    </Link>
                                                 </td>
                                             </tr>
                                         ))

@@ -22,7 +22,9 @@ export default [
 
         // Users
         route("/admin/users", "routes/admin/manage-users.tsx"),
-
+        route("/admin/users", "routes/admin/manage-users.tsx"),
+        route("/admin/users/edit/:id", "routes/admin/edit-user.tsx"),
+        
         // Discounts
         route("admin/discounts", "routes/admin/discounts/manage-discounts.tsx"),
         route("admin/discounts/new", "routes/admin/discounts/create-discount.tsx", { id: "discount-new" }),
