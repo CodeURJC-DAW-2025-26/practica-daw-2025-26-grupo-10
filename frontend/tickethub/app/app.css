@@ -1,2 +1,253 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;600&display=swap');
 @import "bootstrap/dist/css/bootstrap.min.css";
 @import "bootstrap-icons/font/bootstrap-icons.css";
+
+/* ==========================================================================
+   VARIABLES
+   ========================================================================== */
+:root {
+    --pitch-black: #231c07;
+    --vivid-tangerine: #F77F00;
+    --vivid-hover: #ff9500;
+    --beige: #F2F2E4;
+    --card-white: #FFFFFF;
+    --text-muted-custom: #625027;
+    --footer-text: #EBEBD3;
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+body {
+    background-color: var(--beige);
+    color: var(--pitch-black);
+    font-family: 'Poppins', 'Segoe UI', Tahoma, sans-serif;
+    font-weight: 400;
+}
+
+h1, h2, h3, h4, h5, .navbar-brand {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--pitch-black);
+}
+
+/* ==========================================================================
+   CARDS & CONTAINERS
+   ========================================================================== */
+.card,
+main .container,
+.container form,
+.card.text-center {
+    background-color: var(--card-white) !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px rgba(35, 28, 7, 0.08) !important;
+    padding: 25px;
+    margin-bottom: 2rem;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(35, 28, 7, 0.12) !important;
+    border-color: var(--vivid-tangerine) !important;
+}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+.btn {
+    border-radius: 10px !important;
+    padding: 10px 20px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    font-weight: 600 !important;
+}
+
+.btn-primary,
+.btn-success,
+.btn-light {
+    background-color: var(--vivid-tangerine) !important;
+    border: none !important;
+    color: var(--pitch-black) !important;
+}
+
+.btn:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 15px rgba(247, 127, 0, 0.3) !important;
+}
+
+.btn-primary:hover,
+.btn-success:hover {
+    background-color: var(--vivid-hover) !important;
+    color: white !important;
+}
+
+.btn-outline-primary {
+    border: 2px solid var(--vivid-tangerine) !important;
+    color: var(--vivid-tangerine) !important;
+    background-color: transparent !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--vivid-tangerine) !important;
+    color: white !important;
+    border-color: var(--vivid-tangerine) !important;
+}
+
+.btn-outline-secondary {
+    border-color: var(--vivid-tangerine) !important;
+    color: var(--pitch-black) !important;
+    background-color: var(--beige) !important;
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--vivid-tangerine) !important;
+    color: var(--pitch-black) !important;
+    border-color: var(--vivid-tangerine) !important;
+}
+
+.btn-danger {
+    background-color: #A62626 !important;
+    border: none !important;
+    color: white !important;
+}
+
+.btn-danger:hover {
+    background-color: #7d1d1d !important;
+    box-shadow: 0 8px 15px rgba(166, 38, 38, 0.3) !important;
+}
+
+/* ==========================================================================
+   NAVBAR
+   ========================================================================== */
+.navbar {
+    background-color: var(--pitch-black) !important;
+    padding: 1rem 0 !important;
+}
+
+.navbar-brand {
+    color: var(--vivid-tangerine) !important;
+    font-size: 1.6rem;
+    opacity: 1 !important;
+}
+
+.navbar-brand:hover {
+    color: var(--vivid-hover) !important;
+}
+
+.navbar-nav .nav-link {
+    color: var(--footer-text) !important;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: var(--vivid-tangerine) !important;
+}
+
+.navbar .btn-outline-primary {
+    border: 2px solid var(--vivid-tangerine) !important;
+    color: var(--vivid-tangerine) !important;
+    background-color: transparent !important;
+}
+
+.navbar .btn-outline-primary:hover {
+    background-color: var(--vivid-tangerine) !important;
+    color: white !important;
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+footer {
+    background-color: var(--pitch-black);
+    color: var(--footer-text) !important;
+    padding: 4rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+footer p,
+footer span,
+footer h1,
+footer h2,
+footer h3,
+footer h4,
+footer h5,
+footer div {
+    color: var(--footer-text) !important;
+}
+
+footer a {
+    color: var(--vivid-tangerine) !important;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+footer a:hover {
+    color: white !important;
+    text-decoration: underline;
+}
+
+footer .social-icons a {
+    color: var(--footer-text) !important;
+    font-size: 1.5rem;
+    margin: 0 10px;
+}
+
+footer .social-icons a:hover {
+    color: var(--vivid-tangerine) !important;
+}
+
+/* ==========================================================================
+   ALERTS
+   ========================================================================== */
+.alert-success {
+    background-color: #d4edda;
+    color: var(--pitch-black);
+    border: none;
+    font-weight: bold;
+}
+
+/* ==========================================================================
+   LIST GROUP
+   ========================================================================== */
+.list-group-item {
+    background-color: var(--beige);
+    border: 1px solid #ccc;
+    color: var(--pitch-black);
+}
+
+/* ==========================================================================
+   FORM INPUTS
+   ========================================================================== */
+main input.form-control {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+main input.form-control:focus {
+    border-color: var(--vivid-tangerine);
+    box-shadow: 0 0 0 0.2rem rgba(247, 127, 0, 0.25);
+}
+
+main select.form-select:focus {
+    border-color: var(--vivid-tangerine);
+    box-shadow: 0 0 0 0.2rem rgba(247, 127, 0, 0.25);
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 768px) {
+    .table td .btn {
+        margin-bottom: 5px;
+        width: 100%;
+        display: block;
+    }
+    .table td {
+        vertical-align: middle;
+    }
+}

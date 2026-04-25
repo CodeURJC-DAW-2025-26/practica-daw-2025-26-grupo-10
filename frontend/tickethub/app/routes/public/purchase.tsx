@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { getPublicEvent } from "~/services/events-service";
+import { getEvent } from "~/services/event-service";
 import { savePurchase } from "~/services/purchases-service";
 import type Event from "~/models/Event";
 import type TicketSelection from "~/models/TicketSelection";
@@ -24,7 +24,7 @@ export default function Purchase() {
 
   useEffect(() => {
     if (!eventId) return;
-    getPublicEvent(eventId)
+    getEvent(eventId)
       .then(setEvent)
       .catch(() => setError("No se pudo cargar el evento."))
       .finally(() => setIsPending(false));
@@ -139,8 +139,9 @@ export default function Purchase() {
     <div className="container my-5">
       <h2 className="mb-4">Compra de Entradas — {event.name}</h2>
 
-      <div className="mb-4">
-        <h4 className="mb-2">Selecciona la sesión:</h4>
+      <div className="mb-3">
+        <h4 className="mb-0">Selecciona la sesión:</h4>
+        <br />
         <select
           className="form-select w-auto"
           value={selectedSession}
@@ -197,8 +198,9 @@ export default function Purchase() {
 
       <hr />
 
-      <div className="mb-4">
-        <h5>Aplicar descuento:</h5>
+      <div className="mb-3">
+        <strong>Aplicar descuento:</strong>
+        <div className="mt-2">
         <select
           className="form-select w-auto"
           value={selectedDiscountIndex}
@@ -214,6 +216,7 @@ export default function Purchase() {
             </option>
           ))}
         </select>
+        </div>
       </div>
 
       <hr />
@@ -292,7 +295,7 @@ export default function Purchase() {
 
       <div className="d-flex justify-content-end gap-2">
         <button
-          className="btn btn-outline-secondary"
+          className="btn btn-outline-primary"
           type="button"
           onClick={() => navigate(-1)}
           disabled={isSubmitting}
@@ -300,7 +303,7 @@ export default function Purchase() {
           Volver
         </button>
         <button
-          className="btn btn-primary"
+          className="btn btn-outline-primary"
           type="button"
           onClick={handleSubmit}
           disabled={isSubmitting}
