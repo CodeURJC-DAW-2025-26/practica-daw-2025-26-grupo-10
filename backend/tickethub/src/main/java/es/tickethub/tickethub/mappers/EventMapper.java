@@ -13,6 +13,7 @@ public interface EventMapper {
     EventDTO toDTO(Event event);
 
     @Mapping(source = "sessions", target = "sessions")
+    @Mapping(target = "mainImage", expression = "java(referenceMapper.eventToMainImage(event))")
     EventBasicDTO toBasicDTO(Event event);
     
     @Mapping(source = "artistId", target = "artist")

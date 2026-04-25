@@ -1,0 +1,1 @@
+var e=`/api/v1/admin`,t={getStatistics:async()=>{let t=await fetch(`${e}/statistics`);if(!t.ok)throw Error(`Error al obtener las estadísticas`);return await t.json()}};export{t as n,e as t};

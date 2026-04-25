@@ -9,5 +9,5 @@ export interface EventBasic {
   category: string;
   place: string;
   sessions: SessionBasic[];
-  mainImageUrl: ImageBasic;
+  mainImage: ImageBasic;
 }

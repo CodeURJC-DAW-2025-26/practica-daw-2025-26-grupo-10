@@ -9,5 +9,5 @@ public record EventBasicDTO(
     String category,
     String place,
     List<SessionBasicDTO> sessions,
-    String mainImageUrl
+    ImageBasicDTO mainImage
 ) {}

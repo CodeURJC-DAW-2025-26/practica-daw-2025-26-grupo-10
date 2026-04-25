@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 
 import es.tickethub.tickethub.security.jwt.JwtRequestFilter;
 import es.tickethub.tickethub.security.jwt.JwtTokenProvider;
@@ -73,7 +74,7 @@ public class SecurityConfig {
 				.requestMatchers("/api/v1/auth/**", "/api/v1/public/**").permitAll()
 				.requestMatchers(HttpMethod.POST, "/api/v1/purchases/save").permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/v1/purchases/download/**").permitAll()
-				.requestMatchers(HttpMethod.DELETE, "/api/v1/users/**","/api/v1/user/**").hasAnyRole("ADMIN", "USER")
+				.requestMatchers(HttpMethod.DELETE, "/api/v1/users/**", "/api/v1/user/**").hasAnyRole("ADMIN", "USER")
 				.requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
 				.requestMatchers("/api/v1/clients/**", "/api/v1/purchases/**").hasAnyRole("USER", "ADMIN")
 				.anyRequest().authenticated());
@@ -95,13 +96,16 @@ public class SecurityConfig {
 
 		http.authenticationProvider(authenticationProvider());
 
+		http.securityMatcher("/**");
+
 		http
 				.authorizeHttpRequests(authorize -> authorize
 						// PUBLIC Routes
 						.requestMatchers("/v3/api-docs", "/v3/api-docs/**", "/v3/api-docs.yaml", "/swagger-ui/**",
 								"/swagger-ui.html")
 						.permitAll()
-						.requestMatchers("/", "/css/**", "/js/**", "/images/**", "/public/**", "/images/entities/**", "/new", "/new/**")
+						.requestMatchers("/", "/css/**", "/js/**", "/images/**", "/public/**",
+								"/images/entities/**", "/new", "/new/**", "/api/v1/public/**")
 						.permitAll()
 						// PURCHASES AUTORIZED WITHOUT BEING LOGGED IN
 						.requestMatchers(HttpMethod.POST, "/purchases/save").permitAll()

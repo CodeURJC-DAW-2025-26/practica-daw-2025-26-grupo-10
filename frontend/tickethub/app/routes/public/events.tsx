@@ -113,7 +113,7 @@ export default function Events() {
                 <div className="card h-100">
                   {event.mainImage && (
                     <img
-                      src={`${API_URL}/public/events/${event.eventID}/image/1`}
+                      src={`${API_URL}/public/events/${event.eventID}/images/1`}
                       className="card-img-top"
                       alt={event.name}
                     />

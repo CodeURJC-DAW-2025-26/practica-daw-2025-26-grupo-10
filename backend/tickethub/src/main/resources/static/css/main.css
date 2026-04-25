@@ -452,7 +452,7 @@ main button.btn-primary:hover {
 
 .hero-section {
     position: relative;
-    background: linear-gradient(rgba(242, 242, 228, 0.4), var(--beige)), url('../images/events/concert_background.png') no-repeat center center;
+    background: linear-gradient(rgba(242, 242, 228, 0.4), var(--beige)), url('/images/events/concert_background.png') no-repeat center center;
     background-size: cover;
     padding: 80px 0;
     margin-bottom: 2rem;
@@ -490,8 +490,8 @@ main .hero-section .container {
     position: relative;
     width: 100%;
     height: 150px;
-    border-radius: 15px; 
-    overflow: hidden; 
+    border-radius: 15px;
+    overflow: hidden;
     box-shadow: 0 4px 12px rgba(35, 28, 7, 0.1);
     background-color: var(--card-white);
     transition: transform 0.3s ease;
@@ -513,7 +513,7 @@ main .hero-section .container {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(247, 127, 0, 0.85); 
+    background-color: rgba(247, 127, 0, 0.85);
     color: white !important;
     border: none !important;
     display: flex;

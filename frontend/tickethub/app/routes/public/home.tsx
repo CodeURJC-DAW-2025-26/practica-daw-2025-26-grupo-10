@@ -33,11 +33,11 @@ export default function Home() {
   if (!data) {
     return <p>Error al cargar la página principal</p>
   }
- 
+
   return (
     <div className="d-flex flex-column min-vh-100">
       <main className="flex-fill">
- 
+
         <section className="hero-section text-center">
           <div className="container text-center">
             <h1 className="display-5 fw-bold">
@@ -46,12 +46,14 @@ export default function Home() {
             <p className="lead">
               Conciertos, festivales, teatro y mucho más en un solo lugar.
             </p>
-              <button onClick={() => navigate('/public/events')}>Explorar eventos</button>
+            <button className="btn btn-primary" onClick={() => navigate('/public/events')}>
+              Explorar eventos
+            </button>
           </div>
         </section>
- 
+
         <div className="container my-5">
- 
+
           <section className="mb-5">
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h2>Eventos más vendidos</h2>
@@ -65,7 +67,7 @@ export default function Home() {
                   <div className="card h-100">
                     {event.mainImage && (
                       <img
-                        src={`${API_URL}/public/events/${event.eventID}/image/1`}
+                        src={`${API_URL}/public/events/${event.eventID}/images/1`}
                         className="card-img-top"
                         alt={event.mainImage.imageName}
                       />
@@ -74,13 +76,15 @@ export default function Home() {
                       <h5 className="card-title">{event.name}</h5>
                       <p className="mb-1">{event.category}</p>
                       <p className="text-muted">{event.place}</p>
-                      <button onClick={() => navigate(`/public/events/${event.eventID}`)}>Ver evento</button>
+                      <button className="btn btn-outline-primary" onClick={() => navigate(`/public/events/${event.eventID}`)}>
+                        Ver evento
+                      </button>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
- 
+
             <h2 className="mt-5 mb-4">Recomendaciones para ti</h2>
             <div className="row g-4">
               {data.recommendedEvents.length > 0 ? (
@@ -89,7 +93,7 @@ export default function Home() {
                     <div className="card h-100">
                       {event.mainImage && (
                         <img
-                          src={`${API_URL}/public/events/${event.eventID}/image/1`}
+                          src={`${API_URL}/public/events/${event.eventID}/images/1`}
                           className="card-img-top"
                           alt={event.mainImage.imageName}
                         />
@@ -97,7 +101,9 @@ export default function Home() {
                       <div className="card-body">
                         <h5 className="card-title">{event.name}</h5>
                         <p className="text-muted">{event.place}</p>
-                        <button onClick={() => navigate(`/public/events/${event.eventID}`)}>Ver evento</button>
+                        <button className="btn btn-outline-primary" onClick={() => navigate(`/public/events/${event.eventID}`)}>
+                          Ver evento
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -107,7 +113,7 @@ export default function Home() {
               )}
             </div>
           </section>
- 
+
           <section className="mb-5 pb-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h2>Artistas</h2>
@@ -128,14 +134,16 @@ export default function Home() {
                     )}
                     <div className="card-body">
                       <h6 className="card-title">{artist.artistName}</h6>
-                      <button onClick={() => navigate(`/public/artists/${artist.artistID}`)}>Ver artista</button>
+                      <button className="btn btn-outline-primary" onClick={() => navigate(`/public/artists/${artist.artistID}`)}>
+                        Ver artista
+                      </button>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           </section>
- 
+
           <section>
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h2>Disponibles próximamente</h2>
@@ -151,14 +159,16 @@ export default function Home() {
                       <h5 className="card-title">{event.name}</h5>
                       <p className="mb-1">Categoría: {event.category}</p>
                       <p className="text-muted">{event.place}</p>
-                      <button onClick={() => navigate(`/public/events/${event.eventID}`)}>Más información</button>
+                      <button className="btn btn-outline-primary" onClick={() => navigate(`/public/events/${event.eventID}`)}>
+                        Más información
+                      </button>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           </section>
- 
+
         </div>
       </main>
     </div>

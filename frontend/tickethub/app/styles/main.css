@@ -452,7 +452,7 @@ main button.btn-primary:hover {
 
 .hero-section {
     position: relative;
-    background: linear-gradient(rgba(242, 242, 228, 0.4), var(--beige)), url('../images/events/concert_background.png') no-repeat center center;
+    background: linear-gradient(rgba(242, 242, 228, 0.4), var(--beige)), url('/images/events/concert_background.png') no-repeat center center;
     background-size: cover;
     padding: 80px 0;
     margin-bottom: 2rem;
