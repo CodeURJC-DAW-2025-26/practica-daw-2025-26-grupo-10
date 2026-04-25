@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -34,10 +33,8 @@ public class SecurityConfig {
 	@Autowired
 	private UnauthorizedHandlerJwt unauthorizedHandlerJwt;
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
@@ -48,7 +45,7 @@ public class SecurityConfig {
 	@Bean
 	public DaoAuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
-		authProvider.setPasswordEncoder(passwordEncoder());
+		authProvider.setPasswordEncoder(passwordEncoder);
 
 		return authProvider;
 	}
@@ -104,7 +101,7 @@ public class SecurityConfig {
 						.requestMatchers("/v3/api-docs", "/v3/api-docs/**", "/v3/api-docs.yaml", "/swagger-ui/**",
 								"/swagger-ui.html")
 						.permitAll()
-						.requestMatchers("/", "/css/**", "/js/**", "/images/**", "/public/**", "/images/entities/**")
+						.requestMatchers("/", "/css/**", "/js/**", "/images/**", "/public/**", "/images/entities/**", "/new", "/new/**")
 						.permitAll()
 						// PURCHASES AUTORIZED WITHOUT BEING LOGGED IN
 						.requestMatchers(HttpMethod.POST, "/purchases/save").permitAll()
