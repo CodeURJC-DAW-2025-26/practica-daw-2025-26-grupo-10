@@ -1,3 +1,13 @@
+/**  This store exists for three reasons:
+/* 1. Separation of concerns: the UI component only worries about rendering,
+/*    while the store handles data and logic. If the search behavior changes,
+/*    only the store needs to be updated.
+/* 2. Centralized complex logic: search + pagination + loading state all interact
+/*    with each other. When the user searches, the page resets to 0. When loading
+/*    more, it remembers the current search query. The store manages all of this cleanly.
+/* 3. Data accumulation: "load more" needs to remember the previous artists to append
+/*    the new ones. The store keeps this state alive across re-renders.*/ 
+
 import { create } from "zustand";
 import type { ArtistBasic } from "~/models/ArtistBasic";
 

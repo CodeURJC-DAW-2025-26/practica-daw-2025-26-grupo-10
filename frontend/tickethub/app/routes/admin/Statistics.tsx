@@ -1,7 +1,7 @@
 import { useLoaderData, Link } from "react-router";
 import StatisticsCharts from "~/components/admin/StatisticsUI";
 import { adminService } from "~/services/AdminService";
-import type { AdminStatisticsDTO } from "~/models/AdminStatistics";
+import type { AdminStatistics } from "~/models/AdminStatistics";
 
 export async function clientLoader() {
     const data = await adminService.getStatistics();
@@ -9,7 +9,7 @@ export async function clientLoader() {
 }
 
 export default function StatisticsRoute() {
-    const { data } = useLoaderData<{ data: AdminStatisticsDTO }>();
+    const { data } = useLoaderData<{ data: AdminStatistics }>();
 
     return (
         <StatisticsCharts data={data} />

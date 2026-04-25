@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
-import type { AdminStatisticsDTO } from "~/models/AdminStatistics";
+import type { AdminStatistics } from "~/models/AdminStatistics";
 import { Link } from "react-router";
 
 interface Props {
-    data: AdminStatisticsDTO;
+    data: AdminStatistics;
 }
 
 export default function StatisticsCharts({ data }: Props) {

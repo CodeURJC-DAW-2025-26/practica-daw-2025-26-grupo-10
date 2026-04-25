@@ -4,11 +4,9 @@ import type { EventBasic } from "~/models/EventBasic";
 
 interface Props {
     artist: Artist;
-    eventsIncoming: EventBasic[];
-    lastEvents: EventBasic[];
 }
 
-export default function ArtistDetailUI({ artist, eventsIncoming, lastEvents }: Props) {
+export default function ArtistDetailUI({ artist }: Props) {
     return (
         <div className="container my-5">
             <div className="card text-center">
@@ -24,11 +22,11 @@ export default function ArtistDetailUI({ artist, eventsIncoming, lastEvents }: P
                     <h3>{artist.artistName}</h3>
                     <p>{artist.info}</p>
                     <h5>Próximos eventos</h5>
-                    {eventsIncoming.length === 0 ? (
+                    {artist.eventsIncoming.length === 0 ? (
                         <p>No hay eventos próximos para este artista.</p>
                     ) : (
                         <ul className="list-group mb-3">
-                            {eventsIncoming.map((event) => (
+                            {artist.eventsIncoming.map((event) => (
                                 <li key={event.eventID} className="list-group-item">{event.name}</li>
                             ))}
                         </ul>
@@ -36,11 +34,11 @@ export default function ArtistDetailUI({ artist, eventsIncoming, lastEvents }: P
 
 
                     <h5>Últimos eventos realizados</h5>
-                    {lastEvents.length === 0 ? (
+                    {artist.lastEvents.length === 0 ? (
                         <p>No hay eventos realizados de este artista.</p>
                     ) : (
                         <ul className="list-group mb-3">
-                            {lastEvents.map((event) => (
+                            {artist.lastEvents.map((event) => (
                                 <li key={event.eventID} className="list-group-item">{event.name}</li>
                             ))}
                         </ul>

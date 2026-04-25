@@ -12,8 +12,6 @@ export default function ArtistDetailRoute() {
     return (
         <ArtistDetailUI
             artist={artist}
-            eventsIncoming={artist.eventsIncoming ?? []}
-            lastEvents={artist.lastEvents ?? []}
         />
     );
 }
