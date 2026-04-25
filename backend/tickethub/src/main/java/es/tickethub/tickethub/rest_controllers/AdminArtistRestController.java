@@ -21,9 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.data.domain.Page;
 
-import es.tickethub.tickethub.dto.ArtistCreateDTO;
+import es.tickethub.tickethub.dto.ArtistCreateUpdateDTO;
 import es.tickethub.tickethub.dto.ArtistDTO;
-import es.tickethub.tickethub.dto.ArtistUpdateDTO;
 import es.tickethub.tickethub.entities.Artist;
 import es.tickethub.tickethub.mappers.ArtistMapper;
 import es.tickethub.tickethub.services.ArtistService;
@@ -47,7 +46,7 @@ public class AdminArtistRestController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ArtistDTO> createArtist(
-            @Valid @RequestPart("data") ArtistCreateDTO createArtistDTO,
+            @Valid @RequestPart("data") ArtistCreateUpdateDTO createArtistDTO,
             @RequestPart(value = "image", required = false) MultipartFile image) throws IOException, SQLException {
 
         Artist artist = artistMapper.toEntity(createArtistDTO);
@@ -62,7 +61,7 @@ public class AdminArtistRestController {
     @PutMapping(value = "/{artistID}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ArtistDTO updateArtist(
             @PathVariable Long artistID,
-            @Valid @RequestPart("data") ArtistUpdateDTO dto,
+            @Valid @RequestPart("data") ArtistCreateUpdateDTO dto,
             @RequestPart(value = "image", required = false) MultipartFile image) throws IOException, SQLException {
 
         Artist existing = artistService.findById(artistID);

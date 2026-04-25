@@ -1,14 +1,22 @@
 import { Link, useNavigate } from "react-router";
 import { useStore } from "../../store/useStore";
+import { useState } from "react";
 
 export const AdminNavActions = () => {
     const logout = useStore((state) => state.logout);
     const navigate = useNavigate();
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
 
     const handleLogout = async () => {
-        await logout();//esto puede ser inseguro contra doble click, si nos sobra tiempo hay que apañarlo
-        //(no se me ocurre una buena manera ahora mismo...tal vez lo mejor sea un await entre clicks y a correr)
-        navigate("/");
+        if (isLoggingOut) return;
+        setIsLoggingOut(true);
+        try {
+            await logout();
+            navigate("/");
+        } finally {
+            console.error("Error al cerrar sesión");
+            setIsLoggingOut(false);
+        }
     };
 
     return (
@@ -16,7 +24,11 @@ export const AdminNavActions = () => {
             <Link to="/" className="btn btn-outline-primary btn-sm">
                 Vista de cliente
             </Link>
-            <button onClick={handleLogout} className="btn btn-danger">
+            <button 
+                onClick={handleLogout} 
+                className="btn btn-danger"
+                disabled={isLoggingOut}
+            >
                 Cerrar sesión
             </button>
         </div>
