@@ -23,7 +23,6 @@ export default [
 
         // Users
         route("/admin/users", "routes/admin/manage-users.tsx"),
-        route("/admin/users", "routes/admin/manage-users.tsx"),
         route("/admin/users/edit/:id", "routes/admin/edit-user.tsx"),
         
         // Discounts
