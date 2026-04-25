@@ -13,8 +13,10 @@
     "@react-router/serve": "7.14.0",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
+    "chart.js": "^4.5.1",
     "isbot": "^5.1.36",
     "react": "^19.2.4",
+    "react-bootstrap": "^2.10.10",
     "react-dom": "^19.2.4",
     "react-router": "7.14.0",
     "zustand": "^5.0.12"

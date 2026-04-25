@@ -1,7 +1,7 @@
 import type { AdminDashboardDTO, AdminStatisticsDTO } from "~/models/Admin";
 import type { UserDTO } from "~/models/User";
 
-const API_BASE = "/api/v1/admin";
+export const API_BASE = "/api/v1/admin";
 
 
 
