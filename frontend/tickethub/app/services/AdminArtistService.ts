@@ -1,17 +1,17 @@
 import type { ArtistCreateUpdate } from "~/models/ArtistCreateUpdate";
 import type { Artist } from "~/models/Artist";
-import { API_URL_ADMIN } from "./AdminService";
+import { API_BASE } from "./adminService";
 
 export const adminArtistService = {
     getAllArtists: async() : Promise<Artist[]> => {
-        const res = await fetch(`${API_URL_ADMIN}/artists?page=0&size=5&name=`);
+        const res = await fetch(`${API_BASE}/artists?page=0&size=5&name=`);
         if (!res.ok) throw new Error("Error al obtener los artistas");
         const data = await res.json();
         return data.content as Artist[];
     },
 
     getArtistById: async(id: string): Promise<ArtistCreateUpdate> => {
-        const res = await fetch(`${API_URL_ADMIN}/artists/${id}`);
+        const res = await fetch(`${API_BASE}/artists/${id}`);
         if (!res.ok) throw new Error("Error al obtener el artista");
         const data = await res.json();
         return data.content as ArtistCreateUpdate;
@@ -22,7 +22,7 @@ export const adminArtistService = {
         formData.append("data", new Blob([JSON.stringify(artist)], { type: "application/json" }));
         if (image) formData.append("image", image);
 
-        const res = await fetch (`${API_URL_ADMIN}/artists`, {
+        const res = await fetch (`${API_BASE}/artists`, {
             method: "POST",
             body: formData,
         });
@@ -37,7 +37,7 @@ export const adminArtistService = {
         formData.append("data", new Blob([JSON.stringify(artist)], { type: "application/json" }));
         if (image) formData.append("image", image);
 
-        const res = await fetch(`${API_URL_ADMIN}/artists/${id}`, {
+        const res = await fetch(`${API_BASE}/artists/${id}`, {
             method: "PUT",
             body: formData,
         });
