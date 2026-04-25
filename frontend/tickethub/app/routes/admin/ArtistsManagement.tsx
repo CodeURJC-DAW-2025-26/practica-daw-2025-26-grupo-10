@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import { useLoaderData } from "react-router";
 import { useAdminArtistsStore } from "~/store/adminArtistsStore";
 import ArtistsManagementUI from "~/components/admin/ArtistsManagementUI";
-import { adminArtistService } from "~/services/AdminArtistService";
+import { getAllArtists } from "~/services/AdminArtistService";
 import { useConfirmDialog } from "~/hooks/useConfirmDialog";
 import { useTemporaryMessage } from "~/hooks/useTemporaryMessage";
 
 export async function clientLoader() {
-    const artists = await adminArtistService.getAllArtists();
+    const artists = await getAllArtists();
     return { initial: artists };
 }
 

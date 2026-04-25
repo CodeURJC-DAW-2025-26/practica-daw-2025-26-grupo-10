@@ -6,9 +6,12 @@ import type { EventCreateUpdate } from "~/models/EventCreateUpdate";
 export async function getArtists(): Promise<ArtistBasic[]> {
   const res = await fetch(`${API_URL}/public/artists?page=0&size=1000`);
   if (!res.ok) throw new Error("Error cargando artistas");
-  return await res.json();
+  
+  const data = await res.json();
+
+  return data.content || (Array.isArray(data) ? data : []);
 }
- 
+
 export async function createEvent(formData: EventCreateUpdate): Promise<Event> {
   const res = await fetch(`${API_URL}/admin/events`, {
     method: "POST",

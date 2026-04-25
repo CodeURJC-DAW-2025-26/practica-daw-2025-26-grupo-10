@@ -5,7 +5,7 @@ export const API_BASE = "/api/v1/admin";
 
 
 
-const getHeaders = () => ({
+export const getHeaders = () => ({
     "Authorization": `Bearer ${localStorage.getItem("token")}`,
     "Content-Type": "application/json",
 });
