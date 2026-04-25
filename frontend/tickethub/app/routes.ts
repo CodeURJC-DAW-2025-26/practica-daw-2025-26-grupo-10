@@ -19,6 +19,7 @@ export default [
         route("/public/events/:id", "routes/public/event.tsx"),
         route("/admin/events/create", "routes/admin/create-event.tsx"),
         route("/admin/events/edit/:id", "routes/admin/edit-event.tsx"),
+        route("/admin/events/:id/sessions", "routes/admin/manage-sessions.tsx"),
 
         // Users
         route("/admin/users", "routes/admin/manage-users.tsx"),
@@ -42,7 +43,6 @@ export default [
         // Errors
         route("*", "routes/not-found.tsx"),
         route("403", "routes/errors/error403.tsx") //TODO: this should not be here
-
     ]),
 ] satisfies RouteConfig;
 
