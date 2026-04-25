@@ -5,8 +5,6 @@ import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,8 +16,7 @@ import es.tickethub.tickethub.dto.ClientUpdateDTO;
 import es.tickethub.tickethub.dto.PasswordDTO;
 import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.mappers.ClientMapper;
-import es.tickethub.tickethub.security.jwt.JwtTokenProvider;
-import es.tickethub.tickethub.security.jwt.TokenType;
+
 import es.tickethub.tickethub.security.jwt.UserLoginService;
 import es.tickethub.tickethub.services.ClientService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,11 +25,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/v1/clients")
 public class ClientRestController {
-@Autowired
-private JwtTokenProvider jwtTokenProvider;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @Autowired
     private UserLoginService userLoginService;
@@ -50,28 +43,20 @@ private JwtTokenProvider jwtTokenProvider;
         return ResponseEntity.ok(clientDTO);
     }
 
-    //TODO: lo hago esta tarde, esto por ahora es un mierdón. Quien borre esto es francés
     @PutMapping("/me")
-    public ClientDTO updateLoggedClient(@Valid @RequestBody ClientUpdateDTO clientUpdateDTO,
-            Principal principal, HttpServletResponse response) throws IOException { 
-        
-        Client client = clientService.getClientByEmail(principal.getName());
-        clientMapper.updateEntityFromDto(clientUpdateDTO, client);
-
-        Client updatedClient = clientService.updateClient(client.getEmail(), client, null);
-
-        if (!principal.getName().equals(updatedClient.getEmail())) {
-            UserDetails newPrincipal = userDetailsService.loadUserByUsername(updatedClient.getEmail());
+        public ClientDTO updateLoggedClient(@Valid @RequestBody ClientUpdateDTO clientUpdateDTO,
+                                        Principal principal, HttpServletResponse response) throws IOException {
             
-            String newAccessToken = jwtTokenProvider.generateAccessToken(newPrincipal);
-            String newRefreshToken = jwtTokenProvider.generateRefreshToken(newPrincipal);
+            String currentEmail = principal.getName();
             
-            response.addCookie(userLoginService.buildTokenCookie(TokenType.ACCESS, newAccessToken));
-            response.addCookie(userLoginService.buildTokenCookie(TokenType.REFRESH, newRefreshToken));
+            Client updatedClient = clientService.updateClientProfile(currentEmail, clientUpdateDTO);
+
+            if (!currentEmail.equals(updatedClient.getEmail())) {
+                userLoginService.refreshSessionCookies(updatedClient.getEmail(), response);
+            }
+
+            return clientMapper.toDTO(updatedClient);
         }
-
-        return clientMapper.toDTO(updatedClient);
-    }
 
     @PutMapping("/me/password")
     public ResponseEntity<String> changePassword(

@@ -98,4 +98,14 @@ public class UserLoginService {
 		cookie.setPath("/");
 		return cookie;
 	}
+
+	public void refreshSessionCookies(String email, HttpServletResponse response) {
+		UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+		
+		String newAccessToken = jwtTokenProvider.generateAccessToken(userDetails);
+		String newRefreshToken = jwtTokenProvider.generateRefreshToken(userDetails);
+		
+		response.addCookie(buildTokenCookie(TokenType.ACCESS, newAccessToken));
+		response.addCookie(buildTokenCookie(TokenType.REFRESH, newRefreshToken));
+	}
 }

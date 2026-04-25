@@ -15,8 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import es.tickethub.tickethub.dto.ClientUpdateDTO;
 import es.tickethub.tickethub.entities.Client;
 import es.tickethub.tickethub.entities.Image;
+import es.tickethub.tickethub.mappers.ClientMapper;
 import es.tickethub.tickethub.repositories.ClientRepository;
 
 /**
@@ -26,6 +28,9 @@ import es.tickethub.tickethub.repositories.ClientRepository;
  */
 @Service
 public class ClientService {
+
+    @Autowired
+    private ClientMapper clientMapper;
 
     @Autowired
     private ClientRepository clientRepository;
@@ -50,35 +55,28 @@ public class ClientService {
     public void registerClient(String name, String email, String surname, String password, String passWordConfirmation,
             String username) {
 
-        // 1. Validar que las contraseñas coincidan
         if (!password.equals(passWordConfirmation)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Las contraseñas no coinciden");
         }
 
-        // 2. Validar que el nombre de usuario sea único
         if (clientRepository.existsByUsername(username)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Este nombre de usuario ya está en uso");
         }
 
-        // 3. Validar que el email sea único (Aquí estaba tu error anterior)
         if (clientRepository.existsByEmail(email)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Este correo electrónico ya pertenece a una cuenta");
         }
 
-        // 4. Si todo está bien, crear el nuevo cliente
         Client client = new Client();
         client.setName(name);
         client.setSurname(surname);
         client.setEmail(email);
         client.setUsername(username);
 
-        // 5. Hashear la contraseña
         client.setPassword(passwordEncoder.encode(password));
 
-        // 6. Valores por defecto
         client.setAdmin(false);
 
-        // 7. Guardar en BD
         clientRepository.save(client);
     }
 
@@ -249,4 +247,11 @@ public class ClientService {
         target.setProfileImage(source.getProfileImage());
     }
 
+    @Transactional
+    public Client updateClientProfile(String currentEmail, ClientUpdateDTO updateDTO) throws IOException {
+        Client client = getClientByEmail(currentEmail);
+        clientMapper.updateEntityFromDto(updateDTO, client);
+        return updateClient(currentEmail, client, null);
+}
+    
 }
