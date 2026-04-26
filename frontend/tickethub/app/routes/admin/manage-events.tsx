@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { Container, Table, Button, Alert } from "react-bootstrap";
+import { Container, Table, Button, Alert, Row } from "react-bootstrap";
 import { getEventsAdmin, deleteEvent } from "~/services/events-service";
 import type { EventBasic } from "~/models/EventBasic";
 import { useConfirmDialog } from "~/hooks/useConfirmDialog";
@@ -89,7 +89,7 @@ export default function ManageEvents() {
 
       <Row>
         <div className="col d-flex justify-content-start">
-          <Button variant="outline-primary" onClick={() => navigate("/admin/admin")}>
+          <Button variant="outline-primary" onClick={() => navigate("/admin")}>
             Volver
           </Button>
         </div>

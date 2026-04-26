@@ -7,7 +7,7 @@ export const AdminHeader = () => {
     return (
         <Navbar expand="lg">
             <Container fluid>
-                <Navbar.Brand as={Link} to="/admin/admin">
+                <Navbar.Brand as={Link} to="/admin">
                     TicketHub Admin
                 </Navbar.Brand>
 
