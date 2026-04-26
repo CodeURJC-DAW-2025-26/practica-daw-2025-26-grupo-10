@@ -44,7 +44,9 @@ export default function ArtistsManagementUI({ artists, onDelete, isDialogOpen,
                             <td>{artist.instagram}</td>
                             <td>{artist.twitter}</td>
                             <td>
-                                <Link to={`/admin/artists/edit/${artist.artistID}`} className="btn btn-sm btn-primary me-2">
+                                <Link
+                                    to={`/admin/artists/${artist.artistID}`}
+                                    className="btn btn-sm btn-primary me-2">
                                     Editar
                                 </Link>
                                 <Button size="sm" variant="danger" onClick={() => onDelete(artist.artistID)}>
@@ -56,8 +58,12 @@ export default function ArtistsManagementUI({ artists, onDelete, isDialogOpen,
                 </tbody>
             </Table>
 
-            <div className="d-flex justify-content-start">
-                <Link to="/admin" className="btn btn-outline-primary">Volver</Link>
+            <div className="row mb-3">
+                <div className="col d-flex justify-content-start">
+                    <Link to="/admin" className="btn btn-outline-primary">
+                        Volver
+                    </Link>
+                </div>
             </div>
         </Container>
     );

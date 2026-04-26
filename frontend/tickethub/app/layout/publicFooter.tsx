@@ -17,9 +17,21 @@ export const PublicFooter = () => {
                     <Col md={4} className="mb-3">
                         <h5>Enlaces rápidos</h5>
                         <ul className="list-unstyled">
-                            <li><Link to="/" className="text-decoration-none text-black">Inicio</Link></li>
-                            <li><Link to="/public/events" className="text-decoration-none text-black">Eventos</Link></li>
-                            <li><Link to="/public/artists" className="text-decoration-none text-black">Artistas</Link></li>
+                            <li>
+                                <Link to="/" className="text-decoration-none">
+                                    Inicio
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/public/events" className="text-decoration-none">
+                                    Eventos
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/public/artists" className="text-decoration-none">
+                                    Artistas
+                                </Link>
+                            </li>
                         </ul>
                     </Col>
 
@@ -27,13 +39,19 @@ export const PublicFooter = () => {
                         <h5>Síguenos</h5>
                         <ul className="list-inline">
                             <li className="list-inline-item">
-                                <a href="#" className="text-black"><i className="bi bi-facebook"></i></a>
+                                <a href="#" className="text-white">
+                                    <i className="bi bi-facebook"></i>
+                                </a>
                             </li>
                             <li className="list-inline-item">
-                                <a href="#" className="text-black"><i className="bi bi-twitter"></i></a>
+                                <a href="#" className="text-white">
+                                    <i className="bi bi-twitter"></i>
+                                </a>
                             </li>
                             <li className="list-inline-item">
-                                <a href="#" className="text-black"><i className="bi bi-instagram"></i></a>
+                                <a href="#" className="text-white">
+                                    <i className="bi bi-instagram"></i>
+                                </a>
                             </li>
                         </ul>
                     </Col>

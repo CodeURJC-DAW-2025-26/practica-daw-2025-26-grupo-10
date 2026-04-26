@@ -81,8 +81,9 @@ export default function ManageDiscounts() {
                 <td>{d.amount} {d.percentage ? "%" : "€"}</td>
                 <td>{d.percentage ? "Porcentaje" : "Cantidad fija"}</td>
                 <td className="d-flex gap-2">
-                  <Link to={`/admin/discounts/${d.discountID}/edit`} className="btn btn-sm btn-primary">Editar</Link>
+                  <Link to={`/admin/discounts/${d.discountID}`} className="btn btn-sm btn-primary">Editar</Link>
                   <Button size="sm" variant="danger" onClick={() => handleDelete(d.discountID)}>Eliminar</Button>
+
                 </td>
               </tr>
             ))}

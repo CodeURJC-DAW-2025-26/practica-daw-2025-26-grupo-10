@@ -37,6 +37,11 @@ export default function AdminDashboard() {
                     <Link to="/admin/artists/create" className="btn btn-primary">Crear artista</Link>
                     <Link to="/admin/artists" className="btn btn-outline-primary">Gestionar artistas</Link>
                 </div>
+
+                <div className="btn-group shadow-sm" role="group">
+                    <Link to="/admin/discounts/new" className="btn btn-primary">Crear descuento</Link>
+                    <Link to="/admin/discounts" className="btn btn-outline-primary">Gestionar descuentos</Link>
+                </div>
             </div>
 
             <div className="d-flex flex-wrap gap-4 mt-4 justify-content-center">

@@ -32,7 +32,7 @@ export const PublicHeader = () => {
                             {isClient && <>
                                 <Link to="/clients/profile">
                                     <img
-                                        src={`${API_URL}/images/users/${user?.userID}`}
+                                        src={`${API_URL}/users/${user!.userID}/image`}
                                         alt="Avatar"
                                         className="rounded-circle border border-1 border-white"
                                         style={{ width: "35px", height: "35px", objectFit: "cover" }}

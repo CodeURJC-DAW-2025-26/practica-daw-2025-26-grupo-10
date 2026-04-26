@@ -33,8 +33,8 @@ public class DiscountRestController {
     @Autowired DiscountMapper discountMapper;
 
     @GetMapping
-    public Page<DiscountBasicDTO> getDiscounts(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
-        return discountService.getDiscountsPage(page, size).map(discountMapper::toBasicDTO);
+    public Page<DiscountDTO> getDiscounts(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+        return discountService.getDiscountsPage(page, size).map(discountMapper::toDTO);
     }
 
     @GetMapping("/{discountID}")

@@ -8,8 +8,9 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
-import 'bootstrap/dist/css/bootstrap.min.css'
-import '~/styles/main.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import '~/styles/main.css';
 
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -47,6 +48,9 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     } else if (status === 500) {
       message = "500 - Error Interno";
       details = error.data?.message || "Vuelve en un rato, cuando las cosas se normalicen ;)";
+    } else if (status === 403) {
+      message = "403 - Prohibido";
+      details = "No tienes permiso para acceder a esta página.";
     }
   } else if (error instanceof Error) {
     details = error.message;

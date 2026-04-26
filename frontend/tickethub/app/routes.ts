@@ -17,8 +17,8 @@ export default [
                 route("/public/events", "routes/public/events.tsx"),
                 route("/admin/events", "routes/admin/manage-events.tsx"),
                 route("/public/events/:id", "routes/public/event.tsx"),
-                route("/admin/events/create", "routes/admin/create-event.tsx"),
-                route("/admin/events/edit/:id", "routes/admin/edit-event.tsx"),
+                route("/admin/events/new", "routes/admin/create-event.tsx", { id: "event-new" }),
+                route("/admin/events/:id", "routes/admin/create-event.tsx", { id: "event-edit" }),
                 route("/admin/events/:id/sessions", "routes/admin/manage-sessions.tsx"),
 
                 // Users
@@ -28,7 +28,7 @@ export default [
                 // Discounts
                 route("/admin/discounts", "routes/admin/discounts/manage-discounts.tsx"),
                 route("/admin/discounts/new", "routes/admin/discounts/create-discount.tsx", { id: "discount-new" }),
-                route("/admin/discounts/:id/edit", "routes/admin/discounts/create-discount.tsx", { id: "discount-edit" }),
+                route("/admin/discounts/:id", "routes/admin/discounts/create-discount.tsx", { id: "discount-edit" }),
 
                 // Zones
                 route("/admin/events/:eventId/zones", "routes/admin/events/manage-zones.tsx"),
@@ -50,9 +50,9 @@ export default [
                 route("/clients/profile/edit", "routes/client/change-profile.tsx"),
 
                 // Errors
-                route("*", "routes/not-found.tsx"),
-                route("403", "routes/errors/error403.tsx"), //TODO: this should not be here
+                route("403", "routes/error403.tsx"),
                 route("500", "routes/error500.tsx"),
+                route("*", "routes/not-found.tsx"),
         ]),
 ] satisfies RouteConfig;
 
