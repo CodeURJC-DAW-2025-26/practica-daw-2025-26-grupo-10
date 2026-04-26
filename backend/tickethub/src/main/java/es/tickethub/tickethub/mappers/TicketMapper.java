@@ -20,6 +20,8 @@ public interface TicketMapper {
 
     List<TicketDTO> toDTOs(Collection<Ticket> tickets);
 
+    List<TicketBasicDTO> toBasicDTOs(Collection<Ticket> tickets);
+
     @Mapping(target = "ticketID", ignore = true)
     Ticket toDomain(TicketDTO ticketDTO);
 }
