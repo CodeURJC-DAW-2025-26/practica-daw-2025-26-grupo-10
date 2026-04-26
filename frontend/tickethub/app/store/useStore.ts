@@ -9,7 +9,7 @@ interface AuthState {
     eventsSearch: string;
     setEventsSearch: (q: string) => void;
     logout: () => Promise<void>;
-    login: (email: string, password: string) => Promise<any>;
+    login: (email: string, password: string) => Promise<User>;
     signup: (name: string, surname: string, username: string, email: string, password: string, repeatPassword: string) => Promise<any>;
     refreshUser: () => Promise<void>;
 }
@@ -36,9 +36,9 @@ export const useStore = create<AuthState>((set) => ({
         set({ error: null });
         try {
             await login(email, password)
-            const usuario = await me();
+            const usuario = await me() as User;
             set({ user: usuario, isAuthenticated: true })
-
+            return usuario;
         } catch (error) {
             const mensaje = error instanceof Error ? error.message : "Error desconocido al iniciar sesión";
             set({ error: mensaje, isAuthenticated: false });
@@ -50,8 +50,8 @@ export const useStore = create<AuthState>((set) => ({
         set({ error: null });
         try {
             await signup(name, surname, username, email, password, passwordConfirmation);
-            const usuario = await me();
-            set({ user: usuario, isAuthenticated: true })
+            //const usuario = await me();
+            //set({ user: usuario, isAuthenticated: true })
         } catch (error) {
             const mensaje = error instanceof Error ? error.message : "Error desconocido al registrarse";
             set({ error: mensaje, isAuthenticated: false });

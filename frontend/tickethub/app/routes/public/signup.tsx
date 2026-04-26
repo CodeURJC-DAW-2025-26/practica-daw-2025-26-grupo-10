@@ -17,7 +17,7 @@ export default function SignUp() {
         const passwordConfirmation = formData.get("passwordConfirmation") as string;
         try {
             await signup(name, surname, username, email, password, passwordConfirmation);
-            navigate("/");
+            navigate("/public/login");
             return null;
         } catch {
             return null;

@@ -102,7 +102,7 @@ public class SecurityConfig {
 				.authorizeHttpRequests(authorize -> authorize
 						// PUBLIC Routes
 						.requestMatchers("/v3/api-docs", "/v3/api-docs/**", "/v3/api-docs.yaml", "/swagger-ui/**",
-								"/swagger-ui.html")
+								"/swagger-ui.html", "/auth/**")
 						.permitAll()
 						.requestMatchers("/", "/css/**", "/js/**", "/images/**", "/public/**",
 								"/images/entities/**", "/new", "/new/**", "/api/v1/public/**")

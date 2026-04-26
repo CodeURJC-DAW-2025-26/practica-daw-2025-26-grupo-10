@@ -8,12 +8,18 @@ export default function Login() {
     const error = useStore((state) => state.error);
     const navigate = useNavigate();
 
+
     async function handleLogin(prevState: any, formData: FormData) {
         const email = formData.get("email") as string;
         const password = formData.get("password") as string;
         try {
-            await login(email, password);
-            navigate("/clients/profile");
+            const user = await login(email, password);
+
+            if (user.admin === false) {
+                navigate("/");
+            } else {
+                navigate("/admin");
+            }
             return null;
         } catch {
             return null;
