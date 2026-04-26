@@ -26,32 +26,32 @@ export default [
                 route("/admin/users/edit/:id", "routes/admin/edit-user.tsx"),
 
                 // Discounts
-                route("admin/discounts", "routes/admin/discounts/manage-discounts.tsx"),
-                route("admin/discounts/new", "routes/admin/discounts/create-discount.tsx", { id: "discount-new" }),
-                route("admin/discounts/:id/edit", "routes/admin/discounts/create-discount.tsx", { id: "discount-edit" }),
+                route("/admin/discounts", "routes/admin/discounts/manage-discounts.tsx"),
+                route("/admin/discounts/new", "routes/admin/discounts/create-discount.tsx", { id: "discount-new" }),
+                route("/admin/discounts/:id/edit", "routes/admin/discounts/create-discount.tsx", { id: "discount-edit" }),
 
                 // Zones
-                route("admin/events/:eventId/zones", "routes/admin/events/manage-zones.tsx"),
-                route("admin/events/:eventId/zones/new", "routes/admin/events/create-zone.tsx", { id: "zone-new" }),
-                route("admin/events/:eventId/zones/:id/edit", "routes/admin/events/create-zone.tsx", { id: "zone-edit" }),
+                route("/admin/events/:eventId/zones", "routes/admin/events/manage-zones.tsx"),
+                route("/admin/events/:eventId/zones/new", "routes/admin/events/create-zone.tsx", { id: "zone-new" }),
+                route("/admin/events/:eventId/zones/:id/edit", "routes/admin/events/create-zone.tsx", { id: "zone-edit" }),
 
                 // Purchases
-                route("public/purchase/:eventId", "routes/public/purchase.tsx"),
-                route("public/confirmation/:purchaseId", "routes/public/confirmation.tsx"),
-
-                // Errors
-                route("*", "routes/not-found.tsx"),
-                route("403", "routes/errors/error403.tsx"), //TODO: this should not be here
+                route("/public/purchase/:eventId", "routes/public/purchase.tsx"),
+                route("/public/confirmation/:purchaseId", "routes/public/confirmation.tsx"),
 
                 //login
-                route("/login", "routes/public/login.tsx"),
-                route("/signup", "routes/public/signup.tsx"),
+                route("/public/login", "routes/public/login.tsx"),
+                route("/public/signup", "routes/public/signup.tsx"),
 
                 //client Stuff
                 route("/clients/profile", "routes/client/profile.tsx"),
                 route("/purchases/me", "routes/client/purchases.tsx"),
                 route("/clients/me/password", "routes/client/change-password.tsx"),
                 route("/clients/profile/edit", "routes/client/change-profile.tsx"),
+
+                // Errors
+                route("*", "routes/not-found.tsx"),
+                route("403", "routes/errors/error403.tsx"), //TODO: this should not be here
         ]),
 ] satisfies RouteConfig;
 

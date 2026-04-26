@@ -1,4 +1,4 @@
-import type EventBasic from "~/models/EventBasic";
+import type { EventBasic } from "./EventBasic";
 
 export default interface Discount {
   discountID: number;

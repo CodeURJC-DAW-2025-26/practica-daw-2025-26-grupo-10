@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { getEvents, getCategories } from "~/services/events-service";
+import { getEventsPublic, getCategories } from "~/services/events-service";
 import type { EventBasic } from "~/models/EventBasic";
 import { API_URL } from "~/services/homeService";
 import { useStore } from "~/store/useStore";
@@ -40,7 +40,7 @@ export default function Events() {
     }
 
     try {
-      const data = await getEvents(currentPage, size, eventsSearch, filterCategory, filterDate);
+      const data = await getEventsPublic(currentPage, size, eventsSearch, filterCategory, filterDate);
       setEvents(reset ? data : (prev) => [...prev, ...data]);
       setIsLast(data.length < 5);
       setPage(currentPage + 1);

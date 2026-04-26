@@ -1,12 +1,11 @@
 import { useActionState, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { getArtists, createEvent, updateEvent, getEvent } from "~/services/event-service";
+import { getArtists, createEvent, updateEvent, getEvent, uploadEventImage } from "~/services/event-service";
 import type { ArtistBasic } from "~/models/ArtistBasic";
 import type { SessionBasic } from "~/models/SessionBasic";
-import type { ZoneBasic } from "~/models/ZoneBasic";
 import type { Event } from "~/models/Event";
-import type { ImageBasic } from "~/models/ImageBasic";
 import { API_URL } from "~/services/homeService";
+import type ZoneBasic from "~/models/ZoneBasic";
 
 const TARGET_AGE_OPTIONS = [
   { value: 0, label: "Niños pequeños" },
@@ -47,32 +46,46 @@ export default function CreateEvent() {
 
   useEffect(() => { loadData(); }, [id]);
 
+  //Function to upload the eventImages
+  async function uploadEventImages(eventID: number, images: File[]) {
+    const validImages = images.filter((img) => img.size > 0);   //Necesary cause when is empty the navigator sets an empty file
+    for (const image of validImages) {
+      await uploadEventImage(eventID, image);
+    }
+  }
+
   async function submitAction(
     prevState: { success: boolean; error: string | null },
     formData: FormData
   ) {
-    const data = {
+    const createData = {
       name: formData.get("name") as string,
       category: formData.get("category") as string,
       place: formData.get("place") as string,
       artistId: Number(formData.get("artistId")),
       targetAge: Number(formData.get("targetAge")),
-      capacity: Number(formData.get("capacity")),
-      eventImages: formData.get("images") as ImageBasic[] | null,
+      capacity: Number(formData.get("capacity"))
+    };
+
+    const updateData = {
+      ...createData,
       discountIds: formData.get("discounts") as number[] | null,
       zones: formData.get("zones") as ZoneBasic[] | null,
       sessions: formData.get("sessions") as SessionBasic[] | null
-    };
+    }
+
+    const images = formData.getAll("images") as File[];
 
     try {
       if (isEditing) {
-        await updateEvent(Number(id), data);
+        await updateEvent(Number(id), updateData);
+        uploadEventImages(Number(id), images);
+        navigate("/admin/events");
       } else {
-        const created = await createEvent(data);
+        const created = await createEvent(createData);
+        uploadEventImages(Number(id), images);
         navigate(`/admin/events/edit/${created.eventID}`);
-        return { success: true, error: null };
       }
-      navigate("/admin/events");
       return { success: true, error: null };
     } catch (err) {
       console.error(err);

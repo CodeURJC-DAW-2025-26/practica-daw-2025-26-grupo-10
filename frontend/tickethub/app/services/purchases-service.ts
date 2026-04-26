@@ -21,5 +21,5 @@ export async function getPurchase(purchaseId: string): Promise<Purchase> {
 }
 
 export function getDownloadUrl(purchaseId: string | number): string {
-  return `/api/v1/public/purchases/download/${purchaseId}`;
+  return `${PURCHASES_URL}/download/${purchaseId}`;
 }

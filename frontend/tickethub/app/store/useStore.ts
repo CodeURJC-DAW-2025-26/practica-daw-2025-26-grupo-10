@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 import { login, logout, me, signup } from '~/services/auth-service';
-import type { UserBasic } from '~/models/UserBasic';
+import type { User } from '~/models/User';
 
 interface AuthState {
-    user: UserBasic | null;
+    user: User | null;
     error: string | null;
     isAuthenticated: boolean;
     eventsSearch: string;

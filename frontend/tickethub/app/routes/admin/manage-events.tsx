@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { getEvents, deleteEvent } from "~/services/events-service";
+import { getEventsAdmin, deleteEvent } from "~/services/events-service";
 import type { EventBasic } from "~/models/EventBasic";
 import { useConfirmDialog } from "~/hooks/useConfirmDialog";
 import { ConfirmDialog } from "~/components/confirmDialog";
 import { useTemporaryMessage } from "~/hooks/useTemporaryMessage";
+import {Button} from "react-bootstrap";
 
 export default function ManageEvents() {
 
@@ -12,32 +13,20 @@ export default function ManageEvents() {
 
   const [events, setEvents] = useState<EventBasic[]>([]);
   const [isPending, setIsPending] = useState(true);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [isLast, setIsLast] = useState(false);
-  const [page, setPage] = useState(0);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   const { error: deleteError, setError: setDeleteError,
           success: deleteSuccess, setSuccess: setDeleteSuccess } = useTemporaryMessage();
 
   const {isOpen: isNotConfirmed, message, confirm, handleCancel, handleConfirm} = useConfirmDialog();
 
-  async function loadEvents(reset: boolean = false) {
-    const currentPage = reset ? 0 : page;
-    const size = 10;        //Default value to show the events 10 by 10
-    
-    if (reset) {
-      setIsPending(true);
-    } else {
-      setIsLoadingMore(true);
-    }
+  async function loadEvents() {
 
     try {
-      const data = await getEvents(currentPage, size, null, null, null);
-      setEvents(reset ? data : (prev) => [...prev, ...data]);
-      setIsLast(data.length < 10);
-      setPage(currentPage + 1);
-    } catch (err) {
-      console.error(err);
+      const data = await getEventsAdmin();
+      setEvents(data);
+    } catch {
+      setLoadError("No se pudieron cargar los eventos")
     } finally {
       setIsPending(false);
     }
@@ -56,7 +45,7 @@ export default function ManageEvents() {
     });
   }
 
-  useEffect(() => { loadEvents(true); }, []);
+  useEffect(() => { loadEvents(); }, []);
 
   return (
     <div className="container my-5">
@@ -69,6 +58,13 @@ export default function ManageEvents() {
       )}
       <h2>Gestión de Eventos</h2>
 
+      {loadError && (
+        <div className="alert alert-danger alert-dismissible fade show" role="alert">
+          {loadError}
+          <Button className="btn-close" onClick={() => setLoadError(null)} aria-label="Cerrar" />
+        </div>
+      )}
+      
       {deleteError && <p className="alert alert-danger">{deleteError}</p>}
       {deleteSuccess && <p className="alert alert-success">{deleteSuccess}</p>}
 
@@ -107,20 +103,6 @@ export default function ManageEvents() {
               ))}
             </tbody>
           </table>
-
-          {!isLast && (
-            <div className="row mt-4">
-            <div className="col-12 text-end">
-                <button
-                className="btn btn-outline-secondary"
-                onClick={() => loadEvents(false)}
-                disabled={isLoadingMore}
-                >
-                {isLoadingMore ? "Cargando..." : "Cargar más"}
-                </button>
-            </div>
-            </div>
-          )}
         </>
       )}
 

@@ -1,14 +1,12 @@
 import type { EventBasic } from "~/models/EventBasic";
 import { API_URL } from "./homeService";
-import type { Event } from "~/models/Event";
 
-// TODO: Added null option to the parameters artist, category and date to reutilize the function at manage events
-export async function getEvents(
+export async function getEventsPublic(
   page: number,
   size: number,
-  artist: string | null,
-  category: string | null,
-  date: string | null
+  artist: string,
+  category: string,
+  date: string
 ): Promise<EventBasic[]> {
   const params = new URLSearchParams();
   params.set("page", page.toString());
@@ -22,6 +20,15 @@ export async function getEvents(
   const data = await res.json()
   return data.content;
 }
+
+export async function getEventsAdmin(): Promise<EventBasic[]> {
+  const res = await fetch(`${API_URL}/admin/events`, {
+    credentials: "include"
+  });
+  if (!res.ok) throw new Error("Error cargando eventos");
+  const data = await res.json()
+  return data.content;
+}
  
 export async function getCategories(): Promise<string[]> {
   const res = await fetch(`${API_URL}/public/events/categories`);
@@ -31,6 +38,9 @@ export async function getCategories(): Promise<string[]> {
 
 //Functions to the manage-events.tsx
 export async function deleteEvent(eventID: number): Promise<void> {
-  const res = await fetch(`${API_URL}/admin/events/${eventID}`, { method: "DELETE" });
+  const res = await fetch(`${API_URL}/admin/events/${eventID}`, {
+    method: "DELETE",
+    credentials: "include"
+  });
   if (!res.ok) throw new Error("Error eliminando el evento");
 }

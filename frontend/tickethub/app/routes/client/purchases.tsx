@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import React, { useEffect, useState } from "react";
-import { type PurchaseBasic } from "../../models/PurchasesPageBasics";
+import type { PurchaseBasic } from "../../models/PurchaseBasic";
 import { getPurchases } from "../../services/user-service";
 
 export default function ClientPurchases() {

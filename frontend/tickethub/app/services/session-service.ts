@@ -1,11 +1,6 @@
 import { API_URL } from "./homeService";
 import type { SessionBasic } from "~/models/SessionBasic";
 
-const getHeaders = () => ({
-    "Authorization": `Bearer ${localStorage.getItem("token")}`,
-    "Content-Type": "application/json",
-});
-
 export async function getSessionsByEvent(eventID: string): Promise<SessionBasic[]> {
     const res = await fetch(`${API_URL}/public/sessions/event/${eventID}`);
     if (!res.ok) throw new Error("Error cargando las sesiones");
@@ -15,7 +10,8 @@ export async function getSessionsByEvent(eventID: string): Promise<SessionBasic[
 export async function createSession(eventID: string, dateStr: string): Promise<SessionBasic> {
     const res = await fetch(`${API_URL}/admin/events/${eventID}/sessions`, {
         method: "POST",
-        headers: getHeaders(),
+        headers: {"Content-Type": "application/json"},
+        credentials: "include",
         body: JSON.stringify({ dateStr }),
     });
     if (!res.ok) throw new Error("Error creando la sesión");
@@ -25,7 +21,8 @@ export async function createSession(eventID: string, dateStr: string): Promise<S
 export async function updateSession(eventID: string, index: number, dateStr: string): Promise<SessionBasic> {
     const res = await fetch(`${API_URL}/admin/events/${eventID}/sessions/${index}`, {
         method: "PUT",
-        headers: getHeaders(),
+        headers: {"Content-Type": "application/json"},
+        credentials: "include",
         body: JSON.stringify({ dateStr }),
     });
     if (!res.ok) throw new Error("Error actualizando la sesión");
@@ -35,7 +32,8 @@ export async function updateSession(eventID: string, index: number, dateStr: str
 export async function deleteSession(sessionID: number): Promise<void> {
     const res = await fetch(`${API_URL}/admin/sessions/${sessionID}`, {
         method: "DELETE",
-        headers: getHeaders(),
+        headers: {"Content-Type": "application/json"},
+        credentials: "include"
     });
     if (!res.ok) throw new Error("Error eliminando la sesión");
 }

@@ -1,5 +1,5 @@
 import { API_URL } from "./homeService"
-import type { PurchaseBasic } from "../models/PurchasesPageBasics";
+import type { PurchaseBasic } from "../models/PurchaseBasic";
 import type { ChangePasswordBasic, ChangeProfileBasic } from "../models/UserBasic";
 import type { AuthResponse } from "../models/AuthResponse"
 export interface PurchasePaginatedResponse {

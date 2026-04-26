@@ -1,7 +1,7 @@
 import type { SessionBasic } from "./SessionBasic";
-import type { ZoneBasic } from "./ZoneBasic";
+import type ZoneBasic from "./ZoneBasic";
 
-export interface EventCreateUpdate {
+export interface EventUpdate {
     name: string,
     category: string,
     place: string,

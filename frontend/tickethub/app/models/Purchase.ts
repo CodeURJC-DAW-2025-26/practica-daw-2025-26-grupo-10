@@ -1,5 +1,5 @@
 import type TicketBasic from "~/models/TicketBasic";
-import type SessionBasic from "~/models/SessionBasic";
+import type { SessionBasic } from "./SessionBasic";
 
 export default interface Purchase {
   purchaseID: number;
