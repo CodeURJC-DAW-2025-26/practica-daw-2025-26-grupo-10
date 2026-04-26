@@ -91,7 +91,7 @@ export default function ManageDiscounts() {
       )}
 
       <div className="d-flex justify-content-between mt-3">
-        <Button variant="outline-secondary" onClick={() => navigate("/admin/admin")}>Volver</Button>
+        <Button variant="outline-secondary" onClick={() => navigate("/admin")}>Volver</Button>
         <Link to="/admin/discounts/new" className="btn btn-success">+ Crear descuento</Link>
       </div>
     </Container>

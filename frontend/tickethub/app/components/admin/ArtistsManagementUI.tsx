@@ -57,7 +57,7 @@ export default function ArtistsManagementUI({ artists, onDelete, isDialogOpen,
             </Table>
 
             <div className="d-flex justify-content-start">
-                <Link to="/admin/admin" className="btn btn-outline-primary">Volver</Link>
+                <Link to="/admin" className="btn btn-outline-primary">Volver</Link>
             </div>
         </Container>
     );

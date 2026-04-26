@@ -89,7 +89,7 @@ export default function ManageEvents() {
 
       <Row>
         <div className="col d-flex justify-content-start">
-          <Button variant="outline-primary" onClick={() => navigate("/admin/admin")}>
+          <Button variant="outline-primary" onClick={() => navigate("/admin")}>
             Volver
           </Button>
         </div>
