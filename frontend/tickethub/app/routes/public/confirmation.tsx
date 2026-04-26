@@ -1,4 +1,5 @@
 import { Link, useLocation, useParams } from "react-router";
+import { Container, Alert, ListGroup, Button } from "react-bootstrap";
 import { getDownloadUrl } from "~/services/purchases-service";
 import type Purchase from "~/models/Purchase";
 
@@ -14,69 +15,45 @@ export default function Confirmation() {
 
   if (!state?.purchase) {
     return (
-      <div className="container my-5 text-center">
-        <div className="alert alert-success mb-4">
-          <h4 className="alert-heading">¡Compra realizada!</h4>
+      <Container className="my-5 text-center">
+        <Alert variant="success" className="mb-4">
+          <Alert.Heading>¡Compra realizada!</Alert.Heading>
           <p className="mb-0">Tu pedido #{purchaseId} ha sido procesado.</p>
-        </div>
+        </Alert>
         <div className="d-flex justify-content-center gap-3">
-          <Link to="/" className="btn btn-primary">
-            Volver al inicio
-          </Link>
+          <Link to="/" className="btn btn-primary">Volver al inicio</Link>
           {purchaseId && (
-            <a
-              href={getDownloadUrl(purchaseId)}
-              className="btn btn-outline-primary"
-              target="_blank"
-              rel="noreferrer"
-            >
+            <a href={getDownloadUrl(purchaseId)} className="btn btn-outline-primary" target="_blank" rel="noreferrer">
               Descargar entradas (PDF)
             </a>
           )}
         </div>
-      </div>
+      </Container>
     );
   }
 
   const { purchase, eventName } = state;
 
   const formattedDate = purchase.session?.date
-    ? new Date(purchase.session.date).toLocaleString("es-ES", {
-        dateStyle: "long",
-        timeStyle: "short",
-      })
+    ? new Date(purchase.session.date).toLocaleString("es-ES", { dateStyle: "long", timeStyle: "short" })
     : null;
 
   return (
-    <div className="container my-5 text-center">
-      <div className="alert alert-success mb-4">
-        <h4 className="alert-heading">¡Compra realizada con éxito!</h4>
+    <Container className="my-5 text-center">
+      <Alert variant="success" className="mb-4">
+        <Alert.Heading>¡Compra realizada con éxito!</Alert.Heading>
         <p className="mb-0">Tu pedido ha sido procesado correctamente.</p>
-      </div>
+      </Alert>
 
-      <ul className="list-group list-group-flush col-md-6 mx-auto text-start mb-4">
-        <li className="list-group-item">
-          <strong>ID de Pedido:</strong> #{purchase.purchaseID}
-        </li>
-        {eventName && (
-          <li className="list-group-item">
-            <strong>Evento:</strong> {eventName}
-          </li>
-        )}
-        <li className="list-group-item">
-          <strong>Total Pagado:</strong> {purchase.totalPrice} €
-        </li>
-        {formattedDate && (
-          <li className="list-group-item">
-            <strong>Fecha:</strong> {formattedDate}
-          </li>
-        )}
-      </ul>
+      <ListGroup className="col-md-6 mx-auto text-start mb-4" variant="flush">
+        <ListGroup.Item><strong>ID de Pedido:</strong> #{purchase.purchaseID}</ListGroup.Item>
+        {eventName && <ListGroup.Item><strong>Evento:</strong> {eventName}</ListGroup.Item>}
+        <ListGroup.Item><strong>Total Pagado:</strong> {purchase.totalPrice} €</ListGroup.Item>
+        {formattedDate && <ListGroup.Item><strong>Fecha:</strong> {formattedDate}</ListGroup.Item>}
+      </ListGroup>
 
       <div className="d-flex justify-content-center gap-3">
-        <Link to="/" className="btn btn-primary">
-          Volver al inicio
-        </Link>
+        <Link to="/" className="btn btn-primary">Volver al inicio</Link>
         <a
           href={getDownloadUrl(purchase.purchaseID)}
           className="btn btn-outline-primary"
@@ -86,6 +63,6 @@ export default function Confirmation() {
           Descargar entradas (PDF)
         </a>
       </div>
-    </div>
+    </Container>
   );
 }

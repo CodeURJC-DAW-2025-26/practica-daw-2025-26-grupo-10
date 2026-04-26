@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { changePassword } from "~/services/user-service";
-import { useActionState, useState } from "react";
+import { useActionState } from "react";
+import { Container, Card, Form, Button, Alert, Row, Col } from "react-bootstrap";
 import type { ChangePasswordBasic } from "~/models/UserBasic";
 
 interface ActionState {
@@ -15,11 +16,7 @@ export default function ChangePassword() {
         const newPassword = formData.get("newPassword") as string;
         const confirmationPassword = formData.get("confirmationPassword") as string;
 
-        const changePasswordBasic: ChangePasswordBasic = {
-            oldPassword,
-            newPassword,
-            confirmationPassword
-        }
+        const changePasswordBasic: ChangePasswordBasic = { oldPassword, newPassword, confirmationPassword };
 
         try {
             const response = await changePassword(changePasswordBasic);
@@ -27,44 +24,47 @@ export default function ChangePassword() {
         } catch (error: any) {
             return { error: error.message };
         }
-
     }
 
     const [state, updatePassword, isPending] = useActionState(handleUpdatePassword, null);
+
     return (
-        <div>
-            <h2>Cambiar contraseña</h2>
-            <form action={updatePassword}>
-                <div>
-                    <label>Contraseña actual</label>
-                    <input type="password" name="oldPassword" required />
-                </div>
-                <br />
-                <div>
-                    <label>Nueva Contraseña</label>
-                    <input type="password" name="newPassword" required />
-                </div>
-                <br />
-                <div>
-                    <label>Repetir nueva contraseña</label>
-                    <input type="password" name="confirmationPassword" required />
-                </div>
-                <br />
-                <div>
-                    {state?.success && <p style={{ color: "green", fontWeight: "bold" }}>{state.success}</p>}
-                    {state?.error && <p style={{ color: "red", fontWeight: "bold" }}>{state.error}</p>}
+        <Container className="my-5">
+            <Row className="justify-content-center">
+                <Col md={6}>
+                    <Card>
+                        <Card.Body>
+                            <h2 className="mb-4">Cambiar contraseña</h2>
+                            <Form action={updatePassword}>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Contraseña actual</Form.Label>
+                                    <Form.Control type="password" name="oldPassword" required />
+                                </Form.Group>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Nueva Contraseña</Form.Label>
+                                    <Form.Control type="password" name="newPassword" required />
+                                </Form.Group>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Repetir nueva contraseña</Form.Label>
+                                    <Form.Control type="password" name="confirmationPassword" required />
+                                </Form.Group>
 
-                    <button type="submit" disabled={isPending}>
-                        {isPending ? "Actualizando..." : "Actualizar"}
-                    </button>
+                                {state?.success && <Alert variant="success">{state.success}</Alert>}
+                                {state?.error && <Alert variant="danger">{state.error}</Alert>}
 
-                    <Link to="/clients/profile" style={{ marginLeft: '10px' }}>
-                        <button>
-                            Volver al perfil
-                        </button>
-                    </Link>
-                </div>
-            </form>
-        </div>
+                                <div className="d-flex gap-2">
+                                    <Button type="submit" variant="primary" disabled={isPending}>
+                                        {isPending ? "Actualizando..." : "Actualizar"}
+                                    </Button>
+                                    <Link to="/clients/profile" className="btn btn-outline-secondary">
+                                        Volver al perfil
+                                    </Link>
+                                </div>
+                            </Form>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
     );
 }

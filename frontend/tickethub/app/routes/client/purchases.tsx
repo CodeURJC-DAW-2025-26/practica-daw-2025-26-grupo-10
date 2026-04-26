@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import React, { useEffect, useState } from "react";
+import { Container, Table, Button, Alert, Badge } from "react-bootstrap";
 import type { PurchaseBasic } from "../../models/PurchaseBasic";
 import { getPurchases } from "../../services/user-service";
 
@@ -26,17 +27,12 @@ export default function ClientPurchases() {
         }
     }
 
-    useEffect(() => {
-        loadPurchases(0);
-    }, []);
+    useEffect(() => { loadPurchases(0); }, []);
 
     function toggleRow(purchaseID: number) {
         const newExpandedRows = new Set(expandedRows);
-        if (newExpandedRows.has(purchaseID)) {
-            newExpandedRows.delete(purchaseID);
-        } else {
-            newExpandedRows.add(purchaseID);
-        }
+        if (newExpandedRows.has(purchaseID)) newExpandedRows.delete(purchaseID);
+        else newExpandedRows.add(purchaseID);
         setExpandedRows(newExpandedRows);
     }
 
@@ -49,15 +45,15 @@ export default function ClientPurchases() {
     }
 
     return (
-        <div>
-            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Container className="my-5">
+            <div className="d-flex justify-content-between align-items-center mb-4">
                 <h2>Mis Entradas</h2>
-                <Link to="/clients/profile">
-                    <button>Regresar al Perfil</button>
+                <Link to="/clients/profile" className="btn btn-outline-primary">
+                    Regresar al Perfil
                 </Link>
-            </header>
+            </div>
 
-            {error && <div style={{ color: "red", padding: "10px", border: "1px solid red" }}>{error}</div>}
+            {error && <Alert variant="danger">{error}</Alert>}
 
             {isPending && page === 0 ? (
                 <p>Cargando tu historial...</p>
@@ -65,10 +61,10 @@ export default function ClientPurchases() {
                 <p>No hay compras registradas aún.</p>
             ) : (
                 <>
-                    <table border={1} width="100%" style={{ borderCollapse: "collapse", marginTop: "20px" }}>
+                    <Table hover responsive>
                         <thead>
-                            <tr style={{ backgroundColor: "#f0f0f0" }}>
-                                <th style={{ padding: "10px" }}>Evento</th>
+                            <tr>
+                                <th>Evento</th>
                                 <th>Fecha Sesión</th>
                                 <th>Estado</th>
                                 <th>Precio Total</th>
@@ -79,23 +75,28 @@ export default function ClientPurchases() {
                             {purchases.map(purchase => (
                                 <React.Fragment key={purchase.purchaseID}>
                                     <tr>
-                                        <td style={{ padding: "10px" }}><strong>{purchase.session.eventName}</strong></td>
+                                        <td><strong>{purchase.session.eventName}</strong></td>
                                         <td>{new Date(purchase.session.date).toLocaleString("es-ES")}</td>
                                         <td>{getPurchaseStatus(purchase.tickets)}</td>
                                         <td>{purchase.totalPrice} €</td>
-                                        <td style={{ display: 'flex', gap: '10px', justifyContent: 'center', padding: "5px" }}>
-                                            <button onClick={() => toggleRow(purchase.purchaseID)}>
-                                                {expandedRows.has(purchase.purchaseID) ? "Ocultar Detalles" : "Ver Detalles"}
-                                            </button>
-                                            <button onClick={() => alert("Imprimiendo PDF...")}>Imprimir PDF</button>
+                                        <td>
+                                            <div className="d-flex gap-2 justify-content-center">
+                                                <Button
+                                                    size="sm"
+                                                    variant="outline-primary"
+                                                    onClick={() => toggleRow(purchase.purchaseID)}
+                                                >
+                                                    {expandedRows.has(purchase.purchaseID) ? "Ocultar" : "Ver Detalles"}
+                                                </Button>
+                                            </div>
                                         </td>
                                     </tr>
 
                                     {expandedRows.has(purchase.purchaseID) && (
-                                        <tr style={{ backgroundColor: "#fafafa" }}>
-                                            <td colSpan={5} style={{ padding: "15px" }}>
-                                                <h4>Desglose de Tickets (Ref: #{purchase.purchaseID})</h4>
-                                                <table border={1} width="80%" style={{ borderCollapse: "collapse", margin: "auto" }}>
+                                        <tr>
+                                            <td colSpan={5} className="p-3">
+                                                <h5>Desglose de Tickets (Ref: #{purchase.purchaseID})</h5>
+                                                <Table size="sm" bordered className="mb-0">
                                                     <thead>
                                                         <tr>
                                                             <th>Código / QR</th>
@@ -108,34 +109,36 @@ export default function ClientPurchases() {
                                                             <tr key={ticket.ticketID}>
                                                                 <td><code>{ticket.code}</code></td>
                                                                 <td>{ticket.ticketPrice} €</td>
-                                                                <td style={{ color: ticket.isActive ? "green" : "red" }}>
-                                                                    {ticket.isActive ? "🟢 Válido" : "🔴 Usado/Inactivo"}
+                                                                <td>
+                                                                    <Badge bg={ticket.isActive ? "success" : "danger"}>
+                                                                        {ticket.isActive ? "Válido" : "Usado/Inactivo"}
+                                                                    </Badge>
                                                                 </td>
                                                             </tr>
                                                         ))}
                                                     </tbody>
-                                                </table>
+                                                </Table>
                                             </td>
                                         </tr>
                                     )}
                                 </React.Fragment>
                             ))}
                         </tbody>
-                    </table>
+                    </Table>
 
-                    {/* BOTÓN CARGAR MÁS (Paginación Slice) */}
                     {hasNext && (
-                        <div style={{ textAlign: "center", marginTop: "20px" }}>
-                            <button
+                        <div className="text-center mt-4">
+                            <Button
+                                variant="outline-primary"
                                 onClick={() => loadPurchases(page + 1)}
                                 disabled={isPending}
                             >
                                 {isPending ? "Cargando más..." : "Cargar más historial"}
-                            </button>
+                            </Button>
                         </div>
                     )}
                 </>
             )}
-        </div>
+        </Container>
     );
 }

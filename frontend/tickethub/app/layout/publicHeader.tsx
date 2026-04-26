@@ -1,36 +1,25 @@
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
+import { Navbar, Nav, Container } from "react-bootstrap";
 import { PublicNavMenu } from "~/components/publicNavBar/PublicNavMenu";
 import { API_URL } from "~/services/homeService";
 import { useStore } from "~/store/useStore";
 
 export const PublicHeader = () => {
-
     const { user, isAuthenticated } = useStore();
-
     const isAdmin = isAuthenticated && user?.admin;
     const isClient = isAuthenticated && !isAdmin;
 
     return (
-        <nav className="navbar navbar-expand-lg">
-            <div className="container-fluid">
-                <Link className="navbar-brand" to="/">
+        <Navbar expand="lg">
+            <Container fluid>
+                <Navbar.Brand as={Link} to="/">
                     TicketHub
-                </Link>
+                </Navbar.Brand>
 
-                <button
-                    className="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarMain"
-                    aria-controls="navbarMain"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation"
-                >
-                    <span className="navbar-toggler-icon"></span>
-                </button>
+                <Navbar.Toggle aria-controls="navbarMain" />
 
-                <div className="collapse navbar-collapse" id="navbarMain">
-                    <PublicNavMenu/>
+                <Navbar.Collapse id="navbarMain">
+                    <PublicNavMenu />
 
                     <div className="d-flex align-items-center gap-3">
                         {isAuthenticated && <>
@@ -64,8 +53,8 @@ export const PublicHeader = () => {
                             </Link>
                         </>}
                     </div>
-                </div>
-            </div>
-        </nav>
+                </Navbar.Collapse>
+            </Container>
+        </Navbar>
     );
 };

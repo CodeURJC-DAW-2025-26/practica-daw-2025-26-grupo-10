@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
-import type { AdminStatistics } from "~/models/AdminStatistics";
 import { Link } from "react-router";
+import { Container, Row, Col } from "react-bootstrap";
+import type { AdminStatistics } from "~/models/AdminStatistics";
 
 interface Props {
     data: AdminStatistics;
@@ -11,31 +12,23 @@ export default function StatisticsCharts({ data }: Props) {
     const chart1Ref = useRef<HTMLCanvasElement>(null);
     const chart2Ref = useRef<HTMLCanvasElement>(null);
     const chart3Ref = useRef<HTMLCanvasElement>(null);
-
-    // Instancias de Chart para poder destruirlas al re-renderizar
     const chart1Instance = useRef<Chart | null>(null);
     const chart2Instance = useRef<Chart | null>(null);
     const chart3Instance = useRef<Chart | null>(null);
 
     useEffect(() => {
-        // --- Chart 2: Ranking ---
         if (chart2Ref.current) {
             chart2Instance.current?.destroy();
             chart2Instance.current = new Chart(chart2Ref.current, {
                 type: "bar",
                 data: {
                     labels: data.rankingLabels,
-                    datasets: [{
-                        label: "Tickets Vendidos",
-                        data: data.rankingValues,
-                        backgroundColor: "#3498db",
-                    }],
+                    datasets: [{ label: "Tickets Vendidos", data: data.rankingValues, backgroundColor: "#3498db" }],
                 },
                 options: { indexAxis: "y" },
             });
         }
 
-        // --- Chart 3: Evolución ---
         if (chart3Ref.current) {
             chart3Instance.current?.destroy();
             chart3Instance.current = new Chart(chart3Ref.current, {
@@ -54,11 +47,9 @@ export default function StatisticsCharts({ data }: Props) {
             });
         }
 
-        // --- Chart 1: Ventas mensuales por evento ---
         if (chart1Ref.current) {
             const months = [...new Set(data.monthEventData.map(d => d[0]))];
             const events = [...new Set(data.monthEventData.map(d => d[1]))];
-
             const datasets = events.map((evt, i) => ({
                 label: evt,
                 data: months.map(m => {
@@ -67,7 +58,6 @@ export default function StatisticsCharts({ data }: Props) {
                 }),
                 backgroundColor: `hsl(${i * (360 / events.length)}, 70%, 60%)`,
             }));
-
             chart1Instance.current?.destroy();
             chart1Instance.current = new Chart(chart1Ref.current, {
                 type: "bar",
@@ -84,25 +74,25 @@ export default function StatisticsCharts({ data }: Props) {
     }, [data]);
 
     return (
-        <main className="container my-5 flex-grow-1">
+        <Container as="main" className="my-5 flex-grow-1">
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <h2 className="mb-0">Panel de Estadísticas</h2>
                 <Link to="/admin" className="btn btn-outline-primary">Volver</Link>
             </div>
-            <div className="row g-4">
-                <div className="col-12 border p-3 bg-light">
+            <Row className="g-4">
+                <Col xs={12} className="border p-3 bg-light">
                     <h4>Ventas Mensuales por Evento</h4>
                     <canvas ref={chart1Ref} style={{ maxHeight: "400px" }} />
-                </div>
-                <div className="col-md-6 border p-3 bg-light">
+                </Col>
+                <Col md={6} className="border p-3 bg-light">
                     <h4>Ranking de Eventos Más Vendidos</h4>
                     <canvas ref={chart2Ref} />
-                </div>
-                <div className="col-md-6 border p-3 bg-light">
+                </Col>
+                <Col md={6} className="border p-3 bg-light">
                     <h4>Evolución Total de Ventas</h4>
                     <canvas ref={chart3Ref} />
-                </div>
-            </div>
-        </main>
+                </Col>
+            </Row>
+        </Container>
     );
 }

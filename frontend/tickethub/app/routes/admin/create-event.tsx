@@ -1,5 +1,6 @@
 import { useActionState, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import { Container, Form, Button, Alert, Table, Row, Col } from "react-bootstrap";
 import { getArtists, createEvent, updateEvent, getEvent, uploadEventImage } from "~/services/event-service";
 import type { ArtistBasic } from "~/models/ArtistBasic";
 import type { SessionBasic } from "~/models/SessionBasic";
@@ -18,7 +19,6 @@ const TARGET_AGE_OPTIONS = [
 ];
 
 export default function CreateEvent() {
-
   const { id } = useParams();
   const navigate = useNavigate();
   const isEditing = !!id;
@@ -32,7 +32,6 @@ export default function CreateEvent() {
     try {
       const artistsData = await getArtists();
       setArtists(artistsData);
-
       if (isEditing) {
         const eventData = await getEvent(id);
         setEvent(eventData);
@@ -46,12 +45,9 @@ export default function CreateEvent() {
 
   useEffect(() => { loadData(); }, [id]);
 
-  //Function to upload the eventImages
   async function uploadEventImages(eventID: number, images: File[]) {
-    const validImages = images.filter((img) => img.size > 0);   //Necesary cause when is empty the navigator sets an empty file
-    for (const image of validImages) {
-      await uploadEventImage(eventID, image);
-    }
+    const validImages = images.filter((img) => img.size > 0);
+    for (const image of validImages) await uploadEventImage(eventID, image);
   }
 
   async function submitAction(
@@ -72,7 +68,7 @@ export default function CreateEvent() {
       discountIds: formData.get("discounts") as number[] | null,
       zones: formData.get("zones") as ZoneBasic[] | null,
       sessions: formData.get("sessions") as SessionBasic[] | null
-    }
+    };
 
     const images = formData.getAll("images") as File[];
 
@@ -93,219 +89,160 @@ export default function CreateEvent() {
     }
   }
 
-  const [state, formAction, isPending] = useActionState(submitAction, {
-    success: false,
-    error: null,
-  });
+  const [state, formAction, isPending] = useActionState(submitAction, { success: false, error: null });
 
   if (isPendingLoad) return <p>Cargando...</p>;
 
   return (
-    <main className="container my-5 flex-grow-1">
-        <h2 className="text-center">{isEditing ? "Editar Evento" : "Crear Evento"}</h2>
+    <Container as="main" className="my-5 flex-grow-1">
+      <h2 className="text-center">{isEditing ? "Editar Evento" : "Crear Evento"}</h2>
 
-        {state.error && (
-          <div className="alert alert-danger alert-dismissible fade show" role="alert">
-            {state.error}
-          </div>
+      {state.error && <Alert variant="danger">{state.error}</Alert>}
+
+      <Form action={formAction}>
+        <Form.Group className="mb-3">
+          <Form.Label className="fw-bold">Nombre del evento</Form.Label>
+          <Form.Control name="name" defaultValue={event?.name ?? ""} required disabled={isPending} />
+        </Form.Group>
+
+        {isEditing && event && (
+          <p className="fw-bold mb-3">Capacidad total: {event.capacity}</p>
         )}
 
-        <form action={formAction}>
+        {!isEditing && (
+          <Form.Group className="mb-3">
+            <Form.Label className="fw-bold">Capacidad</Form.Label>
+            <Form.Control name="capacity" type="number" required disabled={isPending} />
+          </Form.Group>
+        )}
 
-            {/* Name */}
-            <p className="fw-bold mb-1">Nombre del evento</p>
-            <input
-            name="name"
-            className="form-control mb-3"
-            defaultValue={event?.name ?? ""}
-            required
-            disabled={isPending}
-            />
+        {isEditing && <input type="hidden" name="capacity" value={event?.capacity ?? 0} />}
 
-            {/* Capacity (edition) */}
-            {isEditing && event && (
-            <p className="fw-bold mb-1">Capacidad total: {event.capacity}</p>
-            )}
-            
-            {!isEditing && (
-            <>
-                <p className="fw-bold mb-1">Capacidad</p>
-                <input
-                name="capacity"
-                type="number"
-                className="form-control mb-3"
-                required
-                disabled={isPending}
-                />
-            </>
-            )}
+        <Form.Group className="mb-3">
+          <Form.Label className="fw-bold">Categoría</Form.Label>
+          <Form.Control name="category" type="text" defaultValue={event?.category ?? ""} disabled={isPending} />
+        </Form.Group>
 
-            {isEditing && (
-            <input type="hidden" name="capacity" value={event?.capacity ?? 0} />
-            )}
+        <Form.Group className="mb-3">
+          <Form.Label className="fw-bold">Lugar</Form.Label>
+          <Form.Control name="place" type="text" defaultValue={event?.place ?? ""} disabled={isPending} />
+        </Form.Group>
 
-            {/* Category */}
-            <p className="fw-bold mb-1">Categoría</p>
-            <input
-            name="category"
-            type="text"
-            className="form-control mb-3"
-            defaultValue={event?.category ?? ""}
-            disabled={isPending}
-            />
-
-            {/* Place */}
-            <p className="fw-bold mb-1">Lugar</p>
-            <input
-            name="place"
-            type="text"
-            className="form-control mb-3"
-            defaultValue={event?.place ?? ""}
-            disabled={isPending}
-            />
-
-            {/* Artist */}
-            <p className="fw-bold mb-1">Artista principal</p>
-            <select name="artistId" className="form-select mb-3" required disabled={isPending}>
+        <Form.Group className="mb-3">
+          <Form.Label className="fw-bold">Artista principal</Form.Label>
+          <Form.Select name="artistId" required disabled={isPending}>
             <option value="" disabled>Selecciona un artista</option>
             {artists.map((artist) => (
-                <option
-                key={artist.artistID}
-                value={artist.artistID}
-                >
-                {artist.artistName}
-                </option>
+              <option key={artist.artistID} value={artist.artistID}>{artist.artistName}</option>
             ))}
-            </select>
+          </Form.Select>
+        </Form.Group>
 
-            {/* Target age */}
-            <p className="fw-bold mb-1">Edad objetivo</p>
-            <select name="targetAge" className="form-select mb-3" disabled={isPending}>
+        <Form.Group className="mb-3">
+          <Form.Label className="fw-bold">Edad objetivo</Form.Label>
+          <Form.Select name="targetAge" defaultValue={event?.targetAge ?? 0} disabled={isPending}>
             {TARGET_AGE_OPTIONS.map((opt) => (
-                <option
-                key={opt.value}
-                value={opt.value}
-                selected={event?.targetAge === opt.value}
-                >
-                {opt.label}
-                </option>
+              <option key={opt.value} value={opt.value}>{opt.label}</option>
             ))}
-            </select>
+          </Form.Select>
+        </Form.Group>
 
-            {/* Sessions (edition) */}
-            <p className="fw-bold mb-1">Sesiones</p>
-            {isEditing ? (
-            <button
-                type="button"
-                className="btn btn-outline-secondary mb-3"
-                onClick={() => navigate(`/admin/events/${id}/sessions`)}
-                disabled={isPending}
-            >
+        <Form.Group className="mb-3">
+          <Form.Label className="fw-bold">Sesiones</Form.Label>
+          {isEditing ? (
+            <div>
+              <Button type="button" variant="outline-secondary" onClick={() => navigate(`/admin/events/${id}/sessions`)} disabled={isPending}>
                 Gestionar Sesiones
-            </button>
-            ) : (
-            <p className="text-muted mb-3">Primero guarda el evento para gestionar sesiones</p>
-            )}
-
-            {/* Zonez (edition) */}
-            <p className="fw-bold mb-1">Zonas del evento</p>
-            {isEditing && event ? (
-            <>
-                {event.zones && event.zones.length > 0 ? (
-                <table className="table mb-2">
-                    <thead>
-                    <tr>
-                        <th>Zona</th>
-                        <th>Capacidad</th>
-                        <th>Precio</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {event.zones.map((zone) => (
-                        <tr key={zone.id}>
-                        <td>{zone.name}</td>
-                        <td>{zone.capacity}</td>
-                        <td>{zone.price} €</td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
-                ) : (
-                <p className="text-muted">Aún no hay ninguna zona asociada a este evento</p>
-                )}
-                <button
-                type="button"
-                className="btn btn-outline-secondary mb-3"
-                onClick={() => navigate(`/admin/events/${id}/zones`)}
-                disabled={isPending}
-                >
-                Gestionar zonas
-                </button>
-            </>
-            ) : (
-            <p className="text-muted mb-3">Primero guarda el evento para gestionar sus zonas</p>
-            )}
-
-            {/* Discounts (edition) */}
-            <p className="fw-bold mb-1">Descuentos asociados</p>
-            {isEditing && event ? (
-            event.discounts && event.discounts.length > 0 ? (
-                <ul className="mb-3">
-                {event.discounts.map((discount) => (
-                    <li key={discount.discountName}>
-                    {discount.discountName} ({discount.amount}{discount.percentage ? "%" : "€"})
-                    </li>
-                ))}
-                </ul>
-            ) : (
-                <p className="text-muted mb-3">Aún no hay descuentos asociados a este evento</p>
-            )
-            ) : (
-            <p className="text-muted mb-3">Primero guarda el evento para poder gestionar descuentos</p>
-            )}
-
-            {/* Images (edition) */}
-            {isEditing && event && (
-            <>
-                <p className="fw-bold mb-1">Imágenes actuales</p>
-                <div className="row g-3 mb-4">
-                {event.eventImages && event.eventImages.length > 0 ? (
-                    event.eventImages.map((image, index) => (
-                    <div className="col-6 col-md-3" key={image.imageID}>
-                        <img
-                        src={`${API_URL}/public/events/${event.eventID}/images/${index + 1}`}
-                        className="img-fluid border"
-                        alt="Imagen del evento"
-                        />
-                    </div>
-                    ))
-                ) : (
-                    <p className="text-muted">No hay imágenes para este evento.</p>
-                )}
-                </div>
-            </>
-            )}
-
-            {/* SUBIR IMÁGENES */}
-            <p className="fw-bold mb-1">Subir nuevas imágenes</p>
-            <input type="file" name="images" className="form-control mb-3" multiple disabled={isPending} />
-
-            {/* BOTONES */}
-            <div className="d-flex justify-content-between mt-3">
-            <button
-                type="button"
-                className="btn btn-outline-primary"
-                onClick={() => navigate("/admin/events")}
-                disabled={isPending}
-            >
-                Cancelar
-            </button>
-            <button type="submit" className="btn btn-success" disabled={isPending}>
-                {isPending ? "Guardando..." : isEditing ? "Guardar cambios" : "Crear evento"}
-            </button>
+              </Button>
             </div>
+          ) : (
+            <p className="text-muted">Primero guarda el evento para gestionar sesiones</p>
+          )}
+        </Form.Group>
 
-        </form>
-    </main>
+        <Form.Group className="mb-3">
+          <Form.Label className="fw-bold">Zonas del evento</Form.Label>
+          {isEditing && event ? (
+            <>
+              {event.zones && event.zones.length > 0 ? (
+                <Table className="mb-2">
+                  <thead>
+                    <tr><th>Zona</th><th>Capacidad</th><th>Precio</th></tr>
+                  </thead>
+                  <tbody>
+                    {event.zones.map((zone) => (
+                      <tr key={zone.id}>
+                        <td>{zone.name}</td><td>{zone.capacity}</td><td>{zone.price} €</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              ) : (
+                <p className="text-muted">Aún no hay ninguna zona asociada a este evento</p>
+              )}
+              <Button type="button" variant="outline-secondary" onClick={() => navigate(`/admin/events/${id}/zones`)} disabled={isPending}>
+                Gestionar zonas
+              </Button>
+            </>
+          ) : (
+            <p className="text-muted">Primero guarda el evento para gestionar sus zonas</p>
+          )}
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label className="fw-bold">Descuentos asociados</Form.Label>
+          {isEditing && event ? (
+            event.discounts && event.discounts.length > 0 ? (
+              <ul className="mb-0">
+                {event.discounts.map((discount) => (
+                  <li key={discount.discountName}>
+                    {discount.discountName} ({discount.amount}{discount.percentage ? "%" : "€"})
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-muted mb-0">Aún no hay descuentos asociados a este evento</p>
+            )
+          ) : (
+            <p className="text-muted mb-0">Primero guarda el evento para poder gestionar descuentos</p>
+          )}
+        </Form.Group>
+
+        {isEditing && event && (
+          <Form.Group className="mb-4">
+            <Form.Label className="fw-bold">Imágenes actuales</Form.Label>
+            <Row className="g-3">
+              {event.eventImages && event.eventImages.length > 0 ? (
+                event.eventImages.map((image, index) => (
+                  <Col xs={6} md={3} key={image.imageID}>
+                    <img
+                      src={`${API_URL}/public/events/${event.eventID}/images/${index + 1}`}
+                      className="img-fluid border"
+                      alt="Imagen del evento"
+                    />
+                  </Col>
+                ))
+              ) : (
+                <p className="text-muted">No hay imágenes para este evento.</p>
+              )}
+            </Row>
+          </Form.Group>
+        )}
+
+        <Form.Group className="mb-3">
+          <Form.Label className="fw-bold">Subir nuevas imágenes</Form.Label>
+          <Form.Control type="file" name="images" multiple disabled={isPending} />
+        </Form.Group>
+
+        <div className="d-flex justify-content-between mt-3">
+          <Button type="button" variant="outline-primary" onClick={() => navigate("/admin/events")} disabled={isPending}>
+            Cancelar
+          </Button>
+          <Button type="submit" variant="success" disabled={isPending}>
+            {isPending ? "Guardando..." : isEditing ? "Guardar cambios" : "Crear evento"}
+          </Button>
+        </div>
+      </Form>
+    </Container>
   );
 }

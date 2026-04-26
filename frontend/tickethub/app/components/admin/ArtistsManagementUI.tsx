@@ -1,7 +1,7 @@
 import { Link } from "react-router";
+import { Container, Table, Button, Alert } from "react-bootstrap";
 import type { Artist } from "~/models/Artist";
 import { ConfirmDialog } from "~/components/confirmDialog";
-
 
 interface Props {
     artists: Artist[];
@@ -18,21 +18,17 @@ export default function ArtistsManagementUI({ artists, onDelete, isDialogOpen,
     dialogMessage, onDialogConfirm, onDialogCancel, error, success
 }: Props) {
     return (
-        <div className="container my-5">
+        <Container className="my-5">
             <h2>Gestión de Artistas</h2>
 
-            {error && <div className="alert alert-danger">{error}</div>}
-            {success && <div className="alert alert-success">{success}</div>}
+            {error && <Alert variant="danger">{error}</Alert>}
+            {success && <Alert variant="success">{success}</Alert>}
 
             {isDialogOpen && (
-                <ConfirmDialog
-                    message={dialogMessage}
-                    onConfirm={onDialogConfirm}
-                    onCancel={onDialogCancel}
-                />
+                <ConfirmDialog message={dialogMessage} onConfirm={onDialogConfirm} onCancel={onDialogCancel} />
             )}
 
-            <table className="table">
+            <Table>
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -48,29 +44,21 @@ export default function ArtistsManagementUI({ artists, onDelete, isDialogOpen,
                             <td>{artist.instagram}</td>
                             <td>{artist.twitter}</td>
                             <td>
-                                <Link
-                                    to={`/admin/artists/edit/${artist.artistID}`}
-                                    className="btn btn-sm btn-primary me-2">
+                                <Link to={`/admin/artists/edit/${artist.artistID}`} className="btn btn-sm btn-primary me-2">
                                     Editar
                                 </Link>
-                                <button
-                                    onClick={() => onDelete(artist.artistID)}
-                                    className="btn btn-sm btn-danger">
+                                <Button size="sm" variant="danger" onClick={() => onDelete(artist.artistID)}>
                                     Eliminar
-                                </button>
+                                </Button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
-            </table>
+            </Table>
 
-            <div className="row mb-3">
-                <div className="col d-flex justify-content-start">
-                    <Link to="/admin/admin" className="btn btn-outline-primary">
-                        Volver
-                    </Link>
-                </div>
+            <div className="d-flex justify-content-start">
+                <Link to="/admin/admin" className="btn btn-outline-primary">Volver</Link>
             </div>
-        </div>
+        </Container>
     );
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
+import { Container, Table, Button, Alert } from "react-bootstrap";
 import { getDiscounts, deleteDiscount } from "~/services/discounts-service";
 import type Discount from "~/models/Discount";
 import { ConfirmDialog } from "~/components/confirmDialog/ConfirmDialog";
@@ -27,9 +28,7 @@ export default function ManageDiscounts() {
     }
   }
 
-  useEffect(() => {
-    loadDiscounts();
-  }, []);
+  useEffect(() => { loadDiscounts(); }, []);
 
   function handleDelete(id: number) {
     confirm("¿Estás seguro de que deseas eliminar este descuento?", async () => {
@@ -45,30 +44,23 @@ export default function ManageDiscounts() {
   }
 
   return (
-    <div className="container my-5">
+    <Container className="my-5">
       {isNotConfirmed && (
-        <ConfirmDialog
-          message={message}
-          onConfirm={handleConfirm}
-          onCancel={handleCancel}
-        />
+        <ConfirmDialog message={message} onConfirm={handleConfirm} onCancel={handleCancel} />
       )}
 
       <h2>Gestión de Descuentos</h2>
 
       {loadError && (
-        <div className="alert alert-danger alert-dismissible fade show" role="alert">
-          {loadError}
-          <button type="button" className="btn-close" onClick={() => setLoadError(null)} aria-label="Cerrar" />
-        </div>
+        <Alert variant="danger" dismissible onClose={() => setLoadError(null)}>{loadError}</Alert>
       )}
-      {deleteError && <p className="alert alert-danger">{deleteError}</p>}
-      {deleteSuccess && <p className="alert alert-success">{deleteSuccess}</p>}
+      {deleteError && <Alert variant="danger">{deleteError}</Alert>}
+      {deleteSuccess && <Alert variant="success">{deleteSuccess}</Alert>}
 
       {isPending ? (
         <p>Cargando descuentos...</p>
       ) : (
-        <table className="table">
+        <Table>
           <thead>
             <tr>
               <th>Nombre</th>
@@ -80,49 +72,28 @@ export default function ManageDiscounts() {
           <tbody>
             {discounts.length === 0 && (
               <tr>
-                <td colSpan={4} className="text-center text-muted">
-                  No hay descuentos registrados.
-                </td>
+                <td colSpan={4} className="text-center text-muted">No hay descuentos registrados.</td>
               </tr>
             )}
             {discounts.map((d) => (
               <tr key={d.discountID}>
                 <td>{d.discountName}</td>
-                <td>
-                  {d.amount} {d.percentage ? "%" : "€"}
-                </td>
+                <td>{d.amount} {d.percentage ? "%" : "€"}</td>
                 <td>{d.percentage ? "Porcentaje" : "Cantidad fija"}</td>
                 <td className="d-flex gap-2">
-                  <Link
-                    to={`/admin/discounts/${d.discountID}/edit`}
-                    className="btn btn-sm btn-primary"
-                  >
-                    Editar
-                  </Link>
-                  <button
-                    className="btn btn-sm btn-danger"
-                    onClick={() => handleDelete(d.discountID)}
-                  >
-                    Eliminar
-                  </button>
+                  <Link to={`/admin/discounts/${d.discountID}/edit`} className="btn btn-sm btn-primary">Editar</Link>
+                  <Button size="sm" variant="danger" onClick={() => handleDelete(d.discountID)}>Eliminar</Button>
                 </td>
               </tr>
             ))}
           </tbody>
-        </table>
+        </Table>
       )}
 
       <div className="d-flex justify-content-between mt-3">
-        <button
-          className="btn btn-outline-secondary"
-          onClick={() => navigate("/admin/admin")}
-        >
-          Volver
-        </button>
-        <Link to="/admin/discounts/new" className="btn btn-success">
-          + Crear descuento
-        </Link>
+        <Button variant="outline-secondary" onClick={() => navigate("/admin/admin")}>Volver</Button>
+        <Link to="/admin/discounts/new" className="btn btn-success">+ Crear descuento</Link>
       </div>
-    </div>
+    </Container>
   );
 }

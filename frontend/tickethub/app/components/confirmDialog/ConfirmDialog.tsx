@@ -1,3 +1,5 @@
+import { Modal, Button } from "react-bootstrap";
+
 interface ConfirmDialogProps {
   message: string;
   onConfirm: () => void;
@@ -6,26 +8,14 @@ interface ConfirmDialogProps {
 
 export function ConfirmDialog({ message, onConfirm, onCancel }: ConfirmDialogProps) {
   return (
-    <div
-      className="modal d-block"
-      style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
-      role="dialog"
-    >
-      <div className="modal-dialog modal-dialog-centered">
-        <div className="modal-content">
-          <div className="modal-body">
-            <p className="mb-0">{message}</p>
-          </div>
-          <div className="modal-footer">
-            <button className="btn btn-secondary" onClick={onCancel}>
-              Cancelar
-            </button>
-            <button className="btn btn-danger" onClick={onConfirm}>
-              Confirmar
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Modal show centered onHide={onCancel}>
+      <Modal.Body>
+        <p className="mb-0">{message}</p>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={onCancel}>Cancelar</Button>
+        <Button variant="danger" onClick={onConfirm}>Confirmar</Button>
+      </Modal.Footer>
+    </Modal>
   );
 }

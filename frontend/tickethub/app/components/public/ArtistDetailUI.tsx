@@ -1,6 +1,6 @@
 import { Link } from "react-router";
+import { Container, Card, Button, ListGroup } from "react-bootstrap";
 import type { Artist } from "~/models/Artist";
-import type { EventBasic } from "~/models/EventBasic";
 
 interface Props {
     artist: Artist;
@@ -8,8 +8,8 @@ interface Props {
 
 export default function ArtistDetailUI({ artist }: Props) {
     return (
-        <div className="container my-5">
-            <div className="card text-center">
+        <Container className="my-5">
+            <Card className="text-center">
                 <img
                     src={`/api/v1/public/artists/${artist.artistID}/image`}
                     className="rounded-circle mx-auto mt-4"
@@ -18,69 +18,55 @@ export default function ArtistDetailUI({ artist }: Props) {
                     style={{ objectFit: "cover" }}
                     alt={artist.artistName}
                 />
-                <div className="card-body">
+                <Card.Body>
                     <h3>{artist.artistName}</h3>
                     <p>{artist.info}</p>
+
                     <h5>Próximos eventos</h5>
                     {artist.eventsIncoming.length === 0 ? (
                         <p>No hay eventos próximos para este artista.</p>
                     ) : (
-                        <ul className="list-group mb-3">
+                        <ListGroup className="mb-3" variant="flush">
                             {artist.eventsIncoming.map((event) => (
-                                <li key={event.eventID} className="list-group-item">{event.name}</li>
+                                <ListGroup.Item key={event.eventID}>{event.name}</ListGroup.Item>
                             ))}
-                        </ul>
+                        </ListGroup>
                     )}
-
 
                     <h5>Últimos eventos realizados</h5>
                     {artist.lastEvents.length === 0 ? (
                         <p>No hay eventos realizados de este artista.</p>
                     ) : (
-                        <ul className="list-group mb-3">
+                        <ListGroup className="mb-3" variant="flush">
                             {artist.lastEvents.map((event) => (
-                                <li key={event.eventID} className="list-group-item">{event.name}</li>
+                                <ListGroup.Item key={event.eventID}>{event.name}</ListGroup.Item>
                             ))}
-                        </ul>
+                        </ListGroup>
                     )}
 
                     <div className="d-flex justify-content-center gap-2 mt-3">
                         {artist.instagram ? (
-                            <a
-                                href={`https://www.instagram.com/${artist.instagram}/`}
-                                className="btn btn-outline-primary btn-sm"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
+                            <a href={`https://www.instagram.com/${artist.instagram}/`} className="btn btn-outline-primary btn-sm" target="_blank" rel="noreferrer">
                                 Instagram
                             </a>
                         ) : (
-                            <span className="btn btn-outline-primary btn-sm disabled opacity-50">
-                                Instagram
-                            </span>
+                            <span className="btn btn-outline-primary btn-sm disabled opacity-50">Instagram</span>
                         )}
 
                         {artist.twitter ? (
-                            <a
-                                href={`https://www.x.com/${artist.twitter}`}
-                                className="btn btn-outline-info btn-sm"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
+                            <a href={`https://www.x.com/${artist.twitter}`} className="btn btn-outline-info btn-sm" target="_blank" rel="noreferrer">
                                 Twitter
                             </a>
                         ) : (
-                            <span className="btn btn-outline-info btn-sm disabled opacity-50">
-                                Twitter
-                            </span>
+                            <span className="btn btn-outline-info btn-sm disabled opacity-50">Twitter</span>
                         )}
                     </div>
 
-                    <div className="card-body" style={{ textAlign: "center" }}>
+                    <div className="mt-3">
                         <Link to="/public/artists" className="btn btn-primary">Volver a artistas</Link>
                     </div>
-                </div>
-            </div>
-        </div >
-    )
+                </Card.Body>
+            </Card>
+        </Container>
+    );
 }

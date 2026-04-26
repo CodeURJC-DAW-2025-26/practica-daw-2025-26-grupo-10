@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { useEffect, useState } from "react";
+import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { getDashboard } from "~/services/adminService";
 import type { AdminDashboardDTO } from "~/models/Admin";
 
@@ -13,26 +14,25 @@ export default function AdminDashboard() {
             .catch(err => setError(err.message));
     }, []);
 
-    if (error) return <div className="container my-5 text-center text-danger">{error}</div>;
-    if (!stats) return <div className="container my-5 text-center">Cargando panel...</div>;
+    if (error) return <Container className="my-5 text-center text-danger">{error}</Container>;
+    if (!stats) return <Container className="my-5 text-center">Cargando panel...</Container>;
 
     return (
-        <div className="container my-5 flex-grow-1">
+        <Container className="my-5 flex-grow-1">
             <h2 className="mb-4">Panel de Administración</h2>
-            
-            <div className="row g-4 mb-4">
+
+            <Row className="g-4 mb-4">
                 <StatCard label="Entradas Vendidas" value={stats.numberTickets} />
                 <StatCard label="Eventos Activos" value={stats.activeEvents} />
                 <StatCard label="Usuarios" value={stats.numberUsers} />
                 <StatCard label="Admins" value={stats.numberAdmins} />
-            </div>
+            </Row>
 
             <div className="d-flex flex-wrap gap-4 mt-4 justify-content-center">
                 <div className="btn-group shadow-sm" role="group">
                     <Link to="/admin/events/create" className="btn btn-primary">Crear evento</Link>
                     <Link to="/admin/events" className="btn btn-outline-primary">Gestionar eventos</Link>
                 </div>
-
                 <div className="btn-group shadow-sm" role="group">
                     <Link to="/admin/artists/create" className="btn btn-primary">Crear artista</Link>
                     <Link to="/admin/artists" className="btn btn-outline-primary">Gestionar artistas</Link>
@@ -47,15 +47,15 @@ export default function AdminDashboard() {
                     <i className="bi bi-people-fill me-2"></i> Usuarios
                 </Link>
             </div>
-        </div>
+        </Container>
     );
 }
 
 const StatCard = ({ label, value }: { label: string; value: number }) => (
-    <div className="col-md-3">
-        <div className="card text-center p-3 shadow-sm">
+    <Col md={3}>
+        <Card className="text-center p-3 shadow-sm">
             <h5>{label}</h5>
             <p className="h4">{value}</p>
-        </div>
-    </div>
+        </Card>
+    </Col>
 );

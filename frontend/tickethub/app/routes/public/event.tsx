@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { getEvent } from "~/services/event-service";
 import type { Event } from "~/models/Event";
 import { API_URL } from "~/services/homeService";
 
 export default function Event() {
-
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -29,18 +29,15 @@ export default function Event() {
   useEffect(() => { loadEvent(); }, [id]);
 
   if (isPending) return <p>Cargando...</p>;
-
   if (!event) return <p>Evento no encontrado</p>;
 
   const images = event.eventImages ?? [];
 
   return (
-    <div className="container my-5">
-      <div className="card">
-        <div className="row">
-
-          {/* Carousel */}
-          <div className="col-md-6" style={{ alignItems: "center", padding: "2%" }}>
+    <Container className="my-5">
+      <Card>
+        <Row>
+          <Col md={6} style={{ alignItems: "center", padding: "2%" }}>
             {images.length > 0 && (
               <div id="carouselEvent" className="carousel slide">
                 <div className="carousel-inner">
@@ -77,11 +74,10 @@ export default function Event() {
                 </button>
               </div>
             )}
-          </div>
+          </Col>
 
-          {/* Info */}
-          <div className="col-md-6">
-            <div className="card-body">
+          <Col md={6}>
+            <Card.Body>
               <h2>{event.name}</h2>
 
               <strong><p>Sesiones disponibles:</p></strong>
@@ -100,36 +96,29 @@ export default function Event() {
               <p><strong>Artista:</strong> {event.artist.artistName}</p>
               <p><strong>Capacidad:</strong> {event.capacity}</p>
 
-              <button
-                className="btn btn-outline-secondary"
+              <Button
+                variant="outline-secondary"
                 onClick={() => navigate(`/public/artists/${event.artist.artistID}`)}
               >
                 Ver artista
-              </button>
-            </div>
-          </div>
-        </div>
+              </Button>
+            </Card.Body>
+          </Col>
+        </Row>
 
         <hr />
 
-        {/* Buttons */}
-        <div className="row mb-3">
-          <div className="col d-flex justify-content-between">
-            <button
-              className="btn btn-success"
-              onClick={() => navigate("/public/events")}
-            >
+        <Row className="mb-3">
+          <Col className="d-flex justify-content-between">
+            <Button variant="success" onClick={() => navigate("/public/events")}>
               Volver a eventos
-            </button>
-            <button
-              className="btn btn-success"
-              onClick={() => navigate(`/public/purchase/${event.eventID}`)}
-            >
+            </Button>
+            <Button variant="success" onClick={() => navigate(`/public/purchase/${event.eventID}`)}>
               Comprar entradas
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+            </Button>
+          </Col>
+        </Row>
+      </Card>
+    </Container>
   );
 }

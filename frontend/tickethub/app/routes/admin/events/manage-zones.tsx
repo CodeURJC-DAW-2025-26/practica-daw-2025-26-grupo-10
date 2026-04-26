@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
+import { Container, Table, Button, Alert } from "react-bootstrap";
 import { getZones, deleteZone } from "~/services/zones-service";
 import type Zone from "~/models/Zone";
 import { ConfirmDialog } from "~/components/confirmDialog/ConfirmDialog";
@@ -29,9 +30,7 @@ export default function ManageZones() {
     }
   }
 
-  useEffect(() => {
-    loadZones();
-  }, [eventId]);
+  useEffect(() => { loadZones(); }, [eventId]);
 
   function handleDelete(zoneId: number) {
     confirm("¿Estás seguro de que deseas eliminar esta zona?", async () => {
@@ -47,30 +46,23 @@ export default function ManageZones() {
   }
 
   return (
-    <div className="container my-5">
+    <Container className="my-5">
       {isNotConfirmed && (
-        <ConfirmDialog
-          message={message}
-          onConfirm={handleConfirm}
-          onCancel={handleCancel}
-        />
+        <ConfirmDialog message={message} onConfirm={handleConfirm} onCancel={handleCancel} />
       )}
 
       <h2>Gestión de Zonas</h2>
 
       {loadError && (
-        <div className="alert alert-danger alert-dismissible fade show" role="alert">
-          {loadError}
-          <button type="button" className="btn-close" onClick={() => setLoadError(null)} aria-label="Cerrar" />
-        </div>
+        <Alert variant="danger" dismissible onClose={() => setLoadError(null)}>{loadError}</Alert>
       )}
-      {deleteError && <p className="alert alert-danger">{deleteError}</p>}
-      {deleteSuccess && <p className="alert alert-success">{deleteSuccess}</p>}
+      {deleteError && <Alert variant="danger">{deleteError}</Alert>}
+      {deleteSuccess && <Alert variant="success">{deleteSuccess}</Alert>}
 
       {isPending ? (
         <p>Cargando zonas...</p>
       ) : (
-        <table className="table">
+        <Table>
           <thead>
             <tr>
               <th>Nombre</th>
@@ -82,9 +74,7 @@ export default function ManageZones() {
           <tbody>
             {zones.length === 0 && (
               <tr>
-                <td colSpan={4} className="text-center text-muted">
-                  No hay zonas registradas para este evento.
-                </td>
+                <td colSpan={4} className="text-center text-muted">No hay zonas registradas para este evento.</td>
               </tr>
             )}
             {zones.map((z) => (
@@ -93,39 +83,21 @@ export default function ManageZones() {
                 <td>{z.capacity}</td>
                 <td>{z.price} €</td>
                 <td className="d-flex gap-2">
-                  <Link
-                    to={`/admin/events/${eventId}/zones/${z.id}/edit`}
-                    className="btn btn-sm btn-primary"
-                  >
-                    Editar
-                  </Link>
-                  <button
-                    className="btn btn-sm btn-danger"
-                    onClick={() => handleDelete(z.id)}
-                  >
-                    Eliminar
-                  </button>
+                  <Link to={`/admin/events/${eventId}/zones/${z.id}/edit`} className="btn btn-sm btn-primary">Editar</Link>
+                  <Button size="sm" variant="danger" onClick={() => handleDelete(z.id)}>Eliminar</Button>
                 </td>
               </tr>
             ))}
           </tbody>
-        </table>
+        </Table>
       )}
 
       <div className="d-flex justify-content-between mt-3">
-        <button
-          className="btn btn-outline-secondary"
-          onClick={() => navigate(`/admin/events/${eventId}/edit`)}
-        >
+        <Button variant="outline-secondary" onClick={() => navigate(`/admin/events/${eventId}/edit`)}>
           Volver al evento
-        </button>
-        <Link
-          to={`/admin/events/${eventId}/zones/new`}
-          className="btn btn-success"
-        >
-          + Agregar zona
-        </Link>
+        </Button>
+        <Link to={`/admin/events/${eventId}/zones/new`} className="btn btn-success">+ Agregar zona</Link>
       </div>
-    </div>
+    </Container>
   );
 }

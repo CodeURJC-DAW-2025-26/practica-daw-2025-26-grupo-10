@@ -1,9 +1,9 @@
 import { useActionState } from "react";
 import { useNavigate } from "react-router";
 import { useStore } from "~/store/useStore";
+import { Container, Card, Form, Button, Alert } from "react-bootstrap";
 
-
-export default function SingUp() {
+export default function SignUp() {
     const signup = useStore((state) => state.signup);
     const error = useStore((state) => state.error);
     const navigate = useNavigate();
@@ -19,35 +19,50 @@ export default function SingUp() {
             await signup(name, surname, username, email, password, passwordConfirmation);
             navigate("/");
             return null;
-        } catch (error) {
+        } catch {
             return null;
         }
-
     }
 
     const [_, formAction, isPending] = useActionState(handleSignup, null);
-    return (
-        <>
-            <div>
-                <h3>Crear Cuenta</h3>
-                <form action={formAction}>
-                    <input type="text" name="name" placeholder="Nombre" required />
-                    <br />
-                    <input type="text" name="surname" placeholder="Apellido" required />
-                    <br />
-                    <input type="text" name="username" placeholder="Usuario" required />
-                    <br />
-                    <input type="email" name="email" placeholder="Correo Electrónico" required />
-                    <br />
-                    <input type="password" name="password" placeholder="Contraseña" required />
-                    <br />
-                    <input type="password" name="passwordConfirmation" placeholder="Confirmar Contraseña" required />
-                    <br />
-                    <button type="submit" disabled={isPending}>{isPending ? "Registrando..." : "Registrarse"}</button>
-                    {error ? <p style={{ color: "red" }}>{error}</p> : ""}
 
-                </form>
-            </div>
-        </>
+    return (
+        <Container className="my-5">
+            <Card className="col-md-6 mx-auto">
+                <Card.Body>
+                    <h3 className="mb-4 text-center">Crear Cuenta</h3>
+                    <Form action={formAction}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Nombre</Form.Label>
+                            <Form.Control type="text" name="name" placeholder="Nombre" required />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Apellido</Form.Label>
+                            <Form.Control type="text" name="surname" placeholder="Apellido" required />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Usuario</Form.Label>
+                            <Form.Control type="text" name="username" placeholder="Usuario" required />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Correo Electrónico</Form.Label>
+                            <Form.Control type="email" name="email" placeholder="Correo Electrónico" required />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Contraseña</Form.Label>
+                            <Form.Control type="password" name="password" placeholder="Contraseña" required />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Confirmar Contraseña</Form.Label>
+                            <Form.Control type="password" name="passwordConfirmation" placeholder="Confirmar Contraseña" required />
+                        </Form.Group>
+                        {error && <Alert variant="danger">{error}</Alert>}
+                        <Button type="submit" variant="primary" className="w-100" disabled={isPending}>
+                            {isPending ? "Registrando..." : "Registrarse"}
+                        </Button>
+                    </Form>
+                </Card.Body>
+            </Card>
+        </Container>
     );
 }

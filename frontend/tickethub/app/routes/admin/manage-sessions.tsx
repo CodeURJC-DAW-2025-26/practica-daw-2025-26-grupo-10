@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
-import {
-    getSessionsByEvent,
-    createSession,
-    updateSession,
-    deleteSession
-} from "~/services/session-service";
+import { Container, Card, Table, Button, Alert, Form, Row, Col } from "react-bootstrap";
+import { getSessionsByEvent, createSession, updateSession, deleteSession } from "~/services/session-service";
 import type { SessionBasic } from "~/models/SessionBasic";
 
 export default function ManageSessions() {
@@ -15,10 +11,8 @@ export default function ManageSessions() {
     const [sessions, setSessions] = useState<SessionBasic[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
     const [newSessionDate, setNewSessionDate] = useState("");
     const [isCreating, setIsCreating] = useState(false);
-
     const [editingIndex, setEditingIndex] = useState<number | null>(null);
     const [editDate, setEditDate] = useState("");
 
@@ -39,13 +33,11 @@ export default function ManageSessions() {
         }
     }
 
-
     const handleCreate = async () => {
         if (!newSessionDate || !id) return;
         setIsCreating(true);
         try {
-            const formattedDate = newSessionDate.replace("T", " ");
-            await createSession(id, formattedDate);
+            await createSession(id, newSessionDate.replace("T", " "));
             setNewSessionDate("");
             await loadSessions();
         } catch (err) {
@@ -73,8 +65,7 @@ export default function ManageSessions() {
     const handleSaveEdit = async () => {
         if (editingIndex === null || !id) return;
         try {
-            const formattedDate = editDate.replace("T", " ");
-            await updateSession(id, editingIndex + 1, formattedDate);
+            await updateSession(id, editingIndex + 1, editDate.replace("T", " "));
             setEditingIndex(null);
             await loadSessions();
         } catch (err) {
@@ -82,49 +73,49 @@ export default function ManageSessions() {
         }
     };
 
-    if (loading) return <div className="container my-5"><p>Cargando sesiones...</p></div>;
+    if (loading) return <Container className="my-5"><p>Cargando sesiones...</p></Container>;
 
     return (
-        <div className="container my-5">
+        <Container className="my-5">
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <h2>Gestionar Sesiones (Evento #{id})</h2>
-                <button className="btn btn-outline-secondary" onClick={() => navigate(`/admin/events/edit/${id}`)}>
+                <Button variant="outline-secondary" onClick={() => navigate(`/admin/events/edit/${id}`)}>
                     Volver al Evento
-                </button>
+                </Button>
             </div>
 
-            {error && <div className="alert alert-danger">{error}</div>}
+            {error && <Alert variant="danger">{error}</Alert>}
 
-            <div className="card mb-4 shadow-sm">
-                <div className="card-body">
-                    <h5 className="card-title mb-3">Añadir nueva sesión</h5>
-                    <div className="row g-2 align-items-center">
-                        <div className="col-md-8">
-                            <input 
+            <Card className="mb-4 shadow-sm">
+                <Card.Body>
+                    <Card.Title as="h5" className="mb-3">Añadir nueva sesión</Card.Title>
+                    <Row className="g-2 align-items-center">
+                        <Col md={8}>
+                            <Form.Control
                                 type="datetime-local"
-                                className="form-control"
                                 value={newSessionDate}
                                 onChange={(e) => setNewSessionDate(e.target.value)}
                             />
-                        </div>
-                        <div className="col-md-4">
-                            <button
-                                className="btn btn-primary w-100"
+                        </Col>
+                        <Col md={4}>
+                            <Button
+                                variant="primary"
+                                className="w-100"
                                 onClick={handleCreate}
                                 disabled={!newSessionDate || isCreating}
                             >
                                 {isCreating ? "Añadiendo..." : "Añadir Sesión"}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                            </Button>
+                        </Col>
+                    </Row>
+                </Card.Body>
+            </Card>
 
             <h4>Sesiones Programadas</h4>
             {sessions.length === 0 ? (
                 <p className="text-muted">Aún no hay sesiones para este evento.</p>
             ) : (
-                <table className="table table-hover align-middle">
+                <Table hover className="align-middle">
                     <thead className="table-light">
                         <tr>
                             <th>#</th>
@@ -138,38 +129,38 @@ export default function ManageSessions() {
                                 <td>{index + 1}</td>
                                 <td>
                                     {editingIndex === index ? (
-                                        <input 
-                                            type="datetime-local" 
-                                            className="form-control form-control-sm"
+                                        <Form.Control
+                                            type="datetime-local"
+                                            size="sm"
                                             value={editDate}
                                             onChange={(e) => setEditDate(e.target.value)}
                                         />
                                     ) : (
-                                        String(session.date || session.date || "Fecha no disponible")
+                                        String(session.date || "Fecha no disponible")
                                     )}
                                 </td>
                                 <td className="text-end">
                                     {editingIndex === index ? (
                                         <>
-                                            <button className="btn btn-sm btn-success me-2" onClick={handleSaveEdit}>Guardar</button>
-                                            <button className="btn btn-sm btn-secondary" onClick={() => setEditingIndex(null)}>Cancelar</button>
+                                            <Button size="sm" variant="success" className="me-2" onClick={handleSaveEdit}>Guardar</Button>
+                                            <Button size="sm" variant="secondary" onClick={() => setEditingIndex(null)}>Cancelar</Button>
                                         </>
                                     ) : (
                                         <>
-                                            <button className="btn btn-sm btn-outline-primary me-2" onClick={() => startEditing(index, String(session.date || ""))}>
+                                            <Button size="sm" variant="outline-primary" className="me-2" onClick={() => startEditing(index, String(session.date || ""))}>
                                                 Editar
-                                            </button>
-                                            <button className="btn btn-sm btn-outline-danger" onClick={() => handleDelete(session.sessionID)}>
+                                            </Button>
+                                            <Button size="sm" variant="outline-danger" onClick={() => handleDelete(session.sessionID)}>
                                                 Eliminar
-                                            </button>
+                                            </Button>
                                         </>
                                     )}
                                 </td>
                             </tr>
                         ))}
                     </tbody>
-                </table>
+                </Table>
             )}
-        </div>
+        </Container>
     );
 }

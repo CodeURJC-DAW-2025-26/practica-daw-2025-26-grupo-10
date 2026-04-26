@@ -1,6 +1,7 @@
 import { useStore } from "~/store/useStore";
 import { useNavigate } from "react-router";
 import { useActionState } from "react";
+import { Container, Card, Form, Button, Alert } from "react-bootstrap";
 
 export default function Login() {
     const login = useStore((state) => state.login);
@@ -14,29 +15,46 @@ export default function Login() {
             await login(email, password);
             navigate("/clients/profile");
             return null;
-        } catch (error) {
+        } catch {
             return null;
         }
     }
 
-    const [_, formAction, isPending] = useActionState(
-        handleLogin,
-        null
-    )
+    const [_, formAction, isPending] = useActionState(handleLogin, null);
 
     return (
-        <>
-            <div>
-                <h3>Iniciar sesión</h3>
-                <form action={formAction}>
-                    <input name="email" type="text" placeholder="Correo electrónico" disabled={isPending} required />
-                    <br />
-                    <input name="password" type="password" placeholder="Contraseña" disabled={isPending} required />
-                    <br />
-                    <button type="submit" disabled={isPending}>{isPending ? 'Enviando...' : 'Iniciar sesión'}</button>
-                </form>
-                {error && <p style={{ color: "red" }}>{error}</p>}
-            </div>
-        </>
+        <Container className="my-5">
+            <Card className="col-md-5 mx-auto">
+                <Card.Body>
+                    <h3 className="mb-4 text-center">Iniciar sesión</h3>
+                    <Form action={formAction}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Correo electrónico</Form.Label>
+                            <Form.Control
+                                name="email"
+                                type="text"
+                                placeholder="Correo electrónico"
+                                disabled={isPending}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Contraseña</Form.Label>
+                            <Form.Control
+                                name="password"
+                                type="password"
+                                placeholder="Contraseña"
+                                disabled={isPending}
+                                required
+                            />
+                        </Form.Group>
+                        {error && <Alert variant="danger">{error}</Alert>}
+                        <Button type="submit" variant="primary" className="w-100" disabled={isPending}>
+                            {isPending ? "Enviando..." : "Iniciar sesión"}
+                        </Button>
+                    </Form>
+                </Card.Body>
+            </Card>
+        </Container>
     );
 }

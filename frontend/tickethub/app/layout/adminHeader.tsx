@@ -1,41 +1,23 @@
 import { Link } from "react-router";
+import { Navbar, Container } from "react-bootstrap";
 import { AdminNavMenu } from "../components/adminNavBar/AdminNavMenu";
 import { AdminNavActions } from "../components/adminNavBar/AdminNavActions";
 
 export const AdminHeader = () => {
     return (
-        <nav className="navbar navbar-expand-lg">
-            <div className="container-fluid">
-
-                <Link className="navbar-brand" to="/admin/admin">
+        <Navbar expand="lg">
+            <Container fluid>
+                <Navbar.Brand as={Link} to="/admin/admin">
                     TicketHub Admin
-                </Link>
+                </Navbar.Brand>
 
-                <button
-                    className="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#adminNavbarContent"
-                    aria-controls="adminNavbarContent"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation"
-                    style={{ borderColor: "var(--vivid-tangerine)" }}
-                >
-                    <span
-                        className="navbar-toggler-icon"
-                        style={{ filter: "invert(1)" }}
-                    />
-                </button>
+                <Navbar.Toggle aria-controls="adminNavbarContent" />
 
-                <div
-                    className="collapse navbar-collapse"
-                    id="adminNavbarContent"
-                >
+                <Navbar.Collapse id="adminNavbarContent">
                     <AdminNavMenu />
                     <AdminNavActions />
-                </div>
-
-            </div>
-        </nav>
+                </Navbar.Collapse>
+            </Container>
+        </Navbar>
     );
 };

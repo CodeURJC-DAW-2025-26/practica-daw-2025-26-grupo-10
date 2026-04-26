@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router";
+import { Button } from "react-bootstrap";
 
 export default function Error500() {
   const navigate = useNavigate();
@@ -15,12 +16,9 @@ export default function Error500() {
           <Link to="/" className="btn btn-primary">
             Volver al inicio
           </Link>
-          <button
-            className="btn btn-outline-secondary"
-            onClick={() => navigate(-1)}
-          >
+          <Button variant="outline-secondary" onClick={() => navigate(-1)}>
             Regresar
-          </button>
+          </Button>
         </div>
       </div>
     </main>

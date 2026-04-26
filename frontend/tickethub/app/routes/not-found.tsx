@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router";
+import { Button } from "react-bootstrap";
 
 export default function NotFound() {
   const navigate = useNavigate();
@@ -12,15 +13,8 @@ export default function NotFound() {
           La ruta que estás buscando no existe o ha sido movida.
         </p>
         <div className="d-flex justify-content-center gap-3">
-          <Link to="/" className="btn btn-primary">
-            Volver al inicio
-          </Link>
-          <button
-            className="btn btn-outline-secondary"
-            onClick={() => navigate(-1)}
-          >
-            Regresar
-          </button>
+          <Link to="/" className="btn btn-primary">Volver al inicio</Link>
+          <Button variant="outline-secondary" onClick={() => navigate(-1)}>Regresar</Button>
         </div>
       </div>
     </main>

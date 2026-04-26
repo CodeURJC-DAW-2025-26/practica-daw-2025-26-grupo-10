@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
 import { getEventsPublic, getCategories } from "~/services/events-service";
 import type { EventBasic } from "~/models/EventBasic";
 import { API_URL } from "~/services/homeService";
 import { useStore } from "~/store/useStore";
 
 export default function Events() {
-
   const navigate = useNavigate();
 
   const [events, setEvents] = useState<EventBasic[]>([]);
@@ -16,7 +16,7 @@ export default function Events() {
   const [isLast, setIsLast] = useState(false);
   const [page, setPage] = useState(0);
 
-  const {eventsSearch, setEventsSearch} = useStore();
+  const { eventsSearch, setEventsSearch } = useStore();
   const [filterCategory, setFilterCategory] = useState("");
   const [filterDate, setFilterDate] = useState("");
 
@@ -31,14 +31,9 @@ export default function Events() {
 
   async function loadEvents(reset: boolean = false) {
     const currentPage = reset ? 0 : page;
-    const size = 5;   //Default value to show the events 5 by 5
-
-    if (reset) {
-      setIsPending(true);
-    } else {
-      setIsLoadingMore(true);
-    }
-
+    const size = 5;
+    if (reset) setIsPending(true);
+    else setIsLoadingMore(true);
     try {
       const data = await getEventsPublic(currentPage, size, eventsSearch, filterCategory, filterDate);
       setEvents(reset ? data : (prev) => [...prev, ...data]);
@@ -52,34 +47,27 @@ export default function Events() {
     }
   }
 
-  // Initial categories load
   useEffect(() => { loadCategories(); }, []);
-
-  // Reload with every change at the filters
   useEffect(() => { loadEvents(true); }, [filterCategory, filterDate]);
-
   useEffect(() => {
-    const timer = setTimeout(() => {loadEvents(true)}, 500);
+    const timer = setTimeout(() => { loadEvents(true); }, 500);
     return () => clearTimeout(timer);
   }, [eventsSearch]);
 
   return (
-    <div className="container my-5">
+    <Container className="my-5">
       <h2 className="mb-4">Próximos eventos</h2>
 
-      {/* FILTERS */}
-      <div className="row mb-4">
-        <div className="col-md-4">
-          <input
+      <Row className="mb-4">
+        <Col md={4}>
+          <Form.Control
             type="date"
-            className="form-control"
             value={filterDate}
             onChange={(e) => setFilterDate(e.target.value)}
           />
-        </div>
-        <div className="col-md-4">
-          <select
-            className="form-select"
+        </Col>
+        <Col md={4}>
+          <Form.Select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
           >
@@ -87,69 +75,67 @@ export default function Events() {
             {categories.map((cat) => (
               <option key={cat} value={cat}>{cat}</option>
             ))}
-          </select>
-        </div>
-        <div className="col-md-4">
-          <input
+          </Form.Select>
+        </Col>
+        <Col md={4}>
+          <Form.Control
             type="text"
-            className="form-control"
             placeholder="Artista"
             value={eventsSearch}
             onChange={(e) => setEventsSearch(e.target.value)}
           />
-        </div>
-      </div>
+        </Col>
+      </Row>
 
-      {/* LIST */}
       {isPending ? (
         <p>Cargando...</p>
       ) : (
-        <div className="row g-4">
+        <Row className="g-4">
           {events.length === 0 ? (
             <p>No se han encontrado eventos</p>
           ) : (
             events.map((event: EventBasic) => (
-              <div className="col-md-4" key={event.eventID}>
-                <div className="card h-100">
+              <Col md={4} key={event.eventID}>
+                <Card className="h-100">
                   {event.mainImage && (
-                    <img
+                    <Card.Img
+                      variant="top"
                       src={`${API_URL}/public/events/${event.eventID}/images/1`}
-                      className="card-img-top"
                       alt={event.name}
                     />
                   )}
-                  <div className="card-body">
-                    <h5 className="card-title">{event.name}</h5>
+                  <Card.Body>
+                    <Card.Title as="h5">{event.name}</Card.Title>
                     <p className="mb-1">{event.category}</p>
                     <p className="text-muted">{event.place}</p>
-                    <button
-                      className="btn btn-primary btn-sm"
+                    <Button
+                      variant="primary"
+                      size="sm"
                       onClick={() => navigate(`/public/events/${event.eventID}`)}
                     >
                       Ver evento
-                    </button>
-                  </div>
-                </div>
-              </div>
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
             ))
           )}
-        </div>
+        </Row>
       )}
 
-      {/* Load more button */}
       {!isLast && (
-        <div className="row mt-4">
-          <div className="col-12 text-end">
-            <button
-              className="btn btn-outline-secondary"
+        <Row className="mt-4">
+          <Col xs={12} className="text-end">
+            <Button
+              variant="outline-secondary"
               onClick={() => loadEvents(false)}
               disabled={isLoadingMore}
             >
               {isLoadingMore ? "Cargando..." : "Cargar más"}
-            </button>
-          </div>
-        </div>
+            </Button>
+          </Col>
+        </Row>
       )}
-    </div>
+    </Container>
   );
 }

@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
 import type { ArtistBasic } from "~/models/ArtistBasic";
 
 interface Props {
@@ -12,54 +13,54 @@ interface Props {
 export default function ArtistsListUI({ artists, searchQuery, onSearchChange, onLoadMore, hasMore }: Props) {
     return (
         <main className="flex-fill">
-            <div className="container my-5">
+            <Container className="my-5">
                 <h2 className="mb-4">Filtrar artistas</h2>
 
-                <div className="row mb-4">
-                    <div className="col-md-12">
-                        <input
+                <Row className="mb-4">
+                    <Col md={12}>
+                        <Form.Control
                             type="text"
-                            className="form-control"
                             placeholder="Buscar artista..."
                             value={searchQuery}
                             onChange={(e) => onSearchChange(e.target.value)}
                         />
-                    </div>
-                </div>
+                    </Col>
+                </Row>
 
-                <div className="row g-4">
+                <Row className="g-4">
                     {artists.length === 0 ? (
                         <p className="text-muted">No se encontraron artistas.</p>
                     ) : (
                         artists.map((artist) => (
-                            <div key={artist.artistID} className="col-md-3">
-                                <div className="card text-center">
-                                    <img
+                            <Col key={artist.artistID} md={3}>
+                                <Card className="text-center">
+                                    <Card.Img
+                                        variant="top"
                                         src={`/api/v1/public/artists/${artist.artistID}/image`}
-                                        className="card-img-top rounded-circle mx-auto mt-3"
+                                        className="rounded-circle mx-auto mt-3"
                                         style={{ width: "150px", height: "150px", objectFit: "cover" }}
                                         alt={artist.artistName}
                                     />
-                                    <div className="card-body">
-                                        <h5 className="card-title">{artist.artistName}</h5>
+                                    <Card.Body>
+                                        <Card.Title as="h5">{artist.artistName}</Card.Title>
                                         <Link to={`/public/artist/${artist.artistID}`} className="btn btn-primary">
                                             Ver artista
                                         </Link>
-                                    </div>
-                                </div>
-                            </div>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
                         ))
                     )}
-                </div>
+                </Row>
 
                 {hasMore && (
                     <div className="text-end mt-4">
-                        <button onClick={onLoadMore} className="btn btn-outline-secondary">
+                        <Button variant="outline-secondary" onClick={onLoadMore}>
                             Cargar más
-                        </button>
+                        </Button>
                     </div>
                 )}
-            </div>
+            </Container>
         </main>
     );
 }
