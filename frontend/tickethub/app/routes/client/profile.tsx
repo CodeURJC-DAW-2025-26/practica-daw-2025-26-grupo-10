@@ -19,15 +19,13 @@ export default function Profile() {
     }
 
     return (
-        <Container className="my-5">
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <Card className="text-center">
+
+                    <Card className="text-center mb-5 mt-5">
                         <Card.Body>
                             <img
                                 src={`${API_URL}/users/${user!.userID}/image`}
                                 alt="Avatar"
-                                className="rounded-circle mb-3"
+                                className="rounded-circle mb-3 mx-auto d-block"
                                 style={{ width: "100px", height: "100px", objectFit: "cover" }}
                             />
                             <h4>{user!.username}</h4>
@@ -48,8 +46,6 @@ export default function Profile() {
                             </div>
                         </Card.Body>
                     </Card>
-                </Col>
-            </Row>
-        </Container>
+
     );
 }
