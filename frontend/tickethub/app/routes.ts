@@ -52,6 +52,7 @@ export default [
                 // Errors
                 route("*", "routes/not-found.tsx"),
                 route("403", "routes/errors/error403.tsx"), //TODO: this should not be here
+                route("500", "routes/error500.tsx"),
         ]),
 ] satisfies RouteConfig;
 
