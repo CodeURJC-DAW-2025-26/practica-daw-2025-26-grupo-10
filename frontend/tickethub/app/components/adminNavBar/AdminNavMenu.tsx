@@ -5,7 +5,7 @@ export const AdminNavMenu = () => {
     return (
         <Nav className="me-auto">
             <Nav.Link as={NavLink as any} to="/admin/events">Gestionar Eventos</Nav.Link>
-            <Nav.Link as={NavLink as any} to="/admin/artists/manage_artists">Gestionar Artistas</Nav.Link>
+            <Nav.Link as={NavLink as any} to="/admin/artists">Gestionar Artistas</Nav.Link>
             <Nav.Link as={NavLink as any} to="/admin/statistics">Estadísticas</Nav.Link>
         </Nav>
     );

@@ -6,18 +6,21 @@ interface AuthState {
     user: User | null;
     error: string | null;
     isAuthenticated: boolean;
+    isInitialized: boolean;
     eventsSearch: string;
     setEventsSearch: (q: string) => void;
     logout: () => Promise<void>;
     login: (email: string, password: string) => Promise<User>;
     signup: (name: string, surname: string, username: string, email: string, password: string, repeatPassword: string) => Promise<any>;
     refreshUser: () => Promise<void>;
+    initialize: () => Promise<void>;
 }
 
 export const useStore = create<AuthState>((set) => ({
     user: null,
     error: null,
     isAuthenticated: false,
+    isInitialized: false,
     eventsSearch: "",
 
     setEventsSearch: (q) => set({ eventsSearch: q }),
@@ -66,6 +69,15 @@ export const useStore = create<AuthState>((set) => ({
         } catch (error) {
             console.error("Error al refrescar el usuario", error);
         }
-    }
+    },
+
+    initialize: async () => {
+        try {
+            const usuario = await me();
+            set({ user: usuario, isAuthenticated: true, isInitialized: true });
+        } catch {
+            set({ user: null, isAuthenticated: false, isInitialized: true });
+        }
+    },
 
 }));

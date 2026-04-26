@@ -74,7 +74,7 @@ export default function ManageEvents() {
                 <td>{event.name}</td>
                 <td>{event.category}</td>
                 <td>
-                  <Button size="sm" variant="primary" className="me-2" onClick={() => navigate(`/admin/events/edit/${event.eventID}`)}>
+                  <Button size="sm" variant="primary" className="me-2" onClick={() => navigate(`/admin/events/${event.eventID}`)}>
                     Editar
                   </Button>
                   <Button size="sm" variant="danger" onClick={() => handleDelete(event.eventID)}>

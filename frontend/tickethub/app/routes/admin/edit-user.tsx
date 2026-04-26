@@ -2,13 +2,13 @@ import { useEffect, useState, type SetStateAction } from "react";
 import { useParams, useNavigate } from "react-router";
 import { Container, Card, Form, Button, Alert, Row, Col } from "react-bootstrap";
 import { getUserById, updateUser } from "~/services/adminService";
-import type { UserDTO } from "~/models/User";
+import type { User } from "~/models/User";
 
 export default function EditUser() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-
-    const [formData, setFormData] = useState<UserDTO | null>(null);
+    
+    const [formData, setFormData] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -16,8 +16,8 @@ export default function EditUser() {
     useEffect(() => {
         if (!id) return;
         getUserById(id)
-            .then((data: SetStateAction<UserDTO | null>) => setFormData(data))
-            .catch((err: { message: SetStateAction<string | null> }) => setError(err.message))
+            .then((data: SetStateAction<User | null>) => setFormData(data))
+            .catch((err: { message: SetStateAction<string | null>; }) => setError(err.message))
             .finally(() => setLoading(false));
     }, [id]);
 
