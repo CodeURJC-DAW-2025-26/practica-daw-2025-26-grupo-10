@@ -24,7 +24,7 @@ export const PublicHeader = () => {
                     <div className="d-flex align-items-center gap-3">
                         {isAuthenticated && <>
                             {isAdmin && (
-                                <Link to="/admin/admin" className="btn btn-outline-primary btn-sm">
+                                <Link to="/admin" className="btn btn-outline-primary btn-sm">
                                     Vista de admin
                                 </Link>
                             )}

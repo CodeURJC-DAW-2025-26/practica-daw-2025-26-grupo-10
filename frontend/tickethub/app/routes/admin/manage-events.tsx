@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { Container, Table, Button, Alert } from "react-bootstrap";
+import { Container, Table, Button, Alert, Row } from "react-bootstrap";
 import { getEventsAdmin, deleteEvent } from "~/services/events-service";
 import type { EventBasic } from "~/models/EventBasic";
 import { useConfirmDialog } from "~/hooks/useConfirmDialog";
