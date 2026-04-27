@@ -664,6 +664,21 @@ Realicé el dockerfile por una parte. Por otra, el footer y el header que ve el 
 |4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
 |5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
 
+---
+
+#### **Alumno 5 - [Rubén Alcojor Patilla]**
+
+Me he encargado de configurar el proxy necesario para las peticiones a la API REST; hacer los models, services y routes de eventos y hacer la lógica compartida de eliminar objetos.
+
+| Nº    | Commits      | Files      |
+|:------------: |:------------:| :------------:|
+|1| [Configurating proxy for API REST calls](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/61869a1e7a46c4e873b40cd266169bab3f7a8e6a)  | [vite.config.ts](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/blob/REACT/frontend/tickethub/vite.config.ts)   |
+|2| [Adding hooks of shared things](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/216ca65ccd9520c4e7cfd0b36165277a81d4301d)  | [Confirm Dialog.tsx](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/blob/REACT/frontend/tickethub/app/components/confirmDialog/ConfirmDialog.tsx)   |
+|3| [Changing models and adding credentials to admin API petitions](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/92974714ce836fb8239bc7ef5f12a6587428c436)  | [routes.ts](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/blob/REACT/frontend/tickethub/app/routes.ts)   |
+|4| [Add funcionalities](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/24bfe0bbc48443cdae0b83f0cd10086b1de8e02b)  | [manage-events.tsx](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/blob/REACT/frontend/tickethub/app/routes/admin/manage-events.tsx)   |
+|5| [Creating new tsx files](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/9d85f98b80e081953829f09e3f02470bdfc8ed05)  | [create-event.tsx](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/blob/REACT/frontend/tickethub/app/routes/admin/create-event.tsx)   |
+
+
 
 
 
