@@ -634,17 +634,18 @@ Diagrama mostrando los componentes React, hooks personalizados, servicios y sus 
 
 ---
 
-#### **Alumno 3 - [Nombre Completo]**
+#### **Alumno 3 - [Daniel Bonachela Martínez]**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Realicé el dockerfile por una parte. Por otra, el footer y el header que ve el administrador, la página de admin, las acciones de editar y administrar usuarios así como gestionar las sesiones de los eventos. Además creé el error 500 y ayudé en gestión de problemas surgidos a lo largo de la práctica.
+
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Edit of users](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/89356f4e0d7340d3bd3a698412bb43499aaa17f1)  | [edit-user.tsx](frontend/tickethub/app/routes/admin/edit-user.tsx)   |
+|2| [Creation of admin users page](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/26da5f50020f00661d67f29c3a88c556416c7685)  | [manage-users.tsx](frontend/tickethub/app/routes/admin/manage-users.tsx)   |
+|3| [Admin HTML in React](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/f590c74d48c5d1e89519e3e9ab524d7b98c22266)  | [Dashboard.tsx](frontend/tickethub/app/routes/admin/dashboard.tsx)   |
+|4| [Create Header](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/20f97dbb06692723d763dddfaafd1a027734eaad)  | [AdminNavActions.tsx](frontend/tickethub/app/components/adminNavBar/AdminNavActions.tsx)   |
+|5| [Solving the update bug](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/e0741174ea96d071f3a53882d5a197298310db1c)  | [ClientRestController.java](backend/tickethub/src/main/java/es/tickethub/tickethub/rest_controllers/ClientRestController.java)   |
 
 ---
 
