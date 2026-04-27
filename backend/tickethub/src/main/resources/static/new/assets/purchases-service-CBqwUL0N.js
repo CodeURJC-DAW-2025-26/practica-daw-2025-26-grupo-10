@@ -1,0 +1,1 @@
+import{t as e}from"./homeService-BCXTzjXT.js";var t=`${e}/public/purchases`;async function n(e){let n=await fetch(`${t}/save`,{method:`POST`,headers:{"Content-Type":`application/json`},body:JSON.stringify(e)});if(!n.ok)throw Error(`Error al procesar la compra`);return await n.json()}function r(e){return`${t}/download/${e}`}export{n,r as t};

@@ -14,7 +14,7 @@ WORKDIR /app
 COPY backend/tickethub/pom.xml .
 COPY backend/tickethub/src ./src
 
-COPY --from=frontend-build /app/build/client ./src/main/resources/static/
+COPY --from=frontend-build /app/build/client ./src/main/resources/static/new
 
 RUN mvn clean package -DskipTests
 
