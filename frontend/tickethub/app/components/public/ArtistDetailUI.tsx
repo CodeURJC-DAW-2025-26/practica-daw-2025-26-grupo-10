@@ -8,8 +8,7 @@ interface Props {
 
 export default function ArtistDetailUI({ artist }: Props) {
     return (
-        <Container className="my-5">
-            <Card className="text-center">
+            <Card className="text-center col-12 col-sm-10 col-md-9 col-lg-5 mx-auto mb-5 mt-5">
                 <img
                     src={`/api/v1/public/artists/${artist.artistID}/image`}
                     className="rounded-circle mx-auto mt-4"
@@ -54,11 +53,11 @@ export default function ArtistDetailUI({ artist }: Props) {
                         )}
 
                         {artist.twitter ? (
-                            <a href={`https://www.x.com/${artist.twitter}`} className="btn btn-outline-info btn-sm" target="_blank" rel="noreferrer">
+                            <a href={`https://www.x.com/${artist.twitter}`} className="btn btn-outline-primary btn-sm" target="_blank" rel="noreferrer">
                                 Twitter
                             </a>
                         ) : (
-                            <span className="btn btn-outline-info btn-sm disabled opacity-50">Twitter</span>
+                            <span className="btn btn-outline-primary btn-sm disabled opacity-50">Twitter</span>
                         )}
                     </div>
 
@@ -67,6 +66,5 @@ export default function ArtistDetailUI({ artist }: Props) {
                     </div>
                 </Card.Body>
             </Card>
-        </Container>
     );
 }
