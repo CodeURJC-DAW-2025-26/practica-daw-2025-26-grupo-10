@@ -19,41 +19,41 @@ export default function AdminDashboard() {
 
     return (
         <div className="d-flex align-items-center justify-content-center py-5">
-        <Container className="my-5 flex-grow-1">
-            <h2 className="mb-5 text-center">Panel de Administración</h2>
+            <Container className="my-5 flex-grow-1">
+                <h2 className="mb-5 text-center">Panel de Administración</h2>
 
-            <Row className="g-4 mb-5">
-                <StatCard label="Entradas Vendidas" value={stats.numberTickets} />
-                <StatCard label="Eventos Activos" value={stats.activeEvents} />
-                <StatCard label="Usuarios" value={stats.numberUsers} />
-                <StatCard label="Admins" value={stats.numberAdmins} />
-            </Row>
+                <Row className="g-4 mb-5">
+                    <StatCard label="Entradas Vendidas" value={stats.numberTickets} />
+                    <StatCard label="Eventos Activos" value={stats.activeEvents} />
+                    <StatCard label="Usuarios" value={stats.numberUsers} />
+                    <StatCard label="Admins" value={stats.numberAdmins} />
+                </Row>
 
-            <div className="d-flex flex-wrap gap-4 mt-5 justify-content-center">
-                <div className="btn-group gap-2 shadow-sm" role="group">
-                    <Link to="/admin/events/create" className="btn btn-primary">Crear evento</Link>
-                    <Link to="/admin/events" className="btn btn-outline-primary">Gestionar eventos</Link>
+                <div className="d-flex flex-wrap gap-4 mt-5 justify-content-center">
+                    <div className="btn-group gap-2 shadow-sm" role="group">
+                        <Link to="/admin/events/create" className="btn btn-primary">Crear evento</Link>
+                        <Link to="/admin/events" className="btn btn-outline-primary">Gestionar eventos</Link>
+                    </div>
+                    <div className="btn-group gap-2 shadow-sm" role="group">
+                        <Link to="/admin/artists/create" className="btn btn-primary">Crear artista</Link>
+                        <Link to="/admin/artists" className="btn btn-outline-primary">Gestionar artistas</Link>
+                    </div>
+
+                    <div className="btn-group gap-2 shadow-sm" role="group">
+                        <Link to="/admin/discounts/new" className="btn btn-primary">Crear descuento</Link>
+                        <Link to="/admin/discounts" className="btn btn-outline-primary">Gestionar descuentos</Link>
+                    </div>
                 </div>
-                <div className="btn-group gap-2 shadow-sm" role="group">
-                    <Link to="/admin/artists/create" className="btn btn-primary">Crear artista</Link>
-                    <Link to="/admin/artists" className="btn btn-outline-primary">Gestionar artistas</Link>
-                </div>
 
-                <div className="btn-group gap-2 shadow-sm" role="group">
-                    <Link to="/admin/discounts/new" className="btn btn-primary">Crear descuento</Link>
-                    <Link to="/admin/discounts" className="btn btn-outline-primary">Gestionar descuentos</Link>
+                <div className="d-flex flex-wrap gap-4 mt-5 justify-content-center">
+                    <Link to="/admin/statistics" className="btn btn-primary btn-admin-action shadow-sm">
+                        <i className="bi bi-bar-chart-line me-2"></i> Estadísticas
+                    </Link>
+                    <Link to="/admin/users" className="btn btn-primary btn-admin-action shadow-sm">
+                        <i className="bi bi-people-fill me-2"></i> Usuarios
+                    </Link>
                 </div>
-            </div>
-
-            <div className="d-flex flex-wrap gap-4 mt-5 justify-content-center">
-                <Link to="/admin/statistics" className="btn btn-primary btn-admin-action shadow-sm">
-                    <i className="bi bi-bar-chart-line me-2"></i> Estadísticas
-                </Link>
-                <Link to="/admin/users" className="btn btn-primary btn-admin-action shadow-sm">
-                    <i className="bi bi-people-fill me-2"></i> Usuarios
-                </Link>
-            </div>
-        </Container>
+            </Container>
         </div>
     );
 }

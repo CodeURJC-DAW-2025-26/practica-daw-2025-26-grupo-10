@@ -27,40 +27,40 @@ export default function SignUp() {
     const [_, formAction, isPending] = useActionState(handleSignup, null);
 
     return (
-            <Card className="col-12 col-sm-10 col-md-6 col-lg-3 mx-auto mb-5 mt-5">
-                <Card.Body>
-                    <h3 className="mb-4 text-center">Crear Cuenta</h3>
-                    <Form action={formAction}>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Nombre</Form.Label>
-                            <Form.Control type="text" name="name" placeholder="Nombre" required />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Apellido</Form.Label>
-                            <Form.Control type="text" name="surname" placeholder="Apellido" required />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Usuario</Form.Label>
-                            <Form.Control type="text" name="username" placeholder="Usuario" required />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Correo Electrónico</Form.Label>
-                            <Form.Control type="email" name="email" placeholder="Correo Electrónico" required />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Contraseña</Form.Label>
-                            <Form.Control type="password" name="password" placeholder="Contraseña" required />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Confirmar Contraseña</Form.Label>
-                            <Form.Control type="password" name="passwordConfirmation" placeholder="Confirmar Contraseña" required />
-                        </Form.Group>
-                        {error && <Alert variant="danger">{error}</Alert>}
-                        <Button type="submit" variant="primary" className="w-100" disabled={isPending}>
-                            {isPending ? "Registrando..." : "Registrarse"}
-                        </Button>
-                    </Form>
-                </Card.Body>
-            </Card>
+        <Card className="col-12 col-sm-10 col-md-6 col-lg-3 mx-auto mb-5 mt-5">
+            <Card.Body>
+                <h3 className="mb-4 text-center">Crear Cuenta</h3>
+                <Form action={formAction}>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Nombre</Form.Label>
+                        <Form.Control type="text" name="name" placeholder="Nombre" required />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Apellido</Form.Label>
+                        <Form.Control type="text" name="surname" placeholder="Apellido" required />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Usuario</Form.Label>
+                        <Form.Control type="text" name="username" placeholder="Usuario" required />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Correo Electrónico</Form.Label>
+                        <Form.Control type="email" name="email" placeholder="Correo Electrónico" required />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Contraseña</Form.Label>
+                        <Form.Control type="password" name="password" placeholder="Contraseña" required />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Confirmar Contraseña</Form.Label>
+                        <Form.Control type="password" name="passwordConfirmation" placeholder="Confirmar Contraseña" required />
+                    </Form.Group>
+                    {error && <Alert variant="danger">{error}</Alert>}
+                    <Button type="submit" variant="primary" className="w-100" disabled={isPending}>
+                        {isPending ? "Registrando..." : "Registrarse"}
+                    </Button>
+                </Form>
+            </Card.Body>
+        </Card>
     );
 }

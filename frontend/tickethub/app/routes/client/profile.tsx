@@ -20,32 +20,32 @@ export default function Profile() {
 
     return (
 
-                    <Card className="text-center mb-5 mt-5">
-                        <Card.Body>
-                            <img
-                                src={`${API_URL}/users/${user!.userID}/image`}
-                                alt="Avatar"
-                                className="rounded-circle mb-3 mx-auto d-block"
-                                style={{ width: "100px", height: "100px", objectFit: "cover" }}
-                            />
-                            <h4>{user!.username}</h4>
-                            <p className="text-muted">{user!.email}</p>
-                            <div className="d-grid gap-2">
-                                <Link to="/clients/profile/edit" className="btn btn-outline-primary">
-                                    Editar Perfil
-                                </Link>
-                                <Link to="/purchases/me" className="btn btn-outline-primary">
-                                    Mis Compras
-                                </Link>
-                                <Link to="/clients/me/password" className="btn btn-outline-primary">
-                                    Cambiar Contraseña
-                                </Link>
-                                <Button variant="danger" onClick={handleLogout}>
-                                    Cerrar Sesión
-                                </Button>
-                            </div>
-                        </Card.Body>
-                    </Card>
+        <Card className="text-center mb-5 mt-5">
+            <Card.Body>
+                <img
+                    src={`${API_URL}/users/${user!.userID}/image`}
+                    alt="Avatar"
+                    className="rounded-circle mb-3 mx-auto d-block"
+                    style={{ width: "100px", height: "100px", objectFit: "cover" }}
+                />
+                <h4>{user!.username}</h4>
+                <p className="text-muted">{user!.email}</p>
+                <div className="d-grid gap-2">
+                    <Link to="/clients/profile/edit" className="btn btn-outline-primary">
+                        Editar Perfil
+                    </Link>
+                    <Link to="/purchases/me" className="btn btn-outline-primary">
+                        Mis Compras
+                    </Link>
+                    <Link to="/clients/me/password" className="btn btn-outline-primary">
+                        Cambiar Contraseña
+                    </Link>
+                    <Button variant="danger" onClick={handleLogout}>
+                        Cerrar Sesión
+                    </Button>
+                </div>
+            </Card.Body>
+        </Card>
 
     );
 }

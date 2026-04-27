@@ -14,7 +14,7 @@ export async function getEventsPublic(
   if (artist) params.set("artist", artist);
   if (category) params.set("category", category);
   if (date) params.set("date", date);
- 
+
   const res = await fetch(`${API_URL}/public/events?${params.toString()}`);
   if (!res.ok) throw new Error("Error cargando eventos");
   const data = await res.json()
@@ -29,7 +29,7 @@ export async function getEventsAdmin(): Promise<EventBasic[]> {
   const data = await res.json()
   return data.content;
 }
- 
+
 export async function getCategories(): Promise<string[]> {
   const res = await fetch(`${API_URL}/public/events/categories`);
   if (!res.ok) throw new Error("Error cargando categorías");

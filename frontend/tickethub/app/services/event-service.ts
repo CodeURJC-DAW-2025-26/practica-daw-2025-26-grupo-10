@@ -4,10 +4,11 @@ import type { Event } from "~/models/Event";
 import type { EventUpdate } from "~/models/EventUpdate";
 import type { EventCreate } from "~/models/EventCreate";
 
+
 export async function getArtists(): Promise<ArtistBasic[]> {
   const res = await fetch(`${API_URL}/public/artists?page=0&size=1000`);
   if (!res.ok) throw new Error("Error cargando artistas");
-  
+
   const data = await res.json();
 
   return data.content || (Array.isArray(data) ? data : []);
@@ -23,7 +24,7 @@ export async function createEvent(formData: EventCreate): Promise<Event> {
   if (!res.ok) throw new Error("Error creando el evento");
   return await res.json();
 }
- 
+
 export async function updateEvent(eventID: number, formData: EventUpdate): Promise<Event> {
   const res = await fetch(`${API_URL}/admin/events/${eventID}`, {
     method: "PUT",

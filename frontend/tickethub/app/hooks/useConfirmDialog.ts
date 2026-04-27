@@ -3,7 +3,7 @@ import { useState } from "react";
 export function useConfirmDialog() {
   const [isNotConfirmed, setIsNotConfirmed] = useState(false);
   const [message, setMessage] = useState("");
-  const [onConfirmCallback, setOnConfirmCallback] = useState<() => void>(() => {});
+  const [onConfirmCallback, setOnConfirmCallback] = useState<() => void>(() => { });
 
   function confirm(message: string, onConfirm: () => void) {
     setMessage(message);

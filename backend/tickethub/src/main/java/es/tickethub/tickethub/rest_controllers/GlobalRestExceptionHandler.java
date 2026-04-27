@@ -82,8 +82,8 @@ public class GlobalRestExceptionHandler {
     }
 
     /**
- * Spring Security Authentication Errors (401)
- */
+     * Spring Security Authentication Errors (401)
+     */
 @ExceptionHandler({AuthenticationException.class, BadCredentialsException.class})
 public ResponseEntity<AuthResponse> handleAuthenticationException(Exception ex) {
     return ResponseEntity

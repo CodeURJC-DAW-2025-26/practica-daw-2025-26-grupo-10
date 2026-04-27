@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router";
 import { Container, Form, Button, Alert, Row, Col } from "react-bootstrap";
 import { getEvent } from "~/services/event-service";
 import { savePurchase } from "~/services/purchases-service";
-import type Event from "~/models/Event";
+import type { Event } from "~/models/Event";
 import type TicketSelection from "~/models/TicketSelection";
 
 export default function Purchase() {
@@ -212,7 +212,7 @@ export default function Purchase() {
         <div>
           <Form.Label>Mes</Form.Label>
           <Form.Select className="w-auto">
-            {["01","02","03","04","05","06","07","08","09","10","11","12"].map((m) => (
+            {["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"].map((m) => (
               <option key={m}>{m}</option>
             ))}
           </Form.Select>
@@ -220,7 +220,7 @@ export default function Purchase() {
         <div>
           <Form.Label>Año</Form.Label>
           <Form.Select className="w-auto">
-            {["2026","2027","2028","2029"].map((y) => (
+            {["2026", "2027", "2028", "2029"].map((y) => (
               <option key={y}>{y}</option>
             ))}
           </Form.Select>

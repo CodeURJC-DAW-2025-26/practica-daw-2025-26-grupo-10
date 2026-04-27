@@ -10,7 +10,7 @@ export async function getSessionsByEvent(eventID: string): Promise<SessionBasic[
 export async function createSession(eventID: string, dateStr: string): Promise<SessionBasic> {
     const res = await fetch(`${API_URL}/admin/events/${eventID}/sessions`, {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({ dateStr }),
     });
@@ -21,7 +21,7 @@ export async function createSession(eventID: string, dateStr: string): Promise<S
 export async function updateSession(eventID: string, index: number, dateStr: string): Promise<SessionBasic> {
     const res = await fetch(`${API_URL}/admin/events/${eventID}/sessions/${index}`, {
         method: "PUT",
-        headers: {"Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({ dateStr }),
     });
@@ -32,7 +32,7 @@ export async function updateSession(eventID: string, index: number, dateStr: str
 export async function deleteSession(sessionID: number): Promise<void> {
     const res = await fetch(`${API_URL}/admin/sessions/${sessionID}`, {
         method: "DELETE",
-        headers: {"Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
         credentials: "include"
     });
     if (!res.ok) throw new Error("Error eliminando la sesión");
