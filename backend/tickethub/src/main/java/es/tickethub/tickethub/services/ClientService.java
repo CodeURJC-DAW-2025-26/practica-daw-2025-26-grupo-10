@@ -250,8 +250,19 @@ public class ClientService {
     @Transactional
     public Client updateClientProfile(String currentEmail, ClientUpdateDTO updateDTO) throws IOException {
         Client client = getClientByEmail(currentEmail);
+
+        if (!client.getEmail().equals(updateDTO.email())
+                && clientRepository.existsByEmail(updateDTO.email())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ese correo electrónico ya está en uso");
+        }
+
+        if (!client.getUsername().equals(updateDTO.username())
+                && clientRepository.existsByUsername(updateDTO.username())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Este nombre de usuario ya está en uso");
+        }
+
         clientMapper.updateEntityFromDto(updateDTO, client);
-        return updateClient(currentEmail, client, null);
-}
-    
+        return saveClient(client);
+    }
+
 }

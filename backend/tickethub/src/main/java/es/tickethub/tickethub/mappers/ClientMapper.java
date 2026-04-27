@@ -13,9 +13,9 @@ import es.tickethub.tickethub.dto.ClientDTO;
 import es.tickethub.tickethub.dto.ClientUpdateDTO;
 import es.tickethub.tickethub.entities.Client;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE) 
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ClientMapper {
-    
+
     ClientDTO toDTO(Client client);
 
     List<ClientDTO> toDTOs(Collection<Client> clients);
@@ -27,6 +27,6 @@ public interface ClientMapper {
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "purchases", ignore = true)
     @Mapping(target = "admin", ignore = true)
-    @Mapping(target = "version", ignore = true)
+    @Mapping(target = "version", source = "version")
     void updateEntityFromDto(ClientUpdateDTO dto, @MappingTarget Client entity);
 }

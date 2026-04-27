@@ -21,5 +21,3 @@ export interface ChangeProfileBasic {
     phone: string,
     age: number
 }
-
-//TODO: hacer el dto de la imagen del usuario
