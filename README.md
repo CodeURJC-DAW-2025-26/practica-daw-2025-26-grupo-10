@@ -652,21 +652,21 @@ Realicé el dockerfile por una parte. Por otra, el footer y el header que ve el 
 
 ---
 
-#### **Alumno 4 - [Nombre Completo]**
+#### **Alumno 4 - Ronald Sebastian Silvera Llimpe**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Hice el login y el registro de los usuarios. Además me ocupé de que se pudiera cambiar contraseña así como editar su propio perfil.
+Por otro lado, me ocupé de los detalles de compra, las compras en sí, y los elementos de las mismas. Y por último cooperé con los compañeros para solucionar incidencias graves.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [login,signup,singout,profile,edit-profile,client-purchases and change-password](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/c89e0bf37fb2152dc0699349f811cbc1c059a7ce)  | [Profile.tsx](frontend/tickethub/app/routes/client/profile.tsx)   |
+|2| [Hot Fix](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/1ff13c4ef09fbae41e3a206952760a3d00f157f2)  | [UseStore.ts](frontend/tickethub/app/store/useStore.ts)   |
+|3| [Button for download pdf](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/c7593896c2d05543a9d99f1e2a9cffc675d3886d)  | [Purchases.tsx](frontend/tickethub/app/routes/client/purchases.tsx)   |
+|4| [Edit Profile fix](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/584bebd8f1ff3bac52c858aeb47f879f756f2b18)  | [ClientService.java](backend/tickethub/src/main/java/es/tickethub/tickethub/services/ClientService.java)   |
 
 ---
 
-#### **Alumno 5 - [Rubén Alcojor Patilla]**
+#### **Alumno 5 - Rubén Alcojor Patilla**
 
 Me he encargado de configurar el proxy necesario para las peticiones a la API REST; hacer los models, services y routes de eventos y hacer la lógica compartida de eliminar objetos.
 
