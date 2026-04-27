@@ -54,14 +54,6 @@ export default function Confirmation() {
 
       <div className="d-flex justify-content-center gap-3">
         <Link to="/" className="btn btn-primary">Volver al inicio</Link>
-        <a
-          href={getDownloadUrl(purchase.purchaseID)}
-          className="btn btn-outline-primary"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Descargar entradas (PDF)
-        </a>
       </div>
     </Container>
   );
