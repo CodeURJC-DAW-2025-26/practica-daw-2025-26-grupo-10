@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Container, Table, Button, Alert, Badge } from "react-bootstrap";
 import type { PurchaseBasic } from "../../models/PurchaseBasic";
 import { getPurchases } from "../../services/user-service";
+import { getDownloadUrl } from "~/services/purchases-service";
 
 export default function ClientPurchases() {
     const [purchases, setPurchases] = useState<PurchaseBasic[]>([]);
@@ -87,6 +88,13 @@ export default function ClientPurchases() {
                                                     onClick={() => toggleRow(purchase.purchaseID)}
                                                 >
                                                     {expandedRows.has(purchase.purchaseID) ? "Ocultar" : "Ver Detalles"}
+                                                </Button>
+                                                <Button
+                                                    href={getDownloadUrl(purchase.purchaseID)}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                >
+                                                    Descargar entradas (PDF)
                                                 </Button>
                                             </div>
                                         </td>
