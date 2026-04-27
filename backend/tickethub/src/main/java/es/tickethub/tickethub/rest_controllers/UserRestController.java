@@ -38,10 +38,8 @@ public class UserRestController {
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Usuario no encontrado en el sistema"));
 
-       
         List<Ticket> tickets = userService.getTicketsByClientId(user.getId());
 
-   
         return ResponseEntity.ok(ticketMapper.toDTOs(tickets));
     }
 }

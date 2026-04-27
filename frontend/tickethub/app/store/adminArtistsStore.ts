@@ -9,7 +9,7 @@ interface AdminArtistsState {
 
 export const useAdminArtistsStore = create<AdminArtistsState>((set) => ({
     artists: [],
-    
+
     // for setting the store with the initial data from the loader
     reset: (artists) => set({ artists }),
 

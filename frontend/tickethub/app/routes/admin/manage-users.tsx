@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { Container, Card, Table, Button, Alert, Spinner } from "react-bootstrap";
 import { getUsers } from "~/services/adminService";
-import type { UserDTO } from "~/models/User";
+import type { User } from "~/models/User";
 
 export default function ManageUsers() {
-    const [users, setUsers] = useState<UserDTO[]>([]);
+    const [users, setUsers] = useState<User[]>([]);
     const [page, setPage] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);

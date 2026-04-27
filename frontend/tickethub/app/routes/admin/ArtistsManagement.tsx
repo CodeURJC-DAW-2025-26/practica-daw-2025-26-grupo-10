@@ -42,7 +42,7 @@ export default function ArtistsManagementRoute() {
             dialogMessage={message}
             onDialogConfirm={handleConfirm}
             onDialogCancel={handleCancel}
-            
+
             error={error}
             success={success}
         />

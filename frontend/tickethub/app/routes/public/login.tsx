@@ -29,38 +29,36 @@ export default function Login() {
     const [_, formAction, isPending] = useActionState(handleLogin, null);
 
     return (
-        <Container className="my-5">
-            <Card className="col-md-5 mx-auto">
-                <Card.Body>
-                    <h3 className="mb-4 text-center">Iniciar sesión</h3>
-                    <Form action={formAction}>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Correo electrónico</Form.Label>
-                            <Form.Control
-                                name="email"
-                                type="text"
-                                placeholder="Correo electrónico"
-                                disabled={isPending}
-                                required
-                            />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Contraseña</Form.Label>
-                            <Form.Control
-                                name="password"
-                                type="password"
-                                placeholder="Contraseña"
-                                disabled={isPending}
-                                required
-                            />
-                        </Form.Group>
-                        {error && <Alert variant="danger">{error}</Alert>}
-                        <Button type="submit" variant="primary" className="w-100" disabled={isPending}>
-                            {isPending ? "Enviando..." : "Iniciar sesión"}
-                        </Button>
-                    </Form>
-                </Card.Body>
-            </Card>
-        </Container>
+        <Card className="col-12 col-sm-10 col-md-6 col-lg-3 mx-auto mb-5 mt-5">
+            <Card.Body>
+                <h3 className="mb-4 text-center">Iniciar sesión</h3>
+                <Form action={formAction}>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Correo electrónico</Form.Label>
+                        <Form.Control
+                            name="email"
+                            type="text"
+                            placeholder="Correo electrónico"
+                            disabled={isPending}
+                            required
+                        />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Contraseña</Form.Label>
+                        <Form.Control
+                            name="password"
+                            type="password"
+                            placeholder="Contraseña"
+                            disabled={isPending}
+                            required
+                        />
+                    </Form.Group>
+                    {error && <Alert variant="danger">{error}</Alert>}
+                    <Button type="submit" variant="primary" className="w-100" disabled={isPending}>
+                        {isPending ? "Enviando..." : "Iniciar sesión"}
+                    </Button>
+                </Form>
+            </Card.Body>
+        </Card>
     );
 }

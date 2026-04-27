@@ -8,7 +8,7 @@ interface PagedArtists {
 }
 
 export const publicArtistService = {
-    getAllArtists: async(): Promise<PagedArtists> => {
+    getAllArtists: async (): Promise<PagedArtists> => {
         const res = await fetch(`${API_URL}/public/artists?page=0&size=5&name=`);
         if (!res.ok) throw new Error("Error al obtener los artistas");
         const data = await res.json();
@@ -16,7 +16,7 @@ export const publicArtistService = {
         return { content: data.content, last: isLast };
     },
 
-    getArtistById: async(id: string): Promise<Artist> => {
+    getArtistById: async (id: string): Promise<Artist> => {
         const res = await fetch(`${API_URL}/public/artists/${id}`);
         if (!res.ok) throw new Error("Error al obtener el artista");
         return await res.json();

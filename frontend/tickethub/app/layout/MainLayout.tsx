@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Navigate, Outlet, useLocation, useNavigation } from "react-router";
-import {AdminHeader} from "./adminHeader";
+import { AdminHeader } from "./adminHeader";
 import AdminFooter from "./adminFooter";
 import GlobalSpinner from "~/components/GlobalSpinner";
 import { PublicHeader } from "./publicHeader";

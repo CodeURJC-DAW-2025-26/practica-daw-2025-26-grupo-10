@@ -27,7 +27,7 @@ export default function ArtistsListRoute() {
     }, [search]); // only refetch when the search query changes
 
     if (loading && artists.length === 0) return <GlobalSpinner />;
-    
+
     return (
         <ArtistsListUI
             artists={artists}

@@ -64,9 +64,9 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
           <h1 className="display-1 fw-bold text-danger">{status}</h1>
           <h2 className="mb-4">{message}</h2>
           <p className="lead mb-4">{details}</p>
-          
+
           <div className="btns">
-            <button 
+            <button
               onClick={() => window.location.reload()}
               className="btn btn-primary m-2"
             >

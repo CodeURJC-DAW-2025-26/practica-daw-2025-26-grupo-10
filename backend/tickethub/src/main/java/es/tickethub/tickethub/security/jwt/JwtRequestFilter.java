@@ -17,7 +17,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-//intercepta cada una de las peticiones desde el front
+//intercept each of the petitions coming from frontend
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
@@ -30,31 +30,31 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userDetailsService = userDetailsService;
     }
-    
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-        throws ServletException, IOException {
-        
-        try {
-			var claims = jwtTokenProvider.validateToken(request, true);
-			var userDetails = userDetailsService.loadUserByUsername(claims.getSubject());
+            throws ServletException, IOException {
 
-			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-						userDetails, null, userDetails.getAuthorities());
-				
-			authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-			SecurityContextHolder.getContext().setAuthentication(authentication);
-		} catch (Exception ex) {
-			String msg = ex.getMessage();
-            if (msg != null && 
-               !msg.equals("No access token cookie found in request") && 
-               !msg.equals("No cookies found in request")) {
-                
+        try {
+            var claims = jwtTokenProvider.validateToken(request, true);
+            var userDetails = userDetailsService.loadUserByUsername(claims.getSubject());
+
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    userDetails, null, userDetails.getAuthorities());
+
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        } catch (Exception ex) {
+            String msg = ex.getMessage();
+            if (msg != null &&
+                    !msg.equals("No access token cookie found in request") &&
+                    !msg.equals("No cookies found in request")) {
+
                 log.error("Exception processing JWT Token: ", ex);
-            }			
-		}
-        
+            }
+        }
+
         filterChain.doFilter(request, response);
-                
+
     }
 }

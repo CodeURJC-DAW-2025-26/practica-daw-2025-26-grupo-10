@@ -606,17 +606,17 @@ Diagrama mostrando los componentes React, hooks personalizados, servicios y sus 
 
 ### **Participación de Miembros en la Práctica 3**
 
-#### **Alumno 1 - [Nombre Completo]**
+#### **Alumno 1 - [Alejandro Valor González]**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+[Me he encargado de la parte de discount, zones, purchase, confirmation, download pdf, react-boostrap y el /new que tuvimos que ir arreglandolo, a parte de ayudar en otras partes del código.]
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Adding and fixing styles with react-boostrap](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/1e7dd0e2b8ea4ff9887c665cd87155aa58ca31c0)  | [create-event.tsx](frontend/tickethub/app/routes/admin/create-event.tsx)   |
+|2| [adding /new](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/b1376aad28a3c7de3a15ae5a806737d2cb804106)  | [SpaResourceConfig.java](backend/tickethub/src/main/java/es/tickethub/tickethub/config/SpaResourceConfig.java)   |
+|3| [fixing and creating new ts, hooks and components](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/f189907581cf61563f0c156f2f76b333565f2b60)  | [ConfirmDialog.tsx](frontend/tickethub/app/components/confirmDialog/ConfirmDialog.tsx)   |
+|4| [fix: Complete missing React pages and service integration](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/32eb6b3f40d6a39b9b017e54fb834c49173c3e03)  | [confirmation.tsx](frontend/tickethub/app/routes/public/confirmation.tsx)   |
+|5| [creating tsx files](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/d55df404edcf2468054d3a6cc135e8ccd6a7aae2)  | [create-discount.tsx](frontend/tickethub/app/routes/admin/discounts/create-discount.tsx)   |
 
 ---
 

@@ -7,7 +7,7 @@ import type { User } from "~/models/User";
 export default function EditUser() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    
+
     const [formData, setFormData] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
