@@ -1,12 +1,11 @@
-import { useActionState, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useActionState, useState } from "react";
+import { useLoaderData, useNavigate, useParams } from "react-router";
 import { Container, Form, Button, Alert, Table, Row, Col } from "react-bootstrap";
-import { getArtists, createEvent, updateEvent, getEvent, uploadEventImage } from "~/services/event-service";
-import type { ArtistBasic } from "~/models/ArtistBasic";
-import type { SessionBasic } from "~/models/SessionBasic";
+import { getArtists, createEvent, updateEvent, getEvent, uploadEventImage, deleteEventImage } from "~/services/event-service";
 import type { Event } from "~/models/Event";
 import { API_URL } from "~/services/homeService";
-import type ZoneBasic from "~/models/ZoneBasic";
+import { getDiscounts } from "~/services/discounts-service";
+import type Discount from "~/models/Discount";
 
 const TARGET_AGE_OPTIONS = [
   { value: 0, label: "Niños pequeños" },
@@ -18,32 +17,48 @@ const TARGET_AGE_OPTIONS = [
   { value: 6, label: "Ancianos" },
 ];
 
+export async function clientLoader({ params }: { params: { id?: string } }) {
+  const [artists, event, allDiscounts] = await Promise.all([
+    getArtists(),
+    params.id ? getEvent(params.id) : Promise.resolve(null),
+    getDiscounts()
+  ]);
+  return { artists, event, allDiscounts };
+}
+
 export default function CreateEvent() {
+
+  const {artists, event: initialEvent, allDiscounts} = useLoaderData<typeof clientLoader>();
+
+  const [event, setEvent] = useState<Event | null>(initialEvent);
+  const [discounts, setDiscounts] = useState<Discount[]>(initialEvent?.discounts ?? []);
   const { id } = useParams();
   const navigate = useNavigate();
   const isEditing = !!id;
 
-  const [artists, setArtists] = useState<ArtistBasic[]>([]);
-  const [event, setEvent] = useState<Event | null>(null);
-  const [isPendingLoad, setIsPendingLoad] = useState(true);
-
-  async function loadData() {
-    setIsPendingLoad(true);
-    try {
-      const artistsData = await getArtists();
-      setArtists(artistsData);
-      if (isEditing) {
-        const eventData = await getEvent(id);
-        setEvent(eventData);
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsPendingLoad(false);
+  function handleAddDiscount(discountID: number) {
+    const discount = allDiscounts.find((d) => d.discountID === discountID);
+    if (discount && !discounts.find((d) => d.discountID === discountID)) {
+      setDiscounts((prev) => [...prev, discount]);
     }
   }
 
-  useEffect(() => { loadData(); }, [id]);
+  function handleRemoveDiscount(discountID: number) {
+    setDiscounts((prev) => prev.filter((d) => d.discountID !== discountID));
+  }
+
+  async function handleDeleteImage(index: number) {
+    if (!event) return;
+    try {
+      await deleteEventImage(event.eventID, index);
+      setEvent((prev) => prev ? {
+        ...prev,
+        eventImages: prev.eventImages.filter((_, i) => i !== index)
+      } : prev);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   async function uploadEventImages(eventID: number, images: File[]) {
     const validImages = images.filter((img) => img.size > 0);
@@ -65,9 +80,9 @@ export default function CreateEvent() {
 
     const updateData = {
       ...createData,
-      discountIds: formData.get("discounts") as number[] | null,
-      zones: formData.get("zones") as ZoneBasic[] | null,
-      sessions: formData.get("sessions") as SessionBasic[] | null
+      discountIds: discounts.map((d) => d.discountID),
+      zones: event?.zones ?? [],
+      sessions: event?.sessions ?? []
     };
 
     const images = formData.getAll("images") as File[];
@@ -75,11 +90,11 @@ export default function CreateEvent() {
     try {
       if (isEditing) {
         await updateEvent(Number(id), updateData);
-        uploadEventImages(Number(id), images);
+        await uploadEventImages(Number(id), images);
         navigate("/admin/events");
       } else {
         const created = await createEvent(createData);
-        uploadEventImages(Number(id), images);
+        await uploadEventImages(created.eventID, images);
         navigate(`/admin/events/edit/${created.eventID}`);
       }
       return { success: true, error: null };
@@ -90,8 +105,6 @@ export default function CreateEvent() {
   }
 
   const [state, formAction, isPending] = useActionState(submitAction, { success: false, error: null });
-
-  if (isPendingLoad) return <p>Cargando...</p>;
 
   return (
     <Container as="main" className="my-5 flex-grow-1">
@@ -130,7 +143,7 @@ export default function CreateEvent() {
 
         <Form.Group className="mb-3">
           <Form.Label className="fw-bold">Artista principal</Form.Label>
-          <Form.Select name="artistId" required disabled={isPending}>
+          <Form.Select name="artistId" defaultValue={event?.artist?.artistID ?? ""} required disabled={isPending}>
             <option value="" disabled>Selecciona un artista</option>
             {artists.map((artist) => (
               <option key={artist.artistID} value={artist.artistID}>{artist.artistName}</option>
@@ -192,17 +205,35 @@ export default function CreateEvent() {
         <Form.Group className="mb-3">
           <Form.Label className="fw-bold">Descuentos asociados</Form.Label>
           {isEditing && event ? (
-            event.discounts && event.discounts.length > 0 ? (
-              <ul className="mb-0">
-                {event.discounts.map((discount) => (
-                  <li key={discount.discountName}>
-                    {discount.discountName} ({discount.amount}{discount.percentage ? "%" : "€"})
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-muted mb-0">Aún no hay descuentos asociados a este evento</p>
-            )
+            <>
+              {discounts.length > 0 ? (
+                <ul className="mb-2">
+                  {discounts.map((discount) => (
+                    <li key={discount.discountID} className="d-flex align-items-center gap-2 mb-1">
+                      {discount.discountName} ({discount.amount}{discount.percentage ? "%" : "€"})
+                      <Button size="sm" variant="outline-danger" type="button"
+                        onClick={() => handleRemoveDiscount(discount.discountID)}>
+                        Eliminar
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-muted mb-2">Aún no hay descuentos asociados</p>
+              )}
+              <Form.Select className="w-auto"
+                onChange={(e) => { if (e.target.value) handleAddDiscount(Number(e.target.value)); e.target.value = ""; }}
+              >
+                <option value="">Añadir descuento...</option>
+                {allDiscounts
+                  .filter((d) => !discounts.find((ed) => ed.discountID === d.discountID))
+                  .map((d) => (
+                    <option key={d.discountID} value={d.discountID}>
+                      {d.discountName} ({d.amount}{d.percentage ? "%" : "€"})
+                    </option>
+                  ))}
+              </Form.Select>
+            </>
           ) : (
             <p className="text-muted mb-0">Primero guarda el evento para poder gestionar descuentos</p>
           )}
@@ -215,11 +246,22 @@ export default function CreateEvent() {
               {event.eventImages && event.eventImages.length > 0 ? (
                 event.eventImages.map((image, index) => (
                   <Col xs={6} md={3} key={image.imageID}>
-                    <img
-                      src={`${API_URL}/public/events/${event.eventID}/images/${index + 1}`}
-                      className="img-fluid border"
-                      alt="Imagen del evento"
-                    />
+                    <div className="image-overlay-container border">
+                      <button
+                        type="button"
+                        className="btn-delete-overlay"
+                        onClick={() => handleDeleteImage(index)}
+                        title="Eliminar imagen"
+                      >
+                        <i className="bi bi-trash-fill"></i>
+                        <span className="fw-bold small">ELIMINAR</span>
+                      </button>
+                      <img
+                        src={`${API_URL}/public/events/${event.eventID}/images/${index + 1}`}
+                        className="img-event-admin"
+                        alt="Imagen del evento"
+                      />
+                    </div>
                   </Col>
                 ))
               ) : (

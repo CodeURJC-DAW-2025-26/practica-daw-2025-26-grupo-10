@@ -1,32 +1,38 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router";
-import { Container, Card, Table, Button, Alert, Spinner } from "react-bootstrap";
+import { useState } from "react";
 import { getUsers } from "~/services/adminService";
 import type { User } from "~/models/User";
+import { Link, useLoaderData } from "react-router";
+import { Container, Card, Table, Button, Alert, Spinner } from "react-bootstrap";
+
+const PAGE_SIZE = 5;
+
+export async function clientLoader() {
+  const users = await getUsers(0, PAGE_SIZE);
+  return { users };
+}
 
 export default function ManageUsers() {
-    const [users, setUsers] = useState<User[]>([]);
+    const { users: initialUsers } = useLoaderData<typeof clientLoader>();
+
+    const [users, setUsers] = useState<User[]>(initialUsers);
     const [page, setPage] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    const pageSize = 5;
+    async function fetchUsers(newPage: number) {
+        setLoading(true);
+        setError(null);
+        try {
+            const data = await getUsers(page, PAGE_SIZE);
+            setUsers(data);
+            setPage(newPage);
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "Error desconocido");
+        } finally {
+            setLoading(false);
+        }
+    };
 
-    useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                setLoading(true);
-                setError(null);
-                const data = await getUsers(page, pageSize);
-                setUsers(data);
-            } catch (err) {
-                setError(err instanceof Error ? err.message : "Error desconocido");
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchUsers();
-    }, [page]);
 
     return (
         <Container className="py-4">
@@ -82,11 +88,11 @@ export default function ManageUsers() {
             </Card>
 
             <div className="d-flex justify-content-between align-items-center mt-3">
-                <Button variant="outline-primary" disabled={page === 0 || loading} onClick={() => setPage((p) => p - 1)}>
+                <Button variant="outline-primary" disabled={page === 0 || loading} onClick={() => fetchUsers(page - 1)}>
                     &laquo; Anterior
                 </Button>
                 <span className="text-muted">Página {page + 1}</span>
-                <Button variant="outline-primary" disabled={users.length < pageSize || loading} onClick={() => setPage((p) => p + 1)}>
+                <Button variant="outline-primary" disabled={users.length < PAGE_SIZE || loading} onClick={() => fetchUsers(page + 1)}>
                     Siguiente &raquo;
                 </Button>
             </div>

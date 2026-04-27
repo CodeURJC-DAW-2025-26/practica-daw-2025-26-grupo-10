@@ -60,6 +60,7 @@ public class AdminEventRestController {
     public EventDTO updateEvent(@PathVariable Long eventID, @Valid @RequestBody EventUpdateDTO updatedEventDTO) {
         Event existingEvent = eventService.findByIdOrThrow(eventID);
         eventRelationService.updateArtist(existingEvent, updatedEventDTO.artistId());
+        eventRelationService.syncDiscounts(existingEvent, updatedEventDTO.discountIds());
         eventMapper.updateEntityFromDto(updatedEventDTO, existingEvent);
         eventService.save(existingEvent);
 

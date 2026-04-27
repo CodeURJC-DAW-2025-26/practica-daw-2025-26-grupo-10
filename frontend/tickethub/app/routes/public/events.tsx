@@ -1,34 +1,37 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
 import { getEventsPublic, getCategories } from "~/services/events-service";
 import type { EventBasic } from "~/models/EventBasic";
 import { API_URL } from "~/services/homeService";
 import { useStore } from "~/store/useStore";
+import GlobalSpinner from "~/components/GlobalSpinner";
+
+export async function clientLoader() {
+  const [events, categories] = await Promise.all([
+    getEventsPublic(0, 5, "", "", ""),
+    getCategories()
+  ]);
+  return { events, categories };
+}
 
 export default function Events() {
+
+  const { events: initialEvents, categories: initialCategories } = useLoaderData<typeof clientLoader>();
   const navigate = useNavigate();
 
-  const [events, setEvents] = useState<EventBasic[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
-  const [isPending, setIsPending] = useState(true);
+  const [events, setEvents] = useState<EventBasic[]>(initialEvents);
+  const [categories] = useState<string[]>(initialCategories);
+  const [isPending, setIsPending] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [isLast, setIsLast] = useState(false);
-  const [page, setPage] = useState(0);
+  const [isLast, setIsLast] = useState(initialEvents.length < 5);   //To check if we have less than the page events loaded
+  const [page, setPage] = useState(1);  //Initial value 1 to charge the next 5 events
 
   const { eventsSearch, setEventsSearch } = useStore();
   const [filterCategory, setFilterCategory] = useState("");
   const [filterDate, setFilterDate] = useState("");
 
-  async function loadCategories() {
-    try {
-      const data = await getCategories();
-      setCategories(data);
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
+  
   async function loadEvents(reset: boolean = false) {
     const currentPage = reset ? 0 : page;
     const size = 5;
@@ -47,7 +50,7 @@ export default function Events() {
     }
   }
 
-  useEffect(() => { loadCategories(); }, []);
+  // Reload with every change at the filters
   useEffect(() => { loadEvents(true); }, [filterCategory, filterDate]);
   useEffect(() => {
     const timer = setTimeout(() => { loadEvents(true); }, 500);
@@ -88,7 +91,7 @@ export default function Events() {
       </Row>
 
       {isPending ? (
-        <p>Cargando...</p>
+        <GlobalSpinner/>
       ) : (
         <Row className="g-4">
           {events.length === 0 ? (

@@ -1,35 +1,21 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import { useState } from "react";
+import { useLoaderData, useNavigate, useParams } from "react-router";
+import { Row, Col, Card, Button } from "react-bootstrap";
 import { getEvent } from "~/services/event-service";
 import type { Event } from "~/models/Event";
 import { API_URL } from "~/services/homeService";
 
+export async function clientLoader({ params }: { params: { id: string } }) {
+  const data = await getEvent(params.id);
+  return { event: data };
+}
+
 export default function Event() {
-  const { id } = useParams();
   const navigate = useNavigate();
 
-  const [event, setEvent] = useState<Event | null>(null);
-  const [isPending, setIsPending] = useState(true);
+  const { event: initialEvent } = useLoaderData<typeof clientLoader>();
+  const [event] = useState<Event>(initialEvent);
   const [activeIndex, setActiveIndex] = useState(0);
-
-  async function loadEvent() {
-    if (!id) return;
-    setIsPending(true);
-    try {
-      const data = await getEvent(id);
-      setEvent(data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsPending(false);
-    }
-  }
-
-  useEffect(() => { loadEvent(); }, [id]);
-
-  if (isPending) return <p>Cargando...</p>;
-  if (!event) return <p>Evento no encontrado</p>;
 
   const images = event.eventImages ?? [];
 
@@ -118,6 +104,5 @@ export default function Event() {
         </Col>
       </Row>
     </Card>
-
   );
 }

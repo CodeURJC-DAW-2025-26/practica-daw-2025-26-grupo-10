@@ -1,11 +1,15 @@
 package es.tickethub.tickethub.mappers;
 
-import es.tickethub.tickethub.dto.*;
-import es.tickethub.tickethub.entities.Event;
 import org.mapstruct.Mapper;
-import org.mapstruct.ReportingPolicy;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.ReportingPolicy;
+
+import es.tickethub.tickethub.dto.EventBasicDTO;
+import es.tickethub.tickethub.dto.EventCreateDTO;
+import es.tickethub.tickethub.dto.EventDTO;
+import es.tickethub.tickethub.dto.EventUpdateDTO;
+import es.tickethub.tickethub.entities.Event;
 
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {ReferenceMapper.class} ) 
@@ -20,8 +24,8 @@ public interface EventMapper {
     Event toEntity(EventCreateDTO createEventDTO);
 
     @Mapping(source = "artistId", target = "artist")
-    @Mapping(source = "discountIds", target = "discounts")
-    @Mapping(source = "zones", target = "zones")
-    @Mapping(source = "sessions", target = "sessions")
+    @Mapping(target = "discounts", ignore = true)
+    @Mapping(target = "zones", ignore = true)
+    @Mapping(target = "sessions", ignore = true)
     void updateEntityFromDto(EventUpdateDTO dto, @MappingTarget Event event);    
 }

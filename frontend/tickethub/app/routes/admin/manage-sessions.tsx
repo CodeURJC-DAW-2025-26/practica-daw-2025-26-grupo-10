@@ -1,35 +1,38 @@
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router";
+import { useState } from "react";
+import { useParams, useNavigate, useLoaderData } from "react-router";
 import { Container, Card, Table, Button, Alert, Form, Row, Col } from "react-bootstrap";
 import { getSessionsByEvent, createSession, updateSession, deleteSession } from "~/services/session-service";
 import type { SessionBasic } from "~/models/SessionBasic";
+import { useConfirmDialog } from "~/hooks/useConfirmDialog";
+import { useTemporaryMessage } from "~/hooks/useTemporaryMessage";
+import { ConfirmDialog } from "~/components/confirmDialog/ConfirmDialog";
+
+export async function clientLoader({ params }: { params: { id: string } }) {
+  const sessions = await getSessionsByEvent(params.id);
+  return { sessions };
+}
 
 export default function ManageSessions() {
+    const {sessions: initialSessions} = useLoaderData<typeof clientLoader>()
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
 
-    const [sessions, setSessions] = useState<SessionBasic[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [sessions, setSessions] = useState<SessionBasic[]>(initialSessions);
     const [error, setError] = useState<string | null>(null);
     const [newSessionDate, setNewSessionDate] = useState("");
     const [isCreating, setIsCreating] = useState(false);
     const [editingIndex, setEditingIndex] = useState<number | null>(null);
     const [editDate, setEditDate] = useState("");
-
-    useEffect(() => {
-        if (!id) return;
-        loadSessions();
-    }, [id]);
+    
+    const { error: deleteError, setError: setDeleteError, success: deleteSuccess, setSuccess: setDeleteSuccess } = useTemporaryMessage();
+    const { isOpen: isNotConfirmed, message, confirm, handleCancel, handleConfirm } = useConfirmDialog();
 
     async function loadSessions() {
-        setLoading(true);
         try {
-            const data = await getSessionsByEvent(id!);
-            setSessions(data);
+        const data = await getSessionsByEvent(id!);
+        setSessions(data);
         } catch (err) {
-            setError(err instanceof Error ? err.message : "Error al cargar sesiones");
-        } finally {
-            setLoading(false);
+        setError(err instanceof Error ? err.message : "Error al cargar sesiones");
         }
     }
 
@@ -48,14 +51,17 @@ export default function ManageSessions() {
     };
 
     const handleDelete = async (sessionID: number) => {
-        if (!confirm("¿Seguro que deseas eliminar esta sesión?")) return;
-        try {
-            await deleteSession(sessionID);
-            setSessions(sessions.filter(s => s.sessionID !== sessionID));
-        } catch (err) {
-            setError(err instanceof Error ? err.message : "Error al eliminar");
-        }
-    };
+        confirm("¿Estás seguro de que quieres eliminar este evento?", async () => {
+            try {
+                await deleteSession(sessionID);
+                setSessions(sessions.filter(s => s.sessionID !== sessionID));
+                setDeleteSuccess("Sesión eliminada correctamente")
+            } catch (err) {
+                console.error(err);
+                setDeleteError("Error al eliminar la sesión");
+            }
+        });
+    }
 
     const startEditing = (index: number, currentDate: string) => {
         setEditingIndex(index);
@@ -73,18 +79,24 @@ export default function ManageSessions() {
         }
     };
 
-    if (loading) return <Container className="my-5"><p>Cargando sesiones...</p></Container>;
-
     return (
         <Container className="my-5">
+            {isNotConfirmed && (
+                <ConfirmDialog
+                message={message}
+                onConfirm={handleConfirm}
+                onCancel={handleCancel}
+                />
+            )}
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <h2>Gestionar Sesiones (Evento #{id})</h2>
-                <Button variant="outline-secondary" onClick={() => navigate(`/admin/events/edit/${id}`)}>
+                <Button variant="outline-secondary" onClick={() => navigate(`/admin/events/${id}`)}>
                     Volver al Evento
                 </Button>
             </div>
 
-            {error && <Alert variant="danger">{error}</Alert>}
+            {deleteError && <p className="alert alert-danger">{deleteError}</p>}
+            {deleteSuccess && <p className="alert alert-success">{deleteSuccess}</p>}
 
             <Card className="mb-4 shadow-sm">
                 <Card.Body>
@@ -136,7 +148,7 @@ export default function ManageSessions() {
                                             onChange={(e) => setEditDate(e.target.value)}
                                         />
                                     ) : (
-                                        String(session.date || "Fecha no disponible")
+                                        session.date ? new Date(session.date).toLocaleString("es-ES") : "Fecha no disponible"
                                     )}
                                 </td>
                                 <td className="text-end">

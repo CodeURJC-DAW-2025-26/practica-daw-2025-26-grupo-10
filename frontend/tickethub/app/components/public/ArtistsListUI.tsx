@@ -43,7 +43,7 @@ export default function ArtistsListUI({ artists, searchQuery, onSearchChange, on
                                     />
                                     <Card.Body>
                                         <Card.Title as="h5">{artist.artistName}</Card.Title>
-                                        <Link to={`/public/artist/${artist.artistID}`} className="btn btn-primary">
+                                        <Link to={`/public/artists/${artist.artistID}`} className="btn btn-primary">
                                             Ver artista
                                         </Link>
                                     </Card.Body>

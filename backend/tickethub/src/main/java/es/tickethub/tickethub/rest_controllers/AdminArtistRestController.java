@@ -1,12 +1,11 @@
 package es.tickethub.tickethub.rest_controllers;
 
-import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
-
 import java.io.IOException;
 import java.net.URI;
 import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,12 +13,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.data.domain.Page;
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 import es.tickethub.tickethub.dto.ArtistCreateUpdateDTO;
 import es.tickethub.tickethub.dto.ArtistDTO;
@@ -58,17 +58,13 @@ public class AdminArtistRestController {
         return ResponseEntity.created(location).body(artistMapper.toDTO(artist));
     }
 
-    @PutMapping(value = "/{artistID}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/{artistID}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ArtistDTO updateArtist(
             @PathVariable Long artistID,
-            @Valid @RequestPart("data") ArtistCreateUpdateDTO dto,
-            @RequestPart(value = "image", required = false) MultipartFile image) throws IOException, SQLException {
+            @Valid @RequestBody ArtistCreateUpdateDTO dto) {
 
         Artist existing = artistService.findById(artistID);
         artistMapper.updateEntityFromDto(dto, existing);
-        if (image != null)
-            artistService.assignImage(existing, image);
-
         return artistMapper.toDTO(artistService.save(existing));
     }
 

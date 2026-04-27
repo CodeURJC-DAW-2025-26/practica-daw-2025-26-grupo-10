@@ -1,17 +1,20 @@
 import type Zone from "~/models/Zone";
 import type ZoneCreate from "~/models/ZoneCreate";
-import { API_BASE } from "./adminService";
+import { API_URL } from "./homeService";
 
-const EVENTS_URL = `${API_BASE}/events`;
+const EVENTS_URL = `${API_URL}/admin/events`;
 
 export async function getZones(eventId: string): Promise<Zone[]> {
-  const res = await fetch(`${EVENTS_URL}/${eventId}/zones`);
+  const res = await fetch(`${API_URL}/public/events/${eventId}/zones`, {
+    headers: { "Content-Type": "application/json" },
+    credentials: "include"
+  });
   if (!res.ok) throw new Error("Error al obtener zonas");
   return await res.json();
 }
 
 export async function getZone(eventId: string, zoneId: string): Promise<Zone> {
-  const res = await fetch(`${EVENTS_URL}/${eventId}/zones/${zoneId}`, {
+  const res = await fetch(`${API_URL}/public/events/${eventId}/zones/${zoneId}`, {
     headers: { "Content-Type": "application/json" },
     credentials: "include"
   });

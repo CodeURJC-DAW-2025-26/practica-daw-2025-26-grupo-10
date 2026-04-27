@@ -2,6 +2,7 @@ package es.tickethub.tickethub.services;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import es.tickethub.tickethub.entities.Event;
@@ -55,11 +56,10 @@ public class ServerRecommendationService {
     }
 
     /* THIS WILL BE USED IN RECOMMENDATIONSERVICE */
+    /* Deleted checking isEmpty due to an internal error */
     public List<Event> getEvents() {
-        if (events.isEmpty()) {
-            events = eventService.findAll();
-            calculateEventVectors();
-        }
+        events = eventService.findAll();
+        calculateEventVectors();
 
         return events;
     }

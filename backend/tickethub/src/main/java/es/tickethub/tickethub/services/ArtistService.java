@@ -49,7 +49,7 @@ public class ArtistService {
     }
 
     public Artist save(Artist artist) {
-        if (artist.getArtistImage() == null) {
+        if (artist.getArtistID() == null && artist.getArtistImage() == null) {
             throw new IllegalArgumentException("No se puede crear un artista sin imagen.");
         }
         return artistRepository.save(artist);

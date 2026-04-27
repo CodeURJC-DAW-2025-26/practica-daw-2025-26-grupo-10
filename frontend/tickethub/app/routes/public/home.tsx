@@ -1,33 +1,18 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { Link, useLoaderData, useNavigate } from "react-router";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { getIndexData, API_URL } from "~/services/homeService";
 import type { ArtistBasic } from "~/models/ArtistBasic";
 import type { EventBasic } from "~/models/EventBasic";
-import type { IndexResponse } from "~/models/IndexResponse";
-import { Link } from "react-router";
+
+export async function clientLoader() {
+  const data = await getIndexData();
+  return { data };
+}
 
 export default function Home() {
-  const [data, setData] = useState<IndexResponse | null>(null);
-  const [isPending, setIsPending] = useState(false);
+  const {data} = useLoaderData<typeof clientLoader>();
+
   const navigate = useNavigate();
-
-  async function loadData() {
-    setIsPending(true);
-    try {
-      const result = await getIndexData();
-      setData(result);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsPending(false);
-    }
-  }
-
-  useEffect(() => { loadData(); }, []);
-
-  if (isPending) return <p>Cargando...</p>;
-  if (!data) return <p>Error al cargar la página principal</p>;
 
   return (
     <>

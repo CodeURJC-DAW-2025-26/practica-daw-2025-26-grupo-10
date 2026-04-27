@@ -1,21 +1,14 @@
-import { Link } from "react-router";
-import { useEffect, useState } from "react";
+import { Link, useLoaderData } from "react-router";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { getDashboard } from "~/services/adminService";
-import type { AdminDashboardDTO } from "~/models/Admin";
+
+export async function clientLoader() {
+  const stats = await getDashboard();
+  return { stats };
+}
 
 export default function AdminDashboard() {
-    const [stats, setStats] = useState<AdminDashboardDTO | null>(null);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        getDashboard()
-            .then(setStats)
-            .catch(err => setError(err.message));
-    }, []);
-
-    if (error) return <Container className="my-5 text-center text-danger">{error}</Container>;
-    if (!stats) return <Container className="my-5 text-center">Cargando panel...</Container>;
+    const {stats} = useLoaderData<typeof clientLoader>();
 
     return (
         <div className="d-flex align-items-center justify-content-center py-5">
@@ -31,11 +24,11 @@ export default function AdminDashboard() {
 
                 <div className="d-flex flex-wrap gap-4 mt-5 justify-content-center">
                     <div className="btn-group gap-2 shadow-sm" role="group">
-                        <Link to="/admin/events/create" className="btn btn-primary">Crear evento</Link>
+                        <Link to="/admin/events/new" className="btn btn-primary">Crear evento</Link>
                         <Link to="/admin/events" className="btn btn-outline-primary">Gestionar eventos</Link>
                     </div>
                     <div className="btn-group gap-2 shadow-sm" role="group">
-                        <Link to="/admin/artists/create" className="btn btn-primary">Crear artista</Link>
+                        <Link to="/admin/artists/new" className="btn btn-primary">Crear artista</Link>
                         <Link to="/admin/artists" className="btn btn-outline-primary">Gestionar artistas</Link>
                     </div>
 

@@ -1,34 +1,39 @@
-import { Link } from "react-router";
-import React, { useEffect, useState } from "react";
+import { Link, useLoaderData } from "react-router";
+import React, { useState } from "react";
 import { Container, Table, Button, Alert, Badge } from "react-bootstrap";
 import type { PurchaseBasic } from "../../models/PurchaseBasic";
 import { getPurchases } from "../../services/user-service";
 import { getDownloadUrl } from "~/services/purchases-service";
 
+export async function clientLoader() {
+  const data = await getPurchases(0);
+  return { purchases: data.content, hasNext: data.hasNext };
+}
+
 export default function ClientPurchases() {
-    const [purchases, setPurchases] = useState<PurchaseBasic[]>([]);
-    const [isPending, setIsPending] = useState(true);
-    const [hasNext, setHasNext] = useState(false);
+    const { purchases: initialPurchases, hasNext: initialHasNext } = useLoaderData<typeof clientLoader>();
+
+    const [purchases, setPurchases] = useState<PurchaseBasic[]>(initialPurchases);
+    const [hasNext, setHasNext] = useState(initialHasNext);
     const [page, setPage] = useState(0);
+    const [isPending, setIsPending] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
 
-    async function loadPurchases(pageToLoad: number) {
-        if (pageToLoad === 0) setIsPending(true);
+    async function loadMore(nextPage: number) {
+        setIsPending(true);
         setError(null);
         try {
-            const data = await getPurchases(pageToLoad);
-            setPurchases(prev => pageToLoad === 0 ? data.content : [...prev, ...data.content]);
-            setHasNext(data.hasNext);
-            setPage(pageToLoad);
+        const data = await getPurchases(nextPage);
+        setPurchases(prev => [...prev, ...data.content]);
+        setHasNext(data.hasNext);
+        setPage(nextPage);
         } catch (error) {
-            setError(error instanceof Error ? error.message : "Error al cargar las compras");
+        setError(error instanceof Error ? error.message : "Error al cargar las compras");
         } finally {
-            setIsPending(false);
+        setIsPending(false);
         }
     }
-
-    useEffect(() => { loadPurchases(0); }, []);
 
     function toggleRow(purchaseID: number) {
         const newExpandedRows = new Set(expandedRows);
@@ -56,9 +61,7 @@ export default function ClientPurchases() {
 
             {error && <Alert variant="danger">{error}</Alert>}
 
-            {isPending && page === 0 ? (
-                <p>Cargando tu historial...</p>
-            ) : purchases.length === 0 && !error ? (
+            {purchases.length === 0 && !error ? (
                 <p>No hay compras registradas aún.</p>
             ) : (
                 <>
@@ -137,8 +140,7 @@ export default function ClientPurchases() {
                     {hasNext && (
                         <div className="text-center mt-4">
                             <Button
-                                variant="outline-primary"
-                                onClick={() => loadPurchases(page + 1)}
+                                onClick={() => loadMore(page + 1)}
                                 disabled={isPending}
                             >
                                 {isPending ? "Cargando más..." : "Cargar más historial"}

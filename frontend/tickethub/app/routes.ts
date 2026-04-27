@@ -5,13 +5,13 @@ export default [
                 index("routes/public/home.tsx"),
 
                 // Artists
-                route("/admin/artists", "routes/admin/ArtistsManagement.tsx"),
-                route("/admin/artists/new", "routes/admin/ArtistForm.tsx", { id: "artist-create" }),
-                route("/admin/artists/:id", "routes/admin/ArtistForm.tsx", { id: "artist-edit" }),
+                route("/admin/artists", "routes/admin/manage-artists.tsx"),
+                route("/admin/artists/new", "routes/admin/create-artist.tsx", { id: "artist-create" }),
+                route("/admin/artists/:id", "routes/admin/create-artist.tsx", { id: "artist-edit" }),
                 route("/admin/statistics", "routes/admin/Statistics.tsx"),
 
-                route("/public/artists", "routes/public/ArtistsList.tsx"),
-                route("/public/artists/:id", "routes/public/ArtistDetail.tsx"),
+                route("/public/artists", "routes/public/artists.tsx"),
+                route("/public/artists/:id", "routes/public/artist.tsx"),
                 // Events
                 route("/admin", "routes/admin/dashboard.tsx"),
                 route("/public/events", "routes/public/events.tsx"),

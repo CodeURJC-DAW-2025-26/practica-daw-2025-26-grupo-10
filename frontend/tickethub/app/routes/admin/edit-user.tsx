@@ -1,29 +1,27 @@
-import { useEffect, useState, type SetStateAction } from "react";
-import { useParams, useNavigate } from "react-router";
+import { useState } from "react";
+import { useParams, useNavigate, useLoaderData } from "react-router";
 import { Container, Card, Form, Button, Alert, Row, Col } from "react-bootstrap";
 import { getUserById, updateUser } from "~/services/adminService";
 import type { User } from "~/models/User";
 
+export async function clientLoader({ params }: { params: { id: string } }) {
+  const user = await getUserById(params.id);
+  return { user };
+}
+
 export default function EditUser() {
+    const { user: initialUser } = useLoaderData<typeof clientLoader>();
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-
-    const [formData, setFormData] = useState<User | null>(null);
-    const [loading, setLoading] = useState(true);
+    
+    const [formData, setFormData] = useState<User>(initialUser);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        if (!id) return;
-        getUserById(id)
-            .then((data: SetStateAction<User | null>) => setFormData(data))
-            .catch((err: { message: SetStateAction<string | null>; }) => setError(err.message))
-            .finally(() => setLoading(false));
-    }, [id]);
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!formData || !id) return;
+        if (!id) return;
+
         setSaving(true);
         try {
             await updateUser(formData.userID, formData);
@@ -33,9 +31,6 @@ export default function EditUser() {
             setSaving(false);
         }
     };
-
-    if (loading) return <Container className="py-5 text-center">Cargando...</Container>;
-    if (!formData) return <Container className="py-5 text-center text-danger">Usuario no encontrado</Container>;
 
     return (
         <Container className="py-4">

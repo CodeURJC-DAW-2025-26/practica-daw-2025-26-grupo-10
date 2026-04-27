@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useLoaderData, useNavigate, useParams } from "react-router";
 import { Container, Form, Button, Alert, Row, Col } from "react-bootstrap";
 import { getEvent } from "~/services/event-service";
 import { savePurchase } from "~/services/purchases-service";
-import type { Event } from "~/models/Event";
 import type TicketSelection from "~/models/TicketSelection";
 
+export async function clientLoader({ params }: { params: { eventId: string } }) {
+  const event = await getEvent(params.eventId);
+  return { event };
+}
+
 export default function Purchase() {
-  const { eventId } = useParams<{ eventId: string }>();
+  const { event } = useLoaderData<typeof clientLoader>();
   const navigate = useNavigate();
 
-  const [event, setEvent] = useState<Event | null>(null);
-  const [isPending, setIsPending] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -22,14 +23,6 @@ export default function Purchase() {
   const [selectedDiscountIndex, setSelectedDiscountIndex] = useState<number | "">("");
   const [email, setEmail] = useState("");
   const [emailConfirm, setEmailConfirm] = useState("");
-
-  useEffect(() => {
-    if (!eventId) return;
-    getEvent(eventId)
-      .then(setEvent)
-      .catch(() => setError("No se pudo cargar el evento."))
-      .finally(() => setIsPending(false));
-  }, [eventId]);
 
   useEffect(() => {
     setTickets((prev) => {
@@ -49,7 +42,6 @@ export default function Purchase() {
   }
 
   function calculateTotal(): number {
-    if (!event) return 0;
     const baseTotal = tickets.reduce((sum, zoneId) => {
       const zone = event.zones.find((z) => z.id === zoneId);
       return sum + (zone?.price ?? 0);
@@ -82,19 +74,6 @@ export default function Purchase() {
     } finally {
       setIsSubmitting(false);
     }
-  }
-
-  if (isPending) {
-    return <Container className="my-5 text-center"><p>Cargando evento...</p></Container>;
-  }
-
-  if (error || !event) {
-    return (
-      <Container className="my-5 text-center">
-        <p className="text-danger">{error ?? "Evento no encontrado."}</p>
-        <Button variant="outline-secondary" onClick={() => navigate(-1)}>Volver</Button>
-      </Container>
-    );
   }
 
   const total = calculateTotal();

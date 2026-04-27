@@ -1,32 +1,21 @@
-import { Link, useNavigate } from "react-router";
+import { Link, useLoaderData, useNavigate } from "react-router";
 import { changeProfile, getProfileFormInformation, changeProfileImage } from "~/services/user-service";
 import type { ChangeProfileBasic } from "~/models/UserBasic";
-import { useEffect, useState, useActionState } from "react";
+import { useActionState } from "react";
 import { useStore } from "~/store/useStore";
 import { Container, Card, Form, Button, Alert, Row, Col } from "react-bootstrap";
 
+export async function clientLoader() {
+  const profileInformation = await getProfileFormInformation();
+  return { profileInformation };
+}
+
 export default function ChangeProfile() {
-    const [isLoadingInitial, setIsLoadingInitial] = useState(true);
-    const [initialError, setInitialError] = useState<string | null>(null);
-    const [profileInformation, setProfileInfo] = useState<ChangeProfileBasic>();
+    const {profileInformation} = useLoaderData<typeof clientLoader>();
 
     const refreshUser = useStore((state) => state.refreshUser);
     const user = useStore((state) => state.user);
     const navigate = useNavigate();
-
-    async function handleLoadInformation() {
-        setInitialError(null);
-        try {
-            const data = await getProfileFormInformation();
-            setProfileInfo(data);
-        } catch (error) {
-            setInitialError(error instanceof Error ? error.message : "Error al cargar la información");
-        } finally {
-            setIsLoadingInitial(false);
-        }
-    }
-
-    useEffect(() => { handleLoadInformation(); }, []);
 
     async function handleSubmit(prevState: any, formData: FormData) {
         try {
@@ -54,9 +43,6 @@ export default function ChangeProfile() {
     }
 
     const [formState, formAction, isSubmitting] = useActionState(handleSubmit, null);
-
-    if (isLoadingInitial) return <Container className="my-5"><p>Cargando información del perfil...</p></Container>;
-    if (initialError) return <Container className="my-5"><Alert variant="danger">{initialError}</Alert></Container>;
 
     return (
         <Container className="my-5">
@@ -86,11 +72,11 @@ export default function ChangeProfile() {
                                 </Form.Group>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Teléfono</Form.Label>
-                                    <Form.Control type="text" name="phone" defaultValue={profileInformation?.phone} required />
+                                    <Form.Control type="text" name="phone" defaultValue={profileInformation?.phone} />
                                 </Form.Group>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Edad</Form.Label>
-                                    <Form.Control type="number" name="age" defaultValue={profileInformation?.age} required />
+                                    <Form.Control type="number" name="age" defaultValue={profileInformation?.age} />
                                 </Form.Group>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Foto de perfil</Form.Label>

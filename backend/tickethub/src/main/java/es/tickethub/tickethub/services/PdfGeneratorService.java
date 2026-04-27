@@ -1,13 +1,20 @@
 package es.tickethub.tickethub.services;
 
-import com.lowagie.text.*;
-import com.lowagie.text.pdf.PdfWriter;
-import es.tickethub.tickethub.entities.Purchase;
-import es.tickethub.tickethub.entities.Ticket;
+import java.io.ByteArrayOutputStream;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayOutputStream;
+import com.lowagie.text.Document;
+import com.lowagie.text.Element;
+import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
+import com.lowagie.text.Image;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfWriter;
+
+import es.tickethub.tickethub.entities.Purchase;
+import es.tickethub.tickethub.entities.Ticket;
 
 @Service
 public class PdfGeneratorService {
@@ -34,7 +41,7 @@ public class PdfGeneratorService {
 
         int i = 1;
         for (Ticket ticket : purchase.getTickets()) {
-            document.newPage(); // Una página por entrada
+            document.newPage(); // Une page per ticket
             
             document.add(new Paragraph("ENTRADA #" + i, titleFont));
             document.add(new Paragraph("-------------------------------------------"));
@@ -42,7 +49,7 @@ public class PdfGeneratorService {
             document.add(new Paragraph("Código: " + ticket.getCode()));
             document.add(new Paragraph("Precio: " + ticket.getTicketPrice() + " €"));
 
-            // Generar y añadir QR
+            // Generate and add QR
             byte[] qrBytes = qrService.generateQR(ticket.getCode());
             Image qrImage = Image.getInstance(qrBytes);
             qrImage.scaleToFit(200, 200);

@@ -53,5 +53,14 @@ export async function uploadEventImage(eventID: number, image: File): Promise<vo
     body: form,
   });
 
-  if (!res.ok) throw new Error("Error subiendo imagen");
+  if (!res.ok) throw new Error("Error subiendo imagen al evento");
+}
+
+export async function deleteEventImage(eventID: number, index: number): Promise<void> {
+  const trueIndex = index + 1;
+  const res = await fetch(`${API_URL}/admin/events/${eventID}/images/${trueIndex}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+  if (!res.ok) throw new Error("Error eliminando imagen");
 }

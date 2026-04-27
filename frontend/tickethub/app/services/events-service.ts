@@ -22,7 +22,7 @@ export async function getEventsPublic(
 }
 
 export async function getEventsAdmin(): Promise<EventBasic[]> {
-  const res = await fetch(`${API_URL}/admin/events`, {
+  const res = await fetch(`${API_URL}/admin/events?page=0&size=1000`, {
     credentials: "include"
   });
   if (!res.ok) throw new Error("Error cargando eventos");

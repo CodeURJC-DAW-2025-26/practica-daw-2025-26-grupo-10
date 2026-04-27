@@ -1,25 +1,23 @@
-import { useActionState, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useActionState, useState } from "react";
+import { useLoaderData, useNavigate, useParams } from "react-router";
 import { Container, Form, Button, Alert } from "react-bootstrap";
 import { getDiscount, createDiscount, updateDiscount } from "~/services/discounts-service";
 import type Discount from "~/models/Discount";
 
+export async function clientLoader({ params }: { params: { id?: string } }) {
+  if (!params.id) return { discount: null };
+  const discount = await getDiscount(params.id);
+  return { discount };
+}
+
 export default function CreateDiscount() {
+  const {discount: initialDiscount} = useLoaderData<typeof clientLoader>();
+
   const { id } = useParams<{ id?: string }>();
   const isEditing = !!id;
   const navigate = useNavigate();
 
-  const [discount, setDiscount] = useState<Discount | null>(null);
-  const [isLoadingDiscount, setIsLoadingDiscount] = useState(isEditing);
-
-  useEffect(() => {
-    if (!id) return;
-    setIsLoadingDiscount(true);
-    getDiscount(id)
-      .then(setDiscount)
-      .catch(() => navigate("/admin/discounts"))
-      .finally(() => setIsLoadingDiscount(false));
-  }, [id]);
+  const [discount] = useState<Discount | null>(initialDiscount);
 
   async function formAction(_prev: { error: string | null }, formData: FormData) {
     const data = {
@@ -42,10 +40,6 @@ export default function CreateDiscount() {
   }
 
   const [state, dispatchAction, isPending] = useActionState(formAction, { error: null });
-
-  if (isLoadingDiscount) {
-    return <Container className="my-5 text-center"><p>Cargando datos del descuento...</p></Container>;
-  }
 
   return (
     <Container className="my-5">

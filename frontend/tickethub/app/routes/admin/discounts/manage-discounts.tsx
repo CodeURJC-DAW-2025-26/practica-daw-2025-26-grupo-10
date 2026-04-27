@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { useState } from "react";
+import { Link, useLoaderData, useNavigate } from "react-router";
 import { Container, Table, Button, Alert } from "react-bootstrap";
 import { getDiscounts, deleteDiscount } from "~/services/discounts-service";
 import type Discount from "~/models/Discount";
@@ -7,35 +7,26 @@ import { ConfirmDialog } from "~/components/confirmDialog/ConfirmDialog";
 import { useTemporaryMessage } from "~/hooks/useTemporaryMessage";
 import { useConfirmDialog } from "~/hooks/useConfirmDialog";
 
+export async function clientLoader() {
+  const discounts = await getDiscounts();
+  return {discounts}
+}
+
 export default function ManageDiscounts() {
-  const [discounts, setDiscounts] = useState<Discount[]>([]);
-  const [isPending, setIsPending] = useState(true);
-  const [loadError, setLoadError] = useState<string | null>(null);
+  const {discounts: initialDiscounts} = useLoaderData<typeof clientLoader>()
+  
+  const [discounts, setDiscounts] = useState<Discount[]>(initialDiscounts);
   const navigate = useNavigate();
 
   const { error: deleteError, setError: setDeleteError, success: deleteSuccess, setSuccess: setDeleteSuccess } = useTemporaryMessage();
   const { isOpen: isNotConfirmed, message, confirm, handleCancel, handleConfirm } = useConfirmDialog();
 
-  async function loadDiscounts() {
-    setIsPending(true);
-    try {
-      const data = await getDiscounts();
-      setDiscounts(data);
-    } catch {
-      setLoadError("No se pudieron cargar los descuentos.");
-    } finally {
-      setIsPending(false);
-    }
-  }
-
-  useEffect(() => { loadDiscounts(); }, []);
-
   function handleDelete(id: number) {
     confirm("¿Estás seguro de que deseas eliminar este descuento?", async () => {
       try {
         await deleteDiscount(id);
+        setDiscounts((prev) => prev.filter((discount) => discount.discountID !== id));
         setDeleteSuccess("Descuento eliminado correctamente.");
-        await loadDiscounts();
       } catch (err) {
         console.error(err);
         setDeleteError("No se pudo eliminar el descuento.");
@@ -51,45 +42,42 @@ export default function ManageDiscounts() {
 
       <h2>Gestión de Descuentos</h2>
 
-      {loadError && (
-        <Alert variant="danger" dismissible onClose={() => setLoadError(null)}>{loadError}</Alert>
-      )}
       {deleteError && <Alert variant="danger">{deleteError}</Alert>}
       {deleteSuccess && <Alert variant="success">{deleteSuccess}</Alert>}
 
-      {isPending ? (
-        <p>Cargando descuentos...</p>
-      ) : (
-        <Table>
-          <thead>
+      
+      <Table className="table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Valor</th>
+            <th>Tipo</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {discounts.length === 0 && (
             <tr>
-              <th>Nombre</th>
-              <th>Valor</th>
-              <th>Tipo</th>
-              <th>Acciones</th>
+              <td colSpan={4} className="text-center text-muted">
+                No hay descuentos registrados.
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {discounts.length === 0 && (
-              <tr>
-                <td colSpan={4} className="text-center text-muted">No hay descuentos registrados.</td>
-              </tr>
-            )}
-            {discounts.map((d) => (
-              <tr key={d.discountID}>
-                <td>{d.discountName}</td>
-                <td>{d.amount} {d.percentage ? "%" : "€"}</td>
-                <td>{d.percentage ? "Porcentaje" : "Cantidad fija"}</td>
-                <td className="d-flex gap-2">
-                  <Link to={`/admin/discounts/${d.discountID}`} className="btn btn-sm btn-primary">Editar</Link>
-                  <Button size="sm" variant="danger" onClick={() => handleDelete(d.discountID)}>Eliminar</Button>
-
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      )}
+          )}
+          {discounts.map((d) => (
+            <tr key={d.discountID}>
+              <td>{d.discountName}</td>
+              <td>
+                {d.amount} {d.percentage ? "%" : "€"}
+              </td>
+              <td>{d.percentage ? "Porcentaje" : "Cantidad fija"}</td>
+              <td className="d-flex gap-2">
+                <Link to={`/admin/discounts/${d.discountID}`} className="btn btn-sm btn-primary">Editar</Link>
+                <Button size="sm" variant="danger" onClick={() => handleDelete(d.discountID)}>Eliminar</Button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
 
       <div className="d-flex justify-content-between mt-3">
         <Button variant="outline-secondary" onClick={() => navigate("/admin")}>Volver</Button>

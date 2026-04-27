@@ -1,25 +1,22 @@
-import { useActionState, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useActionState, useState } from "react";
+import { useLoaderData, useNavigate, useParams } from "react-router";
 import { Container, Form, Button, Alert } from "react-bootstrap";
 import { getZone, createZone, updateZone } from "~/services/zones-service";
 import type Zone from "~/models/Zone";
 
+export async function clientLoader({ params }: { params: { eventId: string, id?: string } }) {
+  if (!params.id || !params.eventId) return { zone: null };
+  const zone = await getZone(params.eventId, params.id);
+  return { zone };
+}
+
 export default function CreateZone() {
+  const { zone: initialZone } = useLoaderData<typeof clientLoader>()
   const { eventId, id } = useParams<{ eventId: string; id?: string }>();
   const isEditing = !!id;
   const navigate = useNavigate();
 
-  const [zone, setZone] = useState<Zone | null>(null);
-  const [isLoadingZone, setIsLoadingZone] = useState(isEditing);
-
-  useEffect(() => {
-    if (!id || !eventId) return;
-    setIsLoadingZone(true);
-    getZone(eventId, id)
-      .then(setZone)
-      .catch(() => navigate(`/admin/events/${eventId}/zones`))
-      .finally(() => setIsLoadingZone(false));
-  }, [id, eventId]);
+  const [zone] = useState<Zone | null>(initialZone);
 
   async function formAction(_prev: { error: string | null }, formData: FormData) {
     const data = {
@@ -43,10 +40,6 @@ export default function CreateZone() {
   }
 
   const [state, dispatchAction, isPending] = useActionState(formAction, { error: null });
-
-  if (isLoadingZone) {
-    return <Container className="my-5 text-center"><p>Cargando datos de la zona...</p></Container>;
-  }
 
   return (
     <Container className="my-5">
