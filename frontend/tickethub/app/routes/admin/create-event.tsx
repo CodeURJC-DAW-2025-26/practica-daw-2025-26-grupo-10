@@ -74,12 +74,12 @@ export default function CreateEvent() {
       category: formData.get("category") as string,
       place: formData.get("place") as string,
       artistId: Number(formData.get("artistId")),
-      targetAge: Number(formData.get("targetAge")),
-      capacity: Number(formData.get("capacity"))
+      targetAge: Number(formData.get("targetAge"))
     };
 
     const updateData = {
       ...createData,
+      capacity: event?.capacity ?? 0,
       discountIds: discounts.map((d) => d.discountID),
       zones: event?.zones ?? [],
       sessions: event?.sessions ?? []
@@ -95,7 +95,7 @@ export default function CreateEvent() {
       } else {
         const created = await createEvent(createData);
         await uploadEventImages(created.eventID, images);
-        navigate(`/admin/events/edit/${created.eventID}`);
+        navigate(`/admin/events`);
       }
       return { success: true, error: null };
     } catch (err) {
@@ -123,10 +123,10 @@ export default function CreateEvent() {
         )}
 
         {!isEditing && (
-          <Form.Group className="mb-3">
+          <>
             <Form.Label className="fw-bold">Capacidad</Form.Label>
-            <Form.Control name="capacity" type="number" required disabled={isPending} />
-          </Form.Group>
+            <p className="text-muted">La capacidad se actualiza según las zonas asociadas.</p>
+          </>
         )}
 
         {isEditing && <input type="hidden" name="capacity" value={event?.capacity ?? 0} />}

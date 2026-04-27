@@ -19,9 +19,6 @@ public record EventCreateDTO(
 
     @NotNull(message = "La edad objetivo es obligatoria")
     @Positive(message = "La edad debe ser un número positivo")
-    Integer targetAge,
+    Integer targetAge
     
-    @NotNull(message = "La capacidad es obligatoria")
-    @Positive(message = "La capacidad debe ser mayor a 0")
-    Integer capacity
 ) {}

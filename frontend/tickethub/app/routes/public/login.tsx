@@ -29,7 +29,7 @@ export default function Login() {
     const [_, formAction, isPending] = useActionState(handleLogin, null);
 
     return (
-        <Card className="col-12 col-sm-10 col-md-6 col-lg-3 mx-auto mb-5 mt-5">
+        <Card className="col-12 col-sm-10 col-md-6 col-lg-6 col-xl-3 mx-auto mb-5 mt-5">
             <Card.Body>
                 <h3 className="mb-4 text-center">Iniciar sesión</h3>
                 <Form action={formAction}>

@@ -5,5 +5,4 @@ export interface EventCreate {
     place: string,
     artistId: number,
     targetAge: number,
-    capacity: number
 }

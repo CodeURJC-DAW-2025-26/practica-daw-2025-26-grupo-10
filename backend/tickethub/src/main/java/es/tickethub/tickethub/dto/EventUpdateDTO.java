@@ -24,7 +24,7 @@ public record EventUpdateDTO(
     @NotNull @Positive(message = "La edad debe ser positiva")
     Integer targetAge,
 
-    @NotNull @Positive(message = "La capacidad debe ser positiva")
+    @Positive(message = "La capacidad debe ser positiva")
     Integer capacity,
 
     List<Long> discountIds,
