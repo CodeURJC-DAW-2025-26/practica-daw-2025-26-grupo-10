@@ -427,7 +427,6 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
    cd [practica-daw-2025-26-grupo-10]
 
 2. **Levantar la aplicación**:
-   Navegar a cd docker
    Sustituye `tu_usuario` por tu nombre de usuario de Docker Hub para que Compose sepa de qué repositorio descargar las imágenes.
    DOCKER_USER=tu_usuario docker compose up -d
 
@@ -444,7 +443,7 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 #### **Pasos para construir y publicar la imagen:**
 
 1. **Crear la imagen local**:
-   bash docker/create_image.sh tickethub-app
+   bash create_image.sh tickethub-app
 
 2. **Iniciar sesión en Docker Hub**:
    Asegúrate de tener tus credenciales a mano.
@@ -587,16 +586,30 @@ Me he encargado de la creación de mappers, de la separación de la seguridad de
 
 2. **Clonar el repositorio** (si no lo has hecho ya)
    ```bash
-   git clone https://github.com/[usuario]/[nombre-repositorio].git
-   cd [nombre-repositorio]
+   git clone https://github.com/[usuario]/[practica-daw-2025-26-grupo-10].git
+   cd [practica-daw-2025-26-grupo-10]
    ```
 
 3. **Navegar a la carpeta del proyecto React**
    ```bash
-   cd frontend
+   cd frontend/tickethub
    ```
 
-4. **AQUÍ LOS SIGUIENTES PASOS**
+4. **Construir la versión en producción**
+   ```bash
+   npm run build
+   ```
+5. **Cambiar al backend y ejecutar Maven**
+   ```bash
+   cd ../../backend/tickethub
+   mvn clean install
+   ```
+6. **Copiar los archivos de la ruta /frontend/tickethub/build/client en la ruta /backend/tickethub/src/main/resources/static/new**
+
+7. **Ejecutar la aplicación**
+   ```bash
+   mvn spring-boot:run
+   ```
 
 ### **Diagrama de Clases y Templates de la SPA**
 
