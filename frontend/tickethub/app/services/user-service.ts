@@ -13,13 +13,13 @@ export async function getPurchases(page: number = 0): Promise<PurchasePaginatedR
         method: "GET",
         credentials: "include"
     });
+    const data = await response.json();
 
-    if (response.ok) {
-        const data = await response.json();
-        return data as PurchasePaginatedResponse;
+    if (!response.ok) {
+        throw new Response(null, { status: response.status });
     }
-
-    throw new Error("Error al obtener el historial de compras");
+    
+    return data as PurchasePaginatedResponse;
 }
 
 export async function changePassword(changePasswordBasic: ChangePasswordBasic): Promise<string> {
@@ -34,7 +34,7 @@ export async function changePassword(changePasswordBasic: ChangePasswordBasic): 
 
     if (!response.ok) {
         const errorData: AuthResponse = await response.json();
-        throw new Error(errorData.message || "Error al cambiar la contraseña");
+        throw new Response(null, { status: response.status });
     }
 
     return "Contraseña actualizada correctamente";
@@ -52,7 +52,7 @@ export async function changeProfile(changeProfileBasic: ChangeProfileBasic): Pro
 
     if (!response.ok) {
         const errorData: AuthResponse = await response.json();
-        throw new Error(errorData.message || "Error al actualizar el perfil");
+        throw new Response(null, { status: response.status });
     }
 
     return "Perfil actualizado correctamente";
@@ -70,7 +70,7 @@ export async function getProfileFormInformation(): Promise<ChangeProfileBasic> {
         return data as ChangeProfileBasic;
     }
 
-    throw new Error("Error al obtener la información del perfil");
+    throw new Response(null, { status: response.status });
 }
 
 export async function changeProfileImage(userID: number, imageFile: File): Promise<void> {
@@ -83,6 +83,6 @@ export async function changeProfileImage(userID: number, imageFile: File): Promi
         body: formData
     });
     if (!response.ok) {
-        throw new Error("Error al subir la imagen de perfil");
+        throw new Response(null, { status: response.status });
     }
 }

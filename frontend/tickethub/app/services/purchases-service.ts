@@ -10,13 +10,17 @@ export async function savePurchase(data: PurchaseCreate): Promise<Purchase> {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  if (!res.ok) throw new Error("Error al procesar la compra");
+  if (!res.ok) {
+    throw new Response(null, { status: res.status });
+  }
   return await res.json();
 }
 
 export async function getPurchase(purchaseId: string): Promise<Purchase> {
   const res = await fetch(`${PURCHASES_URL}/${purchaseId}`);
-  if (!res.ok) throw new Error("Compra no encontrada");
+  if (!res.ok) {
+    throw new Response(null, { status: res.status });
+  }
   return await res.json();
 }
 

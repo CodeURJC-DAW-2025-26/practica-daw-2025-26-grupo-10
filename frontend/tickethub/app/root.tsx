@@ -21,7 +21,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
-        <link rel="icon" type="image/png" href="/TicketHub_icon.png" />
+        <link rel="icon" type="image/png" href={`${import.meta.env.BASE_URL}TicketHub_icon.png`} />
       </head>
       <body>
         {children}
@@ -51,6 +51,9 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     } else if (status === 403) {
       message = "403 - Prohibido";
       details = "No tienes permiso para acceder a esta página.";
+    } else if (status === 401) {
+      message = "401 - No Autorizado";
+      details = "Necesitas iniciar sesión para acceder a esta página.";
     }
   } else if (error instanceof Error) {
     details = error.message;

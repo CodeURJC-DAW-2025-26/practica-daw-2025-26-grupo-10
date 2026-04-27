@@ -1,0 +1,1 @@
+import{L as e,z as t}from"./jsx-runtime-B9oMLr3t.js";var n=t(e()).createContext(null);n.displayName=`CardHeaderContext`;export{n as t};

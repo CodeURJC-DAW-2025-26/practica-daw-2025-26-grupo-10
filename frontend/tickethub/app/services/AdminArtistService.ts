@@ -8,7 +8,9 @@ export async function getAllArtists(): Promise<Artist[]> {
     headers: { "Content-Type": "application/json" },
     credentials: "include"
   });
-  if (!res.ok) throw new Error("Error al obtener los artistas");
+  if (!res.ok) {
+    throw new Response(null, { status: res.status });
+  }
   const data = await res.json();
   return data.content || [];
 }
@@ -18,7 +20,9 @@ export async function getArtistById(id: string): Promise<Artist> {
     headers: { "Content-Type": "application/json" },
     credentials: "include"
   });
-  if (!res.ok) throw new Error("Error al obtener el artista");
+  if (!res.ok) {
+    throw new Response(null, { status: res.status });
+  }
   return await res.json();
 }
 
@@ -34,7 +38,9 @@ export async function createArtist(artist: ArtistCreateUpdate, image: File | nul
     credentials: "include",
     body: form,
   });
-  if (!res.ok) throw new Error("Error al crear el artista");
+  if (!res.ok) {
+    throw new Response(null, { status: res.status });
+  }
   const created = await res.json();
   return created;
 }
@@ -46,7 +52,9 @@ export async function updateArtist(id: string, artist: ArtistCreateUpdate): Prom
     credentials: "include",
     body: JSON.stringify(artist),
   });
-  if (!res.ok) throw new Error("Error al actualizar el artista");
+  if (!res.ok) {
+    throw new Response(null, { status: res.status });
+  }
   const updated = await res.json();
   return updated;
 }
@@ -56,7 +64,9 @@ export async function deleteArtistImage(artistID: number): Promise<void> {
     method: "DELETE",
     credentials: "include",
   });
-  if (!res.ok) throw new Error("Error eliminando imagen del artista");
+  if (!res.ok) {
+    throw new Response(null, { status: res.status });
+  }
 }
 
 export async function postArtistImage(artistID: number, image: File): Promise<void> {
@@ -68,7 +78,9 @@ export async function postArtistImage(artistID: number, image: File): Promise<vo
     credentials: "include",
     body: form
   });
-  if (!res.ok) throw new Error("Error subiendo imagen del artista");
+  if (!res.ok) {
+    throw new Response(null, { status: res.status });
+  }
 }
 export async function updateArtistImage(artistID: number, image: File): Promise<void> {
   const form = new FormData();
@@ -79,5 +91,7 @@ export async function updateArtistImage(artistID: number, image: File): Promise<
     credentials: "include",
     body: form,
   });
-  if (!res.ok) throw new Error("Error actualizando imagen del artista");
+  if (!res.ok) {
+    throw new Response(null, { status: res.status });
+  }
 }

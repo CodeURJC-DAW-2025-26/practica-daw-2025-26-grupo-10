@@ -1,0 +1,1 @@
+import{L as e,t,z as n}from"./jsx-runtime-B9oMLr3t.js";import{s as r}from"./homeService-CgL_qj1M.js";var i=n(e()),a=n(r()),o=t(),s=(e=>i.forwardRef((t,n)=>(0,o.jsx)(`div`,{...t,ref:n,className:(0,a.default)(t.className,e)})));export{s as t};

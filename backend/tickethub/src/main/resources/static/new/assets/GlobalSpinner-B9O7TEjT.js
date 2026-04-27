@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-B9oMLr3t.js";import{t}from"./Spinner-C6N1volZ.js";var n=e();function r(){return(0,n.jsx)(`div`,{className:`d-flex justify-content-center align-items-center`,style:{minHeight:`200px`},children:(0,n.jsx)(t,{animation:`border`,role:`status`,children:(0,n.jsx)(`span`,{className:`visually-hidden`,children:`Cargando...`})})})}export{r as t};

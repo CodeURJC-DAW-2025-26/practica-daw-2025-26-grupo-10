@@ -7,5 +7,6 @@ export async function getIndexData(): Promise<IndexResponse> {
     if (!res.ok) {
         throw new Response("Error cargando la página principal", { status: res.status });
     }
+
     return res.json();
 }

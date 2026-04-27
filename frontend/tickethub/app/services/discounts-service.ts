@@ -8,7 +8,9 @@ export async function getDiscounts(): Promise<Discount[]> {
   const res = await fetch(`${DISCOUNTS_URL}`, {
     credentials: "include"
   });
-  if (!res.ok) throw new Error("Error al obtener descuentos");
+  if (!res.ok) {
+    throw new Response(null, { status: res.status });
+  }
   const data = await res.json();
   return data.content;
 }
@@ -17,7 +19,9 @@ export async function getDiscount(id: string): Promise<Discount> {
   const res = await fetch(`${DISCOUNTS_URL}/${id}`, {
     credentials: "include"
   });
-  if (!res.ok) throw new Error("Descuento no encontrado");
+  if (!res.ok) {
+    throw new Response(null, { status: res.status });
+  }
   return await res.json();
 }
 
@@ -28,7 +32,9 @@ export async function createDiscount(data: DiscountBasic): Promise<Discount> {
     credentials: "include",
     body: JSON.stringify(data),
   });
-  if (!res.ok) throw new Error("Error al crear descuento");
+  if (!res.ok) {
+    throw new Response(null, { status: res.status });
+  }
   return await res.json();
 }
 
@@ -39,7 +45,9 @@ export async function updateDiscount(id: string, data: DiscountBasic): Promise<D
     credentials: "include",
     body: JSON.stringify(data),
   });
-  if (!res.ok) throw new Error("Error al actualizar descuento");
+  if (!res.ok) {
+    throw new Response(null, { status: res.status });
+  }
   return await res.json();
 }
 
@@ -48,5 +56,7 @@ export async function deleteDiscount(id: number): Promise<void> {
     method: "DELETE",
     credentials: "include"
   });
-  if (!res.ok) throw new Error("Error al eliminar descuento");
+  if (!res.ok) {
+    throw new Response(null, { status: res.status });
+  }
 }

@@ -16,7 +16,9 @@ export async function getEventsPublic(
   if (date) params.set("date", date);
 
   const res = await fetch(`${API_URL}/public/events?${params.toString()}`);
-  if (!res.ok) throw new Error("Error cargando eventos");
+  if (!res.ok) {
+    throw new Response(null, { status: res.status });
+  }
   const data = await res.json()
   return data.content;
 }
@@ -25,14 +27,18 @@ export async function getEventsAdmin(): Promise<EventBasic[]> {
   const res = await fetch(`${API_URL}/admin/events?page=0&size=1000`, {
     credentials: "include"
   });
-  if (!res.ok) throw new Error("Error cargando eventos");
+  if (!res.ok) {
+    throw new Response(null, { status: res.status });
+  }
   const data = await res.json()
   return data.content;
 }
 
 export async function getCategories(): Promise<string[]> {
   const res = await fetch(`${API_URL}/public/events/categories`);
-  if (!res.ok) throw new Error("Error cargando categorías");
+  if (!res.ok) {
+    throw new Response(null, { status: res.status });
+  }
   return await res.json();
 }
 
@@ -42,5 +48,7 @@ export async function deleteEvent(eventID: number): Promise<void> {
     method: "DELETE",
     credentials: "include"
   });
-  if (!res.ok) throw new Error("Error eliminando el evento");
+  if (!res.ok) {
+    throw new Response(null, { status: res.status });
+  }
 }

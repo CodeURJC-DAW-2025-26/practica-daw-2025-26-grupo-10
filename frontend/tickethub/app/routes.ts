@@ -49,10 +49,6 @@ export default [
                 route("/clients/me/password", "routes/client/change-password.tsx"),
                 route("/clients/profile/edit", "routes/client/change-profile.tsx"),
 
-                // Errors
-                route("403", "routes/error403.tsx"),
-                route("500", "routes/error500.tsx"),
-                route("*", "routes/not-found.tsx"),
         ]),
 ] satisfies RouteConfig;
 

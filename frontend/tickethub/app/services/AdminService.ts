@@ -9,7 +9,9 @@ export async function getDashboard(): Promise<AdminDashboardDTO> {
         headers: { "Content-Type": "application/json" },
         credentials: "include"
     });
-    if (!response.ok) throw new Error("Error al obtener datos del dashboard");
+    if (!response.ok) {
+        throw new Response(null, { status: response.status });
+    }
     return response.json();
 }
 
@@ -18,7 +20,9 @@ export async function getStatistics(): Promise<AdminStatisticsDTO> {
         headers: { "Content-Type": "application/json" },
         credentials: "include"
     });
-    if (!response.ok) throw new Error("Error al obtener estadísticas");
+    if (!response.ok) {
+        throw new Response(null, { status: response.status });
+    }
     return response.json();
 }
 
@@ -28,7 +32,9 @@ export async function getUsers(page: number = 0, size: number = 5): Promise<User
         credentials: "include"
     });
 
-    if (!response.ok) throw new Error("Error al obtener la lista de usuarios");
+    if (!response.ok) {
+        throw new Response(null, { status: response.status });
+    }
 
     return response.json();
 }
@@ -38,7 +44,9 @@ export async function getUserById(id: string): Promise<User> {
         headers: { "Content-Type": "application/json" },
         credentials: "include"
     });
-    if (!response.ok) throw new Error("Error al obtener el usuario");
+    if (!response.ok) {
+        throw new Response(null, { status: response.status });
+    }
     return response.json();
 }
 
@@ -51,8 +59,7 @@ export async function updateUser(id: number, userData: User): Promise<User> {
     });
 
     if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        throw new Error(errorData?.message || "Error al actualizar");
+        throw new Response(null, { status: response.status });
     }
     return response.json();
 }

@@ -9,7 +9,9 @@ export async function getZones(eventId: string): Promise<Zone[]> {
     headers: { "Content-Type": "application/json" },
     credentials: "include"
   });
-  if (!res.ok) throw new Error("Error al obtener zonas");
+  if (!res.ok) {
+    throw new Response(null, { status: res.status });
+  }
   return await res.json();
 }
 
@@ -18,7 +20,9 @@ export async function getZone(eventId: string, zoneId: string): Promise<Zone> {
     headers: { "Content-Type": "application/json" },
     credentials: "include"
   });
-  if (!res.ok) throw new Error("Zona no encontrada");
+  if (!res.ok) {
+    throw new Response(null, { status: res.status });
+  }
   return await res.json();
 }
 
@@ -29,7 +33,9 @@ export async function createZone(eventId: string, data: ZoneCreate): Promise<Zon
     credentials: "include",
     body: JSON.stringify(data),
   });
-  if (!res.ok) throw new Error("Error al crear zona");
+  if (!res.ok) {
+    throw new Response(null, { status: res.status });
+  }
   return await res.json();
 }
 
@@ -40,7 +46,9 @@ export async function updateZone(eventId: string, zoneId: string, data: ZoneCrea
     credentials: "include",
     body: JSON.stringify(data),
   });
-  if (!res.ok) throw new Error("Error al actualizar zona");
+  if (!res.ok) {
+    throw new Response(null, { status: res.status });
+  }
   return await res.json();
 }
 
@@ -50,5 +58,7 @@ export async function deleteZone(eventId: string, zoneId: number): Promise<void>
     headers: { "Content-Type": "application/json" },
     credentials: "include"
   });
-  if (!res.ok) throw new Error("Error al eliminar zona");
+  if (!res.ok) {
+    throw new Response(null, { status: res.status });
+  }
 }

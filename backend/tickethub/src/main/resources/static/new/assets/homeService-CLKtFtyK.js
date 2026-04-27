@@ -1,1 +1,0 @@
-var e=`/api/v1`;async function t(){let t=await fetch(`${e}/public/index`);if(!t.ok)throw new Response(`Error cargando la página principal`,{status:t.status});return t.json()}export{t as n,e as t};
