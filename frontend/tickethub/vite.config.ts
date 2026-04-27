@@ -2,9 +2,9 @@ import { reactRouter } from "@react-router/dev/vite";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
+  base: mode === "production" ? "/new/" : "/",
   plugins: [reactRouter(), tsconfigPaths()],
-  base: process.env.BASE_PATH ?? "/",
   server: {
     proxy: {
       '/api': {
@@ -19,4 +19,4 @@ export default defineConfig({
       }
     }
   }
-});
+}));

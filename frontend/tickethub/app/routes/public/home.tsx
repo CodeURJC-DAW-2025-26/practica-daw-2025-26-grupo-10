@@ -5,6 +5,7 @@ import { getIndexData, API_URL } from "~/services/homeService";
 import type { ArtistBasic } from "~/models/ArtistBasic";
 import type { EventBasic } from "~/models/EventBasic";
 import type { IndexResponse } from "~/models/IndexResponse";
+import { Link } from "react-router";
 
 export default function Home() {
   const [data, setData] = useState<IndexResponse | null>(null);
@@ -106,7 +107,7 @@ export default function Home() {
         <section className="mb-5 pb-4">
           <div className="d-flex justify-content-between align-items-center mb-4">
             <h2>Artistas</h2>
-            <a href="/public/artists" className="btn btn-outline-primary btn-sm">Ver todos</a>
+            <Link to="/public/events" className="btn btn-outline-primary btn-sm">Ver todos</Link>
           </div>
           <Row className="g-4">
             {data.artists.map((artist: ArtistBasic) => (
