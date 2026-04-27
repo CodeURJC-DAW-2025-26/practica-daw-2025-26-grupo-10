@@ -16,14 +16,14 @@ export default function ManageUsers() {
 
     const [users, setUsers] = useState<User[]>(initialUsers);
     const [page, setPage] = useState(0);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     async function fetchUsers(newPage: number) {
         setLoading(true);
         setError(null);
         try {
-            const data = await getUsers(page, PAGE_SIZE);
+            const data = await getUsers(newPage, PAGE_SIZE);
             setUsers(data);
             setPage(newPage);
         } catch (err) {
@@ -32,7 +32,6 @@ export default function ManageUsers() {
             setLoading(false);
         }
     };
-
 
     return (
         <Container className="py-4">
