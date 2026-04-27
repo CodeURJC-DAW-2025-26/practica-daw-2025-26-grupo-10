@@ -11,7 +11,6 @@ IMAGE_NAME=$1
 
 echo "Construyendo la imagen: $IMAGE_NAME..."
 
-IMAGE_NAME=$1
-echo "Construyendo imagen: $IMAGE_NAME..."
-docker build -t "$IMAGE_NAME" -f docker/Dockerfile .
+docker build -t "$IMAGE_NAME" -f Dockerfile .
+
 echo "¡Imagen $IMAGE_NAME creada con éxito!"
