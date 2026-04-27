@@ -602,7 +602,10 @@ Me he encargado de la creación de mappers, de la separación de la seguridad de
 
 Diagrama mostrando los componentes React, hooks personalizados, servicios y sus relaciones:
 
-![Diagrama de Componentes React](backend/tickethub/src/main/resources/static/images/spa-classes-diagram.png)
+![Diagrama de Elementos SPA I](backend/tickethub/src/main/resources/static/images/routing&layout.png)
+![Diagrama de Elementos SPA II](backend/tickethub/src/main/resources/static/images/hooks&UI.png)
+![Diagrama de Elementos SPA III](backend/tickethub/src/main/resources/static/images/Service.png)
+
 
 ### **Participación de Miembros en la Práctica 3**
 
