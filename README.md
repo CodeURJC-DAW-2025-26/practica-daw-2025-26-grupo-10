@@ -606,9 +606,9 @@ Diagrama mostrando los componentes React, hooks personalizados, servicios y sus 
 
 ### **Participación de Miembros en la Práctica 3**
 
-#### **Alumno 1 - [Alejandro Valor González]**
+#### **Alumno 1 - Alejandro Valor González**
 
-[Me he encargado de la parte de discount, zones, purchase, confirmation, download pdf, react-boostrap y el /new que tuvimos que ir arreglandolo, a parte de ayudar en otras partes del código.]
+Me he encargado de la parte de discount, zones, purchase, confirmation, download pdf, react-boostrap y el /new que tuvimos que ir arreglandolo, a parte de ayudar en otras partes del código.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
@@ -620,21 +620,21 @@ Diagrama mostrando los componentes React, hooks personalizados, servicios y sus 
 
 ---
 
-#### **Alumno 2 - [Nombre Completo]**
+#### **Alumno 2 - Shania Manso García**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Realicé el Global Spinner, la página de error 403, la página de estadísticas del administrador y las páginas relacionadas con los artistas tanto para administrador (crear y editar artista, gestionar artistas) como para usuarios registrados/no registrados (detalle del artista, listas de artistas). Además, trabajé en la gestión de los estilos de la aplicación y en solucionar problemas varíos.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Loader and store implementation](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/d6b1e614420d88745a54acd8242d6722cee41912)  | [adminArtistsStore.ts](frontend\tickethub\app\store\adminArtistsStore.ts)   |
+|2| [Artist List and Error 403 and Artist Form Hot Fix](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/a8049f0b3937fe8b4d04c64d9c3e66ac2d6c1fe3)  | [error403.tsx](frontend\tickethub\app\routes\errors\error403.tsx)   |
+|3| [Admin artist service integrated](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/291bef1b52325e0f087d68fd18a0d2e78665027b)  | [AdminArtistService.ts](frontend\tickethub\app\services\AdminArtistService.ts)   |
+|4| [Admin statistics to react](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/d9a9090f3c61535f0ce44227e4abdf0cab645b0b)  | [Statistics.tsx](frontend\tickethub\app\routes\admin\Statistics.tsx)   |
+|5| [Global spinner component](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-10/commit/0fda7989c6924eed2b452c2566530a1f04c15846)  | [GlobalSpinner.tsx](frontend\tickethub\app\components\GlobalSpinner.tsx)   |
 
 ---
 
-#### **Alumno 3 - [Daniel Bonachela Martínez]**
+#### **Alumno 3 - Daniel Bonachela Martínez**
 
 Realicé el dockerfile por una parte. Por otra, el footer y el header que ve el administrador, la página de admin, las acciones de editar y administrar usuarios así como gestionar las sesiones de los eventos. Además creé el error 500 y ayudé en gestión de problemas surgidos a lo largo de la práctica.
 
